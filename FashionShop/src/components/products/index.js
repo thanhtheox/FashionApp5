@@ -1,0 +1,1 @@
+export {default as IC_Star} from './IC_Star';
