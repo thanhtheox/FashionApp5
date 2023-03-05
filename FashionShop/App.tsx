@@ -12,11 +12,12 @@ import AddToBasket from './src/components/buttons/AddToBasket';
 import Submit from './src/components/buttons/Submit';
 import CheckOut from './src/components/buttons/CheckOut';
 import Custom_Tag2 from './src/components/tags/border';
+import BackToHome from './src/components/buttons/BackToHome';
 
 const App = () => {
   return (
     <View style={[{ flex: 1}]}>
-      <Custom_GridViewProd  />
+      <BackToHome  />
     </View>
   );
 };
