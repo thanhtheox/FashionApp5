@@ -15,9 +15,7 @@ import Custom_Tag2 from './src/components/tags/border';
 
 const App = () => {
   return (
-    <View style={[{ flex: 1}]}>
-      <Custom_GridViewProd  />
-    </View>
+      <Custom_HomepageProd  />
   );
 };
 
