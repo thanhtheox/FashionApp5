@@ -15,9 +15,12 @@ import Custom_Tag2 from './src/components/tags/border';
 import BackToHome from './src/components/buttons/BackToHome';
 import HomeScreen from './src/screens/home/homeScreen';
 
+import ContactInfor from './src/screens/home/myInfoScreen/component/contactInfor';
+import SignInScreen from './src/screens/auth/signInScreen';
+import SignUpScreen from './src/screens/auth/signUpScreen';
 const App = (props: any) => {
   return (
-    <HomeScreen  />
+    <SignUpScreen  />
   );
 };
 
