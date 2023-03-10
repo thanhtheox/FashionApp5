@@ -9,22 +9,23 @@ const Custom_Header = () => {
   return (
     <View style={styles.container}>
         {/* Menu */}
-        <TouchableOpacity style={styles.menuContainer}>
+         <TouchableOpacity style={styles.menuContainer}>
             <IC_Menu/>
         </TouchableOpacity>
         {/* Logo */}
         <TouchableOpacity style={styles.logoContainer}>
             <Image source={LOGO}/>
         </TouchableOpacity>
-         {/* Search */}
-         <TouchableOpacity style={styles.searchContainer}>
-            <IC_Search/>
-        </TouchableOpacity>
-         {/* Menu */}
-         <TouchableOpacity style={styles.shoppingBagContainer}>
-            <IC_ShoppingBag/>
-        </TouchableOpacity>
-  
+        <View style={{flexDirection: 'row'}}>
+            {/* Search */}
+            <TouchableOpacity style={styles.searchContainer}>
+                <IC_Search/>
+            </TouchableOpacity>
+            {/* ShoppingBag */}
+            <TouchableOpacity style={styles.shoppingBagContainer}>
+                <IC_ShoppingBag/>
+            </TouchableOpacity>
+        </View>
     </View>
   )
 }
@@ -34,28 +35,21 @@ export default Custom_Header
 const styles = StyleSheet.create({
     container:{
         flexDirection: 'row',
-        width: '100%',
-        height: scale(40),
-        backgroundColor: Color.AthensGray,
         justifyContent: 'space-between',
+        paddingVertical: scale(12),
+        paddingHorizontal: scale(16),
         alignItems: 'center',
-        position: 'relative',
+        backgroundColor: Color.AthensGray,
     },
     menuContainer:{
-        // position: 'absolute',
-        //marginLeft: scale(16),
+
     },
     logoContainer:{
-        // position: 'absolute',
-        //marginLeft: scale(115),
         opacity: 0.8,
     },
     searchContainer:{
-        // position: 'absolute',
-        //marginLeft: scale(100),
     },
     shoppingBagContainer:{
-        // position: 'absolute',
-        //marginLeft: scale(258),
+        marginLeft: scale(20),
     },
 })
