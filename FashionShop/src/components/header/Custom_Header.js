@@ -3,19 +3,18 @@ import React from 'react'
 import { LOGO } from '../logo'
 import Color from '../../constants/color'
 import {IC_Menu, IC_Search, IC_ShoppingBag} from '../../assets/icons'
-
+import scale from '../../constants/responsive'
 
 const Custom_Header = () => {
   return (
     <View style={styles.container}>
-        
-        {/* Logo */}
-        <TouchableOpacity style={styles.logoContainer}>
-            <Image source={LOGO}/>
-        </TouchableOpacity>
         {/* Menu */}
         <TouchableOpacity style={styles.menuContainer}>
             <IC_Menu/>
+        </TouchableOpacity>
+        {/* Logo */}
+        <TouchableOpacity style={styles.logoContainer}>
+            <Image source={LOGO}/>
         </TouchableOpacity>
          {/* Search */}
          <TouchableOpacity style={styles.searchContainer}>
@@ -34,30 +33,29 @@ export default Custom_Header
 
 const styles = StyleSheet.create({
     container:{
-        position: 'absolute',
-        width: 375,
-        height: 60,
+        flexDirection: 'row',
+        width: '100%',
+        height: scale(40),
         backgroundColor: Color.AthensGray,
-    },
-    logoContainer:{
-        position: 'absolute',
-        left: 142,
-        top: 19,
-        opacity: 0.8,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'relative',
     },
     menuContainer:{
-        position: 'absolute',
-        left: 16,
-        top: 22.75,
+        // position: 'absolute',
+        //marginLeft: scale(16),
+    },
+    logoContainer:{
+        // position: 'absolute',
+        //marginLeft: scale(115),
+        opacity: 0.8,
     },
     searchContainer:{
-        position: 'absolute',
-        left: 288,
-        top: 24,
+        // position: 'absolute',
+        //marginLeft: scale(100),
     },
     shoppingBagContainer:{
-        position: 'absolute',
-        left: 328,
-        top: 24,
+        // position: 'absolute',
+        //marginLeft: scale(258),
     },
 })

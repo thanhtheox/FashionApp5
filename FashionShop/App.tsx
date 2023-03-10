@@ -13,10 +13,11 @@ import Submit from './src/components/buttons/Submit';
 import CheckOut from './src/components/buttons/CheckOut';
 import Custom_Tag2 from './src/components/tags/border';
 import BackToHome from './src/components/buttons/BackToHome';
+import Custom_Header from './src/components/header/Custom_Header';
 
 const App = (props: any) => {
   return (
-      <BackToHome style={[props.type='primary']} />
+      <AddToBasket />
   );
 };
 
