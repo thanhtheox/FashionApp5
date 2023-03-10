@@ -16,7 +16,10 @@ import BackToHome from './src/components/buttons/BackToHome';
 
 const App = (props: any) => {
   return (
-      <BackToHome style={[props.type='primary']} />
+    <View style={{flex: 1}}>
+
+      <AddToBasket  />
+    </View>
   );
 };
 
