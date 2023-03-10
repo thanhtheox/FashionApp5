@@ -4,7 +4,7 @@ import scale from './responsive';
 
 const fontStyles = StyleSheet.create({
   titleFont: {
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.JoseFinSans,
     fontSize: scale(18),
     lineHeight: scale(40),
     letterSpacing: scale(4),
@@ -12,7 +12,7 @@ const fontStyles = StyleSheet.create({
     color: '#202224',
   },
   subTitle16pxFont: {
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.JoseFinSans,
     fontSize: scale(16),
     lineHeight: scale(24),
     letterSpacing: scale(2),
@@ -20,7 +20,7 @@ const fontStyles = StyleSheet.create({
     color: '#202224',
   },
   subTitle14pxFont: {
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.JoseFinSans,
     fontSize: scale(14),
     lineHeight: scale(20),
     letterSpacing: scale(2),
@@ -28,19 +28,19 @@ const fontStyles = StyleSheet.create({
     color: '#202224',
   },
   bodyLargeFont: {
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.JoseFinSans,
     fontSize: scale(16),
     lineHeight: scale(24),
     color: '#727272',
   },
   bodyMediumFont: {
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.JoseFinSans,
     fontSize: scale(14),
     lineHeight: scale(24),
     color: '#727272',
   },
   bodySmallFont: {
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.JoseFinSans,
     fontSize: scale(12),
     lineHeight: scale(18),
     color: '#727272',
