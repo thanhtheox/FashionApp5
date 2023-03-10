@@ -13,13 +13,11 @@ import Submit from './src/components/buttons/Submit';
 import CheckOut from './src/components/buttons/CheckOut';
 import Custom_Tag2 from './src/components/tags/border';
 import BackToHome from './src/components/buttons/BackToHome';
+import HomeScreen from './src/screens/home/homeScreen';
 
 const App = (props: any) => {
   return (
-    <View style={{flex: 1}}>
-
-      <AddToBasket  />
-    </View>
+    <HomeScreen  />
   );
 };
 
