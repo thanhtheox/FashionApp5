@@ -13,10 +13,11 @@ import Submit from './src/components/buttons/Submit';
 import CheckOut from './src/components/buttons/CheckOut';
 import Custom_Tag2 from './src/components/tags/border';
 import BackToHome from './src/components/buttons/BackToHome';
+import OnboardingScreen from './src/screens/auth/onboarding';
 
 const App = (props: any) => {
   return (
-      <BackToHome style={[props.type='primary']} />
+      <OnboardingScreen/>
   );
 };
 
