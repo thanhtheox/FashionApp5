@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontSize: scale(16),
     textAlign: 'center',
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.JoseFinSansRegular,
   },
   buttonPrimary: {
     backgroundColor: Color.TitleActive,

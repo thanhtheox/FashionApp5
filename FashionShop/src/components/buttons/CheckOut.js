@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     fontSize: scale(14),
     textAlign: 'center',
     color: Color.Background,
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.JoseFinSansRegular,
   },
   icon: {
     top: scale(0),

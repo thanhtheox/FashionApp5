@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.5,
   },
   prodPrice: {
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.JoseFinSansRegular,
     fontSize: scale(15),
     color: Color.Secondary,
   },
