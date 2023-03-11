@@ -88,7 +88,7 @@ const SignUpScreen = () => {
 
         <View style={styles.inputMailBox}>
           <TextInput
-            onChangeText={email => onchange(email)}
+            onChangeText={email => setMail(email)}
             placeholder="Email"
             placeholderTextColor={color.GraySolid}
             style={styles.inputText}
