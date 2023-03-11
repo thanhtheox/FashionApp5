@@ -1,5 +1,5 @@
 export {default as IC_Heart} from './IC_Heart';
-export {default as IC_Backward} from './IC_Backward.js'
+export {default as IC_Backward} from './IC_Backward'
 export {default as IC_BackwardArrow} from './IC_BackwardArrow'
 export {default as IC_Call} from './IC_Call'
 export {default as IC_Close} from './IC_Close'

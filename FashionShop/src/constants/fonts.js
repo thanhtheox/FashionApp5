@@ -1,6 +1,5 @@
 const FONT_FAMILY = {
-    TenorSans: 'TenorSans-Regular',
+  JoseFinSans: 'JosefinSans-Regular',
 };
-
 
 export default FONT_FAMILY;
