@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: scale(35.5),
     left: scale(305),
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.JoseFinSansRegular,
     fontSize: scale(15),
     color: Color.Secondary,
   },

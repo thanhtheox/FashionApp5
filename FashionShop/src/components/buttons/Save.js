@@ -29,6 +29,6 @@ const styles = StyleSheet.create({
     fontSize: scale(24),
     textAlign: 'center',
     color: Color.Background,
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.JoseFinSansRegular,
   },
 });
