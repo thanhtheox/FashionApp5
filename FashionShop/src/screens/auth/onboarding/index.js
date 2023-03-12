@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     },
     viewIcon: 
     {
+        backgroundColor: Color.Background,
         marginLeft: scale(26),
         width: scale(40),
         height: scale(30),
