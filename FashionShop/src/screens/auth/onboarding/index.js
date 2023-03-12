@@ -4,7 +4,7 @@ import Color from '../../../constants/color';
 import FONT_FAMILY from '../../../constants/fonts';
 import { IMG_Logo } from '../../../assets/images';
 import scale from '../../../constants/responsive';
-import { IC_BackwardArrow, IC_Gallery } from '../../../assets/icons';
+import { IC_BackwardArrow } from '../../../assets/icons';
 
 const OnboardingScreen = props => {
     return (
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     introText1:
     {
         color: Color.TitleActive,
-        fontFamily: FONT_FAMILY.JosefinSansBold,
+        fontFamily: FONT_FAMILY.JoseFinSans,
         fontSize: scale(36),
         lineHeight: scale(40),
         alignSelf: 'center',
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     introText2:
     {
         color: Color.TitleActive,
-        fontFamily: FONT_FAMILY.JosefinSansBold,
+        fontFamily: FONT_FAMILY.JoseFinSans,
         fontSize: scale(18),
         lineHeight: scale(20),
         alignSelf: 'center',
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     signinButtonText:
     {
         color: Color.TitleActive,
-        fontFamily: FONT_FAMILY.JosefinSansBold,
+        fontFamily: FONT_FAMILY.JoseFinSans,
         fontSize: scale(24),
         lineHeight: scale(26),
         alignSelf: 'center',
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     signupButtonText:
     {
         color: Color.OffWhite,
-        fontFamily: FONT_FAMILY.JosefinSansBold,
+        fontFamily: FONT_FAMILY.JoseFinSans,
         fontSize: scale(24),
         lineHeight: scale(26),
         alignSelf: 'center',
