@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
       fontSize: scale(18),
       lineHeight: scale(40),
       textAlign: 'center',
-      fontFamily: FONT_FAMILY.JoseFinSansRegular,
+      fontFamily: FONT_FAMILY.Regular,
       color: Color.TitleActive,
     },
     lineBottom:{

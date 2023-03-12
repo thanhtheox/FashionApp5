@@ -40,13 +40,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   prodName: {
-    fontFamily: FONT_FAMILY.JoseFinSansRegular,
-    fontSize: scale(11),
+    fontFamily: FONT_FAMILY.Regular,
+    fontSize: scale(15),
     color: Color.Body,
     textAlign: 'center',
   },
   prodPrice: {
-    fontFamily: FONT_FAMILY.JoseFinSansRegular,
+    fontFamily: FONT_FAMILY.Regular,
     fontSize: scale(15),
     color: Color.Secondary,
     textAlign: 'center',

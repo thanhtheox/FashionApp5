@@ -38,18 +38,16 @@ const styles = StyleSheet.create({
       },
       categoryView: {
         flexDirection: 'row',
-        //justifyContent: 'space-between',
         alignItems: 'center',
         alignSelf: 'center',
       },
       categoryItem: {
-        //padding: scale(10),
         fontSize: scale(17),
       },
       categoryText: isChoosing => ({
         color: isChoosing ? color.TitleActive : color.PlaceHolder,
         fontSize: scale(17),
-        fontFamily: FONT_FAMILY.JoseFinSansRegular,
+        fontFamily: FONT_FAMILY.Regular,
       }),
     
 })
