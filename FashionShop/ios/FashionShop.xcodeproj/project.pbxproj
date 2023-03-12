@@ -15,6 +15,8 @@
 		7699B88040F8A987B510C191 /* libPods-FashionShop-FashionShopTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-FashionShop-FashionShopTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A7DABE8843A54DCD88C11A5B /* TenorSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2DAB4ED3FD96415EB240F708 /* TenorSans-Regular.ttf */; };
+		EB20E9685B934247B16C7CA3 /* JosefinSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0577E3C0FF9C4A93B6095273 /* JosefinSans-Italic.ttf */; };
+		FC1678279FB8435488626C92 /* JosefinSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 436E0C15F6A0411290E08FF7 /* JosefinSans-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +48,8 @@
 		89C6BE57DB24E9ADA2F236DE /* Pods-FashionShop-FashionShopTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FashionShop-FashionShopTests.release.xcconfig"; path = "Target Support Files/Pods-FashionShop-FashionShopTests/Pods-FashionShop-FashionShopTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		2DAB4ED3FD96415EB240F708 /* TenorSans-Regular.ttf */ = {isa = PBXFileReference; name = "TenorSans-Regular.ttf"; path = "../src/assets/fonts/TenorSans-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0577E3C0FF9C4A93B6095273 /* JosefinSans-Italic.ttf */ = {isa = PBXFileReference; name = "JosefinSans-Italic.ttf"; path = "../src/assets/fonts/JosefinSans-Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		436E0C15F6A0411290E08FF7 /* JosefinSans-Regular.ttf */ = {isa = PBXFileReference; name = "JosefinSans-Regular.ttf"; path = "../src/assets/fonts/JosefinSans-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +159,8 @@
 			isa = "PBXGroup";
 			children = (
 				2DAB4ED3FD96415EB240F708 /* TenorSans-Regular.ttf */,
+				0577E3C0FF9C4A93B6095273 /* JosefinSans-Italic.ttf */,
+				436E0C15F6A0411290E08FF7 /* JosefinSans-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -257,6 +263,8 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				A7DABE8843A54DCD88C11A5B /* TenorSans-Regular.ttf in Resources */,
+				EB20E9685B934247B16C7CA3 /* JosefinSans-Italic.ttf in Resources */,
+				FC1678279FB8435488626C92 /* JosefinSans-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

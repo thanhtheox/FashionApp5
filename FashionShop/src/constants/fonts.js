@@ -1,6 +1,6 @@
 const FONT_FAMILY = {
-  JoseFinSansRegular: 'JosefinSans-Regular',
-  JoseFinSansItalic: 'JosefinSans-Italic',
+  Regular: 'JosefinSans-Regular',
+  Italic: 'JosefinSans-Italic',
 };
 
 export default FONT_FAMILY;
