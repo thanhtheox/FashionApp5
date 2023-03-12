@@ -13,20 +13,12 @@ import Submit from './src/components/buttons/Submit';
 import CheckOut from './src/components/buttons/CheckOut';
 import Custom_Tag2 from './src/components/tags/border';
 import BackToHome from './src/components/buttons/BackToHome';
-<<<<<<< HEAD
-import HomeScreen from './src/screens/home/homeScreen/homeScreen';
-import OnboardingScreen from './src/screens/auth/onboarding';
-=======
 import HomeScreen from './src/screens/home/homeScreen';
->>>>>>> e12aeb681c09c4a6c7833ba52ddbd91b0755f3ce
+import OnboardingScreen from './src/screens/auth/onboarding';
 
 const App = (props: any) => {
   return (
-<<<<<<< HEAD
       <OnboardingScreen/>
-=======
-    <HomeScreen  />
->>>>>>> e12aeb681c09c4a6c7833ba52ddbd91b0755f3ce
   );
 };
 

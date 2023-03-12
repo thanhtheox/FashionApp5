@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
     },
     logoBorder:
     {
-        margintop: scale(27), 
         alignSelf: 'center',
     },
     logo:
@@ -65,7 +64,6 @@ const styles = StyleSheet.create({
     },
     introBorder:
     {
-        margintop: scale(292), 
         alignSelf: 'center',
         width: scale(254),
         height: scale(70),
@@ -73,7 +71,7 @@ const styles = StyleSheet.create({
     introText1:
     {
         color: Color.TitleActive,
-        fontFamily: FONT_FAMILY.JoseFinSans,
+        fontFamily: FONT_FAMILY.Regular,
         fontSize: scale(36),
         lineHeight: scale(40),
         alignSelf: 'center',
@@ -81,7 +79,7 @@ const styles = StyleSheet.create({
     introText2:
     {
         color: Color.TitleActive,
-        fontFamily: FONT_FAMILY.JoseFinSans,
+        fontFamily: FONT_FAMILY.Regular,
         fontSize: scale(18),
         lineHeight: scale(20),
         alignSelf: 'center',
@@ -109,7 +107,7 @@ const styles = StyleSheet.create({
     signinButtonText:
     {
         color: Color.TitleActive,
-        fontFamily: FONT_FAMILY.JoseFinSans,
+        fontFamily: FONT_FAMILY.Regular,
         fontSize: scale(24),
         lineHeight: scale(26),
         alignSelf: 'center',
@@ -136,7 +134,7 @@ const styles = StyleSheet.create({
     signupButtonText:
     {
         color: Color.OffWhite,
-        fontFamily: FONT_FAMILY.JoseFinSans,
+        fontFamily: FONT_FAMILY.Regular,
         fontSize: scale(24),
         lineHeight: scale(26),
         alignSelf: 'center',
