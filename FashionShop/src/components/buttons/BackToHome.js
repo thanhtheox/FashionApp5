@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: '400',
     fontSize: scale(16),
-    fontFamily: FONT_FAMILY.JoseFinSans,
+    fontFamily: FONT_FAMILY.JoseFinSansRegular,
     alignSelf: 'center',
   },
   buttonPrimary: {

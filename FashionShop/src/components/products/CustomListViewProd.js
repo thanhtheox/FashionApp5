@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   prodName: {
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.JoseFinSansRegular,
     width: scale(231),
     height: scale(20),
     fontSize: scale(14),
@@ -83,14 +83,14 @@ const styles = StyleSheet.create({
     marginTop: scale(7),
   },
   prodDescription: {
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.JoseFinSansRegular,
     width: scale(231),
     height: scale(20),
     fontSize: scale(13),
     color: Color.Label,
   },
   prodPrice: {
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.JoseFinSansRegular,
     fontSize: scale(15),
     color: Color.Secondary,
     marginTop: scale(4),
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   },
   prodRating: {
     position: 'absolute',
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.JoseFinSansRegular,
     fontSize: scale(12),
     color: Color.Label,
     top: scale(83),
@@ -106,13 +106,13 @@ const styles = StyleSheet.create({
   },
   prodSize: {
     position: 'absolute',
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.JoseFinSansRegular,
     fontSize: scale(12),
     color: Color.Label,
     top: scale(112),
   },
   prodType: {
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.JoseFinSansRegular,
     fontSize: scale(12),
     color: Color.Label,
     alignSelf: 'center',
