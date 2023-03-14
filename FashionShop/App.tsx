@@ -13,12 +13,12 @@ import Submit from './src/components/buttons/Submit';
 import CheckOut from './src/components/buttons/CheckOut';
 import Custom_Tag2 from './src/components/tags/border';
 import BackToHome from './src/components/buttons/BackToHome';
-import HomeScreen from './src/screens/home/homeScreen';
+import HomeScreen from './src/screens/app/home/homeScreen';
 import OnboardingScreen from './src/screens/auth/onboarding';
 
 const App = (props: any) => {
   return (
-      <OnboardingScreen/>
+      <HomeScreen/>
   );
 };
 
