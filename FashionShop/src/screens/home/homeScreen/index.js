@@ -170,8 +170,8 @@ const HomeScreen = (props) => {
           {/* New Arrival */}
           <View style={styles.arrivalContainer}>
             <Text style={styles.arrivalText}>NEW ARRIVAL</Text>
-            <Image source={LineBottom} style={styles.lineBottom} resizeMode='stretch'/>
-            <Custom_ItemScrollView style={{alignSelf:'center'}}/>
+            <Image source={LineBottom} style={{alignSelf: 'center'}} resizeMode='stretch'/>
+            <Custom_ItemScrollView style={{marginTop:scale(24),alignSelf:'center'}}/>
             <FlatList
             contentContainerStyle={{alignContent: 'space-around'}}
             horizontal={false}
@@ -238,6 +238,7 @@ const HomeScreen = (props) => {
               renderItem={({ item }) => (
                 <View key={item => `${item.key}`} style={styles.productWrap}>
                   <Custom_HomepageProd
+                  height={387}
                   width={255}
                   image={item.img}
                   prodName={item.name}
