@@ -9,9 +9,10 @@ const Custom_UnderlineButton = (props) => {
   return (
     <Pressable
         onPress={onPress}
+        style={{flexDirection:'column', alignItems:'center', paddingVertical:scale(3)}}
         >
         <Text style={[styles.text, textStyle]}>{children}</Text>
-        <Text style={[styles.background(isChoosing), style]}>•</Text>
+        <Text style={[styles.background(isChoosing), style]}>◆</Text>
     </Pressable>
   )
 }
@@ -21,12 +22,11 @@ export default Custom_UnderlineButton
 const styles = StyleSheet.create({
   background: isChoosing => ({
     alignSelf: 'center',
-    marginTop: scale(3),
     color: isChoosing ? color.Primary : 'transparent',
   }),
   text: {
     color: color.PlaceHolder,
-    padding: scale(26),
+    paddingHorizontal: scale(26),
     fontWeight: '400',
     fontSize: scale(4),
     alignSelf: 'center',

@@ -7,9 +7,9 @@ import Color from '../../constants/color';
 
 const Custom_HomepageProd = props => {
   return (
-    <TouchableOpacity style={styles.container}>
-      <View style={styles.imgContainer}>
-        <Image source={props.image} style={styles.img} resizeMode={'contain'} />
+    <TouchableOpacity style={[styles.container,{width:props.width}]}>
+      <View style={[styles.imgContainer,{width:props.width}]}>
+        <Image source={props.image} style={[styles.img,{width:props.width}]} resizeMode={'stretch'} />
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.prodName}>{props.prodName}</Text>
@@ -23,16 +23,15 @@ export default Custom_HomepageProd;
 
 const styles = StyleSheet.create({
   container: {
-    width: scale(165),
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginHorizontal:scale(8),
     height: scale(260.16),
   },
   imgContainer: {
-    width: scale(165),
     height: scale(200),
   },
   img: {
-    position: 'absolute',
-    width: scale(165),
     height: scale(200),
   },
   textContainer: {

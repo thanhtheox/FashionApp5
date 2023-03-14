@@ -6,6 +6,7 @@ import Color from '../../constants/color'
 import fontStyles from '../../constants/fontStyle'
 import scale from '../../constants/responsive'
 import FONT_FAMILY from '../../constants/fonts'
+import color from '../../constants/color'
 
 const url_Twitter = "https://twitter.com/i/flow/login";
 const url_Instagram = "https://www.instagram.com/?hl=en";
@@ -75,7 +76,7 @@ export default Custom_Footer
 
 const styles = StyleSheet.create({
     container:{
-        backgroundColor: Color.White,
+        backgroundColor: color.White,
         alignItems: 'center',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -96,12 +97,11 @@ const styles = StyleSheet.create({
         marginTop: scale(19),
     },
     bodyText:{
-        fontWeight: '400',
         fontSize: scale(16),
         lineHeight: scale(29),
         textAlign: 'center',
-        fontFamily: FONT_FAMILY.JoseFinSansRegular,
-        color: Color.MineShaft,
+        fontFamily: FONT_FAMILY.Regular,
+        color: color.Body,
     },
     lineBottom:{
         alignSelf: 'center',
@@ -114,41 +114,41 @@ const styles = StyleSheet.create({
         marginTop: scale(32),
     },
     aboutText:{
-        fontWeight: '400',
-        fontSize: 16,
-        lineHeight: 24,
+        fontFamily: FONT_FAMILY.Regular,
+        fontSize: scale(16),
+        lineHeight: scale(24),
         textAlign: 'center',
-        color: Color.Black,
+        color: color.TitleActive,
     },
     contactText:{
-        fontWeight: '400',
-        fontSize: 16,
-        lineHeight: 24,
+        fontFamily: FONT_FAMILY.Regular,
+        fontSize: scale(16),
+        lineHeight: scale(24),
         textAlign: 'center',
-        color: Color.Black,
+        color: color.TitleActive,
     },
     blogText:{
-        fontWeight: '400',
-        fontSize: 16,
-        lineHeight: 24,
+        fontFamily: FONT_FAMILY.Regular,
+        fontSize: scale(16),
+        lineHeight: scale(24),
         textAlign: 'center',
-        color: Color.Black,
+        color: color.TitleActive,
     },
     labelContainer:{
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: Color.Silver,
+        backgroundColor: '#C4C4C4',
         width: '100%',
         opacity: 0.17,
         marginTop: scale(23),
     },
     labelText:{
         paddingVertical: scale(12),
-        fontWeight: '400',
-        fontSize: 13,
-        lineHeight: 19,
+        fontFamily: FONT_FAMILY.Regular,
+        fontSize: scale(13),
+        lineHeight: scale(19),
         textAlign: 'center',
-        color: Color.Emperor,
+        color: color.Label,
         opacity: 1,
     },
 })
