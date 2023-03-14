@@ -12,10 +12,10 @@ const Custom_ItemScrollView = () => {
       );
     const [tab, setTab] = useState(itemList[0]);
   return (
-    <ScrollView style={styles.scrollViewContainer} scrollEnabled={true}>
+    <ScrollView contentContainerStyle={{ horizontal: true}} scrollEnabled={true}>
       <View style={styles.categoryView}>
         {itemList.map(item => (
-          <View style={styles.categoryItem} key={item}>
+          <View key={item}>
             <Custom_UnderlineButton
               isChoosing={tab === item}
               onPress={() => setTab(item)}
@@ -33,23 +33,15 @@ const Custom_ItemScrollView = () => {
 export default Custom_ItemScrollView
 
 const styles = StyleSheet.create({
-    scrollViewContainer: {
-        horizontal: true,
-      },
       categoryView: {
         flexDirection: 'row',
-        //justifyContent: 'space-between',
+        justifyContent:'space-evenly',
         alignItems: 'center',
-        alignSelf: 'center',
-      },
-      categoryItem: {
-        //padding: scale(10),
-        fontSize: scale(17),
       },
       categoryText: isChoosing => ({
         color: isChoosing ? color.TitleActive : color.PlaceHolder,
         fontSize: scale(17),
-        fontFamily: FONT_FAMILY.JoseFinSansRegular,
+        fontFamily: FONT_FAMILY.Regular,
       }),
     
 })

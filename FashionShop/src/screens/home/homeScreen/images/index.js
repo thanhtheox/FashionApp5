@@ -1,0 +1,11 @@
+export {default as Boss} from './Boss.png';
+export {default as Burberry} from './Burberry.png';
+export {default as Catier} from './Catier.png';
+export {default as Gucci} from './Gucci.png';
+export {default as Prada} from './Prada.png';
+export {default as Tiffany} from './Tiffany.png';
+export {default as Sticker1} from './Sticker1.png';
+export {default as Sticker2} from './Sticker2.png';
+export {default as Sticker3} from './Sticker3.png';
+export {default as Sticker4} from './Sticker4.png';
+export {default as Sticker5} from './Sticker5.png';
