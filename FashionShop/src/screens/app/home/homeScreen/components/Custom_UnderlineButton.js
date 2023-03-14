@@ -1,8 +1,8 @@
 import { StyleSheet, Text, Pressable} from 'react-native'
 import React from 'react'
-import color from '../../../../constants/color';
-import scale from '../../../../constants/responsive';
-import FONT_FAMILY from '../../../../constants/fonts';
+import color from '../../../../../constants/color';
+import scale from '../../../../../constants/responsive';
+import FONT_FAMILY from '../../../../../constants/fonts';
 
 const Custom_UnderlineButton = (props) => {
   const {isChoosing, onPress, style, textStyle, children} = props;

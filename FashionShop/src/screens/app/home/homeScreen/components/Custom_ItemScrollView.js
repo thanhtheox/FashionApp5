@@ -1,9 +1,9 @@
 import { StyleSheet, Text,ScrollView, View } from 'react-native'
 import React, {useMemo, useState} from 'react'
-import scale from '../../../../constants/responsive'
-import color from '../../../../constants/color'
+import scale from '../../../../../constants/responsive'
+import color from '../../../../../constants/color'
 import Custom_UnderlineButton from './Custom_UnderlineButton'
-import FONT_FAMILY from '../../../../constants/fonts'
+import FONT_FAMILY from '../../../../../constants/fonts'
 
 const Custom_ItemScrollView = () => {
     const itemList = useMemo(
