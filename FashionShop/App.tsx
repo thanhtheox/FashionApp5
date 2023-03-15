@@ -15,10 +15,11 @@ import Custom_Tag2 from './src/components/tags/border';
 import BackToHome from './src/components/buttons/BackToHome';
 import HomeScreen from './src/screens/home/homeScreen';
 import OnboardingScreen from './src/screens/auth/onboarding';
+import MyInfoScreen from './src/screens/home/myInfoScreen';
 
 const App = (props: any) => {
   return (
-      <OnboardingScreen/>
+      <MyInfoScreen/>
   );
 };
 
