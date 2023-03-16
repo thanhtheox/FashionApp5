@@ -15,7 +15,7 @@ import Custom_Tag2 from './src/components/tags/border';
 import BackToHome from './src/components/buttons/BackToHome';
 import HomeScreen from './src/screens/app/home/homeScreen';
 import OnboardingScreen from './src/screens/auth/onboarding';
-import MyInfoScreen from './src/screens/home/myInfoScreen';
+import MyInfoScreen from './src/screens/app/userInfo/myInfoScreen';
 
 const App = (props: any) => {
   return (
