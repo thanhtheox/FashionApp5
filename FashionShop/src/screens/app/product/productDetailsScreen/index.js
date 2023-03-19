@@ -1,6 +1,5 @@
 import { SafeAreaView, ScrollView, StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions,Modal } from 'react-native'
 import React,{useState} from 'react'
-import ImageViewer from 'react-native-image-zoom-viewer-fixed'
 import Custom_Header from '../../../../components/header/Custom_Header'
 import Custom_Footer from '../../../../components/footer/Custom_Footer'
 import color from '../../../../constants/color'
