@@ -14,6 +14,7 @@ import CheckOut from './src/components/buttons/CheckOut';
 import Custom_Tag2 from './src/components/tags/border';
 import BackToHome from './src/components/buttons/BackToHome';
 import HomeScreen from './src/screens/app/home/homeScreen';
+import ProductDetailsScreen from './src/screens/app/product/productDetailsScreen';
 import OnboardingScreen from './src/screens/auth/onboarding';
 import MyInfoScreen from './src/screens/home/myInfoScreen';
 import SignInScreen from './src/screens/auth/signInScreen';

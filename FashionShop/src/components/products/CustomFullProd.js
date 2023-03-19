@@ -3,8 +3,7 @@ import React, {useState} from 'react';
 import scale from '../../constants/responsive';
 import {IMG_ModelOne} from '../../assets/images/index';
 import FONT_FAMILY from '../../constants/fonts';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import Color from '../../constants/color';
+import color from '../../constants/color';
 import fontStyles from '../../constants/fontStyle';
 import {IC_Heart} from '../../assets/icons';
 
@@ -13,13 +12,13 @@ const Custom_FullProd = props => {
   return (
     <View style={styles.container}>
       <View style={styles.imgContainer}>
-        <Image source={props.image} style={styles.img} />
+        <Image source={props.image} style={styles.img} resizeMode='contain'/>
         <TouchableOpacity
           onPress={() => setLike(Liked === true ? false : true)}>
           <IC_Heart
-            style={{top: scale(427), left: scale(309)}}
-            stroke={Color.Secondary}
-            fill={Liked ? Color.Secondary : 'none'}
+            style={{right:scale(5),bottom:scale(3),  position:'absolute'}}
+            stroke={color.Secondary}
+            fill={Liked ? color.Secondary : 'none'}
           />
         </TouchableOpacity>
       </View>
@@ -30,7 +29,7 @@ const Custom_FullProd = props => {
         <Text style={[fontStyles.bodySmallFont, styles.prodDescription]}>
           {props.prodDescription}
         </Text>
-        <Text style={styles.prodPrice}>${props.prodPrice}</Text>
+        <Text style={styles.prodPrice}>{props.prodPrice}</Text>
       </View>
     </View>
   );
@@ -41,26 +40,34 @@ export default Custom_FullProd;
 const styles = StyleSheet.create({
   container: {
     width: scale(343),
-    height: scale(511.118),
+    height: scale(550),
+    flexDirection:'column',
   },
   imgContainer: {
     width: scale(343),
     height: scale(457.33),
   },
   img: {
-    position: 'absolute',
-    width: scale(343),
+    justifyContent:'center',
+    alignSelf:'center',
+    width:'100%',
     height: scale(457.33),
   },
   textContainer: {
     width: scale(160),
     height: scale(53.83),
   },
+  prodName: {
+    width: scale(100),
+    height: scale(35),
+    marginTop: scale(20),
+    color: color.Label,
+    letterSpacing: -0.5,
+  },
   prodDescription: {
     width: scale(158),
     height: scale(20),
-    marginTop: scale(-11),
-    color: Color.Label,
+    color: color.Label,
     letterSpacing: -0.5,
   },
   prodPrice: {
@@ -69,6 +76,6 @@ const styles = StyleSheet.create({
     left: scale(305),
     fontFamily: FONT_FAMILY.JoseFinSansRegular,
     fontSize: scale(15),
-    color: Color.Secondary,
+    color: color.Secondary,
   },
 });

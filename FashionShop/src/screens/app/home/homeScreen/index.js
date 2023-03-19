@@ -148,7 +148,6 @@ const HomeScreen = (props) => {
         <ScrollView >
           {/* Banner */}
           <View style={styles.bannerContainer}>
-            {/* <Image source={IMG_Collection} style={{alignItems: 'center', justifyContent: 'center', width: '100%'}} resizeMode='stretch'/> */}
             <SwiperFlatList
               showPagination
               paginationStyle={styles.wrapDot}
@@ -335,7 +334,6 @@ const styles = StyleSheet.create({
       paddingHorizontal: scale(16),
     },
     arrivalText: {
-      fontWeight: '400',
       fontSize: scale(18),
       lineHeight: scale(40),
       textAlign: 'center',
@@ -437,7 +435,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(16),
   },
   productText: {
-    fontWeight: '400',
     fontSize: scale(18),
     lineHeight: scale(40),
     textAlign: 'center',
