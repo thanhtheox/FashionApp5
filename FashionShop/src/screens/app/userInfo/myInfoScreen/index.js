@@ -92,7 +92,6 @@ const styles = StyleSheet.create({
       },
     viewIcon: 
     {
-        //backgroundColor: color.Background,
         marginLeft: scale(26),
         width: scale(40),
         height: scale(30),
