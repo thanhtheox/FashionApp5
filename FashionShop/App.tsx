@@ -16,7 +16,7 @@ import BackToHome from './src/components/buttons/BackToHome';
 import HomeScreen from './src/screens/app/home/homeScreen';
 import ProductDetailsScreen from './src/screens/app/product/productDetailsScreen';
 import OnboardingScreen from './src/screens/auth/onboarding';
-import MyInfoScreen from './src/screens/home/myInfoScreen';
+import MyInfoScreen from './src/screens/app/userInfo/myInfoScreen';
 import SignInScreen from './src/screens/auth/signInScreen';
 
 const App = (props: any) => {
