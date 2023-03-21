@@ -18,10 +18,11 @@ import ProductDetailsScreen from './src/screens/app/product/productDetailsScreen
 import OnboardingScreen from './src/screens/auth/onboarding';
 import MyInfoScreen from './src/screens/app/userInfo/myInfoScreen';
 import SignInScreen from './src/screens/auth/signInScreen';
+import Menu from './src/screens/app/menu';
 
 const App = (props: any) => {
   return (
-      <MyInfoScreen/>
+      <HomeScreen/>
   );
 };
 
