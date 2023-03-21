@@ -46,7 +46,7 @@ import {
                     <View style={styles.otpBox}>
                         <TextInput
                             style={styles.otpText}
-                            keyboardType="numberic"
+                            keyboardType="ascii-capable-number-pad"
                             maxLength={1}
                             ref={firstInput}
                             onChangeText={text => {
@@ -60,7 +60,7 @@ import {
                     <View style={styles.otpBox}>
                         <TextInput
                             style={styles.otpText}
-                            keyboardType="numberic"
+                            keyboardType="ascii-capable-number-pad"
                             maxLength={1}
                             ref={secondInput}
                             onChangeText={text => {
@@ -72,7 +72,7 @@ import {
                     <View style={styles.otpBox}>
                         <TextInput
                             style={styles.otpText}
-                            keyboardType="numberic"
+                            keyboardType="ascii-capable-number-pad"
                             maxLength={1}
                             ref={thirdInput}
                             onChangeText={text => {
@@ -84,7 +84,7 @@ import {
                     <View style={styles.otpBox}>
                         <TextInput
                             style={styles.otpText}
-                            keyboardType="numberic"
+                            keyboardType="ascii-capable-number-pad"
                             maxLength={1}
                             ref={fourthInput}
                             onChangeText={text => {
@@ -96,7 +96,7 @@ import {
                     <View style={styles.otpBox}>
                         <TextInput
                             style={styles.otpText}
-                            keyboardType="numberic"
+                            keyboardType="ascii-capable-number-pad"
                             maxLength={1}
                             ref={fifthInput}
                             onChangeText={text => {
@@ -108,7 +108,7 @@ import {
                     <View style={styles.otpBox}>
                         <TextInput
                             style={styles.otpText}
-                            keyboardType="numberic"
+                            keyboardType="ascii-capable-number-pad"
                             maxLength={1}
                             ref={sixthInput}
                             onChangeText={text => {
