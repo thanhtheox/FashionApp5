@@ -4,6 +4,9 @@ import {IC_Twitter, IC_Instagram, IC_Youtube} from './icons'
 import {LineTop, LineBottom} from './images'
 import Color from '../../constants/color'
 import fontStyles from '../../constants/fontStyle'
+import scale from '../../constants/responsive'
+import FONT_FAMILY from '../../constants/fonts'
+import color from '../../constants/color'
 
 const url_Twitter = "https://twitter.com/i/flow/login";
 const url_Instagram = "https://www.instagram.com/?hl=en";
@@ -25,15 +28,15 @@ const Custom_Footer = () => {
         {/* Icon */}
         <View style={styles.iconContainer}>
             {/* Twitter */}
-            <TouchableOpacity style={styles.twitterIcon} onPress={() => {openUrl(url_Twitter)}}>
+            <TouchableOpacity onPress={() => {openUrl(url_Twitter)}}>
                 <IC_Twitter/>
             </TouchableOpacity>
             {/* Instagram */}
-            <TouchableOpacity style={styles.instagramIcon} onPress={() => {openUrl(url_Instagram)}}>
+            <TouchableOpacity style={{marginLeft: scale(49)}} onPress={() => {openUrl(url_Instagram)}}>
                 <IC_Instagram/>
             </TouchableOpacity>
             {/* Youtube */}
-            <TouchableOpacity style={styles.youtubeIcon} onPress={() => {openUrl(url_Youtube)}}>
+            <TouchableOpacity style={{marginLeft: scale(49)}} onPress={() => {openUrl(url_Youtube)}}>
                 <IC_Youtube/>
             </TouchableOpacity>
         </View>
@@ -46,18 +49,20 @@ const Custom_Footer = () => {
         {/* Line Bottom */}
         <Image source={LineBottom} style={styles.lineBottom}/>
         <>
+        <View style={styles.buttonContainer}>
             {/* About Button */}
-            <TouchableOpacity style={styles.aboutButton}>
+            <TouchableOpacity >
                 <Text style={styles.aboutText}>About</Text>
             </TouchableOpacity>
             {/* Contact Button */}
-            <TouchableOpacity style={styles.contactButton}>
+            <TouchableOpacity style={{marginLeft: scale(52)}}>
                 <Text style={styles.contactText}>Contact</Text>
             </TouchableOpacity>
             {/* Blog Button */}
-            <TouchableOpacity style={styles.blogButton}>
+            <TouchableOpacity style={{marginLeft: scale(52)}}>
                 <Text style={styles.blogText}>Blog</Text>
             </TouchableOpacity>
+        </View>
         </>
         {/* Label */}
         <View style={styles.labelContainer}>
@@ -71,110 +76,79 @@ export default Custom_Footer
 
 const styles = StyleSheet.create({
     container:{
-        position: 'absolute',
-        width: 375,
-        height: 340,
-        backgroundColor: Color.White,
+        backgroundColor: color.White,
+        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        paddingTop: scale(20),
     },
     iconContainer:{
-        position: 'absolute',
-        left: 106.5,
-        top: 23.78,
-        width: 162,
-        height: 24,
-    },
-    twitterIcon:{
-        position: 'absolute',
-        left: 1.6,
-        top: 3.55,
-    },
-    instagramIcon:{
-        position: 'absolute',
-        left: 71.4,
-        top: 2.4,
-    },
-    youtubeIcon:{
-        position: 'absolute',
-        left: 139.6,
-        top: 3.2,
+        flexDirection: 'row',
+        justifyContent:'space-between',
+        alignItems: 'center',
     },
     lineTop:{
-        position: 'absolute',
-        left: 125.02,
-        top: 71.78,
+        alignSelf: 'center',
+        marginTop: scale(24),
     },
     bodyTextContainer:{
-        position: 'absolute',
-        width: 184,
-        height: 116,
-        left: 95,
-        top: 99.97,
+        alignItems:'center',
+        justifyContent:'center',
+        marginTop: scale(19),
     },
     bodyText:{
-        fontWeight: '400',
-        fontSize: 16,
-        lineHeight: 29,
+        fontSize: scale(16),
+        lineHeight: scale(29),
         textAlign: 'center',
-        color: Color.MineShaft,
+        fontFamily: FONT_FAMILY.Regular,
+        color: color.Body,
     },
     lineBottom:{
-        position: 'absolute',
-        left: 125.02,
-        top: 206.53,
+        alignSelf: 'center',
+        marginTop: scale(19),
     },
-    aboutButton:{
-        position: 'absolute',
-        left: 58,
-        top: 247.78,
+    buttonContainer:{
+        alignItems:'center',
+        justifyContent:'space-between',
+        flexDirection:'row',
+        marginTop: scale(32),
     },
     aboutText:{
-        fontWeight: '400',
-        fontSize: 16,
-        lineHeight: 24,
+        fontFamily: FONT_FAMILY.Regular,
+        fontSize: scale(16),
+        lineHeight: scale(24),
         textAlign: 'center',
-        color: Color.Black,
-    },
-    contactButton:{
-        position: 'absolute',
-        left: 157,
-        top: 247.78,
+        color: color.TitleActive,
     },
     contactText:{
-        fontWeight: '400',
-        fontSize: 16,
-        lineHeight: 24,
+        fontFamily: FONT_FAMILY.Regular,
+        fontSize: scale(16),
+        lineHeight: scale(24),
         textAlign: 'center',
-        color: Color.Black,
-    },
-    blogButton:{
-        position: 'absolute',
-        left: 270,
-        top: 247.78,
+        color: color.TitleActive,
     },
     blogText:{
-        fontWeight: '400',
-        fontSize: 16,
-        lineHeight: 24,
+        fontFamily: FONT_FAMILY.Regular,
+        fontSize: scale(16),
+        lineHeight: scale(24),
         textAlign: 'center',
-        color: Color.Black,
+        color: color.TitleActive,
     },
     labelContainer:{
-        position:'absolute',
-        width: 375,
-        height: 45.25,
-        top: 294.75,
-        backgroundColor: Color.Silver,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#C4C4C4',
+        width: '100%',
         opacity: 0.17,
+        marginTop: scale(23),
     },
     labelText:{
-        position: 'absolute',
-        left: 68.5,
-        top: 11.07,
-        fontWeight: '400',
-        fontSize: 13,
-        lineHeight: 19,
+        paddingVertical: scale(12),
+        fontFamily: FONT_FAMILY.Regular,
+        fontSize: scale(13),
+        lineHeight: scale(19),
         textAlign: 'center',
-        color: Color.Emperor,
+        color: color.Label,
         opacity: 1,
     },
 })

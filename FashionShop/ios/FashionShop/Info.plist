@@ -54,6 +54,8 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>TenorSans-Regular.ttf</string>
+		<string>JosefinSans-Italic.ttf</string>
+		<string>JosefinSans-Regular.ttf</string>
 	</array>
 </dict>
 </plist>

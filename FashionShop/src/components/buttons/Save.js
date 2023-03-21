@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: scale(24),
     textAlign: 'center',
-    color: Color.Background,
-    fontFamily: FONT_FAMILY.TenorSans,
+    color: Color.White,
+    fontFamily: FONT_FAMILY.JoseFinSansRegular,
   },
 });

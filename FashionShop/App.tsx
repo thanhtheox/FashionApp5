@@ -13,14 +13,15 @@ import Submit from './src/components/buttons/Submit';
 import CheckOut from './src/components/buttons/CheckOut';
 import Custom_Tag2 from './src/components/tags/border';
 import BackToHome from './src/components/buttons/BackToHome';
-import HomeScreen from './src/screens/home/homeScreen';
-
-import ContactInfor from './src/screens/home/myInfoScreen/component/contactInfor';
+import HomeScreen from './src/screens/app/home/homeScreen';
+import ProductDetailsScreen from './src/screens/app/product/productDetailsScreen';
+import OnboardingScreen from './src/screens/auth/onboarding';
+import MyInfoScreen from './src/screens/app/userInfo/myInfoScreen';
 import SignInScreen from './src/screens/auth/signInScreen';
-import SignUpScreen from './src/screens/auth/signUpScreen';
+
 const App = (props: any) => {
   return (
-    <SignUpScreen  />
+      <MyInfoScreen/>
   );
 };
 

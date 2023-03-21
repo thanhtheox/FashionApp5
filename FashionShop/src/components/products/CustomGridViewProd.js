@@ -30,7 +30,7 @@ const Custom_GridViewProd = props => {
         <Text style={[fontStyles.bodySmallFont, styles.prodDescription]}>
           {props.prodDescription}
         </Text>
-        <Text style={styles.prodPrice}>${props.prodPrice}</Text>
+        <Text style={styles.prodPrice}>{props.prodPrice}</Text>
       </View>
     </View>
   );
@@ -40,7 +40,9 @@ export default Custom_GridViewProd;
 
 const styles = StyleSheet.create({
   container: {
-    width: scale(165),
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginHorizontal:scale(6),
     height: scale(285),
   },
   imgContainer: {
@@ -64,12 +66,11 @@ const styles = StyleSheet.create({
   prodDescription: {
     width: scale(158),
     height: scale(20),
-    marginTop: scale(-4),
     color: Color.Label,
     letterSpacing: -0.5,
   },
   prodPrice: {
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.JoseFinSansRegular,
     fontSize: scale(15),
     color: Color.Secondary,
   },

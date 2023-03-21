@@ -1,7 +1,7 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import FONT_FAMILY from '../../constants/fonts';
-import Color from '../../constants/color';
+import color from '../../constants/color';
 import scale from '../../constants/responsive';
 import {IC_Close} from '../../assets/icons';
 import {useState} from 'react';
@@ -31,13 +31,13 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     padding: scale(6),
     backgroundColor: 'transparent',
-    borderColor: Color.Border,
+    borderColor: color.Border,
     flexDirection: 'row',
   },
   text: {
-    fontFamily: FONT_FAMILY.TenorSans,
+    fontFamily: FONT_FAMILY.Regular,
     fontSize: scale(14),
-    color: Color.Body,
+    color: color.Body,
     alignSelf: 'center',
   },
   close: {
