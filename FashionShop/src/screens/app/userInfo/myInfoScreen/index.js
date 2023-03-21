@@ -8,7 +8,7 @@ import { IC_BackwardArrow, IC_Address, IC_Phone, IC_Email, IC_Password } from '.
 import {Avatar, Title, Caption} from 'react-native-paper';
 import { useState } from 'react';
 import SaveButton from '../../../../components/buttons/Save';
-
+import { ScrollView } from 'react-native';
 const MyInfoScreen = props => {
     const [mail, setMail] = useState('');
     const [pass, setPass] = useState('');
@@ -16,19 +16,18 @@ const MyInfoScreen = props => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     return (
+        <ScrollView>
         <SafeAreaView style = {styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity style={styles.viewIcon}>
-                    <IC_BackwardArrow stroke={color.White}/>
+                    <IC_BackwardArrow/>
                 </TouchableOpacity>
-                <View style = {styles.avaBorder}>
-                    <View style={{flexDirection: 'row', marginTop: scale(80)}}>
-                        <Avatar.Image
-                            source={IMG_Logo}
-                            size={150}
-                            style={styles.ava}
-                            />
-                    </View>
+               
+                <View style={styles.avatar}>
+                    <Avatar.Image
+                        source={IMG_Logo}
+                        size={150}
+                    />
                 </View>
             </View>
             <View style={styles.body}>
@@ -75,6 +74,7 @@ const MyInfoScreen = props => {
                 </View>
             </View>
         </SafeAreaView>
+        </ScrollView>
     );
 };
 
@@ -98,8 +98,10 @@ const styles = StyleSheet.create({
         marginTop: scale(22),
         alignItems: 'center',
     },
-    avaBorder:
+    avatar:
     {
+        top: scale(50),
+        //marginVertical: scale(70),
         alignSelf: 'center',
     },
     body: {
