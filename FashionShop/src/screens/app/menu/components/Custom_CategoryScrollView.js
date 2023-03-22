@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
       categoryView: {
         flexDirection: 'row',
         justifyContent:'space-between',
-        backgroundColor:color.Background,
+        height:scale(60),
+        marginTop:scale(15),
       },
       categoryText: isChoosing => ({
         color: isChoosing ? color.TitleActive : color.PlaceHolder,
