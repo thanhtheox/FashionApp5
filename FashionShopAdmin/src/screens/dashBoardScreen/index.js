@@ -56,7 +56,7 @@ const DashBoardScreen = () => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.viewListBody}>
       <View style={styles.viewTextList}>
-        <Text style={styles.textListBody}>Color&Size</Text>
+        <Text style={styles.textListBody}>Color & Size</Text>
       </View>
       <View style={styles.viewIcon}>
           <IC_Forward></IC_Forward>
