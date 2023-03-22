@@ -1,9 +1,9 @@
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
-import { LOGO } from '../logo'
 import Color from '../../constants/color'
 import {IC_Menu, IC_Search, IC_ShoppingBag} from '../../assets/icons'
 import scale from '../../constants/responsive'
+import { LOGO } from '../logo'
 
 const Custom_Header = () => {
   return (
@@ -13,9 +13,9 @@ const Custom_Header = () => {
             <IC_Menu/>
         </TouchableOpacity>
         {/* Logo */}
-        <TouchableOpacity style={styles.logoContainer}>
+        <View style={styles.logoContainer}>
             <Image source={LOGO}/>
-        </TouchableOpacity>
+        </View>
         <View style={{flexDirection: 'row'}}>
             {/* Search */}
             <TouchableOpacity style={styles.searchContainer}>
@@ -39,13 +39,13 @@ const styles = StyleSheet.create({
         paddingVertical: scale(12),
         paddingHorizontal: scale(16),
         alignItems: 'center',
-        backgroundColor: Color.AthensGray,
+        //backgroundColor: Color.AthensGray,
     },
     menuContainer:{
 
     },
     logoContainer:{
-        opacity: 0.8,
+        paddingLeft: scale(50),
     },
     searchContainer:{
     },
