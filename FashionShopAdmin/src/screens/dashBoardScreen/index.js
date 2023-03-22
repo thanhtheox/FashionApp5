@@ -46,7 +46,7 @@ const DashBoardScreen = () => {
   )
   const body = (
     <View >
-      <TouchableOpacity style={styles.viewList}>
+      <TouchableOpacity style={styles.viewListBody}>
       <View style={styles.viewTextList}>
         <Text style={styles.textListBody}>Item</Text>
       </View>
@@ -54,7 +54,7 @@ const DashBoardScreen = () => {
           <IC_Forward></IC_Forward>
       </View>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.viewList}>
+      <TouchableOpacity style={styles.viewListBody}>
       <View style={styles.viewTextList}>
         <Text style={styles.textListBody}>Color & Size</Text>
       </View>
@@ -135,14 +135,13 @@ const styles = StyleSheet.create({
         marginLeft: scale(30),
       },
       viewTitleText: {
-        width: scale(198),
         height: scale(50),
       },
       textTile: {
         color: color.White,
         fontSize: 36,
         fontFamily: FONT_FAMILY.JoseFinSans,
-        fontWeight: 700,
+        fontWeight: '700',
       },
       viewTextLabel:{
         width: scale(198),
@@ -154,7 +153,7 @@ const styles = StyleSheet.create({
         color: color.White,
         fontSize: 24,
         fontFamily: FONT_FAMILY.JoseFinSans,
-        fontWeight: 700,
+        fontWeight: '700',
       },
       body: {
         flex: 0.55,
@@ -184,7 +183,7 @@ const styles = StyleSheet.create({
       textList:{
         fontFamily: FONT_FAMILY.Regular,
         fontSize: 24,
-        fontWeight: 400,
+        fontWeight: '400',
         color: color.TitleActive,
       },
       viewIcon:{
@@ -197,10 +196,18 @@ const styles = StyleSheet.create({
       list: {
         overflow: 'hidden'
       },
+      viewListBody:{
+        height: scale(68),
+        width:'100%',
+        borderBottomWidth: 1,
+        flexDirection: 'row',
+        backgroundColor: color.GraySolid,
+        opacity: 30,
+      },
       textListBody:{
         fontFamily: FONT_FAMILY.Regular,
         fontSize: 24,
-        fontWeight: 400,
+        fontWeight: '400',
         color: color.TitleActive,
         marginLeft: scale(30),
       },
