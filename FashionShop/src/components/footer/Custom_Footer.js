@@ -76,11 +76,12 @@ export default Custom_Footer
 
 const styles = StyleSheet.create({
     container:{
-        backgroundColor: color.White,
+        //backgroundColor: color.White,
         alignItems: 'center',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        paddingTop: scale(20),
+        //paddingTop: scale(20),
+        //paddingTop: scale(150),
     },
     iconContainer:{
         flexDirection: 'row',
