@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View ,Platform, UIManager,LayoutAnimation, ScrollView} from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import color from '../../../constants/color'
 import { IC_Call, IC_Close, IC_Down, IC_Forward, IC_ForwardArrow, IC_Location, IC_Up } from '../../../assets/icons'
 import FONT_FAMILY from '../../../constants/fonts'
@@ -125,42 +125,47 @@ const parents = [
 ];
 const Accordion = () => {
   const [isOpen, setIsOpen] = useState('0');
+  const [isFocus, setIsFocus] = useState(false)
 
-  const toggleOpen = () => {
-    setIsOpen(value => !value);
+  useEffect(() => {
+  }, [isOpen])
+
+  const toggleOpen = (value) => {
+    setIsOpen(value);
     LayoutAnimation.configureNext({
-    duration: 1000,
+    duration: 500,
     create: {type: 'linear', property: 'opacity'}, 
     update: {type: 'spring', springDamping: 0.4}, 
     delete: {type: 'linear', property: 'opacity'} 
   });
   }
+  
 
   return (
     <>
-      {parents.map(item => 
-            <View key={item.key} style={{marginTop:scale(10)}}>
-              <TouchableOpacity onPress={toggleOpen} style={styles.viewList} activeOpacity={0.6}>
-                <View style={styles.viewTextList}>
-                  <Text style={styles.textList}>{item.tittle}</Text>
-                </View>
-                <View style={styles.viewIcon}>
-                  {!isOpen ?<IC_Down/>:<IC_Up/>}
-                </View>
-              </TouchableOpacity>
-              <View  style={[styles.list,!isOpen ? styles.hidden : undefined]}>
-                {item.children.map(item =>
-                  <View key={item.childKey}>
-                    <TouchableOpacity style={styles.viewListBody}>
-                      <View style={styles.viewTextList}>
-                        <Text style={styles.textListBody}>{item.childTittle}</Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </View>
+      {parents.map((item) => 
+        <View key={item.key} style={{marginTop:scale(10)}}>
+          <TouchableOpacity onPress={() => toggleOpen(item.key)} style={styles.viewList} activeOpacity={0.6}>
+            <View style={styles.viewTextList}>
+              <Text style={styles.textList}>{item.tittle}</Text>
             </View>
-          )}
+            <View style={styles.viewIcon}>
+              {isOpen!=item.key ?<IC_Down/>:<IC_Up/>}
+            </View>
+          </TouchableOpacity>
+          <View  style={[styles.list,isOpen!=item.key ? styles.hidden : undefined]}>
+            {item.children.map(item =>
+              <View key={item.childKey}>
+                <TouchableOpacity style={styles.viewListBody}>
+                  <View style={styles.viewTextList}>
+                    <Text style={styles.textListBody}>{item.childTittle}</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+        </View>
+      )}
     </>
   );
 };
