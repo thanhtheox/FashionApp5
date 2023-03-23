@@ -12,20 +12,17 @@ const Item = (props) => {
   return (
     <SafeAreaView style={styles.viewItem}>
                 <View style={styles.viewNumber}>
-                    <Text style={styles.number}>{props.number}</Text>
+                    <Text style={styles.number} >{props.number}</Text>
                 </View>
                 <View style={styles.viewImage}>
                     <Image style={styles.image} source={props.source}></Image>
                 </View>
                 <View style={styles.viewDescription}>
-                    <Text style={styles.name}>{props.name}</Text>
-                    <Text style={styles.description}>{props.description}</Text>
-                    <Text style={styles.price}>{props.price}$</Text>
+                    <Text style={styles.name} numberOfLines={1}>{props.name}</Text>
+                    <Text style={styles.description} numberOfLines={1}>{props.description}</Text>
+                    <Text style={styles.price} numberOfLines={1}>{props.price}$</Text>
                 </View>
                 <View style={styles.viewFunction}>
-                    <TouchableOpacity style={styles.viewIcon}>
-                    <IC_See></IC_See>
-                    </TouchableOpacity>
                     <TouchableOpacity style={styles.viewIcon}>
                     <IC_Delete></IC_Delete>
                     </TouchableOpacity>
@@ -42,7 +39,6 @@ export default Item;
 
 const styles = StyleSheet.create({
     viewItem:{
-        // borderWidth: 1,
         width: '100%',
         height: scale(150),
         flexDirection: 'row',
@@ -98,7 +94,7 @@ const styles = StyleSheet.create({
         width: '25%',
         flexDirection: 'row',
         alignSelf: 'center',
-        justifyContent: 'center'
+        justifyContent: 'space-around'
       },
       viewIcon:{
         width: scale(30),
