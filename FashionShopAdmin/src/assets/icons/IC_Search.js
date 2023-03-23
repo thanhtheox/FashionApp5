@@ -13,6 +13,7 @@ const SvgComponent = (props) => (
     <Path
       d="M11 20a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM22 22l-3.218-3.218"
       stroke="#14142B"
+    {...props}
     />
   </Svg>
 )
