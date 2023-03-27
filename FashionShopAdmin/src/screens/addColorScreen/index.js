@@ -68,7 +68,7 @@ const AddColorScreen = (props) => {
 
 
             <View style={styles.button}>
-                <SaveButton text={'Add size'}></SaveButton>
+                <SaveButton text={'Add color'}></SaveButton>
             </View>
         </View>
     </SafeAreaView>

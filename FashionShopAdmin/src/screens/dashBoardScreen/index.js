@@ -67,7 +67,6 @@ const DashBoardScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Text>hello</Text> */}
       <View style={styles.header}>
         <View style={styles.viewText}>
           <View style={styles.viewTitleText}>
