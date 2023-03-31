@@ -3,7 +3,6 @@ import React from 'react'
 import {IC_Twitter, IC_Instagram, IC_Youtube} from '../../../../components/footer/icons'
 import {LineTop} from '../../../../components/footer/images'
 import scale from '../../../../constants/responsive'
-import FONT_FAMILY from '../../../../constants/fonts'
 import color from '../../../../constants/color'
 
 const url_Twitter = "https://twitter.com/i/flow/login";
@@ -13,10 +12,10 @@ const url_Youtube = "https://www.youtube.com/";
 const Custom_MenuFooter = () => {
 
     const openUrl = async (url) => {
-        const isSupported = await Linking.canOpenURL(url);
-        if(isSupported) {
+        try{
             await Linking.openURL(url);
-        } else {
+        }
+        catch {
             Alert.alert('Do not know how to open this url: ${url}');
         }
     }
