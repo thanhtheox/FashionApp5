@@ -12,10 +12,12 @@ import SwiperFlatList from 'react-native-swiper-flatlist'
 import FONT_FAMILY from '../../../../constants/fonts'
 import fontStyles from '../../../../constants/fontStyle'
 import Custom_GridViewProd from '../../../../components/products/CustomGridViewProd'
+import ZoomImageView from './components/ZoomImageView'
 
 
 
 const ProductDetailsScreen = (props) => {
+  const [visible,setVisible] = useState(true);
   const [colorChoose, setChooseColor] = useState('1');
   const [sizeChoose, setChooseSize] = useState('1');
   const sizes = [
@@ -101,6 +103,7 @@ const ProductDetailsScreen = (props) => {
   ];
 
   return (
+    visible ? (
     <SafeAreaView style={styles.container}>
         {/* Header */}
         <Custom_Header/>
@@ -121,11 +124,10 @@ const ProductDetailsScreen = (props) => {
                 <View style={styles.imgContainer}>
                   <Image source={item.image} style={styles.img} resizeMode='contain'/>
                   <TouchableOpacity
-                    // onPress={() => setVisible(true)}
+                    onPress={() => setVisible(false)}
                     >
                     <IC_Resize
                       style={{right:scale(5),bottom:scale(3),position:'absolute'}}
-                      stroke={color.Secondary}
                     />
                   </TouchableOpacity>
                 </View>
@@ -207,7 +209,10 @@ const ProductDetailsScreen = (props) => {
         {/* Footer */}
           <Custom_Footer style={{justifyContent: 'flex-end', marginTop:scale(37)}}/>
         </ScrollView>
-    </SafeAreaView>
+    </SafeAreaView>):(
+      <ZoomImageView onPressVisible={() => setVisible(true)}/>
+    )
+  
   )
 }
 
