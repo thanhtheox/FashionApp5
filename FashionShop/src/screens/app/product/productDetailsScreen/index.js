@@ -121,7 +121,8 @@ const ProductDetailsScreen = (props) => {
                 <View style={styles.imgContainer}>
                   <Image source={item.image} style={styles.img} resizeMode='contain'/>
                   <TouchableOpacity
-                    onPress={() => setVisible(true)}>
+                    // onPress={() => setVisible(true)}
+                    >
                     <IC_Resize
                       style={{right:scale(5),bottom:scale(3),position:'absolute'}}
                       stroke={color.Secondary}

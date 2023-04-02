@@ -15,10 +15,10 @@ const url_Youtube = "https://www.youtube.com/";
 const Custom_Footer = () => {
 
     const openUrl = async (url) => {
-        const isSupported = await Linking.canOpenURL(url);
-        if(isSupported) {
+        try{
             await Linking.openURL(url);
-        } else {
+        }
+        catch {
             Alert.alert('Do not know how to open this url: ${url}');
         }
     }
