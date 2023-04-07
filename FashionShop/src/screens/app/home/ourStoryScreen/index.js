@@ -8,12 +8,11 @@ import {
     Image,
     ScrollView
   } from 'react-native';
-  import React, {useState} from 'react';
+  import React from 'react';
   import Custom_Header from '../../../../components/header/Custom_Header';
   import Custom_Footer from '../../../../components/footer/Custom_Footer';
   import color from '../../../../constants/color';
   import FONT_FAMILY from '../../../../constants/fonts';
-  import { IC_BackwardArrow } from '../../../../assets/icons';
   import scale from '../../../../constants/responsive';
   import { LineBottom } from '../../../../components/footer/images';
   import { IMG_OurStory } from '../../../../assets/images';
@@ -49,7 +48,7 @@ import {
     },
     introTextBox:{
         alignSelf: 'center',
-        marginTop: scale(10),
+        marginTop: scale(20),
     },
     introText: {
         color: color.TitleActive,
@@ -60,9 +59,7 @@ import {
     },
     bodyTextBox: {
       alignSelf: 'center',
-      marginTop: scale(10),
-      width: scale(345),
-      height: scale(246),
+      marginTop: scale(20),
     },
     bodyText: {
       color: color.TitleActive,
@@ -71,8 +68,9 @@ import {
       fontFamily: FONT_FAMILY.Regular,
     },
     ImageBox: {
-      marginTop: scale(-100),
+      marginTop: scale(20),
       alignSelf: 'center',
+      paddingVertical:scale(20),
     },
     img: {
       width: scale(380),
