@@ -3,6 +3,7 @@ import React from 'react';
 import scale from '../../../../constants/responsive';
 import FONT_FAMILY from '../../../../constants/fonts';
 import color from '../../../../constants/color';
+import { horizontal } from 'react-native-swiper-flatlist/src/themes';
 
 const CollectionItems = props => {
   return (
@@ -11,10 +12,10 @@ const CollectionItems = props => {
         <Image source={props.image} style={styles.img} />
       </View>
       <View style={styles.textContainer}>
-        <View style={{flexDirection:'row'}}>
+        {/* <View style={{flexDirection:'row'}}> */}
             <Text style={styles.prodNumber}>0{props.prodNumber}</Text>
-            <Text style={styles.line}>━━━━◆━━━━</Text>
-        </View>
+            <View style={styles.line}/>
+        {/* </View> */}
         <Text style={styles.prodName}>
           {props.prodName}
         </Text>
@@ -55,19 +56,20 @@ const styles = StyleSheet.create({
     alignSelf:'center',
   },
   line: {
-    color: color.White,
-    fontFamily: FONT_FAMILY.Regular,
-    fontSize:scale(12),
-    lineHeight:scale(14),
+    borderColor: color.White,
+    borderWidth:1,
+    height:scale(0.5),
     alignSelf:'center',
-    textAlign:'center'
+    opacity:0.1,
+    flex: 1,
+    marginHorizontal: scale(10)
   },
   prodNumber: {
     color: color.OffWhite,
     fontFamily: FONT_FAMILY.Regular,
     letterSpacing:scale(2),
     fontSize:scale(16),
-    fontWeight:'700',
+    fontWeight:'600',
     lineHeight:scale(28),
     alignSelf:'center',
   },

@@ -11,7 +11,7 @@ import {IMG_Collection } from '../../../assets/images'
 
 
 const CollectionScreen = (props) => {
-    const likeProducts = [
+    const collections = [
     {
       img: IMG_Collection,
       key: '1',
@@ -41,7 +41,7 @@ const CollectionScreen = (props) => {
             <FlatList
               contentContainerStyle={{justifyContent: 'space-between', marginVertical:scale(20)}}
               horizontal={false}
-              data={likeProducts}
+              data={collections}
               keyExtractor={item => `${item.key}`}
               scrollEnabled={false}
               renderItem={({item}) => (
@@ -49,8 +49,6 @@ const CollectionScreen = (props) => {
                     image={item.img}
                     prodName={item.name}
                     prodNumber={item.key}
-                    // {...props}
-                    // categoryData={item}
                   />
               )}
             />      
