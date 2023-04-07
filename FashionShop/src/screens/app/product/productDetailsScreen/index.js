@@ -200,8 +200,6 @@ const ProductDetailsScreen = (props) => {
                   prodName={item.name}
                   prodDescription={item.description}
                   prodPrice={item.price}
-                  {...props}
-                  categoryData={item}
                 />
             )}
           />      
