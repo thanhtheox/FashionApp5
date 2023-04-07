@@ -1,27 +1,15 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
-import scale from '../../constants/responsive';
-import {IMG_ModelOne} from '../../assets/images/index';
-import FONT_FAMILY from '../../constants/fonts';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import Color from '../../constants/color';
-import fontStyles from '../../constants/fontStyle';
-import {IC_Heart} from '../../assets/icons';
+import scale from '../../../../constants/responsive';
+import FONT_FAMILY from '../../../../constants/fonts';
+import color from '../../../../constants/color';
+import fontStyles from '../../../../constants/fontStyle';
 
-const Custom_GridViewProd = props => {
-  const [Liked, setLike] = useState(false);
+const SuggestiveCollection = props => {
   return (
     <TouchableOpacity style={styles.container}>
       <View style={styles.imgContainer}>
         <Image source={props.image} style={styles.img} />
-        <TouchableOpacity
-          onPress={() => setLike(Liked === true ? false : true)}>
-          <IC_Heart
-            style={{top: scale(190), left: scale(135)}}
-            stroke={Color.Secondary}
-            fill={Liked ? Color.Secondary : 'none'}
-          />
-        </TouchableOpacity>
       </View>
       <View style={styles.textContainer}>
         <Text style={[fontStyles.bodySmallFont, styles.prodName]}>
@@ -36,7 +24,7 @@ const Custom_GridViewProd = props => {
   );
 };
 
-export default Custom_GridViewProd;
+export default SuggestiveCollection;
 
 const styles = StyleSheet.create({
   container: {
@@ -46,12 +34,12 @@ const styles = StyleSheet.create({
     height: scale(285),
   },
   imgContainer: {
-    width: scale(165),
+    width: scale(180),
     height: scale(220),
   },
   img: {
     position: 'absolute',
-    width: scale(165),
+    width: scale(180),
     height: scale(220),
   },
   textContainer: {
@@ -61,17 +49,17 @@ const styles = StyleSheet.create({
   },
   prodName: {
     marginTop: 5,
-    color: Color.TitleActive,
+    color: color.OffWhite,
   },
   prodDescription: {
     width: scale(158),
     height: scale(20),
-    color: Color.Label,
+    color: color.Label,
     letterSpacing: -0.5,
   },
   prodPrice: {
     fontFamily: FONT_FAMILY.JoseFinSansRegular,
     fontSize: scale(15),
-    color: Color.Secondary,
+    color: color.Secondary,
   },
 });
