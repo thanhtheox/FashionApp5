@@ -73,44 +73,6 @@ const parents = [
   },
   {
     key: '4',
-    tittle:'Shoes',
-    isExpanded:false,
-    children: [
-      {
-        childKey: '1',
-        childTittle:'Outer',
-      },
-      {
-        childKey: '2',
-        childTittle:'Dress',
-      },
-      {
-        childKey: '3',
-        childTittle:'Shirt',
-      },
-    ]
-  },
-  {
-    key: '5',
-    tittle:'Beauty',
-    isExpanded:false,
-    children: [
-      {
-        childKey: '1',
-        childTittle:'Outer',
-      },
-      {
-        childKey: '2',
-        childTittle:'Dress',
-      },
-      {
-        childKey: '3',
-        childTittle:'Shirt',
-      },
-    ]
-  },
-  {
-    key: '6',
     tittle:'Accessories',
     isExpanded:false,
     children: [
@@ -171,7 +133,13 @@ const Menu = () => {
 
 
   const updateLayout = (index) => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    LayoutAnimation.configureNext({
+      duration: 500,
+      initialVelocity: 300,
+      create: {type: 'linear', property: 'opacity'},
+      update: {type: 'spring', springDamping: 0.4},
+      delete: {type: 'linear', property: 'opacity'},
+    });
     const array = [...listDataSource];
       array[index]['isExpanded'] = !array[index]['isExpanded'];
     setListDataSource(array);
@@ -183,19 +151,21 @@ const Menu = () => {
         <TouchableOpacity>
             <IC_Close/>
         </TouchableOpacity>
-        {/* Categories */}
-        <Custom_CategoryScrollView/>
         <ScrollView>
+          {/* Categories */}
+          <Custom_CategoryScrollView/>
           {/* Types */}
-          {listDataSource.map((item, key) => (
-            <Accordion
-              key={item.key}
-              onClickFunction={() => {
-                updateLayout(key);
-              }}
-              item={item}
-            />
-          ))}
+          <View>
+            {listDataSource.map((item, key) => (
+              <Accordion
+                key={item.key}
+                onClickFunction={() => {
+                  updateLayout(key);
+                }}
+                item={item}
+              />
+            ))}
+          </View>
           {/* Buttons */}
           <TouchableOpacity style={styles.buttonView}>
             <IC_ForwardArrow/>
@@ -241,7 +211,7 @@ const styles = StyleSheet.create({
     },
     textList:{
       fontFamily: FONT_FAMILY.Regular,
-      fontSize: scale(16),
+      fontSize: scale(20),
       lineHeight:scale(48),
       color: color.TitleActive,
     },
@@ -272,6 +242,7 @@ const styles = StyleSheet.create({
       flexDirection:'row', 
       alignItems:'center',
       marginLeft:scale(16),
+      marginTop:scale(10),
     },
     buttonText: {
       fontFamily:FONT_FAMILY.Regular,
