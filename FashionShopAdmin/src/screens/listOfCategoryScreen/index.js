@@ -17,6 +17,62 @@ import FONT_FAMILY from '../../constants/fonts';
 import { IC_Backward, IC_Forward , IC_Down} from '../../assets/icons';
 
 
+const CONTENT = [
+  { 
+    isExpanded: false,
+    title:'Woman',
+    child:[
+        {id: 1,name: 'dress'},
+        {id: 2,name: 't-shirt'},
+    ]
+},
+{
+  isExpanded: false,
+
+    title: 'Man',
+    child:[
+        {id: 3,name:'T-shirt'},
+        {id: 4,name: 'coast'},
+    ]
+},
+{
+  isExpanded: false,
+
+    title: 'Man',
+    child:[
+        {id: 5,name:'T-shirt'},
+        {id: 6,name: 'coast'},
+    ]
+},
+{
+  isExpanded: false,
+
+    title: 'Man',
+    child:[
+        {id: 7,name:'T-shirt'},
+        {id: 8,name: 'coast'},
+    ]
+},
+{
+  isExpanded: false,
+
+    title: 'Man',
+    child:[
+        {id: 9,name:'T-shirt'},
+        {id: 10,name: 'coast'},
+    ]
+},
+{
+  isExpanded: false,
+
+    title: 'Man',
+    child:[
+        {id: 11,name:'T-shirt'},
+        {id: 12,name: 'coast'},
+    ]
+}
+];
+
 const ExpandableComponent = ({ item, onClickFunction }) => {
   //Custom Component for the Expandable List
   const [layoutHeight, setLayoutHeight] = useState(0);
@@ -46,14 +102,14 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
           overflow: 'hidden',
         }}>
         {/*Content under the header of the Expandable List Item*/}
-        {item.child.map((item, key) => (
-          <TouchableOpacity style={styles.viewListBody} key={key}>
-          <View style={styles.viewTextList}>
-            <Text style={styles.textListBody}>{key+1}.{item.name}</Text>
-          </View>
-          <View style={styles.viewIcon}>
-              <IC_Forward></IC_Forward>
-          </View>
+        {item.child.map((item, index) => (
+          <TouchableOpacity style={styles.viewListBody} key={item.id}>
+              <View style={styles.viewTextList}>
+                <Text style={styles.textListBody}>{index+1}.{item.name}</Text>
+              </View>
+              <View style={styles.viewIcon}>
+                  <IC_Forward></IC_Forward>
+              </View>
           </TouchableOpacity>
         ))}
       </View>
@@ -99,7 +155,7 @@ const Parent = () => {
         </View>
       </View>
 
-<View style={styles.body}>
+      <View style={styles.body}>
         <ScrollView>
           {listDataSource.map((item, key) => (
             <ExpandableComponent
@@ -120,6 +176,7 @@ export default Parent;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: color.White,
   },
   container: {
     flex: 1,
@@ -157,7 +214,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   body: {
-    flex: 0.55,
+    flex: 0.7,
     backgroundColor: color.White,
   },
   
@@ -225,25 +282,3 @@ const styles = StyleSheet.create({
     marginLeft: scale(30),
   },
 });
-
-//Dummy content to show
-//You can also use dynamic data by calling webservice
-const CONTENT = [
-  { 
-    isExpanded: false,
-    title:'Woman',
-    child:[
-        {id: 1,name: 'dress'},
-        {id: 2,name: 't-shirt'},
-    ]
-},
-{
-  isExpanded: false,
-
-    title: 'Man',
-    child:[
-        {name:'T-shirt'},
-        {name: 'coast'},
-    ]
-}
-];
