@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flex: 0.3,
+    flex: 0.25,
     backgroundColor: color.TitleActive,
   },
   viewText:{
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   body: {
-    flex: 0.55,
+    flex: 0.6,
     backgroundColor: color.White,
   },
   

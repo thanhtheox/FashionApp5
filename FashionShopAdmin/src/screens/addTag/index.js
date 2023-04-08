@@ -5,8 +5,9 @@ import FONT_FAMILY from '../../constants/fonts'
 import { IC_Backward } from '../../assets/icons'
 import scale from '../../constants/responsive'
 import SaveButton from '../../components/buttons/Save'
+import BouncyCheckbox from 'react-native-bouncy-checkbox'
 
-const AddSizeScreen = () => {
+const AddTagScreen = () => {
     const [text, onChangeText] = useState("");
     const [size, onChangeTextSize]= useState("");
     const [length, onChangeTextLength]= useState("");
@@ -18,13 +19,13 @@ const AddSizeScreen = () => {
                 <IC_Backward stroke={color.White}></IC_Backward>
             </TouchableOpacity>
             <View >
-                <Text style={styles.textHeader}>Add size</Text>
+                <Text style={styles.textHeader}>Add Tag</Text>
             </View>
         </View>
 
         <View style={styles.body}>
             <View style={styles.viewTextTitle}>
-                <Text style={styles.textTitle}>Size information</Text>
+                <Text style={styles.textTitle}>Tag information</Text>
             </View>
             <View style={styles.viewTextInput}>
                 <TextInput style={styles.textInput}
@@ -39,54 +40,45 @@ const AddSizeScreen = () => {
                 />
 
             </View>
-
-            <View style={styles.viewTextLabel}>
-                <Text style={styles.textLabel}>Size measurement</Text>
-            </View>
-            <View style={styles.viewAdd}>
-                <View style={styles.viewTextAdd}>
-                    <Text style={styles.textAdd}>Width</Text>
-                </View>
-                <View style={styles.viewInputAdd}>
-                <TextInput style={styles.textInput}
-                            placeholder="Width"
-                            placeholderTextColor={color.GraySolid}
-                            editable
-                            numberOfLines={1}
-                            maxLength={5}
-                            onChangeText={text => onChangeTextSize(text)}
-                            keyboardType='ascii-capable'
-                            value={size}
+            <View>
+                <Text style={styles.textTitle}>Choose type: </Text>
+                <View style={styles.checkView}>
+                <BouncyCheckbox
+                    size={25}
+                    fillColor="black"
+                    unfillColor="#FFFFFF"
+                    text="Product"
+                    iconStyle={{ borderColor: "black", borderRadius: 0 }}
+                    innerIconStyle={{ borderWidth: 2, borderRadius: 0 }}
+                    onPress={(isChecked) => {}}
+                    style={{flexDirection: 'row-reverse', justifyContent: 'space-between', gap: scale(15)}}
+                    textStyle={{fontWeight: '700', fontSize: 15, fontFamily: FONT_FAMILY.Regular, textDecorationLine: "none",}}
+                    disableText={false}
+                />
+                <BouncyCheckbox
+                    size={25}
+                    fillColor="black"
+                    unfillColor="#FFFFFF"
+                    text="Blog"
+                    iconStyle={{ borderColor: "black", borderRadius: 0 }}
+                    innerIconStyle={{ borderWidth: 2, borderRadius: 0 }}
+                    onPress={(isChecked) => {}}
+                    style={{flexDirection: 'row-reverse', justifyContent: 'space-between', gap: scale(15)}}
+                    textStyle={{fontWeight: '700', fontSize: 15, fontFamily: FONT_FAMILY.Regular, textDecorationLine: "none",}}
                 />
                 </View>
             </View>
-            <View style={styles.viewAdd}>
-                <View style={styles.viewTextAdd}>
-                    <Text style={styles.textAdd}>Length</Text>
-                </View>
-                <View style={styles.viewInputAdd}>
-                <TextInput style={styles.textInput}
-                            placeholder="Length"
-                            placeholderTextColor={color.GraySolid}
-                            editable
-                            numberOfLines={1}
-                            maxLength={5}
-                            onChangeText={text => onChangeTextLength(text)}
-                            keyboardType='ascii-capable'
-                            value={length}
-                />
-                </View>
-            </View>
+            
 
             <View style={styles.button}>
-                <SaveButton text={'Add size'}></SaveButton>
+                <SaveButton text={'Add Tag'}></SaveButton>
             </View>
         </View>
     </SafeAreaView>
   )
 }
 
-export default AddSizeScreen
+export default AddTagScreen
 
 const styles = StyleSheet.create({
     container: {
@@ -107,23 +99,24 @@ const styles = StyleSheet.create({
     body:{
         height: Dimensions.get('screen').height*0.9,
         backgroundColor: color.White,
+        paddingLeft: scale(15),
+        paddingTop: scale(15),
+        gap: scale(15),
     },
     viewTextTitle:{
-        marginLeft: scale(15),
-        marginTop: scale(15),
+        
     },
     textTitle:{
         color: color.TitleActive,
         fontFamily: FONT_FAMILY.Regular,
         fontSize: 22,
-        fontWeight: '600',
+        fontWeight: '700',
     },
     viewTextInput:{
         borderBottomWidth: 1,
         width: '90%',
         alignSelf: 'center',
         borderColor: color.GraySolid,
-        marginTop: scale(10)
     },
     textInput:{
         color: color.TitleActive,
@@ -165,5 +158,7 @@ const styles = StyleSheet.create({
         marginTop: scale(70),
         flex: 0.15,
         alignItems: 'center'
+        
     },
-})
+    checkView: {width: scale(130), gap: scale(10), margin: scale(15)},
+})  
