@@ -86,9 +86,9 @@ const styles = StyleSheet.create({
         height: Dimensions.get('screen').height*0.25,
         backgroundColor: color.TitleActive,
         elevation: 1,
+        justifyContent: 'flex-end'
       },
       viewText:{
-        marginTop: scale(80),
         marginLeft: scale(30),
       },
       textTile: {
