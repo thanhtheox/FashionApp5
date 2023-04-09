@@ -10,11 +10,12 @@ import {
   UIManager,
   TouchableOpacity,
   Platform,
+  Dimensions
 } from 'react-native';
 import scale from '../../constants/responsive';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
-import { IC_Backward, IC_Forward , IC_Down} from '../../assets/icons';
+import { IC_Backward, IC_Forward , IC_Down, IC_BackwardArrow} from '../../assets/icons';
 
 
 const CONTENT = [
@@ -117,7 +118,7 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
   );
 };
 
-const Parent = () => {
+const ListOfCategoryScreen = (props) => {
   const [listDataSource, setListDataSource] = useState(CONTENT);
   const [multiSelect, setMultiSelect] = useState(false);
 
@@ -145,8 +146,12 @@ const Parent = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.header}>
+        
         <View style={styles.viewText}>
           <View style={styles.viewTitleText}>
+              <TouchableOpacity onPress={()=>props.navigation.goBack()}>
+                      <IC_Backward stroke={color.White}/>
+              </TouchableOpacity>
             <Text style={styles.textTile}>List of categories</Text>
           </View>
           <TouchableOpacity style={styles.viewTextLabel}>
@@ -172,7 +177,7 @@ const Parent = () => {
   );
 };
 
-export default Parent;
+export default ListOfCategoryScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -182,15 +187,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flex: 0.25,
+    height: Dimensions.get('screen').height*0.25,
     backgroundColor: color.TitleActive,
   },
   viewText:{
     marginTop: scale(80),
-    marginLeft: scale(30),
   },
   viewTitleText: {
     height: scale(50),
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   textTile: {
     color: color.White,
@@ -201,6 +207,7 @@ const styles = StyleSheet.create({
   viewTextLabel:{
     width: scale(142),
     height: scale(36),
+    marginLeft: scale(30),
     marginTop: scale(10),
     backgroundColor: color.White,
     justifyContent: 'center',
@@ -214,7 +221,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   body: {
-    flex: 0.6,
+    flex: 1,
     backgroundColor: color.White,
   },
   

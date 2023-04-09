@@ -26,7 +26,7 @@ import Message from '../../components/alearts.js/messageOnly';
 import { DataTable } from 'react-native-paper';
 import SaveButton from '../../components/buttons/Save';
 
-const ItemDetailScreen = () => {
+const ItemDetailScreen = (props) => {
 
     const size = ["S", "M", "L", "2XL"];
     const qty = [
@@ -68,7 +68,7 @@ const ItemDetailScreen = () => {
         <SafeAreaView style={styles.container}>
 {/* header */}
             <View style={styles.header}>
-                <TouchableOpacity style={styles.backwardButton}>
+                <TouchableOpacity style={styles.backwardButton} onPress={()=>props.navigation.goBack()}>
                     <IC_Backward stroke={color.White}></IC_Backward>
                 </TouchableOpacity>
                 <View >
@@ -142,7 +142,7 @@ const ItemDetailScreen = () => {
                                 </DataTable>
                             </View>
                             <View style={styles.button}>
-                                <SaveButton text={'Edit item detail'}></SaveButton>
+                                <SaveButton text={'Edit item detail'} onPress={()=>props.navigation.navigate("AddItem")}></SaveButton>
                             </View>
                         </View>
                     </ScrollView>

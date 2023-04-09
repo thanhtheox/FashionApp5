@@ -19,7 +19,7 @@ data=[
     {id:7,name: 'TAKOYA',source: IMG_ModelOne},
 ]
 
-const AddCollectionScreen = () => {
+const AddCollectionScreen = (props) => {
     const [text, onChangeText] = useState("");
     const [image,setImage]= useState(null);
 
@@ -37,7 +37,7 @@ const AddCollectionScreen = () => {
     <SafeAreaView style={styles.container}>
 {/* header  */}
         <View style={styles.header}>
-            <TouchableOpacity >
+            <TouchableOpacity onPress={()=>props.navigation.goBack()}>
                 <IC_Backward stroke={color.White}></IC_Backward>
             </TouchableOpacity>
             <View >
@@ -97,7 +97,7 @@ const AddCollectionScreen = () => {
 
 {/* button */}
             <View style={styles.button}>
-                <SaveButton text={'Add collection'}></SaveButton>
+                <SaveButton text={'Add collection'} onPress={()=>props.navigation.navigate("ListCollection")}></SaveButton>
             </View>
         </View>
     </SafeAreaView>
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     header:{
         flexDirection: 'row',
         backgroundColor: color.TitleActive,
-        height: Dimensions.get('screen').height*0.1,
+        flex:0.1,
         alignItems: 'center'
     },
     textHeader:{
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     },
 //body
     body:{
-        height: Dimensions.get('screen').height*0.9,
+        flex: 0.9,
         backgroundColor: color.White,
     },
     viewTextTitle:{

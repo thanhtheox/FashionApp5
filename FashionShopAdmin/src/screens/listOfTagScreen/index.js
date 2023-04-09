@@ -5,6 +5,7 @@ import scale from '../../constants/responsive'
 import FONT_FAMILY from '../../constants/fonts'
 import { DataTable } from 'react-native-paper'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
+import { IC_Backward, IC_BackwardArrow } from '../../assets/icons'
 
 const tagData=[
     {id: 1,name: 'Salmon', type: {product: true, blog: true}},
@@ -25,16 +26,21 @@ const dataSize=[
 
 ];
 
-const ListOfTagScreen = () => {
+const ListOfTagScreen = (props) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
+            
                 <View style={styles.viewText}>
+                
                     <View style={styles.viewTitleText}>
+                        <TouchableOpacity onPress={()=>props.navigation.goBack()}>
+                            <IC_Backward stroke={color.White} ></IC_Backward>
+                        </TouchableOpacity>
                         <Text style={styles.textTile}>List of tags</Text>
                     </View>
                     <View style={styles.viewLabel}>
-                        <TouchableOpacity style={styles.viewTextLabel}>
+                        <TouchableOpacity style={styles.viewTextLabel} onPress={()=>props.navigation.navigate("AddTag")}>
                             <Text style={styles.textLabel}>Add tag</Text>
                         </TouchableOpacity>
                     </View>
@@ -104,9 +110,11 @@ const styles = StyleSheet.create({
     },
     viewText:{
         marginTop: scale(30),
-        marginLeft: scale(30),
     },
+    
     viewTitleText: {
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     textTile: {
         color: color.White,
@@ -117,6 +125,7 @@ const styles = StyleSheet.create({
     viewLabel:{
         flexDirection: 'row',
         marginTop: scale(10),
+        marginLeft: scale(30)
     },
     viewTextLabel:{
         width: scale(122),

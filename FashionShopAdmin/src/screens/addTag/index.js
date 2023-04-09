@@ -7,15 +7,15 @@ import scale from '../../constants/responsive'
 import SaveButton from '../../components/buttons/Save'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 
-const AddTagScreen = () => {
+const AddTagScreen = (props) => {
     const [text, onChangeText] = useState("");
     const [size, onChangeTextSize]= useState("");
     const [length, onChangeTextLength]= useState("");
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} >
         <View style={styles.header}>
-            <TouchableOpacity >
+            <TouchableOpacity onPress={()=>props.navigation.goBack()}>
                 <IC_Backward stroke={color.White}></IC_Backward>
             </TouchableOpacity>
             <View >
@@ -71,7 +71,7 @@ const AddTagScreen = () => {
             
 
             <View style={styles.button}>
-                <SaveButton text={'Add Tag'}></SaveButton>
+                <SaveButton text={'Add Tag'} onPress={()=>props.navigation.navigate("ListTag")}></SaveButton>
             </View>
         </View>
     </SafeAreaView>

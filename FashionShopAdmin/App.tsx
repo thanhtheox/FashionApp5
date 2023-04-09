@@ -14,10 +14,11 @@ import ListOfCollectionScreen from './src/screens/listOfCollectionScreen'
 import CollectionItem from './src/screens/listOfCollectionScreen/components/collectionItem'
 import ListOfBlogScreen from './src/screens/listOfBlogScreen'
 import AddCollectionScreen from './src/screens/addCollectionScreen'
+import MyNavigationContainer from './src/router/navigationContainer'
 
 const App = () => {
   return (
-    <AddCollectionScreen/>
+    <MyNavigationContainer/>
   )
 }
 

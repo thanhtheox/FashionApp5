@@ -10,7 +10,7 @@ const Item = (props) => {
 
 
   return (
-    <SafeAreaView style={styles.viewItem}>
+    <TouchableOpacity style={styles.viewItem} onPress={props.onPress}>
                 <View style={styles.viewNumber}>
                     <Text style={styles.number} >{props.number}</Text>
                 </View>
@@ -23,15 +23,15 @@ const Item = (props) => {
                     <Text style={styles.price} numberOfLines={1}>{props.price}$</Text>
                 </View>
                 <View style={styles.viewFunction}>
-                    <TouchableOpacity style={styles.viewIcon}>
+                    <TouchableOpacity style={styles.viewIcon} onPress={props.onPressDelete}>
                     <IC_Delete></IC_Delete>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.viewIcon}>
+                    <TouchableOpacity style={styles.viewIcon} onPress={props.onPressEdit}>
                     <IC_Edit></IC_Edit>
                     </TouchableOpacity>
                     
                 </View>
-    </SafeAreaView>
+    </TouchableOpacity>
   )
 }
 

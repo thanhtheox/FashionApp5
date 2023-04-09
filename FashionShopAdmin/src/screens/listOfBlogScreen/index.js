@@ -5,6 +5,7 @@ import scale from '../../constants/responsive'
 import FONT_FAMILY from '../../constants/fonts'
 import { IMG_Collection, IMG_ModelFour, IMG_ModelOne, IMG_ModelThree, IMG_ModelTwo } from '../../assets/images'
 import CollectionItem from '../listOfCollectionScreen/components/collectionItem'
+import { IC_Backward, IC_BackwardArrow } from '../../assets/icons'
 
 const data=[
   {id:1,name: 'SAPPOCHE', source: IMG_Collection},
@@ -17,14 +18,18 @@ const data=[
 
 ]
 
-const ListOfBlogScreen = () => {
+const ListOfBlogScreen = (props) => {
 
     
   return (
     <SafeAreaView style={styles.container}>
         <View style={styles.header}>
+         
           <View style={styles.viewText}>
             <View style={styles.viewTitleText}>
+                <TouchableOpacity onPress={()=>props.navigation.goBack()}>
+                      <IC_Backward stroke={color.White} />
+                </TouchableOpacity>
               <Text style={styles.textTile}>List of blogs</Text>
             </View>
                 <TouchableOpacity style={styles.viewTextLabel}>
@@ -65,7 +70,10 @@ const styles = StyleSheet.create({
       },
       viewText:{
         marginTop: scale(80),
-        marginLeft: scale(30),
+      },
+      viewTitleText: {
+        flexDirection: 'row',
+        alignItems: 'center'
       },
       textTile: {
         color: color.White,
@@ -74,6 +82,7 @@ const styles = StyleSheet.create({
         fontWeight: 700,
       },
       viewTextLabel:{
+        marginLeft: scale(30),
         backgroundColor: color.Alto,
         width: scale(175),
         height: scale(36),
@@ -103,7 +112,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
       },
       body:{
-        height: Dimensions.get('screen').height*0.75,
+        flex: 1,
         backgroundColor: color.White,
       },
       flat:{
