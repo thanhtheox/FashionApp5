@@ -19,17 +19,17 @@ const OnboardingScreen = props => {
                 <Text style={styles.introText1}>Welcome</Text>
                 <Text numberOfLines={2} style={styles.introText2}>Choose one option to update the latest fashion trends</Text>
             </View>
-            <View style = {styles.signinButton1}>
-                <TouchableOpacity style = {styles.signinButtonPosition}>
-                    <View style = {styles.signinButton}> 
-                        <Text style={styles.signinButtonText}>Sign In</Text>
+            <View style = {styles.signInButtonView}>
+                <TouchableOpacity style = {styles.signInButtonPosition} onPress={() => props.navigation.navigate('SignInScreen')}>
+                    <View style = {styles.signInButton}> 
+                        <Text style={styles.signInButtonText}>Sign In</Text>
                     </View>
                 </TouchableOpacity>
             </View>
-            <View style = {styles.signupButton1}>
-                <TouchableOpacity style = {styles.signupButtonPosition}>
-                    <View style = {styles.signupButton}> 
-                        <Text style={styles.signupButtonText}>Sign Up</Text>
+            <View style = {styles.signUpButtonView}>
+                <TouchableOpacity style = {styles.signUpButtonPosition} onPress={() => props.navigation.navigate('SignUpScreen')}>
+                    <View style = {styles.signUpButton}> 
+                        <Text style={styles.signUpButtonText}>Sign Up</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -87,25 +87,25 @@ const styles = StyleSheet.create({
         textAlignVertical: "center",
         textAlign: "center",
     },
-    signinButton1:
+    signInButtonView:
     {
         alignSelf: 'center',
     },
-    signinButtonPosition:
+    signInButtonPosition:
     {
         position: 'absolute',
         marginTop: scale(75),
         alignSelf: 'center',
         justifyContent: 'center',
     },
-    signinButton:
+    signInButton:
     {
         justifyContent: 'center',
         borderWidth: scale(1),
         width: scale(301),
         height: scale(61),
     },
-    signinButtonText:
+    signInButtonText:
     {
         color: Color.TitleActive,
         fontFamily: FONT_FAMILY.Regular,
@@ -113,18 +113,18 @@ const styles = StyleSheet.create({
         lineHeight: scale(26),
         alignSelf: 'center',
     },
-    signupButton1:
+    signUpButtonView:
     {
         alignSelf: 'center',
     },
-    signupButtonPosition:
+    signUpButtonPosition:
     {
         position: 'absolute',
         marginTop: scale(150),
         alignSelf: 'center',
         justifyContent: 'center',
     },
-    signupButton:
+    signUpButton:
     {
         justifyContent: 'center',
         borderWidth: scale(1),
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
         height: scale(61),
         backgroundColor: Color.TitleActive,
     },
-    signupButtonText:
+    signUpButtonText:
     {
         color: Color.OffWhite,
         fontFamily: FONT_FAMILY.Regular,
