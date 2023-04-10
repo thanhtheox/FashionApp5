@@ -13,14 +13,14 @@ import {IC_BackwardArrow} from '../../../assets/icons';
 import scale from '../../../constants/responsive';
 import SaveButton from '../../../components/buttons/Save';
 
-const SignInScreen = () => {
+const SignInScreen = (props) => {
   const [mail, setMail] = useState('');
   const [pass, setPass] = useState('');
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.viewIcon}>
+        <TouchableOpacity style={styles.viewIcon} onPress={() => props.navigation.goBack()}>
           <IC_BackwardArrow stroke={color.White} />
         </TouchableOpacity>
 
@@ -52,7 +52,7 @@ const SignInScreen = () => {
         </View>
 
         <View style={styles.buttonSignIn}>
-          <SaveButton text={'Sign In'} />
+          <SaveButton text={'Sign In'} onPress={() => props.navigation.navigate('AppStackScreen')}/>
         </View>
 
         <TouchableOpacity style={styles.ViewForgotText}>
