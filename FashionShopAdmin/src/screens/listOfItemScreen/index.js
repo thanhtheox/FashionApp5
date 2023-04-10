@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
         flex: 1,
       },
       header: {
-        height: Dimensions.get('screen').height*0.3,
+        height: Dimensions.get('screen').height*0.25,
         backgroundColor: color.TitleActive,
         elevation: 1,
       },
@@ -91,7 +91,6 @@ const styles = StyleSheet.create({
         marginTop: scale(80),
         marginLeft: scale(30),
       },
-     
       textTile: {
         color: color.White,
         fontSize: 36,
@@ -135,7 +134,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
       },
       body:{
-        height: Dimensions.get('screen').height*0.7,
+        height: Dimensions.get('screen').height*0.75,
         backgroundColor: color.White,
       },
       
