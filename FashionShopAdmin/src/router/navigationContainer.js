@@ -17,6 +17,9 @@ import AddTagScreen from '../screens/addTag';
 import ItemDetailScreen from '../screens/itemDetailScreen';
 import ListOfOrderScreen from '../screens/listOfOrderScreen';
 import ListOfCategoryScreen from '../screens/listOfCategoryScreen';
+import ListOfUserScreen from '../screens/listOfUserScreen';
+import EditUserScreen from '../screens/editUserScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -59,6 +62,11 @@ const MyNavigationContainer= () => {
 
 {/*Category */}
           <Stack.Screen name="ListCategory" component={ListOfCategoryScreen} />
+
+{/* user */}
+          <Stack.Screen name="ListUser" component={ListOfUserScreen} />
+          <Stack.Screen name="EditUser" component={EditUserScreen} />
+
          
        </Stack.Navigator>
      </NavigationContainer>

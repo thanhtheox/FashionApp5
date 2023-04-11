@@ -86,6 +86,17 @@ const DashBoardScreen = (props) => {
               {body}
             </Accordion>
 
+
+{/* USER */}
+            <TouchableOpacity style={styles.viewList} onPress={()=>props.navigation.navigate("ListUser")}>
+                <View style={styles.viewTextList}>
+                  <Text style={styles.textList}>User</Text>
+                </View>
+                <View style={styles.viewIcon}>
+                  <IC_Forward></IC_Forward>
+                </View>
+            </TouchableOpacity>
+
 {/* tag*/}      
             <TouchableOpacity style={styles.viewList} onPress={()=>props.navigation.navigate("ListTag")}>
               <View style={styles.viewTextList}>
