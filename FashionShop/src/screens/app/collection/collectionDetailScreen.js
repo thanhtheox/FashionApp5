@@ -75,8 +75,6 @@ const CollectionDetailScreen = (props) => {
   ];
   return (
     <SafeAreaView style={styles.container}>
-        {/* Header */}
-        <Custom_Header/>
         {/* Collection */}
         <ScrollView>
           <View style={{backgroundColor:color.TitleActive}}>

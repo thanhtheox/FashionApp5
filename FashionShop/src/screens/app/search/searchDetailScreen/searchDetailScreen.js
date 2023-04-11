@@ -78,7 +78,6 @@ import {
     ];
     return (
       <SafeAreaView style={styles.container}>
-        <Custom_Header />
         <SearchResultBar />
         <View style={styles.list}>
         <ScrollView>        

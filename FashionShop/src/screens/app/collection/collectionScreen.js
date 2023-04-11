@@ -30,8 +30,6 @@ const CollectionScreen = (props) => {
   ];
   return (
     <SafeAreaView style={styles.container}>
-        {/* Header */}
-        <Custom_Header/>
         {/* Collection */}
         <View style={{backgroundColor:color.TitleActive}}>
           <Text style={styles.collectionText}>COLLECTION</Text>
@@ -49,6 +47,7 @@ const CollectionScreen = (props) => {
                     image={item.img}
                     prodName={item.name}
                     prodNumber={item.key}
+                    onPress={() => props.navigation.navigate('CollectionDetailScreen')}
                   />
               )}
             />      

@@ -45,7 +45,6 @@ import {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView>
-        <Custom_Header/>
         {/* Image */}
         <Image source={IMG_OurStory} resizeMode='stretch' style={{width:'100%'}}/>
         {/* Blog title */}

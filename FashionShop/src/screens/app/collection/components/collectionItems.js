@@ -7,7 +7,7 @@ import { horizontal } from 'react-native-swiper-flatlist/src/themes';
 
 const CollectionItems = props => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={props.onPress}>
       <View style={styles.imgContainer}>
         <Image source={props.image} style={styles.img} />
       </View>

@@ -144,7 +144,7 @@ const HomeScreen = (props) => {
   return (
     <SafeAreaView style={styles.container}>
         {/* Header */}
-        <Custom_Header/>
+        {/* <Custom_Header/> */}
         <ScrollView >
           {/* Banner */}
           <View style={styles.bannerContainer}>
@@ -155,13 +155,15 @@ const HomeScreen = (props) => {
               paginationStyleItemInactive={styles.dot}
               data={banners}
               renderItem={({ item }) => (
-                <View style={{width:Dimensions.get('window').width}} key={item => `${item.key}`} >
+                <TouchableOpacity style={{width:Dimensions.get('window').width}} 
+                key={item => `${item.key}`}
+                onPress={() => props.navigation.navigate('CollectionStackScreen', { screen: 'CollectionDetailScreen' })} >
                   <Image source={item.banner} style={styles.bannerWrap} resizeMode='stretch'></Image>
-                </View>
+                </TouchableOpacity>
               )}
             />     
             <View style={styles.exploreButton}>
-              <TouchableOpacity >
+              <TouchableOpacity onPress={() => props.navigation.navigate('CollectionStackScreen', { screen: 'CollectionScreen' })}>
                 <Text style={styles.exploreButtonText}>Explore Collection</Text>
               </TouchableOpacity>
             </View> 
