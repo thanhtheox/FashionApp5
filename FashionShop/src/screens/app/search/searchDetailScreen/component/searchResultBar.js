@@ -25,7 +25,7 @@ import {
           placeholder="Search"
           placeholderTextColor={color.GraySolid}
           style={{
-            height: 42,
+            height: scale(42),
             color: color.TitleActive,
             top: scale(2),
             width: scale(280),
@@ -35,7 +35,9 @@ import {
           onPress={() => setSearchContent('') & this.textInput.clear()}>
           <IC_Delete marginRight={scale(10)} />
         </TouchableOpacity>
-        <IC_Search marginRight={scale(20)} />
+        <TouchableOpacity>
+          <IC_Search marginRight={scale(20)} />
+        </TouchableOpacity>
       </View>
     );
   };
@@ -44,10 +46,7 @@ import {
   
   const styles = StyleSheet.create({
     container: {
-      width: scale(343),
-      height: scale(40),
-      position: 'absolute',
-      marginTop: scale(110),
+      marginTop: scale(10),
       justifyContent: 'space-between',
       alignItems: 'center',
       flexDirection: 'row',
