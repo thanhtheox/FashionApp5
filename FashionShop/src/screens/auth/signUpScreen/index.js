@@ -40,7 +40,7 @@ import SaveButton from '../../../components/buttons/Save';
 //   .oneOf([Yup.ref('password'), null], 'Passwords must match')
 // });
 
-const SignUpScreen = () => {
+const SignUpScreen = (props) => {
   const [mail, setMail] = useState('');
   const [pass, setPass] = useState('');
   const [passConfirm, setPassConfirm] = useState('');
@@ -52,7 +52,7 @@ const SignUpScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.viewIcon}>
+        <TouchableOpacity style={styles.viewIcon} onPress={() => props.navigation.goBack()}>
           <IC_BackwardArrow stroke={color.White} />
         </TouchableOpacity>
 
@@ -117,7 +117,7 @@ const SignUpScreen = () => {
         </View>
 
         <View style={styles.buttonSignIn}>
-          <SaveButton text={'Sign Up'} />
+          <SaveButton text={'Sign Up'} onPress={() => props.navigation.navigate('OTPScreen')}/>
         </View>
       </View>
     </SafeAreaView>
