@@ -14,7 +14,7 @@ const AddColorScreen = (props) => {
   return (
     <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-            <TouchableOpacity >
+            <TouchableOpacity onPress={()=>props.navigation.goBack()} >
                 <IC_Backward stroke={color.White}></IC_Backward>
             </TouchableOpacity>
             <View >
@@ -68,7 +68,7 @@ const AddColorScreen = (props) => {
 
 
             <View style={styles.button}>
-                <SaveButton text={'Add color'}></SaveButton>
+                <SaveButton text={'Add color'} onPress={()=>props.navigation.navigate("ListColorAndSize")}></SaveButton>
             </View>
         </View>
     </SafeAreaView>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     header:{
         flexDirection: 'row',
         backgroundColor: color.TitleActive,
-        height: Dimensions.get('screen').height*0.1,
+        flex:0.1,
         alignItems: 'center'
     },
     textHeader:{
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         fontWeight: '700',
     },
     body:{
-        height: Dimensions.get('screen').height*0.9,
+        flex:0.9,
         backgroundColor: color.White,
     },
     viewTextTitle:{
