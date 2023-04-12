@@ -12,10 +12,12 @@ import SwiperFlatList from 'react-native-swiper-flatlist'
 import FONT_FAMILY from '../../../../constants/fonts'
 import fontStyles from '../../../../constants/fontStyle'
 import Custom_GridViewProd from '../../../../components/products/CustomGridViewProd'
+import ZoomImageView from './components/ZoomImageView'
 
 
 
 const ProductDetailsScreen = (props) => {
+  const [visible,setVisible] = useState(true);
   const [colorChoose, setChooseColor] = useState('1');
   const [sizeChoose, setChooseSize] = useState('1');
   const sizes = [
@@ -76,28 +78,7 @@ const ProductDetailsScreen = (props) => {
       price: '$120',
     },
   ];
-  const details = [
-    {
-      key: '1',
-      icon: IC_DoNotBleach,
-      title: 'Do not use bleach',
-    },
-    {
-      key: '2',
-      icon: IC_DoNotTumbleDry,
-      title: 'Do not tumble dry',
-    },
-    {
-      key: '3',
-      icon: IC_DoNotWash,
-      title: 'Dry clean with tetrachloroethylene',
-    },
-    {
-      key: '4',
-      icon: IC_Iron,
-      title: 'Iron at a maximum of 110ºC/230ºF',
-    },
-  ];
+  
   const productImages = [
     {
       key: '1',
@@ -122,6 +103,7 @@ const ProductDetailsScreen = (props) => {
   ];
 
   return (
+    visible ? (
     <SafeAreaView style={styles.container}>
         {/* Header */}
         <Custom_Header/>
@@ -142,10 +124,10 @@ const ProductDetailsScreen = (props) => {
                 <View style={styles.imgContainer}>
                   <Image source={item.image} style={styles.img} resizeMode='contain'/>
                   <TouchableOpacity
-                    onPress={() => setVisible(true)}>
+                    onPress={() => setVisible(false)}
+                    >
                     <IC_Resize
                       style={{right:scale(5),bottom:scale(3),position:'absolute'}}
-                      stroke={color.Secondary}
                     />
                   </TouchableOpacity>
                 </View>
@@ -197,17 +179,8 @@ const ProductDetailsScreen = (props) => {
           <Text style={[fontStyles.subTitle14pxFont,styles.title]}>MATERIALS</Text>
           <Text style={[fontStyles.bodyMediumFont,styles.subTitle]}>{"We work with monitoring programmes to ensure compliance with safety, health and quality standards for our products. "}</Text>
           <Text style={[fontStyles.subTitle14pxFont,styles.title]}>CARE</Text>
-          <Text style={[fontStyles.bodyMediumFont,styles.subTitle]}>{"To keep your jackets and coats clean, you only need to freshen them up and go over them with a cloth or a clothes brush. If you need to dry clean a garment, look for a dry cleaner that uses technologies that are respectful of the environment."}</Text>
-          <View style={styles.iconTextView}>
-            {details.map(item => 
-              <View style={{flexDirection:'row', alignItems:'center'}} key={item.key}>           
-                <item.icon/>
-                <Text style={[{marginLeft:scale(15),color:color.Label}, fontStyles.bodyMediumFont]}>
-                  {item.title}
-                </Text>
-              </View>
-            )}
-          </View>
+          <Text style={[fontStyles.bodyMediumFont,styles.subTitle]}>{"To keep your jackets and coats clean, you only need to freshen them up and go over them with a cloth or a clothes brush. If you need to dry clean a garment, look for a dry cleaner that uses technologies that are respectful of the environment. Check your clothes tag to see what you should notice"}</Text>
+          
         </View>
         {/* You May Also Like */}
         <View style={styles.likeProductContainer}>
@@ -227,8 +200,6 @@ const ProductDetailsScreen = (props) => {
                   prodName={item.name}
                   prodDescription={item.description}
                   prodPrice={item.price}
-                  {...props}
-                  categoryData={item}
                 />
             )}
           />      
@@ -236,7 +207,10 @@ const ProductDetailsScreen = (props) => {
         {/* Footer */}
           <Custom_Footer style={{justifyContent: 'flex-end', marginTop:scale(37)}}/>
         </ScrollView>
-    </SafeAreaView>
+    </SafeAreaView>):(
+      <ZoomImageView onPressVisible={() => setVisible(true)}/>
+    )
+  
   )
 }
 

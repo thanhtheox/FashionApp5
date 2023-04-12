@@ -37,7 +37,7 @@ const Accordion = ({ title, children }) => {
     </>
   );
 };
-const DashBoardScreen = () => {
+const DashBoardScreen = (props) => {
 
   const title=(
     <View style={styles.viewTextList}>
@@ -46,21 +46,21 @@ const DashBoardScreen = () => {
   )
   const body = (
     <View >
-      <TouchableOpacity style={styles.viewListBody}>
-      <View style={styles.viewTextList}>
-        <Text style={styles.textListBody}>Item</Text>
-      </View>
-      <View style={styles.viewIcon}>
-          <IC_Forward></IC_Forward>
-      </View>
+      <TouchableOpacity style={styles.viewListBody} onPress={()=>props.navigation.navigate("ListItem")}>
+        <View style={styles.viewTextList}>
+          <Text style={styles.textListBody}>Item</Text>
+        </View>
+        <View style={styles.viewIcon}>
+            <IC_Forward stroke={"#fff"}></IC_Forward>
+        </View>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.viewListBody}>
-      <View style={styles.viewTextList}>
-        <Text style={styles.textListBody}>Color & Size</Text>
-      </View>
-      <View style={styles.viewIcon}>
-          <IC_Forward></IC_Forward>
-      </View>
+      <TouchableOpacity style={styles.viewListBody} onPress={()=>props.navigation.navigate("ListColorAndSize")}>
+        <View style={styles.viewTextList}>
+          <Text style={styles.textListBody}>Color & Size</Text>
+        </View>
+        <View style={styles.viewIcon}>
+            <IC_Forward stroke={"#fff"}></IC_Forward>
+        </View>
       </TouchableOpacity>
     </View>
   )
@@ -81,33 +81,60 @@ const DashBoardScreen = () => {
       <View style={styles.body}>
         <ScrollView>
 
-        <Accordion title={title} >
-          {body}
-        </Accordion>
-        <TouchableOpacity style={styles.viewList}>
-          <View style={styles.viewTextList}>
-          <Text style={styles.textList}>Tag</Text>
-          </View>
-          <View style={styles.viewIcon}>
-            <IC_Forward></IC_Forward>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.viewList}>
-          <View style={styles.viewTextList}>
-          <Text style={styles.textList}>Order</Text>
-          </View>
-          <View style={styles.viewIcon}>
-            <IC_Forward></IC_Forward>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.viewList}>
-          <View style={styles.viewTextList}>
-          <Text style={styles.textList}>Category</Text>
-          </View>
-          <View style={styles.viewIcon}>
-            <IC_Forward></IC_Forward>
-          </View>
-        </TouchableOpacity>
+{/* product */}
+            <Accordion title={title} >
+              {body}
+            </Accordion>
+
+{/* tag*/}      
+            <TouchableOpacity style={styles.viewList} onPress={()=>props.navigation.navigate("ListTag")}>
+              <View style={styles.viewTextList}>
+              <Text style={styles.textList}>Tag</Text>
+              </View>
+              <View style={styles.viewIcon}>
+                <IC_Forward></IC_Forward>
+              </View>
+            </TouchableOpacity>
+
+{/* Order */}
+            <TouchableOpacity style={styles.viewList} onPress={()=>props.navigation.navigate("ListOrder")}>
+              <View style={styles.viewTextList}>
+              <Text style={styles.textList}>Order</Text>
+              </View>
+              <View style={styles.viewIcon}>
+                <IC_Forward></IC_Forward>
+              </View>
+            </TouchableOpacity>
+
+{/* category */}
+            <TouchableOpacity style={styles.viewList} onPress={()=>props.navigation.navigate("ListCategory")}>
+              <View style={styles.viewTextList}>
+              <Text style={styles.textList}>Category</Text>
+              </View>
+              <View style={styles.viewIcon}>
+                <IC_Forward></IC_Forward>
+              </View>
+            </TouchableOpacity>
+
+{/* collection */}
+            <TouchableOpacity style={styles.viewList} onPress={()=>props.navigation.navigate("ListCollection")}>
+              <View style={styles.viewTextList}>
+              <Text style={styles.textList}>Collection</Text>
+              </View>
+              <View style={styles.viewIcon}>
+                <IC_Forward></IC_Forward>
+              </View>
+            </TouchableOpacity>
+
+{/* Blog */}
+            <TouchableOpacity style={styles.viewList} onPress={()=>props.navigation.navigate("ListBlog")}>
+              <View style={styles.viewTextList}>
+              <Text style={styles.textList}>Blog</Text>
+              </View>
+              <View style={styles.viewIcon}>
+                <IC_Forward></IC_Forward>
+              </View>
+            </TouchableOpacity>
         </ScrollView>
 
       </View>
@@ -124,9 +151,10 @@ export default DashBoardScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: color.White,
       },
       header: {
-        flex: 0.3,
+        flex: 0.25,
         backgroundColor: color.TitleActive,
       },
       viewText:{
@@ -155,9 +183,8 @@ const styles = StyleSheet.create({
         fontWeight: '700',
       },
       body: {
-        flex: 0.55,
+        flex: 0.6,
         backgroundColor: color.White,
-        // alignItems: 'center',
       },
       buttonSignOut:{
         marginTop: scale(10),
@@ -174,7 +201,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
       },
       viewTextList:{
-        // backgroundColor: color.Alto,
         justifyContent: 'center',
         width: scale(300),
         marginLeft: scale(20),
@@ -196,18 +222,18 @@ const styles = StyleSheet.create({
         overflow: 'hidden'
       },
       viewListBody:{
-        height: scale(68),
+        height: scale(48),
         width:'100%',
         borderBottomWidth: 1,
         flexDirection: 'row',
-        backgroundColor: color.GraySolid,
-        opacity: 30,
+        backgroundColor: '#000',
+        opacity: 0.7,
       },
       textListBody:{
         fontFamily: FONT_FAMILY.Regular,
-        fontSize: 24,
+        fontSize: 22,
         fontWeight: '400',
-        color: color.TitleActive,
+        color: color.White,
         marginLeft: scale(30),
       },
      

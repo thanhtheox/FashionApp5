@@ -1,7 +1,7 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View ,Platform, UIManager,LayoutAnimation, ScrollView} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import color from '../../../constants/color'
-import { IC_Call, IC_Close, IC_Down, IC_Forward, IC_ForwardArrow, IC_Location, IC_Up } from '../../../assets/icons'
+import { IC_Call, IC_Close, IC_Down, IC_ForwardArrow, IC_Location, IC_Up } from '../../../assets/icons'
 import FONT_FAMILY from '../../../constants/fonts'
 import scale from '../../../constants/responsive'
 import Custom_CategoryScrollView from './components/Custom_CategoryScrollView'
@@ -17,6 +17,7 @@ const parents = [
   {
     key: '1',
     tittle:'New',
+    isExpanded:false,
     children: [
       {
         childKey: '1',
@@ -35,6 +36,7 @@ const parents = [
   {
     key: '2',
     tittle:'Apparel',
+    isExpanded:false,
     children: [
       {
         childKey: '1',
@@ -53,6 +55,7 @@ const parents = [
   {
     key: '3',
     tittle:'Bag',
+    isExpanded:false,
     children: [
       {
         childKey: '1',
@@ -70,43 +73,8 @@ const parents = [
   },
   {
     key: '4',
-    tittle:'Shoes',
-    children: [
-      {
-        childKey: '1',
-        childTittle:'Outer',
-      },
-      {
-        childKey: '2',
-        childTittle:'Dress',
-      },
-      {
-        childKey: '3',
-        childTittle:'Shirt',
-      },
-    ]
-  },
-  {
-    key: '5',
-    tittle:'Beauty',
-    children: [
-      {
-        childKey: '1',
-        childTittle:'Outer',
-      },
-      {
-        childKey: '2',
-        childTittle:'Dress',
-      },
-      {
-        childKey: '3',
-        childTittle:'Shirt',
-      },
-    ]
-  },
-  {
-    key: '6',
     tittle:'Accessories',
+    isExpanded:false,
     children: [
       {
         childKey: '1',
@@ -123,39 +91,31 @@ const parents = [
     ]
   },
 ];
-const Accordion = () => {
-  const [isOpen, setIsOpen] = useState('0');
-  const [isFocus, setIsFocus] = useState(false)
+const Accordion = ({ item, onClickFunction }) => {
+  const [layoutHeight, setLayoutHeight] = useState(0);
 
   useEffect(() => {
-  }, [isOpen])
-
-  const toggleOpen = (value) => {
-    setIsOpen(value);
-    LayoutAnimation.configureNext({
-    duration: 500,
-    create: {type: 'linear', property: 'opacity'}, 
-    update: {type: 'spring', springDamping: 0.4}, 
-    delete: {type: 'linear', property: 'opacity'} 
-  });
-  }
-  
+    if (item.isExpanded) {
+      setLayoutHeight(null);
+    } else {
+      setLayoutHeight(0);
+    }
+  }, [item.isExpanded]);
 
   return (
     <>
-      {parents.map((item) => 
-        <View key={item.key} style={{marginTop:scale(10)}}>
-          <TouchableOpacity onPress={() => toggleOpen(item.key)} style={styles.viewList} activeOpacity={0.6}>
+        <View style={{marginTop:scale(10)}}>
+          <TouchableOpacity onPress={onClickFunction} style={styles.viewList} activeOpacity={0.6}>
             <View style={styles.viewTextList}>
               <Text style={styles.textList}>{item.tittle}</Text>
             </View>
             <View style={styles.viewIcon}>
-              {isOpen!=item.key ?<IC_Down/>:<IC_Up/>}
+              {item.isExpanded? <IC_Up/> : <IC_Down/>}
             </View>
           </TouchableOpacity>
-          <View  style={[styles.list,isOpen!=item.key ? styles.hidden : undefined]}>
-            {item.children.map(item =>
-              <View key={item.childKey}>
+          <View style={{height: layoutHeight,overflow: 'hidden'}}>
+            {item.children.map((item,key) =>
+              <View key={key}>
                 <TouchableOpacity style={styles.viewListBody}>
                   <View style={styles.viewTextList}>
                     <Text style={styles.textListBody}>{item.childTittle}</Text>
@@ -165,11 +125,25 @@ const Accordion = () => {
             )}
           </View>
         </View>
-      )}
     </>
   );
 };
 const Menu = () => {
+  const [listDataSource, setListDataSource] = useState(parents);
+
+
+  const updateLayout = (index) => {
+    LayoutAnimation.configureNext({
+      duration: 500,
+      initialVelocity: 300,
+      create: {type: 'linear', property: 'opacity'},
+      update: {type: 'spring', springDamping: 0.4},
+      delete: {type: 'linear', property: 'opacity'},
+    });
+    const array = [...listDataSource];
+      array[index]['isExpanded'] = !array[index]['isExpanded'];
+    setListDataSource(array);
+  };
   
   return (
     <SafeAreaView style={styles.container}>
@@ -177,11 +151,21 @@ const Menu = () => {
         <TouchableOpacity>
             <IC_Close/>
         </TouchableOpacity>
-        {/* Categories */}
-        <Custom_CategoryScrollView/>
         <ScrollView>
+          {/* Categories */}
+          <Custom_CategoryScrollView/>
           {/* Types */}
-          <Accordion/>
+          <View>
+            {listDataSource.map((item, key) => (
+              <Accordion
+                key={item.key}
+                onClickFunction={() => {
+                  updateLayout(key);
+                }}
+                item={item}
+              />
+            ))}
+          </View>
           {/* Buttons */}
           <TouchableOpacity style={styles.buttonView}>
             <IC_ForwardArrow/>
@@ -217,17 +201,17 @@ const styles = StyleSheet.create({
     // --------------------------- //
     viewList:{
       height: scale(50),
-      width:'100%',
+      width:'95%',
       flexDirection: 'row',
+      justifyContent:'space-between',
     },
     viewTextList:{
       justifyContent: 'center',
-      width: scale(300),
       marginLeft: scale(20),
     },
     textList:{
       fontFamily: FONT_FAMILY.Regular,
-      fontSize: scale(16),
+      fontSize: scale(20),
       lineHeight:scale(48),
       color: color.TitleActive,
     },
@@ -258,6 +242,7 @@ const styles = StyleSheet.create({
       flexDirection:'row', 
       alignItems:'center',
       marginLeft:scale(16),
+      marginTop:scale(10),
     },
     buttonText: {
       fontFamily:FONT_FAMILY.Regular,

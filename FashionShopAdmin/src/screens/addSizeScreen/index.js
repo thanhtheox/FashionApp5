@@ -6,7 +6,7 @@ import { IC_Backward } from '../../assets/icons'
 import scale from '../../constants/responsive'
 import SaveButton from '../../components/buttons/Save'
 
-const AddSizeScreen = () => {
+const AddSizeScreen = (props) => {
     const [text, onChangeText] = useState("");
     const [size, onChangeTextSize]= useState("");
     const [length, onChangeTextLength]= useState("");
@@ -14,7 +14,7 @@ const AddSizeScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-            <TouchableOpacity >
+            <TouchableOpacity onPress={()=>props.navigation.goBack()}>
                 <IC_Backward stroke={color.White}></IC_Backward>
             </TouchableOpacity>
             <View >
@@ -79,7 +79,7 @@ const AddSizeScreen = () => {
             </View>
 
             <View style={styles.button}>
-                <SaveButton text={'Add size'}></SaveButton>
+                <SaveButton text={'Add size'} onPress={()=>props.navigation.navigate("ListColorAndSize")}></SaveButton>
             </View>
         </View>
     </SafeAreaView>
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
         fontWeight: '700',
     },
     body:{
-        height: Dimensions.get('screen').height*0.9,
+        flex: 1,
         backgroundColor: color.White,
     },
     viewTextTitle:{
@@ -165,6 +165,5 @@ const styles = StyleSheet.create({
         marginTop: scale(70),
         flex: 0.15,
         alignItems: 'center'
-        
-      },
+    },
 })

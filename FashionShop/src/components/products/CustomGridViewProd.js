@@ -11,7 +11,7 @@ import {IC_Heart} from '../../assets/icons';
 const Custom_GridViewProd = props => {
   const [Liked, setLike] = useState(false);
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container}>
       <View style={styles.imgContainer}>
         <Image source={props.image} style={styles.img} />
         <TouchableOpacity
@@ -32,7 +32,7 @@ const Custom_GridViewProd = props => {
         </Text>
         <Text style={styles.prodPrice}>{props.prodPrice}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

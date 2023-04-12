@@ -32,8 +32,8 @@ import {
         onPress={() => Keyboard.dismiss() && TextInput.clearFocus()}>
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.viewIcon}>
-                <IC_BackwardArrow stroke={color.White} />
+                <TouchableOpacity style={styles.viewIcon} onPress={() => props.navigation.goBack()}>
+                    <IC_BackwardArrow stroke={color.White} />
                 </TouchableOpacity>
 
                 <View style={styles.ViewTitleText}>
@@ -120,7 +120,7 @@ import {
                 </View>
     
                 <View style={styles.buttonVerification}>
-                    <SaveButton text={'Verify'} />
+                    <SaveButton text={'Verify'} onPress={() => props.navigation.navigate('AppStackScreen')}/>
                 </View>
                 <View style={styles.checkVerification}>
                     <Text style={styles.question}>Did not get an OTP code?</Text>

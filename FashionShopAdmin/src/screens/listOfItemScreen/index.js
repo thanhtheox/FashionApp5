@@ -4,7 +4,7 @@ import color from '../../constants/color'
 import scale from '../../constants/responsive'
 import FONT_FAMILY from '../../constants/fonts'
 import { IMG_Collection, IMG_ModelFour, IMG_ModelOne, IMG_ModelThree, IMG_ModelTwo } from '../../assets/images'
-import { IC_Delete, IC_Edit, IC_Search, IC_See } from '../../assets/icons'
+import { IC_Delete, IC_Edit, IC_Search, IC_See, IC_BackwardArrow, IC_Backward } from '../../assets/icons'
 import Item from './components/item'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -20,19 +20,23 @@ const data=[
 
 ]
 
-const ListOfItemScreen = () => {
+const ListOfItemScreen = (props) => {
 
   const [value, onChangeText] = useState("");
 
   return (
     <SafeAreaView style={styles.container}>
         <View style={styles.header}>
+        
           <View style={styles.viewText}>
             <View style={styles.viewTitleText}>
+              <TouchableOpacity onPress={()=>props.navigation.goBack()}>
+                  <IC_Backward stroke={color.White}/>
+              </TouchableOpacity>
               <Text style={styles.textTile}>List of items</Text>
             </View>
               <View style={styles.viewTextAndSearch}>
-                    <TouchableOpacity style={styles.viewTextLabel}>
+                    <TouchableOpacity style={styles.viewTextLabel} onPress={()=>props.navigation.navigate("AddItem")}>
                       <Text style={styles.textLabel}>Add item</Text>
                     </TouchableOpacity>
                     <View style={styles.viewSearch}> 
@@ -67,6 +71,8 @@ const ListOfItemScreen = () => {
                   description={item.description}
                   price={item.price}
                   source={item.source}
+                  onPress={()=>props.navigation.navigate("ItemDetail",{data: item})}
+                  onPressEdit={()=>props.navigation.navigate("AddItem",{data: item})}
                   />
 
                 ))}
@@ -83,15 +89,16 @@ const styles = StyleSheet.create({
         flex: 1,
       },
       header: {
-        height: Dimensions.get('screen').height*0.3,
+        height: Dimensions.get('screen').height*0.25,
         backgroundColor: color.TitleActive,
         elevation: 1,
+        justifyContent: 'flex-end',
+
       },
-      viewText:{
-        marginTop: scale(80),
-        marginLeft: scale(30),
+      viewTitleText:{
+        flexDirection: 'row',
+        alignItems: 'center'
       },
-     
       textTile: {
         color: color.White,
         fontSize: 36,
@@ -110,6 +117,8 @@ const styles = StyleSheet.create({
         width: scale(122),
         height: scale(36),
         alignItems: 'center',
+        marginLeft: scale(30)
+
       },
       textLabel: {
         color: color.TitleActive,
@@ -135,7 +144,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
       },
       body:{
-        height: Dimensions.get('screen').height*0.7,
+        flex: 1,
         backgroundColor: color.White,
       },
       

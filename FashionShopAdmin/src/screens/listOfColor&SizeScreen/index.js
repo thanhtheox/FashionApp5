@@ -1,10 +1,12 @@
-import { SafeAreaView, StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View, ScrollView, TouchableOpacity,Dimensions } from 'react-native'
 import React from 'react'
 import color from '../../constants/color'
 import scale from '../../constants/responsive'
 import FONT_FAMILY from '../../constants/fonts'
 import ItemColor from './components/itemColor'
 import ItemSize from './components/itemSize'
+import { IC_Backward, IC_BackwardArrow } from '../../assets/icons'
+
 
 const dataColor=[
   {id: 1,name: 'Salmon', code: '#FA8072'},
@@ -26,19 +28,23 @@ const dataSize=[
   {id: 3, size: 'L', width: '60', length: '74'},
 
 ];
-const ListOfColor_SizeScreen = () => {
+const ListOfColor_SizeScreen = (props) => {
   return (
     <SafeAreaView style={styles.container}>
         <View style={styles.header}>
+         
         <View style={styles.viewText}>
           <View style={styles.viewTitleText}>
+            <TouchableOpacity style={{marginBottom: scale(40)}} onPress={()=>props.navigation.goBack()}>
+                    <IC_Backward stroke={color.White}/>
+            </TouchableOpacity>
             <Text style={styles.textTile}>List of colors & sizes</Text>
           </View>
           <View style={styles.viewLabel}>
-          <TouchableOpacity style={styles.viewTextLabel}>
+          <TouchableOpacity style={styles.viewTextLabel} onPress={()=>props.navigation.navigate("AddColor")}>
             <Text style={styles.textLabel}>Add color</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.viewTextLabel}>
+          <TouchableOpacity style={styles.viewTextLabel} onPress={()=>props.navigation.navigate("AddSize")}>
             <Text style={styles.textLabel}>Add size</Text>
           </TouchableOpacity>
           </View>
@@ -110,16 +116,14 @@ const styles = StyleSheet.create({
         flex: 1,
       },
       header: {
-        flex: 0.3,
+        height: Dimensions.get('screen').height*0.25,
         backgroundColor: color.TitleActive,
-      },
-      viewText:{
-        marginTop: scale(30),
-        marginLeft: scale(30),
+        justifyContent: 'flex-end'
       },
       viewTitleText: {
-        height: scale(100),
-        width: scale(250)
+        width: scale(250),
+        flexDirection: 'row',
+        alignItems: 'center'
       },
       textTile: {
         color: color.White,
@@ -128,8 +132,10 @@ const styles = StyleSheet.create({
         fontWeight: 700,
       },
       viewLabel:{
+        marginLeft: scale(30),
         flexDirection: 'row',
         marginTop: scale(10),
+        marginBottom: scale(10)
       },
       viewTextLabel:{
         width: scale(122),
@@ -145,12 +151,13 @@ const styles = StyleSheet.create({
         fontWeight: 700,
       },
       body:{
-        flex: 0.7,
+        flex: 1,
+        backgroundColor: color.White,
       },
       viewColor:{
+        // borderWidth: 1,
         flex: 0.45,
         backgroundColor: color.White,
-        // marginTop: scale(10),
       },
       viewTextColor:{
         height: scale(36),
@@ -164,7 +171,7 @@ const styles = StyleSheet.create({
         fontWeight: '700'
       },
       viewSize:{
-        flex: 0.35,
+        flex: 0.5,
         marginTop: scale(50),
         backgroundColor: color.White,
       },

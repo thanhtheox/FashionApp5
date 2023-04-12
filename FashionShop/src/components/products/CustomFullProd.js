@@ -10,7 +10,7 @@ import {IC_Heart} from '../../assets/icons';
 const Custom_FullProd = props => {
   const [Liked, setLike] = useState(false);
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container}>
       <View style={styles.imgContainer}>
         <Image source={props.image} style={styles.img} resizeMode='contain'/>
         <TouchableOpacity
@@ -31,7 +31,7 @@ const Custom_FullProd = props => {
         </Text>
         <Text style={styles.prodPrice}>{props.prodPrice}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
