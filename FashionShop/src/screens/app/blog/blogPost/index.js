@@ -96,7 +96,9 @@ import {
                 />
             )}
         </View>
-        <Custom_Footer/>
+        <Custom_Footer
+          onAboutPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'OurStoryScreen' })}
+          onContactPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'ContactUsScreen' })}/>
         </ScrollView>
       </SafeAreaView>
     );

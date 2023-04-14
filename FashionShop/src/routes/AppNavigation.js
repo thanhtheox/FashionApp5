@@ -10,7 +10,7 @@ import Custom_Header from '../components/header/Custom_Header';
 import BlogPostScreen from '../screens/app/blog/blogPost';
 import CartScreen from '../screens/app/cart';
 import { CollectionStackScreen } from '../screens/app/collection/collectionNavigation';
-import HomeScreen from '../screens/app/home/homeScreen';
+import { HomeStackScreen } from '../screens/app/home/HomeNavigation';
 import Menu from '../screens/app/menu';
 import ProductDetailsScreen from '../screens/app/product/productDetailsScreen';
 import SearchDetailScreen from '../screens/app/search/searchDetailScreen/searchDetailScreen';
@@ -21,14 +21,14 @@ const AppStack = createNativeStackNavigator();
 const AppStackScreen = () => {
   return (
     <AppStack.Navigator
-      initialRouteName="HomeScreen"
+      initialRouteName="HomeStackScreen"
       screenOptions={{
         headerShown: true,
         headerBackVisible: false,
       }}>
       <AppStack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
+        name="HomeStackScreen"
+        component={HomeStackScreen}
         options={({navigation}) => ({
           headerTitle: () => (
             <Custom_Header navigation={navigation}/>
@@ -47,19 +47,15 @@ const AppStackScreen = () => {
       <AppStack.Screen
         name="CartScreen"
         component={CartScreen}
-        options={({navigation}) => ({
-          headerTitle: () => (
-            <Custom_Header navigation={navigation}/>
-          ),
+        options={() => ({
+          headerShown:false
         })}
       />
       <AppStack.Screen
         name="MenuScreen"
         component={Menu}
-        options={({navigation}) => ({
-          headerTitle: () => (
-            <Custom_Header navigation={navigation}/>
-          ),
+        options={() => ({
+          headerShown:false
         })}
       />
       <AppStack.Screen
