@@ -26,7 +26,7 @@ import Message from '../../components/alearts.js/messageOnly';
 import { DataTable } from 'react-native-paper';
 import SaveButton from '../../components/buttons/Save';
 
-const AddItemDetailScreen = (props) => {
+const EditItemDetailScreen = (props) => {
 
     const size = ["S", "M", "L", "2XL"];
     const qty = [
@@ -66,7 +66,7 @@ const AddItemDetailScreen = (props) => {
                     <IC_Backward stroke={color.White}></IC_Backward>
                 </TouchableOpacity>
                 <View >
-                    <Text style={styles.textHeader}>Add item detail</Text>
+                    <Text style={styles.textHeader}>Edit item detail</Text>
                 </View>
             </View>
 {/* body */}
@@ -160,7 +160,7 @@ const AddItemDetailScreen = (props) => {
     )
 };
 
-export default AddItemDetailScreen;
+export default EditItemDetailScreen;
 
 const init = {
     name: '',

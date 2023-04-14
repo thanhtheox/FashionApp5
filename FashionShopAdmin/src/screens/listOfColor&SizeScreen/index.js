@@ -118,7 +118,8 @@ const styles = StyleSheet.create({
       header: {
         height: Dimensions.get('screen').height*0.25,
         backgroundColor: color.TitleActive,
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+        paddingBottom: scale(20),
       },
       viewTitleText: {
         width: scale(250),

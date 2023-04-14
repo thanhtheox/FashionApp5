@@ -60,9 +60,11 @@ const styles = StyleSheet.create({
         height: Dimensions.get('screen').height*0.25,
         backgroundColor: color.TitleActive,
         elevation: 1,
+        justifyContent:'flex-end',
+        paddingBottom: scale(30)
       },
       viewText:{
-        marginTop: scale(80),
+        // marginTop: scale(80),
       },
       viewTitleText: {
         flexDirection: 'row',
@@ -80,6 +82,7 @@ const styles = StyleSheet.create({
         width: scale(175),
         height: scale(36),
         alignItems: 'center',
+        marginTop: scale(10)
       },
       textLabel: {
         color: color.TitleActive,

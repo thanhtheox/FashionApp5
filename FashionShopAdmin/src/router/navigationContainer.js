@@ -19,6 +19,9 @@ import ListOfOrderScreen from '../screens/listOfOrderScreen';
 import ListOfCategoryScreen from '../screens/listOfCategoryScreen';
 import ListOfUserScreen from '../screens/listOfUserScreen';
 import EditUserScreen from '../screens/editUserScreen';
+import EditItemDetailScreen from '../screens/editItemDetailScreen';
+import EditItemScreen from '../screens/editItemScreen';
+import EditCollectionScreen from '../screens/editCollectionScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -38,6 +41,12 @@ const MyNavigationContainer= () => {
          <Stack.Screen name="AddItem" component={AddItemScreen} />
          <Stack.Screen name="AddDetailItem" component={AddItemDetailScreen} />
 
+         <Stack.Screen name="EditItem" component={EditItemScreen} />
+         <Stack.Screen name="EditDetailItem" component={EditItemDetailScreen} />
+
+
+
+
 
 {/* Blog  */}
          <Stack.Screen name="ListBlog" component={ListOfBlogScreen} />
@@ -45,6 +54,8 @@ const MyNavigationContainer= () => {
 {/*  collection */}
          <Stack.Screen name="AddCollection" component={AddCollectionScreen} />
          <Stack.Screen name="ListCollection" component={ListOfCollectionScreen} />
+         <Stack.Screen name="EditCollection" component={EditCollectionScreen} />
+
 
 {/* Color & size */}
          <Stack.Screen name="ListColorAndSize" component={ListOfColor_SizeScreen} />
