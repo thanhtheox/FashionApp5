@@ -56,6 +56,7 @@ const CollectionScreen = (props) => {
           <Custom_Footer style={{justifyContent: 'flex-end', marginTop:scale(37)}}
           onAboutPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'OurStoryScreen' })}
           onContactPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'ContactUsScreen' })}
+          onBlogPress={() => props.navigation.navigate('BlogStackScreen', { screen: 'BlogGridViewScreen' })}
           />
         </ScrollView>
     </SafeAreaView>

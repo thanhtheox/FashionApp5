@@ -3,7 +3,6 @@ import React from 'react';
 import scale from '../../../../constants/responsive';
 import FONT_FAMILY from '../../../../constants/fonts';
 import color from '../../../../constants/color';
-import { horizontal } from 'react-native-swiper-flatlist/src/themes';
 
 const CollectionItems = props => {
   return (
