@@ -7,7 +7,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Custom_Header from '../components/header/Custom_Header';
 
-import BlogPostScreen from '../screens/app/blog/blogPost';
+import { BlogStackScreen } from '../screens/app/blog/blogNavigation';
 import CartScreen from '../screens/app/cart';
 import { CollectionStackScreen } from '../screens/app/collection/collectionNavigation';
 import { HomeStackScreen } from '../screens/app/home/HomeNavigation';
@@ -36,8 +36,8 @@ const AppStackScreen = () => {
         })}
       />
       <AppStack.Screen
-        name="BlogPostScreen"
-        component={BlogPostScreen}
+        name="BlogStackScreen"
+        component={BlogStackScreen}
         options={({navigation}) => ({
           headerTitle: () => (
             <Custom_Header navigation={navigation}/>

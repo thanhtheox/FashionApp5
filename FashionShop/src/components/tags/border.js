@@ -9,16 +9,16 @@ import {useState} from 'react';
 const Custom_Tag2 = props => {
   const [shouldShow, setShouldShow] = useState(true);
   return (
-    <View>
+    <TouchableOpacity style={{marginLeft:props.marginLeft||scale(0)}}>
       {shouldShow ? (
         <View style={styles.border}>
           <Text style={styles.text}>{props.value}</Text>
-          <TouchableOpacity onPress={() => setShouldShow(!shouldShow)}>
+          {props.visible ? (<TouchableOpacity onPress={() => setShouldShow(!shouldShow)}>
             <IC_Close viewBox={`-3 -3 30 30`}/>
-          </TouchableOpacity>
+          </TouchableOpacity>):(<View/>)}
         </View>
       ) : null}
-    </View>
+    </TouchableOpacity>
   );
 };
 

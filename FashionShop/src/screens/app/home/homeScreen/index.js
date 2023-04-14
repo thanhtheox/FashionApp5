@@ -230,9 +230,7 @@ const HomeScreen = (props) => {
             onPress={() => props.navigation.navigate('CollectionStackScreen', { screen: 'CollectionDetailScreen' })}>
               <Image source={IMG_ModelFour} resizeMode='stretch' style={{marginTop:scale(35)}}/>
             </TouchableOpacity>
-          </View>
-          {/* Video I10XB1-IIbA*/}
-        
+          </View>        
           {/* Product */}
           <View style={styles.productContainer}>
             <Text style={styles.productText}>JUST FOR YOU</Text>
@@ -296,6 +294,7 @@ const HomeScreen = (props) => {
           <Custom_Footer style={{justifyContent: 'flex-end'}} 
           onAboutPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'OurStoryScreen' })}
           onContactPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'ContactUsScreen' })}
+          onBlogPress={() => props.navigation.navigate('BlogStackScreen', { screen: 'BlogGridViewScreen' })}
           />
         </ScrollView>
     </SafeAreaView>

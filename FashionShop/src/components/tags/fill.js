@@ -6,7 +6,7 @@ import scale from '../../constants/responsive';
 
 const Custom_Tag1 = (props) => {
   return (
-    <TouchableOpacity style={styles.fill}>
+    <TouchableOpacity style={[styles.fill,{marginLeft:props.marginLeft||scale(0)}]}>
       <Text style={styles.text}>{props.value}</Text>
     </TouchableOpacity>
   );
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     backgroundColor: Color.InputBackground,
   },
   text: {
-    fontFamily: FONT_FAMILY.JoseFinSansRegular,
+    fontFamily: FONT_FAMILY.Regular,
     fontSize: scale(14),
     color: Color.Body,
     alignSelf: 'center',
