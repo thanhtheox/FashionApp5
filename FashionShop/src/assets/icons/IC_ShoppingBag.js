@@ -12,12 +12,12 @@ const SvgComponent = (props) => (
   >
     <Path
       d="m3.496 23.28.816-16.56h16.347l.816 16.56H3.495Z"
-      stroke="#14142B"
+      stroke={props.strokeA||"#14142B"}
       {...props}
     />
     <Path
       d="M8.16 10.15V5.55a4.325 4.325 0 0 1 8.65 0v4.598"
-      stroke="#14142B"
+      stroke={props.strokeB||"#14142B"}
       {...props}
     />
   </Svg>

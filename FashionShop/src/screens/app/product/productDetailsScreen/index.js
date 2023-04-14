@@ -105,8 +105,6 @@ const ProductDetailsScreen = (props) => {
   return (
     visible ? (
     <SafeAreaView style={styles.container}>
-        {/* Header */}
-        <Custom_Header/>
         <ScrollView >
         {/* Product Images */}
         <View style={styles.productContainer}>

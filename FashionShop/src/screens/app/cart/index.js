@@ -8,7 +8,7 @@ import { IMG_ModelFour } from '../../../assets/images'
 import Custom_Cart from '../../../components/cart/Custom_Cart'
 import Button from './components/button'
 
-const CartScreen = () => {
+const CartScreen = (props) => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [visible, setVisible] = useState(true);
   const cartItems = [
@@ -87,12 +87,12 @@ const CartScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
         {/* Icon Close */}
-        <TouchableOpacity style={{marginLeft: scale(16)}}>
+        <TouchableOpacity style={{marginLeft: scale(16),marginTop:scale(5)}} onPress={() => props.navigation.goBack()}>
             <IC_Close/>
         </TouchableOpacity>
         <Text style={styles.cartText}>CART</Text>
         {visible?(
-        <View>
+        <View style={{flexDirection:'column',height:'84%'}}>
           {/* Cart Items */}
           <View style={styles.viewScroll}>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -155,12 +155,14 @@ const styles = StyleSheet.create({
       fontFamily:FONT_FAMILY.Regular,
       fontSize:scale(18),
       color:color.TitleActive,
-      lineHeight:scale(24),
+      lineHeight:scale(22),
       letterSpacing:scale(2),
       marginLeft:scale(16),
+      marginTop:scale(7),
     },
     viewScroll: {
       alignSelf: 'center',
+      marginTop:scale(10),
       marginLeft: scale(7),
       height:'65%',
     },

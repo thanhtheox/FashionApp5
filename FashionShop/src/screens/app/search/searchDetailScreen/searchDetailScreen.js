@@ -119,7 +119,6 @@ const searchResult = [
     );
     return (
       <SafeAreaView style={styles.container}>
-        <Custom_Header />
         <SearchResultBar />
         <View style={styles.resultSum}>
           <Text style={styles.sum}>SEARCH RESULTS</Text>
