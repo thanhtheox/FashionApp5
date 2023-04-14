@@ -9,9 +9,6 @@ import { IC_BackwardArrow } from '../../../assets/icons';
 const OnboardingScreen = props => {
     return (
         <SafeAreaView style = {styles.container}>
-            <TouchableOpacity style={styles.viewIcon}>
-                <IC_BackwardArrow/>
-            </TouchableOpacity>
             <View style = {styles.logoBorder}>
                 <Image source = {IMG_Logo} style = {styles.logo}/>
             </View>
