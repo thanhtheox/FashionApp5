@@ -128,7 +128,7 @@ const Accordion = ({ item, onClickFunction }) => {
     </>
   );
 };
-const Menu = () => {
+const Menu = (props) => {
   const [listDataSource, setListDataSource] = useState(parents);
 
 
@@ -148,7 +148,7 @@ const Menu = () => {
   return (
     <SafeAreaView style={styles.container}>
         {/* Icon Close */}
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => props.navigation.goBack()}>
             <IC_Close/>
         </TouchableOpacity>
         <ScrollView>

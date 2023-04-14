@@ -5,25 +5,25 @@ import {IC_Menu, IC_Search, IC_ShoppingBag} from '../../assets/icons'
 import scale from '../../constants/responsive'
 import { IC_Logo } from '../logo'
 
-const Custom_Header = ({props,navigation}) => {
+const Custom_Header = ({logoColor, menuColor,searchColor,cartColor,navigation}) => {
   return (
     <View style={styles.container}>
         {/* Menu */}
          <TouchableOpacity style={styles.menuContainer} onPress={() => navigation.navigate('MenuScreen')}>
-            <IC_Menu fill={props.menuColor}/>
+            <IC_Menu fill={menuColor}/>
         </TouchableOpacity>
         {/* Logo */}
         <View style={styles.logoContainer}>
-            <IC_Logo fill={props.logoColor}/>
+            <IC_Logo fill={logoColor}/>
         </View>
         <View style={{flexDirection: 'row'}}>
             {/* Search */}
             <TouchableOpacity style={styles.searchContainer} onPress={() => navigation.navigate('SearchDetailScreen')}>
-                <IC_Search stroke={props.searchColor}/>
+                <IC_Search stroke={searchColor}/>
             </TouchableOpacity>
             {/* ShoppingBag */}
             <TouchableOpacity style={styles.shoppingBagContainer} onPress={() => navigation.navigate('CartScreen')}>
-                <IC_ShoppingBag strokeA={props.cartColor} strokeB={props.cartColor}/>
+                <IC_ShoppingBag strokeA={cartColor} strokeB={cartColor}/>
             </TouchableOpacity>
         </View>
     </View>
