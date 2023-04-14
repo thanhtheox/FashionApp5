@@ -188,8 +188,9 @@ const HomeScreen = (props) => {
                   image={item.img}
                   prodName={item.name}
                   prodPrice={item.price}
-                  {...props}
-                  categoryData={item}
+                  onPress={() => props.navigation.navigate('ProductDetailsScreen')}
+                  // {...props}
+                  // categoryData={item}
                 />
               </View>
             )}></FlatList>
@@ -221,8 +222,14 @@ const HomeScreen = (props) => {
           {/* Collection */}
           <View style={styles.collectionContainer}>
             <Text style={styles.collectionText}>COLLECTIONS</Text>
-            <Image source={IMG_ModelOne} resizeMode='stretch' style={{width:'100%', marginTop:scale(15)}}/>
-            <Image source={IMG_ModelFour} resizeMode='stretch' style={{marginTop:scale(35)}}/>
+            <TouchableOpacity style={{alignItems:'center', width:'100%'}} 
+            onPress={() => props.navigation.navigate('CollectionStackScreen', { screen: 'CollectionDetailScreen' })}>
+              <Image source={IMG_ModelOne} resizeMode='stretch' style={{width:'100%', marginTop:scale(15)}}/>
+            </TouchableOpacity>
+            <TouchableOpacity 
+            onPress={() => props.navigation.navigate('CollectionStackScreen', { screen: 'CollectionDetailScreen' })}>
+              <Image source={IMG_ModelFour} resizeMode='stretch' style={{marginTop:scale(35)}}/>
+            </TouchableOpacity>
           </View>
           {/* Video I10XB1-IIbA*/}
         
@@ -244,8 +251,9 @@ const HomeScreen = (props) => {
                   image={item.img}
                   prodName={item.name}
                   prodPrice={item.price}
-                  {...props}
-                  categoryData={item}
+                  onPress={() => props.navigation.navigate('ProductDetailsScreen')}
+                  // {...props}
+                  // categoryData={item}
                   />
                 </View>
               )}
@@ -285,7 +293,10 @@ const HomeScreen = (props) => {
               )}></FlatList> 
             <Image source={Sticker5}></Image>
           </View>
-          <Custom_Footer style={{justifyContent: 'flex-end'}}/>
+          <Custom_Footer style={{justifyContent: 'flex-end'}} 
+          onAboutPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'OurStoryScreen' })}
+          onContactPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'ContactUsScreen' })}
+          />
         </ScrollView>
     </SafeAreaView>
   )
