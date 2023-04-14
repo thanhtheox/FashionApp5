@@ -37,7 +37,7 @@ const Accordion = ({ title, children }) => {
     </>
   );
 };
-const DashBoardScreen = () => {
+const DashBoardScreen = (props) => {
 
   const title=(
     <View style={styles.viewTextList}>
@@ -46,7 +46,7 @@ const DashBoardScreen = () => {
   )
   const body = (
     <View >
-      <TouchableOpacity style={styles.viewListBody}>
+      <TouchableOpacity style={styles.viewListBody} onPress={()=>props.navigation.navigate("ListItem")}>
       <View style={styles.viewTextList}>
         <Text style={styles.textListBody}>Item</Text>
       </View>
@@ -54,7 +54,7 @@ const DashBoardScreen = () => {
           <IC_Forward></IC_Forward>
       </View>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.viewListBody}>
+      <TouchableOpacity style={styles.viewListBody} onPress={()=>props.navigation.navigate("ListColorAndSize")}>
       <View style={styles.viewTextList}>
         <Text style={styles.textListBody}>Color & Size</Text>
       </View>
@@ -81,33 +81,60 @@ const DashBoardScreen = () => {
       <View style={styles.body}>
         <ScrollView>
 
-        <Accordion title={title} >
-          {body}
-        </Accordion>
-        <TouchableOpacity style={styles.viewList}>
-          <View style={styles.viewTextList}>
-          <Text style={styles.textList}>Tag</Text>
-          </View>
-          <View style={styles.viewIcon}>
-            <IC_Forward></IC_Forward>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.viewList}>
-          <View style={styles.viewTextList}>
-          <Text style={styles.textList}>Order</Text>
-          </View>
-          <View style={styles.viewIcon}>
-            <IC_Forward></IC_Forward>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.viewList}>
-          <View style={styles.viewTextList}>
-          <Text style={styles.textList}>Category</Text>
-          </View>
-          <View style={styles.viewIcon}>
-            <IC_Forward></IC_Forward>
-          </View>
-        </TouchableOpacity>
+{/* product */}
+            <Accordion title={title} >
+              {body}
+            </Accordion>
+
+{/* tag*/}      
+            <TouchableOpacity style={styles.viewList} onPress={()=>props.navigation.navigate("ListTag")}>
+              <View style={styles.viewTextList}>
+              <Text style={styles.textList}>Tag</Text>
+              </View>
+              <View style={styles.viewIcon}>
+                <IC_Forward></IC_Forward>
+              </View>
+            </TouchableOpacity>
+
+{/* Order */}
+            <TouchableOpacity style={styles.viewList} onPress={()=>props.navigation.navigate("ListOrder")}>
+              <View style={styles.viewTextList}>
+              <Text style={styles.textList}>Order</Text>
+              </View>
+              <View style={styles.viewIcon}>
+                <IC_Forward></IC_Forward>
+              </View>
+            </TouchableOpacity>
+
+{/* category */}
+            <TouchableOpacity style={styles.viewList} onPress={()=>props.navigation.navigate("ListCategory")}>
+              <View style={styles.viewTextList}>
+              <Text style={styles.textList}>Category</Text>
+              </View>
+              <View style={styles.viewIcon}>
+                <IC_Forward></IC_Forward>
+              </View>
+            </TouchableOpacity>
+
+{/* collection */}
+            <TouchableOpacity style={styles.viewList} onPress={()=>props.navigation.navigate("ListCollection")}>
+              <View style={styles.viewTextList}>
+              <Text style={styles.textList}>Collection</Text>
+              </View>
+              <View style={styles.viewIcon}>
+                <IC_Forward></IC_Forward>
+              </View>
+            </TouchableOpacity>
+
+{/* Blog */}
+            <TouchableOpacity style={styles.viewList} onPress={()=>props.navigation.navigate("ListBlog")}>
+              <View style={styles.viewTextList}>
+              <Text style={styles.textList}>Blog</Text>
+              </View>
+              <View style={styles.viewIcon}>
+                <IC_Forward></IC_Forward>
+              </View>
+            </TouchableOpacity>
         </ScrollView>
 
       </View>

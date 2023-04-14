@@ -10,10 +10,15 @@ import AddTagScreen from './src/screens/addTag'
 import ListOfTagScreen from './src/screens/listOfTagScreen'
 import AddItemDetailScreen from './src/screens/addItemDetailScreen'
 import ItemDetailScreen from './src/screens/itemDetailScreen'
+import ListOfCollectionScreen from './src/screens/listOfCollectionScreen'
+import CollectionItem from './src/screens/listOfCollectionScreen/components/collectionItem'
+import ListOfBlogScreen from './src/screens/listOfBlogScreen'
+import AddCollectionScreen from './src/screens/addCollectionScreen'
+import MyNavigationContainer from './src/router/navigationContainer'
 
 const App = () => {
   return (
-    <ItemDetailScreen/>
+    <MyNavigationContainer/>
   )
 }
 

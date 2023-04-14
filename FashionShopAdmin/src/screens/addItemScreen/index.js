@@ -24,7 +24,7 @@ import ImageCropPicker from 'react-native-image-crop-picker';
 import { PERMISSIONS, check, RESULTS, request } from 'react-native-permissions';
 import Message from '../../components/alearts.js/messageOnly';
 
-const AddItemScreen = () => {
+const AddItemScreen = (props) => {
     const [product, setProduct] = useState(init);
 
     const [category, setCategory] = useState([
@@ -144,7 +144,7 @@ const AddItemScreen = () => {
         <SafeAreaView style={styles.container}>
 {/* header */}
             <View style={styles.header}>
-                <TouchableOpacity style={styles.backwardButton} onPress={checkReadImagePermission}>
+                <TouchableOpacity style={styles.backwardButton} onPress={()=>props.navigation.goBack()}>
                     <IC_Backward stroke={color.White}></IC_Backward>
                 </TouchableOpacity>
                 <View >
@@ -253,7 +253,7 @@ const AddItemScreen = () => {
                                 </View>
                             </View>
                             <View style={{borderTopWidth: 1, borderTopColor: color.PlaceHolder, marginTop: scale(20),}}></View>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={()=>props.navigation.navigate("AddDetailItem")}>
                                 <View style={styles.itemDetailButton}> 
                                     <Text style={styles.propText}>Item detail</Text>
                                     <View style={{marginTop: scale(20), transform: [{ rotate: '180deg'}]}}>
