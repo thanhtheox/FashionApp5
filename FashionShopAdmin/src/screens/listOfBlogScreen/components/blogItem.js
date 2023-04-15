@@ -6,34 +6,37 @@ import FONT_FAMILY from '../../../constants/fonts'
 import color from '../../../constants/color'
 import { IC_Address, IC_Backward, IC_Delete, IC_Heart } from '../../../assets/icons'
 
-const CollectionItem = (props) => {
+const BlogItem = (props) => {
   return (
-    <TouchableOpacity style={styles.view} onPress={props.onPress}>
-        <View style={styles.viewTitle}>
-            <Text style={styles.textTitle} numberOfLines={1} >{props.name}</Text>
-        </View>
+    <TouchableOpacity style={styles.view}>
+        
         <View style={styles.viewImage}>
-            <ImageBackground source={props.source} style={styles.image} resizeMode='stretch'>
-                <TouchableOpacity style={styles.viewIcon} onPress={props.onPressDelete}>
+             <View style={styles.viewTitle}>
+                <Text style={styles.textTitle} numberOfLines={1} >{props.name}</Text>
+            </View>
+            <ImageBackground source={props.source} style={styles.image} >
+                <TouchableOpacity style={styles.viewIcon}>
                     <IC_Delete />
                 </TouchableOpacity>
             </ImageBackground>
+            
 
         </View>
     </TouchableOpacity>
   )
 }
 
-export default CollectionItem
+export default BlogItem
 
 const styles = StyleSheet.create({
     view:{
-        width: '40%',
+        width: '100%',
         justifyContent: 'center',
         height: scale(200),
     },
     viewTitle:{
-        marginLeft: '10%'
+        // marginLeft: '10%',
+        // alignContent:'flex-end'
     },
     viewImage:{
         alignSelf: 'center',
@@ -47,13 +50,13 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         fontSize: 14,
-        fontWeight: '400',
+        fontWeight: '700',
         fontFamily: FONT_FAMILY.Regular,
         color: color.TitleActive,
         textTransform:'uppercase',
     },
     viewIcon:{
-        width:'20%',
+        width:'10%',
         height: '15%',
         alignSelf: 'flex-end',
     },

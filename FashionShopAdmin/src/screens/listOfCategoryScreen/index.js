@@ -155,7 +155,7 @@ const ListOfCategoryScreen = (props) => {
             <Text style={styles.textTile}>List of categories</Text>
           </View>
           <TouchableOpacity style={styles.viewTextLabel}>
-            <Text style={styles.textLabel}>Add item</Text>
+            <Text style={styles.textLabel}>Add category</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -189,9 +189,11 @@ const styles = StyleSheet.create({
   header: {
     height: Dimensions.get('screen').height*0.25,
     backgroundColor: color.TitleActive,
+    justifyContent:'flex-end',
+    paddingBottom: scale(30),
   },
   viewText:{
-    marginTop: scale(80),
+    // marginTop: scale(80),
   },
   viewTitleText: {
     height: scale(50),
@@ -205,7 +207,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   viewTextLabel:{
-    width: scale(142),
+    width: scale(170),
     height: scale(36),
     marginLeft: scale(30),
     marginTop: scale(10),

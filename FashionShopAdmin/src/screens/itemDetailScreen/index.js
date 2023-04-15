@@ -142,7 +142,7 @@ const ItemDetailScreen = (props) => {
                                 </DataTable>
                             </View>
                             <View style={styles.button}>
-                                <SaveButton text={'Edit item detail'} onPress={()=>props.navigation.navigate("AddItem")}></SaveButton>
+                                <SaveButton text={'Edit item detail'} onPress={()=>props.navigation.navigate("EditItem")}></SaveButton>
                             </View>
                         </View>
                     </ScrollView>

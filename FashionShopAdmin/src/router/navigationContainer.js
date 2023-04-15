@@ -17,6 +17,13 @@ import AddTagScreen from '../screens/addTag';
 import ItemDetailScreen from '../screens/itemDetailScreen';
 import ListOfOrderScreen from '../screens/listOfOrderScreen';
 import ListOfCategoryScreen from '../screens/listOfCategoryScreen';
+import ListOfUserScreen from '../screens/listOfUserScreen';
+import EditUserScreen from '../screens/editUserScreen';
+import EditItemDetailScreen from '../screens/editItemDetailScreen';
+import EditItemScreen from '../screens/editItemScreen';
+import EditCollectionScreen from '../screens/editCollectionScreen';
+import SignInScreen from '../screens/signInScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -25,7 +32,13 @@ const Stack = createNativeStackNavigator();
 const MyNavigationContainer= () => {
   return (
     <NavigationContainer independent={true}>
-       <Stack.Navigator  screenOptions={{headerShown: false}} initialRouteName='DashBoard' >
+       <Stack.Navigator  screenOptions={{headerShown: false}} initialRouteName='SignIn' >
+
+{/* login */}
+         <Stack.Screen name="SignIn" component={SignInScreen} />
+
+
+{/* dashboard */}
          <Stack.Screen name="DashBoard" component={DashBoardScreen} />
 
 {/* product  */}
@@ -35,6 +48,12 @@ const MyNavigationContainer= () => {
          <Stack.Screen name="AddItem" component={AddItemScreen} />
          <Stack.Screen name="AddDetailItem" component={AddItemDetailScreen} />
 
+         <Stack.Screen name="EditItem" component={EditItemScreen} />
+         <Stack.Screen name="EditDetailItem" component={EditItemDetailScreen} />
+
+
+
+
 
 {/* Blog  */}
          <Stack.Screen name="ListBlog" component={ListOfBlogScreen} />
@@ -42,6 +61,8 @@ const MyNavigationContainer= () => {
 {/*  collection */}
          <Stack.Screen name="AddCollection" component={AddCollectionScreen} />
          <Stack.Screen name="ListCollection" component={ListOfCollectionScreen} />
+         <Stack.Screen name="EditCollection" component={EditCollectionScreen} />
+
 
 {/* Color & size */}
          <Stack.Screen name="ListColorAndSize" component={ListOfColor_SizeScreen} />
@@ -59,6 +80,11 @@ const MyNavigationContainer= () => {
 
 {/*Category */}
           <Stack.Screen name="ListCategory" component={ListOfCategoryScreen} />
+
+{/* user */}
+          <Stack.Screen name="ListUser" component={ListOfUserScreen} />
+          <Stack.Screen name="EditUser" component={EditUserScreen} />
+
          
        </Stack.Navigator>
      </NavigationContainer>

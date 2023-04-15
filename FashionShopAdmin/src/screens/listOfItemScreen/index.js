@@ -72,7 +72,7 @@ const ListOfItemScreen = (props) => {
                   price={item.price}
                   source={item.source}
                   onPress={()=>props.navigation.navigate("ItemDetail",{data: item})}
-                  onPressEdit={()=>props.navigation.navigate("AddItem",{data: item})}
+                  onPressEdit={()=>props.navigation.navigate("EditItem",{data: item})}
                   />
 
                 ))}
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
         backgroundColor: color.TitleActive,
         elevation: 1,
         justifyContent: 'flex-end',
+        paddingBottom: scale(20),
 
       },
       viewTitleText:{
