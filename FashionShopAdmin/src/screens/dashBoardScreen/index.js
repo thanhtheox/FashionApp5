@@ -1,10 +1,11 @@
-import { Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Platform, UIManager,LayoutAnimation, ScrollView } from 'react-native'
+import { Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Platform, UIManager,LayoutAnimation, ScrollView, Alert } from 'react-native'
 import React, { useState } from 'react'
 import scale from '../../constants/responsive'
 import color from '../../constants/color'
 import FONT_FAMILY from '../../constants/fonts'
 import SaveButton from '../../components/buttons/Save'
 import { IC_Down, IC_Forward } from '../../assets/icons'
+
 
 
 if (
@@ -151,7 +152,7 @@ const DashBoardScreen = (props) => {
       </View>
 
       <View style={styles.buttonSignOut}>
-        <SaveButton text={'Sign Out'}></SaveButton>
+        <SaveButton text={'Sign Out'} onPress={()=>props.navigation.navigate('SignIn')}></SaveButton>
       </View>
     </SafeAreaView>
   )

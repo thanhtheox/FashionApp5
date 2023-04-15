@@ -22,7 +22,7 @@ import EditUserScreen from '../screens/editUserScreen';
 import EditItemDetailScreen from '../screens/editItemDetailScreen';
 import EditItemScreen from '../screens/editItemScreen';
 import EditCollectionScreen from '../screens/editCollectionScreen';
-import SignUpScreen from '../screens/signUpScreen';
+import SignInScreen from '../screens/signInScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -32,10 +32,10 @@ const Stack = createNativeStackNavigator();
 const MyNavigationContainer= () => {
   return (
     <NavigationContainer independent={true}>
-       <Stack.Navigator  screenOptions={{headerShown: false}} initialRouteName='Login' >
+       <Stack.Navigator  screenOptions={{headerShown: false}} initialRouteName='SignIn' >
 
 {/* login */}
-         <Stack.Screen name="Login" component={SignUpScreen} />
+         <Stack.Screen name="SignIn" component={SignInScreen} />
 
 
 {/* dashboard */}
