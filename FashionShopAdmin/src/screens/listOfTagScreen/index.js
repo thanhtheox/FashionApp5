@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     textTile: {
-        color: color.Background,
+        color: color.White,
         fontSize: scale(36),
         fontFamily: FONT_FAMILY.JoseFinSans,
         fontWeight: '600',
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     viewTextLabel:{
         width: scale(122),
         height: scale(36),
-        backgroundColor: color.Background,
+        backgroundColor: color.White,
         alignItems: 'center',
     },
     textLabel: {

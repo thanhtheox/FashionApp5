@@ -50,6 +50,7 @@ const ListOfCollectionScreen = (props) => {
                   <CollectionItem
                     name={item.name}
                     source={item.source}
+                    onPress={()=>props.navigation.navigate("EditCollection")}
                   />
               )}
             />      
@@ -68,15 +69,16 @@ const styles = StyleSheet.create({
         height: Dimensions.get('screen').height*0.25,
         backgroundColor: color.TitleActive,
         elevation: 1,
-        justifyContent: 'flex-end',
-        paddingBottom: scale(20)
+        paddingBottom: scale(20),
+        justifyContent: 'flex-end'
       },
       viewText:{
-        marginTop: scale(30),
+        // marginTop: scale(80),
+
       },
       viewTitleText:{
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
       },
       textTile: {
         color: color.White,
@@ -90,6 +92,7 @@ const styles = StyleSheet.create({
         width: scale(175),
         height: scale(36),
         alignItems: 'center',
+        marginTop: scale(10),
       },
       textLabel: {
         color: color.TitleActive,

@@ -6,7 +6,7 @@ import FONT_FAMILY from '../../constants/fonts'
 import { IMG_Collection, IMG_ModelFour, IMG_ModelOne, IMG_ModelThree, IMG_ModelTwo } from '../../assets/images'
 import CollectionItem from '../listOfCollectionScreen/components/collectionItem'
 import { IC_Backward, IC_BackwardArrow } from '../../assets/icons'
-import axios from 'axios'
+import BlogItem from './components/blogItem'
 
 const data=[
   {id:1,name: 'SAPPOCHE', source: IMG_Collection},
@@ -20,12 +20,6 @@ const data=[
 ]
 
 const ListOfBlogScreen = (props) => {
-
-  useEffect(() => {
-    axios.get('https://fashion-app-0m3s.onrender.com/get-all-product')
-    .then((res) => console.log(res))
-    .catch(err => console.log(err.response.data));
-  }, []);
     
   return (
     <SafeAreaView style={styles.container}>
@@ -44,19 +38,11 @@ const ListOfBlogScreen = (props) => {
         </View>
         
         <View style={styles.body}>
-        <FlatList
-        style={styles.flat}
-              data={data}
-              keyExtractor={item => `${item.id}`}
-              numColumns={2}
-              columnWrapperStyle={{alignSelf: 'center'}}
-              renderItem={({item}) => (
-                  <CollectionItem
-                    name={item.name}
-                    source={item.source}
-                  />
-              )}
-            />      
+        <ScrollView>
+          {data.map((item,index)=>(
+            <BlogItem key={index} source={item.source} name={item.name}></BlogItem>
+            ))}
+          </ScrollView>   
         </View>
     </SafeAreaView>
   )
@@ -72,9 +58,11 @@ const styles = StyleSheet.create({
         height: Dimensions.get('screen').height*0.25,
         backgroundColor: color.TitleActive,
         elevation: 1,
+        justifyContent:'flex-end',
+        paddingBottom: scale(30)
       },
       viewText:{
-        marginTop: scale(80),
+        // marginTop: scale(80),
       },
       viewTitleText: {
         flexDirection: 'row',
@@ -92,6 +80,7 @@ const styles = StyleSheet.create({
         width: scale(175),
         height: scale(36),
         alignItems: 'center',
+        marginTop: scale(10)
       },
       textLabel: {
         color: color.TitleActive,
@@ -120,9 +109,5 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: color.White,
       },
-      flat:{
-        width: '100%',
-        alignSelf: 'center'
-      }
       
 })

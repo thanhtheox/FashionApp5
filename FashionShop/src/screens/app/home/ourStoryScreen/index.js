@@ -17,24 +17,26 @@ import {
   import { LineBottom } from '../../../../components/footer/images';
   import { IMG_OurStory } from '../../../../assets/images';
 
-  const OurStoryScreen = () => {  
+  const OurStoryScreen = (props) => {  
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView>
-        <Custom_Header/>
-        <View style={styles.introTextBox}>
-            <Text style={styles.introText}>OUR STORY</Text>
-            <Image source={LineBottom}/>
-        </View>
-        <View style={styles.bodyTextBox}>
-          <Text numberOfLines={4} style={styles.bodyText}>     Fashion Shop is a project of Team 5 which is done in 3 months for 2 subjects: Software Engineering and Mobile Device Application Development.</Text>
-          <Text numberOfLines={2} style={styles.bodyText}>     The app aims to support fashion store or fashion brand about online services.</Text>
-          <Text numberOfLines={3} style={styles.bodyText}>     Team 5 has 4 members: Thanh Thảo, Đình Khôi, Thu Hiền, Phước Trí from University of Information Technology.</Text>
-        </View>
-        <View style={styles.ImageBox}>
-            <Image source={IMG_OurStory} style={styles.img}/>
-        </View>
-        <Custom_Footer/>
+          <View style={styles.introTextBox}>
+              <Text style={styles.introText}>OUR STORY</Text>
+              <Image source={LineBottom}/>
+          </View>
+          <View style={styles.bodyTextBox}>
+            <Text numberOfLines={4} style={styles.bodyText}>     Fashion Shop is a project of Team 5 which is done in 3 months for 2 subjects: Software Engineering and Mobile Device Application Development.</Text>
+            <Text numberOfLines={2} style={styles.bodyText}>     The app aims to support fashion store or fashion brand about online services.</Text>
+            <Text numberOfLines={3} style={styles.bodyText}>     Team 5 has 4 members: Thanh Thảo, Đình Khôi, Thu Hiền, Phước Trí from University of Information Technology.</Text>
+          </View>
+          <View style={styles.ImageBox}>
+              <Image source={IMG_OurStory} style={styles.img}/>
+          </View>
+          <Custom_Footer 
+          onAboutPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'OurStoryScreen' })}
+          onContactPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'ContactUsScreen' })}
+          onBlogPress={() => props.navigation.navigate('BlogStackScreen', { screen: 'BlogGridViewScreen' })}/>
         </ScrollView>
       </SafeAreaView>
     );
