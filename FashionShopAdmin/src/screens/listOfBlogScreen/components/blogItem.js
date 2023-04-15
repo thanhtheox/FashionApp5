@@ -8,7 +8,7 @@ import { IC_Address, IC_Backward, IC_Delete, IC_Heart } from '../../../assets/ic
 
 const BlogItem = (props) => {
   return (
-    <TouchableOpacity style={styles.view}>
+    <TouchableOpacity style={styles.view} onPress={props.onPress}>
         
         <View style={styles.viewImage}>
              <View style={styles.viewTitle}>
