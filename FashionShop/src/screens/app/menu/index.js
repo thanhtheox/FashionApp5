@@ -1,7 +1,7 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View ,Platform, UIManager,LayoutAnimation, ScrollView} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import color from '../../../constants/color'
-import { IC_Call, IC_Close, IC_Down, IC_ForwardArrow, IC_Location, IC_Up } from '../../../assets/icons'
+import { IC_Call, IC_Close, IC_Down,IC_Profile, IC_ForwardArrow, IC_Location, IC_Up } from '../../../assets/icons'
 import FONT_FAMILY from '../../../constants/fonts'
 import scale from '../../../constants/responsive'
 import Custom_CategoryScrollView from './components/Custom_CategoryScrollView'
@@ -128,7 +128,7 @@ const Accordion = ({ item, onClickFunction }) => {
     </>
   );
 };
-const Menu = () => {
+const Menu = (props) => {
   const [listDataSource, setListDataSource] = useState(parents);
 
 
@@ -148,7 +148,7 @@ const Menu = () => {
   return (
     <SafeAreaView style={styles.container}>
         {/* Icon Close */}
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => props.navigation.goBack()}>
             <IC_Close/>
         </TouchableOpacity>
         <ScrollView>
@@ -167,6 +167,10 @@ const Menu = () => {
             ))}
           </View>
           {/* Buttons */}
+          <TouchableOpacity style={styles.buttonView}>
+            <IC_Profile/>
+            <Text style={styles.buttonText}>My Profile</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.buttonView}>
             <IC_ForwardArrow/>
             <Text style={styles.buttonText}>Sign Out</Text>

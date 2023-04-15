@@ -12,7 +12,7 @@ const url_Twitter = "https://twitter.com/i/flow/login";
 const url_Instagram = "https://www.instagram.com/?hl=en";
 const url_Youtube = "https://www.youtube.com/";
 
-const Custom_Footer = () => {
+const Custom_Footer = (props) => {
 
     const openUrl = async (url) => {
         try{
@@ -51,15 +51,15 @@ const Custom_Footer = () => {
         <>
         <View style={styles.buttonContainer}>
             {/* About Button */}
-            <TouchableOpacity >
+            <TouchableOpacity onPress={props.onAboutPress}>
                 <Text style={styles.aboutText}>About</Text>
             </TouchableOpacity>
             {/* Contact Button */}
-            <TouchableOpacity style={{marginLeft: scale(52)}}>
+            <TouchableOpacity style={{marginLeft: scale(52)}} onPress={props.onContactPress}>
                 <Text style={styles.contactText}>Contact</Text>
             </TouchableOpacity>
             {/* Blog Button */}
-            <TouchableOpacity style={{marginLeft: scale(52)}}>
+            <TouchableOpacity style={{marginLeft: scale(52)}} onPress={props.onBlogPress}>
                 <Text style={styles.blogText}>Blog</Text>
             </TouchableOpacity>
         </View>

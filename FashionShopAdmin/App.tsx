@@ -15,6 +15,8 @@ import CollectionItem from './src/screens/listOfCollectionScreen/components/coll
 import ListOfBlogScreen from './src/screens/listOfBlogScreen'
 import AddCollectionScreen from './src/screens/addCollectionScreen'
 import MyNavigationContainer from './src/router/navigationContainer'
+import UserItem from './src/screens/listOfUserScreen/component/userItem'
+import ListOfUserScreen from './src/screens/listOfUserScreen'
 
 const App = () => {
   return (

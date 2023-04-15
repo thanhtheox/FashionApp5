@@ -45,7 +45,6 @@ import {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView>
-        <Custom_Header/>
         {/* Image */}
         <Image source={IMG_OurStory} resizeMode='stretch' style={{width:'100%'}}/>
         {/* Blog title */}
@@ -97,7 +96,9 @@ import {
                 />
             )}
         </View>
-        <Custom_Footer/>
+        <Custom_Footer
+          onAboutPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'OurStoryScreen' })}
+          onContactPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'ContactUsScreen' })}/>
         </ScrollView>
       </SafeAreaView>
     );

@@ -119,7 +119,6 @@ const searchResult = [
     );
     return (
       <SafeAreaView style={styles.container}>
-        <Custom_Header />
         <SearchResultBar />
         <View style={styles.resultSum}>
           <Text style={styles.sum}>SEARCH RESULTS</Text>
@@ -153,7 +152,10 @@ const searchResult = [
                 </TouchableOpacity>
               )}
           </View>
-          <Custom_Footer/>
+          <Custom_Footer 
+          onAboutPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'OurStoryScreen' })}
+          onContactPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'ContactUsScreen' })}
+          onBlogPress={() => props.navigation.navigate('BlogStackScreen', { screen: 'BlogGridViewScreen' })}/>
         </ScrollView>
       </SafeAreaView>
     );
