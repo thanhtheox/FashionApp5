@@ -59,7 +59,7 @@ const Custom_Footer = (props) => {
                 <Text style={styles.contactText}>Contact</Text>
             </TouchableOpacity>
             {/* Blog Button */}
-            <TouchableOpacity style={{marginLeft: scale(52)}} onPress={props.onAboutPress}>
+            <TouchableOpacity style={{marginLeft: scale(52)}} onPress={props.onBlogPress}>
                 <Text style={styles.blogText}>Blog</Text>
             </TouchableOpacity>
         </View>
