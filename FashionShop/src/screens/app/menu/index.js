@@ -6,6 +6,7 @@ import FONT_FAMILY from '../../../constants/fonts'
 import scale from '../../../constants/responsive'
 import Custom_CategoryScrollView from './components/Custom_CategoryScrollView'
 import Custom_MenuFooter from './components/Custom_MenuFooter'
+import OKMessageBox from '../../../components/messageBox/OKMessageBox'
 
 if (
   Platform.OS === "android" &&
@@ -144,9 +145,13 @@ const Menu = (props) => {
       array[index]['isExpanded'] = !array[index]['isExpanded'];
     setListDataSource(array);
   };
-  
+  const [visible, setVisible] = useState(false);
+
   return (
     <SafeAreaView style={styles.container}>
+        <OKMessageBox visible={visible} clickCancel={() => {setVisible(false)}} 
+        title={"OUR ADDRESS"} 
+        message={"KTX Khu B"}  />
         {/* Icon Close */}
         <TouchableOpacity onPress={() => props.navigation.goBack()}>
             <IC_Close/>
@@ -167,11 +172,13 @@ const Menu = (props) => {
             ))}
           </View>
           {/* Buttons */}
-          <TouchableOpacity style={styles.buttonView}>
+          <TouchableOpacity style={styles.buttonView} 
+          onPress={() => props.navigation.navigate('MyInfoScreen')}>
             <IC_Profile/>
             <Text style={styles.buttonText}>My Profile</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonView}>
+          <TouchableOpacity style={styles.buttonView} 
+          onPress={() => props.navigation.navigate('AuthStackScreen', { screen: 'OnboardingScreen' })}>
             <IC_ForwardArrow/>
             <Text style={styles.buttonText}>Sign Out</Text>
           </TouchableOpacity>
@@ -179,7 +186,7 @@ const Menu = (props) => {
             <IC_Call/>
             <Text style={styles.buttonText}>{'(786) 713-8616'}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonView}>
+          <TouchableOpacity style={styles.buttonView} onPress={() => setVisible(true)}>
             <IC_Location/>
             <Text style={styles.buttonText}>Store locator</Text>
           </TouchableOpacity>
