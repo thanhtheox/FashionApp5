@@ -1,23 +1,24 @@
 import { SafeAreaView, StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import color from '../../constants/color'
 import scale from '../../constants/responsive'
 import FONT_FAMILY from '../../constants/fonts'
 import { DataTable } from 'react-native-paper'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import { IC_Backward, IC_BackwardArrow } from '../../assets/icons'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
-const tagData=[
-    {id: 1,name: 'Salmon', type: {product: true, blog: true}},
-    {id: 2,name: 'Red', type: {product: true, blog: true}},
-    {id: 3,name: 'Tan', type: {product: false, blog: true}},
-    {id: 4,name: 'Pink', type: {product: true, blog: true}},
-    {id: 5,name: 'Tomato', type: {product: true, blog: false}},
-    {id: 6,name: 'Orange', type: {product: true, blog: true}},
-    {id: 7,name: 'Violet', type: {product: true, blog: true}},
-    {id: 8,name: 'BlueViolet', type: {product: true, blog: true}},
-    {id: 9,name: 'LimeGreen', type: {product: true, blog: true}},
-];
+// const tagData=[
+//     {id: 1,name: 'Salmon', type: {product: true, blog: true}},
+//     {id: 2,name: 'Red', type: {product: true, blog: true}},
+//     {id: 3,name: 'Tan', type: {product: false, blog: true}},
+//     {id: 4,name: 'Pink', type: {product: true, blog: true}},
+//     {id: 5,name: 'Tomato', type: {product: true, blog: false}},
+//     {id: 6,name: 'Orange', type: {product: true, blog: true}},
+//     {id: 7,name: 'Violet', type: {product: true, blog: true}},
+//     {id: 8,name: 'BlueViolet', type: {product: true, blog: true}},
+//     {id: 9,name: 'LimeGreen', type: {product: true, blog: true}},
+// ];
 
 const dataSize=[
   {id: 1, size: 'S', width: '56', length: '68'},
@@ -27,6 +28,34 @@ const dataSize=[
 ];
 
 const ListOfTagScreen = (props) => {
+    const [tagData, setTag] = useState([]);
+    const axiousPrivate = useAxiosPrivate();
+
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const getTags = async () => {
+            try {
+                const response = await axiousPrivate.get('/get-all-tag', {
+                    signal: controller.signal
+                });
+                console.log((response.data));
+                isMounted && setTag(response.data);
+            } 
+            catch (err) {
+                console.log(err.response.data);
+            }
+        }
+
+        getTags();
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+
+    }, [])
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
@@ -56,10 +85,10 @@ const ListOfTagScreen = (props) => {
                         <DataTable.Title textStyle={styles.text}>Type</DataTable.Title>
                     </DataTable.Header>
                     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
-                        {tagData.map((tag) => (
-                            <TouchableOpacity key={tag.id}>
+                        {tagData.map((tag, index) => (
+                            <TouchableOpacity key={tag._id}>
                                 <DataTable.Row style={{height: scale(70)}} >
-                                    <DataTable.Cell textStyle={styles.text}>{tag.id}</DataTable.Cell>
+                                    <DataTable.Cell textStyle={styles.text}>{index}</DataTable.Cell>
                                     <DataTable.Cell textStyle={styles.text}>{tag.name}</DataTable.Cell>
                                         <View>
                                             <BouncyCheckbox
