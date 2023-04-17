@@ -2,6 +2,10 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "src/assets/fonts/JosefinSans-Bold.ttf",
+      "sha1": "db56b62fee977a738b111e277f354ada736d6c0a"
+    },
+    {
       "path": "src/assets/fonts/JosefinSans-Italic.ttf",
       "sha1": "6e939d4808dffc2245b3e361464d46b7bcea2ed5"
     },

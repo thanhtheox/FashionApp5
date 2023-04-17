@@ -6,16 +6,45 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import {IC_BackwardArrow} from '../../assets/icons';
 import scale from '../../constants/responsive';
 import SaveButton from '../../components/buttons/Save';
+import axios from '../../apis/axios';
+import useAuth from '../../hooks/useAuth';
+
 
 const SignInScreen = (props) => {
+  const { setAuth } = useAuth();
   const [mail, setMail] = useState('');
   const [pass, setPass] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.post('/login',
+        JSON.stringify({ email: mail, password: pass }),
+        {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true
+        }
+      );
+      console.log("success", JSON.stringify(response.data));
+
+      const accessToken = response?.data?.accessToken;
+      setAuth({ email: mail, accessToken })
+      setLoading(false);
+      props.navigation.navigate('DashBoard');
+    } 
+    catch (err) 
+    {
+      console.log("err", err.response.data);
+      setLoading(false);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -52,7 +81,7 @@ const SignInScreen = (props) => {
         </View>
 
         <View style={styles.buttonSignIn}>
-          <SaveButton text={'Sign In'} onPress={() => props.navigation.navigate('DashBoard')}/>
+          <SaveButton text={'Sign In'} onPress={handleSubmit} loading={loading}/>
         </View>
 
         <TouchableOpacity style={styles.ViewForgotText}>
