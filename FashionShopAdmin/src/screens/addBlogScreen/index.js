@@ -141,9 +141,10 @@ const AddBlogScreen = (props) => {
                 </View>
             </View>
 {/* body */}
-            <View style={styles.body}>
-                <KeyboardAvoidingView style={{flex: 1}}>
-                    <ScrollView overScrollMode='auto' contentContainerStyle={{flexGrow: 1}}>
+            
+                <KeyboardAvoidingView  behavior="padding">
+                  <View style={styles.body}>
+                    <ScrollView  keyboardShouldPersistTaps="handled" >
     {/* image */}
                         <View style={styles.imagePart}>
                             <Text style={styles.bodyText}>Image</Text>
@@ -216,11 +217,13 @@ const AddBlogScreen = (props) => {
                                                       
                         </View>
                     </ScrollView>
+
                     <View style={styles.button}>
-                        <SaveButton text={'Add blog'} onPress={()=>props.navigation.navigate("ListBlog")}></SaveButton>
-                    </View>  
-                </KeyboardAvoidingView>
-            </View>
+                     <SaveButton text={'Add blog'} onPress={()=>props.navigation.navigate("ListBlog")}></SaveButton>
+                   </View> 
+                </View>
+            </KeyboardAvoidingView>
+            
             
             <Message visible={visible} clickCancel={() => setVisible(false)}/> 
         </SafeAreaView>
@@ -261,10 +264,9 @@ const styles = StyleSheet.create({
 
     //  body
     body: {
-        flex: 1,
         backgroundColor: color.White,
         paddingHorizontal: scale(10),
-        height: Dimensions.get('screen').height*0.85,
+        height: Dimensions.get('screen').height*0.82
     },
     bodyText: {
         color: color.Body,
@@ -316,17 +318,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         gap: scale(15),
+
     },
     // detail button
-    itemDetailButton: {
-        paddingBottom: scale(15),
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-    },
     button:{
-        marginTop: scale(70),
-        height: Dimensions.get('screen').height*0.15,
+        // marginTop: scale(0),
+        height: Dimensions.get('screen').height*0.1,
         alignItems: 'center'
     },
 });
