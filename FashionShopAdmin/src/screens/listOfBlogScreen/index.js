@@ -31,7 +31,7 @@ const ListOfBlogScreen = (props) => {
                 </TouchableOpacity>
               <Text style={styles.textTile}>List of blogs</Text>
             </View>
-                <TouchableOpacity style={styles.viewTextLabel}>
+                <TouchableOpacity style={styles.viewTextLabel} onPress={()=>props.navigation.navigate('AddBlog')}>
                     <Text style={styles.textLabel}>Add blog</Text>
                 </TouchableOpacity>
           </View>
@@ -40,7 +40,7 @@ const ListOfBlogScreen = (props) => {
         <View style={styles.body}>
         <ScrollView>
           {data.map((item,index)=>(
-            <BlogItem key={index} source={item.source} name={item.name}></BlogItem>
+            <BlogItem key={index} source={item.source} name={item.name} onPress={()=>props.navigation.navigate('EditBlog')}></BlogItem>
             ))}
           </ScrollView>   
         </View>

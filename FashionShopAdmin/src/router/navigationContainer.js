@@ -23,11 +23,11 @@ import EditItemDetailScreen from '../screens/editItemDetailScreen';
 import EditItemScreen from '../screens/editItemScreen';
 import EditCollectionScreen from '../screens/editCollectionScreen';
 import SignInScreen from '../screens/signInScreen';
+import AddBlogScreen from '../screens/addBlogScreen';
+import EditBlogScreen from '../screens/editBlogScreen';
 
 
 const Stack = createNativeStackNavigator();
-
-
 
 const MyNavigationContainer= () => {
   return (
@@ -54,8 +54,11 @@ const MyNavigationContainer= () => {
 
 
 
-  {/* Blog  */}
-          <Stack.Screen name="ListBlog" component={ListOfBlogScreen} />
+{/* Blog  */}
+         <Stack.Screen name="ListBlog" component={ListOfBlogScreen} />
+         <Stack.Screen name="AddBlog" component={AddBlogScreen} />
+         <Stack.Screen name="EditBlog" component={EditBlogScreen} />
+
 
 {/*  collection */}
          <Stack.Screen name="AddCollection" component={AddCollectionScreen} />
