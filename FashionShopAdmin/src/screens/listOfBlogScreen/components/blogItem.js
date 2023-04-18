@@ -14,7 +14,7 @@ const BlogItem = (props) => {
              <View style={styles.viewTitle}>
                 <Text style={styles.textTitle} numberOfLines={1} >{props.name}</Text>
             </View>
-            <ImageBackground source={props.source} style={styles.image} >
+            <ImageBackground source={{uri:props.source||'https://climate.onep.go.th/wp-content/uploads/2020/01/default-image.jpg'}} style={styles.image} >
                 <TouchableOpacity style={styles.viewIcon}>
                     <IC_Delete />
                 </TouchableOpacity>

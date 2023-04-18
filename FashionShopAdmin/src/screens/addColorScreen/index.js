@@ -5,7 +5,7 @@ import FONT_FAMILY from '../../constants/fonts'
 import { IC_Backward } from '../../assets/icons'
 import scale from '../../constants/responsive'
 import SaveButton from '../../components/buttons/Save'
-import { ColorPicker } from 'react-native-color-picker'
+import { TriangleColorPicker } from 'react-native-color-picker'
 
 const AddColorScreen = (props) => {
     const [text, onChangeText] = useState("");
@@ -58,12 +58,13 @@ const AddColorScreen = (props) => {
                 </View>
             </View>
             <View  style={styles.colorView}>
-            <ColorPicker
-                onColorSelected={color => onChangeTextColor(color)}
-                // onColorChange={onColorChange}
-                // color={textColor}
-                style={{flex: 1}}
-            />
+                <TriangleColorPicker
+                    onColorSelected={color => onChangeTextColor(color)}
+                    // onColorChange={onColorChange}
+                    // color={textColor}
+                    style={{flex: 1}}
+                    //hideControls={true}
+                />
             </View>
 
 
@@ -149,6 +150,7 @@ const styles = StyleSheet.create({
     // },
     colorView:{
         height: Dimensions.get('screen').height*0.3,
+        padding: scale(15)
     },
     button:{
         marginTop: scale(70),
