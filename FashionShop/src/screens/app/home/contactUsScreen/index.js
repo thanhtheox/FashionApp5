@@ -10,17 +10,22 @@ import {
     Icon
   } from 'react-native';
   import React, {useState} from 'react';
-  import Custom_Header from '../../../../components/header/Custom_Header';
   import Custom_Footer from '../../../../components/footer/Custom_Footer';
   import color from '../../../../constants/color';
   import FONT_FAMILY from '../../../../constants/fonts';
   import scale from '../../../../constants/responsive';
   import { LineBottom } from '../../../../components/footer/images';
-  import SaveButton from '../../../../components/buttons/Save';
+  import OKMessageBox from '../../../../components/messageBox/OKMessageBox';
   import { IC_ContactCall, IC_ContactText } from '../../../../assets/icons';
+
   const ContactUsScreen = (props) => {  
+    const [chooseButton, setChooseButton] = useState('call');
+    const [visible, setVisible] = useState(false);
     return (
       <SafeAreaView style={styles.container}>
+        <OKMessageBox visible={visible} clickCancel={() => {setVisible(false)}} 
+        title={chooseButton==='call'? "OUR PHONE NUMBER":"OUR EMAIL"} 
+        message={chooseButton==='call'?"0912345678":"fashionShop@gmail.com"}  />
         <ScrollView>
             <View style={styles.introTextBox}>
                 <Text style={styles.introText}>CONTACT US</Text>
@@ -29,14 +34,14 @@ import {
             <View style={styles.bodyTextBox}>
                 <IC_ContactCall style={styles.call}/>
                 <Text numberOfLines={3} style={styles.bodyText}>     Need an ASAP answer? Contact us via phone, from 8:00 to 18:00, everyday! We are always ready to serve you.</Text>
-                <TouchableOpacity style = {styles.CallButtonPosition}>
+                <TouchableOpacity style = {styles.CallButtonPosition} onPress={() => setVisible(true)}>
                     <View style = {styles.CallButton}> 
                         <Text style={styles.buttonCall}>CALL US</Text>
                     </View>
                 </TouchableOpacity>
                 <IC_ContactText style={styles.text}/>
                 <Text numberOfLines={9} style={styles.bodyText1}>     You can text us at 0912345678 – or click on the “text us” link below on your mobile device. Please allow the system to acknowledge a simple greeting before providing your question/order details. Consent is not required for any purchase. Message and data rates may apply. Text messaging may not be available via all carriers.</Text>
-                <TouchableOpacity style = {styles.TextButtonPosition}>
+                <TouchableOpacity style = {styles.TextButtonPosition} onPress={() => {setVisible(true),setChooseButton('text')}}>
                     <View style = {styles.TextButton}> 
                         <Text style={styles.buttonText}>TEXT US</Text>
                     </View>
