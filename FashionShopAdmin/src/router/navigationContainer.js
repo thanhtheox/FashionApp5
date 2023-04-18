@@ -25,6 +25,7 @@ import EditCollectionScreen from '../screens/editCollectionScreen';
 import SignInScreen from '../screens/signInScreen';
 import SplashScreen from '../screens/splashScreen';
 import useAuth from '../hooks/useAuth';
+import AddCategoryScreen from '../screens/addCategory';
 import AddBlogScreen from '../screens/addBlogScreen';
 import EditBlogScreen from '../screens/editBlogScreen';
 
@@ -95,6 +96,7 @@ const MyNavigationContainer= () => {
 
 {/*Category */}
           <Stack.Screen name="ListCategory" component={ListOfCategoryScreen} />
+          <Stack.Screen name="AddCategory" component={AddCategoryScreen} />
 
 {/* user */}
           <Stack.Screen name="ListUser" component={ListOfUserScreen} />

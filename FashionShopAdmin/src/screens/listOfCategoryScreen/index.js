@@ -16,6 +16,7 @@ import scale from '../../constants/responsive';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import { IC_Backward, IC_Forward , IC_Down, IC_BackwardArrow} from '../../assets/icons';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 
 const CONTENT = [
@@ -143,6 +144,34 @@ const ListOfCategoryScreen = (props) => {
     setListDataSource(array);
   };
 
+  const axiosPrivate = useAxiosPrivate();
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
+    const getCategories = async () => {
+        try {
+            const response = await axiosPrivate.get('/all-categories', {
+                signal: controller.signal
+            });
+            console.log(response.data);
+            isMounted && setData(response.data);
+        } 
+        catch (err) {
+            console.log(err.response.data);
+        }
+    }
+
+    getCategories();
+
+    return () => {
+        isMounted = false;
+        controller.abort();
+    }
+
+  }, [])
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.header}>
@@ -154,7 +183,7 @@ const ListOfCategoryScreen = (props) => {
               </TouchableOpacity>
             <Text style={styles.textTile}>List of categories</Text>
           </View>
-          <TouchableOpacity style={styles.viewTextLabel}>
+          <TouchableOpacity style={styles.viewTextLabel} onPress={()=>props.navigation.navigate('AddCategory')}>
             <Text style={styles.textLabel}>Add category</Text>
           </TouchableOpacity>
         </View>

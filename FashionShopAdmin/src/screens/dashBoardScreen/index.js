@@ -55,20 +55,20 @@ const DashBoardScreen = (props) => {
   const body = (
     <View >
       <TouchableOpacity style={styles.viewListBody} onPress={()=>props.navigation.navigate("ListItem")}>
-      <View style={styles.viewTextList}>
-        <Text style={styles.textListBody}>Item</Text>
-      </View>
-      <View style={styles.viewIcon}>
-          <IC_Forward></IC_Forward>
-      </View>
+        <View style={styles.viewTextList}>
+          <Text style={styles.textListBody}>Item</Text>
+        </View>
+        <View style={styles.viewIcon}>
+            <IC_Forward stroke={color.White}></IC_Forward>
+        </View>
       </TouchableOpacity>
       <TouchableOpacity style={styles.viewListBody} onPress={()=>props.navigation.navigate("ListColorAndSize")}>
-      <View style={styles.viewTextList}>
-        <Text style={styles.textListBody}>Color & Size</Text>
-      </View>
-      <View style={styles.viewIcon}>
-          <IC_Forward></IC_Forward>
-      </View>
+        <View style={styles.viewTextList}>
+          <Text style={styles.textListBody}>Color & Size</Text>
+        </View>
+        <View style={styles.viewIcon}>
+            <IC_Forward stroke={color.White}></IC_Forward>
+        </View>
       </TouchableOpacity>
     </View>
   )
@@ -185,8 +185,8 @@ const styles = StyleSheet.create({
       textTile: {
         color: color.White,
         fontSize: 36,
-        fontFamily: FONT_FAMILY.JoseFinSans,
-        fontWeight: '700',
+        fontFamily: FONT_FAMILY.Bold,
+        fontWeight: '600',
       },
       viewTextLabel:{
         width: scale(198),
@@ -197,8 +197,8 @@ const styles = StyleSheet.create({
       textLabel: {
         color: color.White,
         fontSize: 24,
-        fontFamily: FONT_FAMILY.JoseFinSans,
-        fontWeight: '700',
+        fontFamily: FONT_FAMILY.Bold,
+        fontWeight: '600',
       },
       body: {
         flex: 0.6,
@@ -240,19 +240,19 @@ const styles = StyleSheet.create({
         overflow: 'hidden'
       },
       viewListBody:{
-        height: scale(68),
+        height: scale(48),
         width:'100%',
         borderBottomWidth: 1,
         flexDirection: 'row',
-        backgroundColor: color.GraySolid,
-        opacity: 30,
+        backgroundColor: color.TitleActive,
+        opacity: 0.7,
       },
       textListBody:{
         fontFamily: FONT_FAMILY.Regular,
         fontSize: 24,
         fontWeight: '400',
-        color: color.TitleActive,
-        marginLeft: scale(30),
+        color: color.White,
+        marginLeft: scale(20),
+        opacity: 1
       },
-     
 })
