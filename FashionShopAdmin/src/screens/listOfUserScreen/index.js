@@ -29,7 +29,7 @@ const ListOfUserScreen = (props) => {
                 <IC_Backward stroke={color.White}></IC_Backward>
             </TouchableOpacity>
             <View >
-                <Text style={styles.textHeader}>List users</Text>
+                <Text style={styles.textHeader}>List of users</Text>
             </View>
         </View>
 
@@ -75,6 +75,5 @@ const styles = StyleSheet.create({
     body:{
         flex: 0.9,
         backgroundColor: color.White,
-
     }
 })

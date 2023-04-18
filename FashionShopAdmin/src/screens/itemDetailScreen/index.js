@@ -32,7 +32,6 @@ const ItemDetailScreen = (props) => {
 
     const { data } = props.route.params;
     console.log(data);
-    const size = ["S", "M", "L", "2XL"];
     const qty = [
         {color: 'red', S: 20, M: 15, L: 3},
         {color: 'blue', S: 17, M: 15, L: 3},
