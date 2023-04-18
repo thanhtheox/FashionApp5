@@ -25,7 +25,7 @@ import { PERMISSIONS, check, RESULTS, request } from 'react-native-permissions';
 import Message from '../../components/alearts.js/messageOnly';
 import SaveButton from '../../components/buttons/Save';
 
-const AddBlogScreen = (props) => {
+const EditBlogScreen = (props) => {
     const [product, setProduct] = useState(init);
 
     const [tag, setTag] = useState([
@@ -137,7 +137,7 @@ const AddBlogScreen = (props) => {
                     <IC_Backward stroke={color.White}></IC_Backward>
                 </TouchableOpacity>
                 <View >
-                    <Text style={styles.textHeader}>Add blog</Text>
+                    <Text style={styles.textHeader}>Edit blog</Text>
                 </View>
             </View>
 {/* body */}
@@ -219,7 +219,7 @@ const AddBlogScreen = (props) => {
                     </ScrollView>
 
                     <View style={styles.button}>
-                     <SaveButton text={'Add blog'} onPress={()=>props.navigation.navigate("ListBlog")}></SaveButton>
+                     <SaveButton text={'Edit blog'} onPress={()=>props.navigation.navigate("ListBlog")}></SaveButton>
                    </View> 
                 </View>
             </KeyboardAvoidingView>
@@ -230,7 +230,7 @@ const AddBlogScreen = (props) => {
     )
 };
 
-export default AddBlogScreen;
+export default EditBlogScreen;
 
 const init = {
     name: '',

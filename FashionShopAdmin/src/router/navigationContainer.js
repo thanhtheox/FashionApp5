@@ -25,11 +25,11 @@ import EditCollectionScreen from '../screens/editCollectionScreen';
 import SignInScreen from '../screens/signInScreen';
 import SplashScreen from '../screens/splashScreen';
 import useAuth from '../hooks/useAuth';
+import AddBlogScreen from '../screens/addBlogScreen';
+import EditBlogScreen from '../screens/editBlogScreen';
 
 
 const Stack = createNativeStackNavigator();
-
-
 
 const MyNavigationContainer= () => {
   const { auth } = useAuth();
@@ -69,6 +69,9 @@ const MyNavigationContainer= () => {
 
 {/* Blog  */}
           <Stack.Screen name="ListBlog" component={ListOfBlogScreen} />
+         <Stack.Screen name="AddBlog" component={AddBlogScreen} />
+         <Stack.Screen name="EditBlog" component={EditBlogScreen} />
+
 
 {/*  collection */}
           <Stack.Screen name="AddCollection" component={AddCollectionScreen} />

@@ -4,7 +4,7 @@ import scale from '../../constants/responsive'
 import color from '../../constants/color'
 import FONT_FAMILY from '../../constants/fonts'
 import SaveButton from '../../components/buttons/Save'
-import { IC_Down, IC_Forward } from '../../assets/icons'
+import { IC_Down, IC_Forward , IC_Up} from '../../assets/icons'
 import useLogout from '../../hooks/useLogout'
 
 
@@ -30,7 +30,7 @@ const Accordion = ({ title, children }) => {
       <TouchableOpacity onPress={toggleOpen} style={styles.viewList} activeOpacity={0.6}>
         {title}
         <View style={styles.viewIcon}>
-        <IC_Down></IC_Down>
+        {!isOpen?<IC_Down></IC_Down>:<IC_Up></IC_Up>}
         </View>
       </TouchableOpacity>
       <View style={[styles.list,!isOpen ? styles.hidden : undefined]}>
