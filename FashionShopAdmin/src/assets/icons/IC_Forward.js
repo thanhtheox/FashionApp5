@@ -10,7 +10,7 @@ const SvgComponent = (props) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <Path d="m9 5 6.963 6.963L9 18.926" stroke={ props.stroke ||"#14142B"} />
+    <Path d="m9 5 6.963 6.963L9 18.926" stroke={props.stroke || "#14142B"} />
   </Svg>
 )
 

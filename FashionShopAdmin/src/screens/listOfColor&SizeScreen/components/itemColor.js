@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,SafeAreaView,TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View,SafeAreaView,TouchableOpacity, Dimensions } from 'react-native'
 import React from 'react'
 import color from '../../../constants/color'
 import scale from '../../../constants/responsive'
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     viewTextName:{
+        marginLeft: scale(10),
         width: '30%',
     },
     viewCode:{
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
     viewColor:{
         
         width: '10%',
-        height: scale(40),
+        height: Dimensions.get('window').width*0.1,
         backgroundColor: '#ffffff'
     },
     text:{

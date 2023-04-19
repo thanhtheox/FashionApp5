@@ -23,6 +23,9 @@ import EditItemDetailScreen from '../screens/editItemDetailScreen';
 import EditItemScreen from '../screens/editItemScreen';
 import EditCollectionScreen from '../screens/editCollectionScreen';
 import SignInScreen from '../screens/signInScreen';
+import SplashScreen from '../screens/splashScreen';
+import useAuth from '../hooks/useAuth';
+import AddCategoryScreen from '../screens/addCategory';
 import AddBlogScreen from '../screens/addBlogScreen';
 import EditBlogScreen from '../screens/editBlogScreen';
 
@@ -30,66 +33,78 @@ import EditBlogScreen from '../screens/editBlogScreen';
 const Stack = createNativeStackNavigator();
 
 const MyNavigationContainer= () => {
+  const { auth } = useAuth();
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  if (isLoading) {
+    // We haven't finished checking for the token yet
+    return <SplashScreen isLoading={isLoading} setIsLoading={setIsLoading}/>;
+  }
+
   return (
     <NavigationContainer independent={true}>
-       <Stack.Navigator  screenOptions={{headerShown: false}} initialRouteName='SignIn' >
-
-{/* login */}
-         <Stack.Screen name="SignIn" component={SignInScreen} />
-
-
+      <Stack.Navigator 
+        screenOptions={{headerShown: false}} >
+        {!auth?.accessToken ? (
+          // login
+          <Stack.Screen name="SignIn" component={SignInScreen} />
+        ) : (
+          <>
+        
 {/* dashboard */}
-         <Stack.Screen name="DashBoard" component={DashBoardScreen} />
+          <Stack.Screen name="DashBoard" component={DashBoardScreen} />
 
-  {/* product  */}
+{/* product  */}
           <Stack.Screen name="ListItem" component={ListOfItemScreen}/>
+
           <Stack.Screen name="ItemDetail" component={ItemDetailScreen} />
           <Stack.Screen name="AddItem" component={AddItemScreen} />
           <Stack.Screen name="AddDetailItem" component={AddItemDetailScreen} />
 
-         <Stack.Screen name="EditItem" component={EditItemScreen} />
-         <Stack.Screen name="EditDetailItem" component={EditItemDetailScreen} />
+          <Stack.Screen name="EditItem" component={EditItemScreen} />
+          <Stack.Screen name="EditDetailItem" component={EditItemDetailScreen} />
 
 
 
 
 
 {/* Blog  */}
-         <Stack.Screen name="ListBlog" component={ListOfBlogScreen} />
-         <Stack.Screen name="AddBlog" component={AddBlogScreen} />
-         <Stack.Screen name="EditBlog" component={EditBlogScreen} />
+          <Stack.Screen name="ListBlog" component={ListOfBlogScreen} />
+          <Stack.Screen name="AddBlog" component={AddBlogScreen} />
+          <Stack.Screen name="EditBlog" component={EditBlogScreen} />
 
 
 {/*  collection */}
-         <Stack.Screen name="AddCollection" component={AddCollectionScreen} />
-         <Stack.Screen name="ListCollection" component={ListOfCollectionScreen} />
-         <Stack.Screen name="EditCollection" component={EditCollectionScreen} />
+          <Stack.Screen name="AddCollection" component={AddCollectionScreen} />
+          <Stack.Screen name="ListCollection" component={ListOfCollectionScreen} />
+          <Stack.Screen name="EditCollection" component={EditCollectionScreen} />
 
 
-  {/* Color & size */}
+{/* Color & size */}
           <Stack.Screen name="ListColorAndSize" component={ListOfColor_SizeScreen} />
           <Stack.Screen name="AddColor" component={AddColorScreen} />
           <Stack.Screen name="AddSize" component={AddSizeScreen} />
 
-  {/* Tag  */}
+{/* Tag  */}
           <Stack.Screen name="ListTag" component={ListOfTagScreen} />
           <Stack.Screen name="AddTag" component={AddTagScreen} />
 
 
   {/* Order no screen*/}
-            <Stack.Screen name="ListOrder" component={ListOfOrderScreen} />
+          <Stack.Screen name="ListOrder" component={ListOfOrderScreen} />
 
 
 {/*Category */}
           <Stack.Screen name="ListCategory" component={ListOfCategoryScreen} />
+          <Stack.Screen name="AddCategory" component={AddCategoryScreen} />
 
 {/* user */}
           <Stack.Screen name="ListUser" component={ListOfUserScreen} />
           <Stack.Screen name="EditUser" component={EditUserScreen} />
-
-         
-       </Stack.Navigator>
-     </NavigationContainer>
+          </>
+          )}
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }
 

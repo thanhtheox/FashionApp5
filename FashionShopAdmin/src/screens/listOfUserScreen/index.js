@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import color from '../../constants/color'
 import FONT_FAMILY from '../../constants/fonts'
 import scale from '../../constants/responsive'
@@ -7,6 +7,7 @@ import { IC_Backward } from '../../assets/icons'
 import { ScrollView } from 'react-native-gesture-handler'
 import UserItem from './component/userItem'
 import { IMG_Collection, IMG_Logo, IMG_ModelFour, IMG_ModelOne, IMG_ModelThree, IMG_ModelTwo } from '../../assets/images'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const data=[
     {id:1, name: "Thu hien", phone: "0336708086", date: "03/11/2023",source:IMG_Collection},
@@ -22,6 +23,35 @@ const data=[
 ];
 
 const ListOfUserScreen = (props) => {
+
+
+//     const axiosPrivate = useAxiosPrivate();
+//   const [data, setData] = useState([]);
+
+//   useEffect(() => {
+//     let isMounted = true;
+//     const controller = new AbortController();
+
+//     const getUsers = async () => {
+//       try {
+//         const response = await axiosPrivate.get('/get-all-blog', {
+//           signal: controller.signal,
+//         });
+//         console.log(response.data);
+//         isMounted && setData(response.data);
+//       } catch (err) {
+//         console.log(err.response.data);
+//       }
+//     };
+
+//     getUsers();
+//     return () => {
+//       isMounted = false;
+//       controller.abort();
+//     };
+//   }, []);
+
+
   return (
     <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -29,7 +59,7 @@ const ListOfUserScreen = (props) => {
                 <IC_Backward stroke={color.White}></IC_Backward>
             </TouchableOpacity>
             <View >
-                <Text style={styles.textHeader}>List users</Text>
+                <Text style={styles.textHeader}>List of users</Text>
             </View>
         </View>
 
@@ -75,6 +105,5 @@ const styles = StyleSheet.create({
     body:{
         flex: 0.9,
         backgroundColor: color.White,
-
     }
 })
