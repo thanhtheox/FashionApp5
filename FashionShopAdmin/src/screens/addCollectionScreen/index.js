@@ -8,20 +8,46 @@ import SaveButton from '../../components/buttons/Save'
 import { launchImageLibrary } from 'react-native-image-picker'
 import ItemProductOfCollection from './components/ProductOfCollection'
 import { IMG_AddImage,IMG_Collection, IMG_ModelFour, IMG_ModelOne, IMG_ModelThree, IMG_ModelTwo } from '../../assets/images'
+import { MultipleSelectList } from 'react-native-dropdown-select-list'
 
-data=[
-    {id:1,name: 'SAPPOCHE', source: IMG_Collection},
-    {id:2,name: 'NAGAMI', source: IMG_ModelFour},
-    {id:3,name: 'NONUNO',source: IMG_ModelOne},
-    {id:4,name: 'SUMGA',source: IMG_ModelTwo},
-    {id:5,name: 'KAKHUKO',source: IMG_ModelThree},
-    {id:6,name: 'RAPAMA',source: IMG_ModelFour},
-    {id:7,name: 'TAKOYA',source: IMG_ModelOne},
+
+
+// const [data,setData] = React.useState([]);
+  
+// React.useEffect(() => 
+//   //Get Values from database
+//   axios.get('https://jsonplaceholder.typicode.com/users')
+//     .then((response) => {
+//       // Store Values in Temporary Array
+//       let newArray = response.data.map((item) => {
+//         return {key: item.id, value: item.name}
+//       })
+//       //Set Data Variable
+//       setData(newArray)
+//     })
+//     .catch((e) => {
+//       console.log(e)
+//     })
+// ,[])
+const data=[
+    {id:1, value: 'SAPPOCHE',name: 'SAPPOCHE', source: IMG_Collection},
+    {id:2, value: 'NAGAMI',name: 'NAGAMI', source: IMG_ModelFour},
+    {id:3, value: 'NONUNO',name: 'NONUNO',source: IMG_ModelOne},
+    {id:4, value: 'SUMGA',name: 'SUMGA',source: IMG_ModelTwo},
+    {id:5, value: 'KAKHUKO',name: 'KAKHUKO',source: IMG_ModelThree},
+    {id:6, value: 'RAPAMA',name: 'RAPAMA',source: IMG_ModelFour},
+    {id:7, value: 'TAKOYA',name: 'TAKOYA',source: IMG_ModelOne},
+
 ]
 
+
 const AddCollectionScreen = (props) => {
+
+    
+
+    const [selected, setSelected] = useState([]);
     const [text, onChangeText] = useState("");
-    const [image,setImage]= useState(null);
+    const [image,setImage]= useState('');
 
     let options={
         savePhotos: true,
@@ -80,10 +106,24 @@ const AddCollectionScreen = (props) => {
                 </View>
             </View>
 
+                <View style={styles.viewSelectProduct}>
+
+                    <MultipleSelectList 
+                        setSelected={(val) => setSelected(val)} 
+                        data={data} 
+                        
+                        save={["value", "source","name"]}
+                        onSelect={()=>console.log(selected)} 
+                        label="product"
+                        // numberOfLines={1}
+                        badgeTextStyles={{fontSize: 10, color: color.White}}
+                        badgeStyles={{width: '30%', height: scale(25), alignSelf: 'center',justifyContent: 'center'}}
+                    />
+                </View>
 {/* product  */}
             <View style={styles.viewProduct}>
                 <ScrollView>
-                {data.map((item,index)=>(
+                {selected.map((item,index)=>(
                   <ItemProductOfCollection
                   key={index}
                   number={index+1}
@@ -192,11 +232,21 @@ const styles = StyleSheet.create({
         width: '50%',
         height: '50%'
     },
+//select
 
+viewSelectProduct:{
+    // height: Dimensions.get('screen').height*0.1,
+    elevation: 1,
+    backgroundColor: color.White,
+},
+inputStyles:{
+    backgroundColor: color.Line,
+},
 // product 
     viewProduct:{
         marginTop: scale(10),
-        height: '45%',
+        height: '25%',
+        elevation: 2,
     },
 
 //button
