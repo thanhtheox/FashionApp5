@@ -7,6 +7,7 @@ import ItemColor from './components/itemColor'
 import ItemSize from './components/itemSize'
 import { IC_Backward, IC_BackwardArrow } from '../../assets/icons'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { useIsFocused } from '@react-navigation/native'
 
 const ListOfColor_SizeScreen = (props) => {
 
@@ -14,7 +15,7 @@ const ListOfColor_SizeScreen = (props) => {
   const [dataSize, setDataSize] = useState([]);
   const [dataColor, setDataColor] = useState([]);
 
-
+  const isFocused = useIsFocused();
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
@@ -38,24 +39,23 @@ const ListOfColor_SizeScreen = (props) => {
         console.log(response);
         isMounted && setDataColor(response.data);
       } catch (err) {
-        console.log(err.response.data);
+        console.log(err?.response?.data || "undefined error");
       }
     };
 
     // const {data,error} = {data:{dafa},error,...}
 
-    getSizes();
-    getColors();
+    isFocused && getSizes();
+    isFocused && getColors();
     return () => {
       isMounted = false;
       controller.abort();
     };
-  }, []);
+  }, [isFocused]);
 
   return (
     <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-         
         <View style={styles.viewText}>
           <View style={styles.viewTitleText}>
             <TouchableOpacity style={{marginBottom: scale(40)}} onPress={()=>props.navigation.goBack()}>
@@ -116,7 +116,7 @@ const ListOfColor_SizeScreen = (props) => {
           <ScrollView >
           {dataSize.map((item,index)=>(
                   <ItemSize
-                  key={item.id}
+                  key={item._id}
                   size={item.name}
                   width={item.width}
                   length={item.length}
