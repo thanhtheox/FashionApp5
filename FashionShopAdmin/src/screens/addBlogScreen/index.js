@@ -50,16 +50,6 @@ const AddBlogScreen = (props) => {
         console.log(product)
     }
 
-    const handlePickCategory = (val)=>{
-        console.log(val)
-        setProduct({
-            ...product, 
-            categoryId: val
-        });
-
-        console.log(product)
-    }
-
     const handlePickTag = (val)=>{
         // add pick tag
         const newTag = {tagName: val.value, tagId: val.label};
