@@ -33,28 +33,28 @@ const HomeScreen = (props) => {
   ];
   const products = [
     {
+      id: 1,
+      name: ' reversible angora cardigan',
+      price: 120,
       img: IMG_ModelOne,
-      key: '1',
-      name: '21WN reversible angora cardigan',
-      price: '$120',
     },
     {
+      id: 2,
+      name: '21WN reversible cardigan',
+      price: 140,
       img: IMG_ModelTwo,
-      key: '2',
-      name: '21WN reversible angora cardigan',
-      price: '$120',
     },
     {
+      id: 3,
+      name: '21WN angora cardigan',
+      price: 180,
       img: IMG_ModelThree,
-      key: '3',
-      name: '21WN reversible angora cardigan',
-      price: '$120',
     },
     {
-      img: IMG_ModelFour,
-      key: '4',
+      id: 4,
       name: 'Oblong bag',
-      price: '$120',
+      price: 220,
+      img: IMG_ModelFour,
     },
   ];
   const brands = [
@@ -177,7 +177,7 @@ const HomeScreen = (props) => {
             contentContainerStyle={{alignContent: 'space-around'}}
             horizontal={false}
             data={products}
-            keyExtractor={item => `${item.key}`}
+            keyExtractor={item => `${item.id}`}
             numColumns={2}
             scrollEnabled={false}
             columnWrapperStyle={styles.wrapperArrival}
@@ -188,7 +188,10 @@ const HomeScreen = (props) => {
                   image={item.img}
                   prodName={item.name}
                   prodPrice={item.price}
-                  onPress={() => props.navigation.navigate('ProductDetailsScreen')}
+                  onPress={() => props.navigation.navigate('ProductDetailsScreen', {
+                    // categoryName: props.categoryName,
+                    data: item,
+                  })}
                   // {...props}
                   // categoryData={item}
                 />
@@ -249,7 +252,10 @@ const HomeScreen = (props) => {
                   image={item.img}
                   prodName={item.name}
                   prodPrice={item.price}
-                  onPress={() => props.navigation.navigate('ProductDetailsScreen')}
+                  onPress={() => props.navigation.navigate('ProductDetailsScreen', {
+                    // categoryName: props.categoryName,
+                    data: item,
+                  })}
                   // {...props}
                   // categoryData={item}
                   />

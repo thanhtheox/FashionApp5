@@ -10,7 +10,6 @@ import {
     Icon,
   } from 'react-native';
   import React, {useState, useEffect} from 'react';
-  import Custom_Header from '../../../components/header/Custom_Header';
   import color from '../../../constants/color';
   import FONT_FAMILY from '../../../constants/fonts';
   import scale from '../../../constants/responsive';
@@ -19,65 +18,73 @@ import {
   import { IC_Down, IC_Forward, IC_Plus } from '../../../assets/icons';
   import DropDownPicker from 'react-native-dropdown-picker';
   import { useForm, Controller } from 'react-hook-form';
-  import { Card } from 'react-native-paper';
   import Custom_Cart from '../../../components/cart/Custom_Cart';
   import { IMG_ModelFour } from '../../../assets/images';
+  import { useDispatch,useSelector } from 'react-redux'
+  import {
+    adjustQTY,
+    removeFromCart
+  } from '../../../redux/actions/cartActions';
 
   const CheckOut = () => { 
     const [method, setMethod] = useState([
-        {label: 'Pickup at store - FREE', value: '1'},
-        {label: 'Ship COD - $5', value: '2'},
+        {label: 'Pickup at store - FREE', value: 0},
+        {label: 'Ship COD - $5', value: 5},
     ]); 
-    const [methodValue, setMethodValue] = useState(null)
+    const [methodValue, setMethodValue] = useState(0)
     const [methodOpen, setMethodOpen] = useState(false);
     const { handleSubmit, control } = useForm();
 
     function handlePickMethod(val){
         switch(val.value){
-            case '1':
-                method = [{label: 'Pickup at store - FREE', value: '1'}]
+            case 0:
+                method = [{label: 'Pickup at store - FREE', value: 0}]
                 break;
-            case '2':
-                method = [{label: 'Ship COD - $5', value: '2'}]
+            case 5:
+                method = [{label: 'Ship COD - $5', value: 5}]
                 break;
         }
     }
+    const dispatch = useDispatch();
     const [totalAmount, setTotalAmount] = useState(0);
     const [visible, setVisible] = useState(true);
-    const cartItems = [
-    {
-      id: '1',
-      imgUrl: IMG_ModelFour,
-      qty: 1,
-      name: 'LAMEREI',
-      description: 'Recycle Boucle Knit Cardigan Pink',
-      price: 120,
-    },
-    {
-      id: '2',
-      imgUrl: IMG_ModelFour,
-      qty: 1,
-      name: 'LAMEREI',
-      description: 'Recycle Boucle Knit Cardigan Pink',
-      price: 120,
-    },
-    {
-      id: '3',
-      imgUrl: IMG_ModelFour,
-      qty: 1,
-      name: 'LAMEREI',
-      description: 'Recycle Boucle Knit Cardigan Pink',
-      price: 120,
-    },
-    {
-      id: '4',
-      imgUrl: IMG_ModelFour,
-      qty: 1,
-      name: 'LAMEREI',
-      description: 'Recycle Boucle Knit Cardigan Pink',
-      price: 120,
-    },
-  ];
+  //   const cartItems = [
+  //   {
+  //     id: '1',
+  //     imgUrl: IMG_ModelFour,
+  //     qty: 1,
+  //     name: 'LAMEREI',
+  //     description: 'Recycle Boucle Knit Cardigan Pink',
+  //     price: 120,
+  //   },
+  //   {
+  //     id: '2',
+  //     imgUrl: IMG_ModelFour,
+  //     qty: 1,
+  //     name: 'LAMEREI',
+  //     description: 'Recycle Boucle Knit Cardigan Pink',
+  //     price: 120,
+  //   },
+  //   {
+  //     id: '3',
+  //     imgUrl: IMG_ModelFour,
+  //     qty: 1,
+  //     name: 'LAMEREI',
+  //     description: 'Recycle Boucle Knit Cardigan Pink',
+  //     price: 120,
+  //   },
+  //   {
+  //     id: '4',
+  //     imgUrl: IMG_ModelFour,
+  //     qty: 1,
+  //     name: 'LAMEREI',
+  //     description: 'Recycle Boucle Knit Cardigan Pink',
+  //     price: 120,
+  //   },
+  // ];
+  
+  const cart = useSelector(state => state.cart);
+  const {cartItems} = cart;
   useEffect(() => {
     onCalculateAmount();
     
@@ -100,9 +107,15 @@ import {
     }
     setTotalAmount(total);
   };
+  const qtyChangeHandler = (id, qty) => {
+    dispatch(adjustQTY(id, qty));
+  };
+
+  const removeFromCartHandler = id => {
+    dispatch(removeFromCart(id));
+  };
     return (
       <SafeAreaView style={styles.container}>
-        <Custom_Header/>
         <View style={styles.introTextBox}>
             <Text style={styles.introText}>CHECKOUT</Text>
             <Image source={LineBottom}/>
@@ -152,23 +165,23 @@ import {
             <ScrollView showsVerticalScrollIndicator={false}>
               {cartItems.map(item => (
                 <Custom_Cart
-                  id={item.id}
-                  textNumber={item.qty}
-                  textDescription={item.description}
-                  textName={item.name}
-                  textPrice={item.price*item.qty}
-                  img={item.imgUrl}
-                  key={item.id}
+                id={item.id}
+                qty={item.qty}
+                // textDescription={item.description}
+                name={item.name}
+                price={item.price}
+                img={item.img}
+                key={item.id}
+                qtyChangeHandler={qtyChangeHandler}
+                removeHandler={removeFromCartHandler}
                 />
               ))}
             </ScrollView>
-
           </View>
-                       
         <View/>
         <View style={styles.totalBorder}>
             <Text style={styles.total}>TOTAL</Text>
-            <Text style={styles.price}>${totalAmount}</Text>
+            <Text style={styles.price}>${totalAmount+methodValue}</Text>
         </View>
         <TouchableOpacity style={styles.placeOrder}>
           <Text style={styles.button}>PLACE ORDER</Text>

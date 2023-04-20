@@ -178,7 +178,7 @@ const Menu = (props) => {
             <Text style={styles.buttonText}>My Profile</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttonView} 
-          onPress={() => props.navigation.navigate('AuthStackScreen', { screen: 'OnboardingScreen' })}>
+          onPress={() => props.navigation.replace('AuthStackScreen', { screen: 'OnboardingScreen' })}>
             <IC_ForwardArrow/>
             <Text style={styles.buttonText}>Sign Out</Text>
           </TouchableOpacity>
