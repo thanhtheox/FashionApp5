@@ -11,7 +11,7 @@ const AddToBasket = props => {
     <TouchableOpacity style={styles.container} onPress={props.onPress}>
       <View style={styles.view}>
         <IC_Plus stroke={color.White} style={styles.IcPlus} />
-        <Text style={styles.text}>ADD TO BASKET</Text>
+        <Text style={styles.text}>ADD TO CART</Text>
       </View>
       <TouchableOpacity onPress={() => setLiked(liked === true ? false : true)}>
         <IC_Heart stroke={color.White} style={styles.IcHeart} fill={liked ? color.White : 'none'} />

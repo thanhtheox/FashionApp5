@@ -1,6 +1,6 @@
 import { SafeAreaView, ScrollView, StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions,Modal } from 'react-native'
-import React,{useState} from 'react'
-import Custom_Header from '../../../../components/header/Custom_Header'
+import React,{useState,useEffect} from 'react'
+import { useDispatch } from 'react-redux';
 import Custom_Footer from '../../../../components/footer/Custom_Footer'
 import color from '../../../../constants/color'
 import AddToBasket from '../../../../components/buttons/AddToBasket'
@@ -13,13 +13,36 @@ import FONT_FAMILY from '../../../../constants/fonts'
 import fontStyles from '../../../../constants/fontStyle'
 import Custom_GridViewProd from '../../../../components/products/CustomGridViewProd'
 import ZoomImageView from './components/ZoomImageView'
+import { useSelector,connect } from 'react-redux';
+import { addToCart } from '../../../../redux/actions/cartActions';
 
 
 
 const ProductDetailsScreen = (props) => {
   const [visible,setVisible] = useState(true);
+  const [count, setCount] = useState(1);
   const [colorChoose, setChooseColor] = useState('1');
   const [sizeChoose, setChooseSize] = useState('1');
+ 
+  const {data} = props.route.params;
+  // console.log(data);
+  const dispatch = useDispatch();
+  const addToCartHandler = () => {
+    dispatch(addToCart(data.id, data.name,data.price,data.img,count));
+    // console.log(data.key, count);
+  };
+  const cart = useSelector((state) => state.cart);
+  // const { cartItems } = cart;
+
+
+  useEffect(()=>{
+    console.log('cart change!')
+    console.log('pd screen:' + JSON.stringify(cart));
+  }, [cart])
+  // console.log('pd screen:' + cartItems);
+  // const numberOfProduct = cartItems.length;
+
+
   const sizes = [
     {
       key: '1',
@@ -136,13 +159,13 @@ const ProductDetailsScreen = (props) => {
         {/* Product Variation */}
         <View style={styles.productVariationContainer}>
           <View style={styles.nameView}>
-            <Text style={[fontStyles.titleFont, styles.prodName]}>{'MOHAN'}</Text>
+            <Text style={[fontStyles.titleFont, styles.prodName]}>{'data.name'}</Text>
             <TouchableOpacity><IC_Export /></TouchableOpacity>
           </View>
           <Text style={[fontStyles.bodySmallFont, styles.prodDescription]}>
-            {'Recycle Boucle Knit Cardigan Pink'}
+            {data.name}
           </Text>
-          <Text style={styles.prodPrice}>{'$120'}</Text>
+          <Text style={styles.prodPrice}>${data.price}</Text>
           <View style={{flexDirection:'row', marginTop:scale(18)}}>
             <View style={{flexDirection:'row',justifyContent:'space-between',paddingHorizontal:scale(12),width:'40%'}}>
               <Text style={{color:color.Label, fontFamily:FONT_FAMILY.Regular,
@@ -171,7 +194,7 @@ const ProductDetailsScreen = (props) => {
           </View>
         </View>  
         {/* Button Add To Basket */}
-        <View style={{marginTop:scale(24.5)}}><AddToBasket /></View>
+        <View style={{marginTop:scale(24.5)}}><AddToBasket onPress={addToCartHandler}/></View>
         {/* Product Detail */}
         <View style={styles.detailView}>
           <Text style={[fontStyles.subTitle14pxFont,styles.title]}>MATERIALS</Text>

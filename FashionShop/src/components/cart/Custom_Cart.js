@@ -1,32 +1,37 @@
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity,LogBox} from 'react-native';
 import React, {useState,useEffect} from 'react';
 import scale from '../../constants/responsive';
-import {IMG_ModelTwo} from '../../assets/images/index';
 import FONT_FAMILY from '../../constants/fonts';
 import Color from '../../constants/color';
+import { IC_CartDelete } from '../../assets/icons';
 
 
 const Custom_Cart = props => {
-    const [count, setCount] = useState(props.textNumber);
+    const [count, setCount] = useState(props.qty);
     const inCount = () => {
         setCount(count + 1);
       };
     const decCount = () => {
       if(count > 1)
         setCount(count - 1);
-        // else{
-        //   setVisible(true);
-        //   if(msg)
-        //   props.removeHandler(props.id)
-        // }
+        else{
+          // setVisible(true);
+          // if(msg)
+          props.removeHandler(props.id)
+        }
     };
-    // useEffect(() => props.qtyChangeHandler(props.id, count1), [count1])
+    useEffect(() => {
+      props.qtyChangeHandler(props.id, count)}
+      // props.removeHandler(props.id)}
+      , [count])
     // useEffect(() => {
-    //   if(msg)
-    //   props.removeHandler(props.id)},[msg])
+    //   // if(msg)
+    //   props.removeHandler(props.id)}
+    //   // ,[msg]
+    // )
     
   return (
-    <TouchableOpacity {...props}>
+    <TouchableOpacity {...props} style={{borderWidth:1}}>
       <View key={props.id} style={styles.container}>
         <View style={styles.imgContainer}>
           <Image
@@ -36,12 +41,12 @@ const Custom_Cart = props => {
           />
         </View>
         <View style={styles.textContainer}>
-            <Text style={styles.prodName}>{props.textName}</Text>
-            <Text style={styles.prodDescription}>
+            <Text style={styles.prodName}>{props.name}</Text>
+            {/* <Text style={styles.prodDescription}>
             {props.textDescription}
-            </Text>
+            </Text> */}
             <View style={styles.viewValue}>
-                <View style={styles.AddSub}>
+                <View style={styles.Sub}>
                     <TouchableOpacity 
                         onPress={decCount}
                         hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}>
@@ -49,7 +54,7 @@ const Custom_Cart = props => {
                     </TouchableOpacity>
                 </View>
                 <Text onChange style={styles.styleTextNumber}>{count}</Text>
-                <View style={styles.AddSub}>
+                <View style={styles.Sub}>
                     <TouchableOpacity
                         onPress={inCount}
                         hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}>
@@ -57,8 +62,11 @@ const Custom_Cart = props => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <Text style={styles.prodPrice}>${props.textPrice*count}</Text>       
+            <Text style={styles.prodPrice}>${props.price*count}</Text>       
         </View>
+        <TouchableOpacity onPress={() => props.removeHandler(props.id)} style={{alignSelf:'center', marginLeft:scale(70)}}> 
+          <IC_CartDelete />
+        </TouchableOpacity>
       </View>
     </TouchableOpacity>
   );
@@ -100,11 +108,12 @@ const styles = StyleSheet.create({
   },
   viewValue: {
     flexDirection: 'row',
-    width: '35%',
+    width: scale(70),
     alignItems: 'center',
     justifyContent:'space-between',
+    borderWidth:1
   },
-  AddSub:{
+  Sub:{
     borderRadius: 360,
     borderWidth:1,
     borderColor:Color.Silver,
