@@ -19,7 +19,7 @@ const MyInfoScreen = props => {
         <ScrollView>
         <SafeAreaView style = {styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.viewIcon}>
+                <TouchableOpacity style={styles.viewIcon} onPress={() => props.navigation.goBack()}>
                     <IC_BackwardArrow/>
                 </TouchableOpacity>
                

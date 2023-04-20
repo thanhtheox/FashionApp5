@@ -102,10 +102,8 @@ const AppStackScreen = () => {
       <AppStack.Screen
         name="MyInfoScreen"
         component={MyInfoScreen}
-        options={({navigation}) => ({
-          headerTitle: () => (
-            <Custom_Header navigation={navigation}/>
-          ),
+        options={() => ({
+          headerShown:false
         })}
       />
     </AppStack.Navigator>
