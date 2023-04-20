@@ -4,7 +4,8 @@ import scale from '../../constants/responsive'
 import color from '../../constants/color'
 import FONT_FAMILY from '../../constants/fonts'
 import SaveButton from '../../components/buttons/Save'
-import { IC_Down, IC_Forward } from '../../assets/icons'
+import { IC_Down, IC_Forward , IC_Up} from '../../assets/icons'
+import useLogout from '../../hooks/useLogout'
 
 
 
@@ -29,7 +30,7 @@ const Accordion = ({ title, children }) => {
       <TouchableOpacity onPress={toggleOpen} style={styles.viewList} activeOpacity={0.6}>
         {title}
         <View style={styles.viewIcon}>
-        <IC_Down></IC_Down>
+        {!isOpen?<IC_Down></IC_Down>:<IC_Up></IC_Up>}
         </View>
       </TouchableOpacity>
       <View style={[styles.list,!isOpen ? styles.hidden : undefined]}>
@@ -40,6 +41,12 @@ const Accordion = ({ title, children }) => {
 };
 const DashBoardScreen = (props) => {
 
+  const logout = useLogout();
+
+  const signOut = async () => {
+    await logout();
+  }
+
   const title=(
     <View style={styles.viewTextList}>
     <Text style={styles.textList}>Product</Text>
@@ -48,20 +55,20 @@ const DashBoardScreen = (props) => {
   const body = (
     <View >
       <TouchableOpacity style={styles.viewListBody} onPress={()=>props.navigation.navigate("ListItem")}>
-      <View style={styles.viewTextList}>
-        <Text style={styles.textListBody}>Item</Text>
-      </View>
-      <View style={styles.viewIcon}>
-          <IC_Forward></IC_Forward>
-      </View>
+        <View style={styles.viewTextList}>
+          <Text style={styles.textListBody}>Item</Text>
+        </View>
+        <View style={styles.viewIcon}>
+            <IC_Forward stroke={color.White}></IC_Forward>
+        </View>
       </TouchableOpacity>
       <TouchableOpacity style={styles.viewListBody} onPress={()=>props.navigation.navigate("ListColorAndSize")}>
-      <View style={styles.viewTextList}>
-        <Text style={styles.textListBody}>Color & Size</Text>
-      </View>
-      <View style={styles.viewIcon}>
-          <IC_Forward></IC_Forward>
-      </View>
+        <View style={styles.viewTextList}>
+          <Text style={styles.textListBody}>Color & Size</Text>
+        </View>
+        <View style={styles.viewIcon}>
+            <IC_Forward stroke={color.White}></IC_Forward>
+        </View>
       </TouchableOpacity>
     </View>
   )
@@ -152,7 +159,7 @@ const DashBoardScreen = (props) => {
       </View>
 
       <View style={styles.buttonSignOut}>
-        <SaveButton text={'Sign Out'} onPress={()=>props.navigation.navigate('SignIn')}></SaveButton>
+        <SaveButton text={'Sign Out'} onPress={() => signOut()}></SaveButton>
       </View>
     </SafeAreaView>
   )
@@ -178,8 +185,8 @@ const styles = StyleSheet.create({
       textTile: {
         color: color.White,
         fontSize: 36,
-        fontFamily: FONT_FAMILY.JoseFinSans,
-        fontWeight: '700',
+        fontFamily: FONT_FAMILY.Bold,
+        fontWeight: '600',
       },
       viewTextLabel:{
         width: scale(198),
@@ -190,8 +197,8 @@ const styles = StyleSheet.create({
       textLabel: {
         color: color.White,
         fontSize: 24,
-        fontFamily: FONT_FAMILY.JoseFinSans,
-        fontWeight: '700',
+        fontFamily: FONT_FAMILY.Bold,
+        fontWeight: '600',
       },
       body: {
         flex: 0.6,
@@ -233,19 +240,19 @@ const styles = StyleSheet.create({
         overflow: 'hidden'
       },
       viewListBody:{
-        height: scale(68),
+        height: scale(48),
         width:'100%',
         borderBottomWidth: 1,
         flexDirection: 'row',
-        backgroundColor: color.GraySolid,
-        opacity: 30,
+        backgroundColor: color.TitleActive,
+        opacity: 0.7,
       },
       textListBody:{
         fontFamily: FONT_FAMILY.Regular,
         fontSize: 24,
         fontWeight: '400',
-        color: color.TitleActive,
-        marginLeft: scale(30),
+        color: color.White,
+        marginLeft: scale(20),
+        opacity: 1
       },
-     
 })

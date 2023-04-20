@@ -13,7 +13,7 @@ const CollectionItem = (props) => {
             <Text style={styles.textTitle} numberOfLines={1} >{props.name}</Text>
         </View>
         <View style={styles.viewImage}>
-            <ImageBackground source={props.source} style={styles.image} resizeMode='stretch'>
+            <ImageBackground source={{uri:props.source||'https://climate.onep.go.th/wp-content/uploads/2020/01/default-image.jpg'}} style={styles.image} resizeMode='stretch'>
                 <TouchableOpacity style={styles.viewIcon} onPress={props.onPressDelete}>
                     <IC_Delete />
                 </TouchableOpacity>

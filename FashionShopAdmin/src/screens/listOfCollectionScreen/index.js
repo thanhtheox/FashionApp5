@@ -6,20 +6,48 @@ import FONT_FAMILY from '../../constants/fonts'
 import { IMG_Collection, IMG_ModelFour, IMG_ModelOne, IMG_ModelThree, IMG_ModelTwo } from '../../assets/images'
 import CollectionItem from './components/collectionItem'
 import { IC_Backward, IC_BackwardArrow } from '../../assets/icons'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 
-const data=[
-  {id:1,name: 'SAPPOCHE', source: IMG_Collection},
-  {id:2,name: 'NAGAMI', source: IMG_ModelFour},
-  {id:3,name: 'NONUNO',source: IMG_ModelOne},
-  {id:4,name: 'SUMGA',source: IMG_ModelTwo},
-  {id:5,name: 'KAKHUKO',source: IMG_ModelThree},
-  {id:6,name: 'RAPAMA',source: IMG_ModelFour},
-  {id:7,name: 'TAKOYA',source: IMG_ModelOne},
+// const data=[
+//   {id:1,name: 'SAPPOCHE', source: IMG_Collection},
+//   {id:2,name: 'NAGAMI', source: IMG_ModelFour},
+//   {id:3,name: 'NONUNO',source: IMG_ModelOne},
+//   {id:4,name: 'SUMGA',source: IMG_ModelTwo},
+//   {id:5,name: 'KAKHUKO',source: IMG_ModelThree},
+//   {id:6,name: 'RAPAMA',source: IMG_ModelFour},
+//   {id:7,name: 'TAKOYA',source: IMG_ModelOne},
 
-]
+// ]
 
 const ListOfCollectionScreen = (props) => {
+
+  const axiosPrivate = useAxiosPrivate();
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
+    const getCollections = async () => {
+      try {
+        const response = await axiosPrivate.get('/get-all-collection', {
+          signal: controller.signal,
+        });
+        console.log(response.data);
+        isMounted && setData(response.data);
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    };
+
+    getCollections();
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, []);
+
 
     
   return (
@@ -49,7 +77,7 @@ const ListOfCollectionScreen = (props) => {
               renderItem={({item}) => (
                   <CollectionItem
                     name={item.name}
-                    source={item.source}
+                    source={item.posterImage.url}
                     onPress={()=>props.navigation.navigate("EditCollection")}
                   />
               )}
