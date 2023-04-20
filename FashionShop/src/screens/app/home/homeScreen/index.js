@@ -249,10 +249,13 @@ const HomeScreen = (props) => {
                   <Custom_HomepageProd
                   height={387}
                   width={255}
-                  // image={item.img}
+                  image={item.img}
                   prodName={item.name}
                   prodPrice={item.price}
-                  onPress={() => props.navigation.navigate('ProductDetailsScreen')}
+                  onPress={() => props.navigation.navigate('ProductDetailsScreen', {
+                    // categoryName: props.categoryName,
+                    data: item,
+                  })}
                   // {...props}
                   // categoryData={item}
                   />

@@ -2,13 +2,16 @@ import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 import { memo } from "react"
 const SvgComponent = (props) => (
-  <Svg xmlns="http://www.w3.org/2000/svg" fill="none" {...props}
-    width={50}
-    height={50}
-  >
+  <Svg xmlns="http://www.w3.org/2000/svg" 
+  width={70}
+  height={70}
+  fill="none" {...props}>
     <Path
-      fill="#1C1B1F"
-      d="M3 18c-.55 0-1.02-.196-1.413-.587A1.926 1.926 0 0 1 1 16V3H0V1h5V0h6v1h5v2h-1v13c0 .55-.196 1.02-.588 1.413A1.926 1.926 0 0 1 13 18H3ZM13 3H3v13h10V3ZM5 14h2V5H5v9Zm4 0h2V5H9v9Z"
+      stroke="#DD8560"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M9.75 3.25h6.5m-13 3.25h19.5m-2.167 0-.76 11.396c-.113 1.71-.17 2.564-.54 3.213a3.252 3.252 0 0 1-1.406 1.316c-.671.325-1.528.325-3.242.325h-3.27c-1.714 0-2.57 0-3.242-.325a3.25 3.25 0 0 1-1.406-1.316c-.37-.649-.427-1.503-.54-3.213L5.416 6.5m5.416 4.875v5.417m4.334-5.417v5.417"
     />
   </Svg>
 )

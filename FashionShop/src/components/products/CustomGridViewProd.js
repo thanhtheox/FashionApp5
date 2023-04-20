@@ -11,7 +11,7 @@ import {IC_Heart} from '../../assets/icons';
 const Custom_GridViewProd = props => {
   const [Liked, setLike] = useState(false);
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={props.onPress} >
       <View style={styles.imgContainer}>
         <Image source={props.image} style={styles.img} />
         <TouchableOpacity
@@ -24,13 +24,10 @@ const Custom_GridViewProd = props => {
         </TouchableOpacity>
       </View>
       <View style={styles.textContainer}>
-        <Text style={[fontStyles.bodySmallFont, styles.prodName]}>
+        <Text style={styles.prodName}>
           {props.prodName}
         </Text>
-        <Text style={[fontStyles.bodySmallFont, styles.prodDescription]}>
-          {props.prodDescription}
-        </Text>
-        <Text style={styles.prodPrice}>{props.prodPrice}</Text>
+        <Text style={styles.prodPrice}>${props.prodPrice}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -56,21 +53,17 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     marginLeft: scale(3),
-    width: scale(160),
-    height: scale(65),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   prodName: {
     marginTop: 5,
-    color: Color.TitleActive,
-  },
-  prodDescription: {
-    width: scale(158),
-    height: scale(20),
-    color: Color.Label,
-    letterSpacing: -0.5,
+    fontFamily: FONT_FAMILY.Regular,
+    fontSize: scale(15),
+    color: Color.Body,
   },
   prodPrice: {
-    fontFamily: FONT_FAMILY.JoseFinSansRegular,
+    fontFamily: FONT_FAMILY.Regular,
     fontSize: scale(15),
     color: Color.Secondary,
   },

@@ -8,7 +8,7 @@ import FONT_FAMILY from '../../../../constants/fonts';
 const Button = props => {
   return (
     <TouchableOpacity style={styles.container} 
-    // onPress={props.onPress}
+    onPress={props.onPress}
     >
       <IC_ShoppingBag stroke={color.White} />
       <Text style={styles.text}>{props.text}</Text>

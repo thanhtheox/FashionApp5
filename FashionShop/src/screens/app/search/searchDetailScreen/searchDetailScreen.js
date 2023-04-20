@@ -23,80 +23,69 @@ import Custom_Footer from '../../../../components/footer/Custom_Footer';
 const searchResult = [
   {
     img: IMG_ModelOne,
-    key: '1',
-    name: '21WN',
-    description:'reversible angora cardigan',
-    price: '$120',
+    id: 1,
+    name: '21WN reversible',
+    price: 120,
   },
   {
     img: IMG_ModelTwo,
-    key: '2',
-    name: '21WN',
-    description:'reversible angora cardigan',
-    price: '$120',
+    id: 2,
+    name: '21WN reversible',
+    price: 120,
   },
   {
     img: IMG_ModelThree,
-    key: '3',
-    name: '21WN',
-    description:'reversible angora cardigan',
-    price: '$120',
+    id: 3,
+    name: '21WN reversible',
+    price: 120,
   },
   {
     img: IMG_ModelFour,
-    key: '4',
-    name: 'Oblong bag',
-    description:'reversible angora cardigan',
-    price: '$120',
+    id: 4,
+    name: '21WN reversible',
+    price: 120,
   },
   {
     img: IMG_ModelOne,
-    key: '5',
-    name: '21WN',
-    description:'reversible angora cardigan',
-    price: '$120',
+    id: 5,
+    name: '21WN reversible',
+    price: 120,
   },
   {
     img: IMG_ModelTwo,
-    key: '6',
-    name: '21WN',
-    description:'reversible angora cardigan',
-    price: '$120',
+    id: 6,
+    name: '21WN reversible',
+    price: 120,
   },
   {
     img: IMG_ModelThree,
-    key: '7',
-    name: '21WN',
-    description:'reversible angora cardigan',
-    price: '$120',
+    id: 7,
+    name: '21WN reversible',
+    price: 120,
   },
   {
     img: IMG_ModelFour,
-    key: '8',
-    name: 'Oblong bag',
-    description:'reversible angora cardigan',
-    price: '$120',
+    id: 8,
+    name: '21WN reversible',
+    price: 120,
+  },
+  {
+    img: IMG_ModelOne,
+    id: 9,
+    name: '21WN reversible',
+    price: 120,
   },
   {
     img: IMG_ModelTwo,
-    key: '9',
-    name: '21WN',
-    description:'reversible angora cardigan',
-    price: '$120',
+    id: 10,
+    name: '21WN reversible',
+    price: 120,
   },
   {
     img: IMG_ModelThree,
-    key: '10',
-    name: '21WN',
-    description:'reversible angora cardigan',
-    price: '$120',
-  },
-  {
-    img: IMG_ModelFour,
-    key: '11',
-    name: 'Oblong bag',
-    description:'reversible angora cardigan',
-    price: '$120',
+    id: 11,
+    name: '21WN reversible',
+    price: 120,
   },
 ];
 
@@ -111,10 +100,15 @@ const searchResult = [
     };
     const renderItem = ({ item }) => (
       <Custom_GridViewProd
-        image={item.img}
-        prodName={item.name}
-        prodDescription={item.description}
-        prodPrice={item.price}
+      image={item.img}
+      prodName={item.name}
+      prodPrice={item.price}
+      onPress={() => props.navigation.replace('ProductDetailsScreen', {
+        // categoryName: props.categoryName,
+        data: item,
+      })}
+      // {...props}
+      // categoryData={item}
       />
     );
     return (
@@ -140,7 +134,7 @@ const searchResult = [
               contentContainerStyle={{alignContent: 'space-around', marginTop:scale(20)}}
               horizontal={false}
               data={data}
-              keyExtractor={item => `${item.key}`}
+              keyExtractor={item => `${item.id}`}
               numColumns={2}
               scrollEnabled={false}
               columnWrapperStyle={styles.wrapperLikeProducts}

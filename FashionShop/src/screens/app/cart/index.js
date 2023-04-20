@@ -164,7 +164,10 @@ const CartScreen = (props) => {
         </View>
         )}
         {/* Button */}
-        <Button text={visible? 'BUY NOW':'CONTINUE SHOPPING'}/>
+        <Button 
+        text={visible? 'BUY NOW':'CONTINUE SHOPPING'}
+        onPress={() => visible? props.navigation.navigate('CheckOutScreen'):props.navigation.navigate('AppStackScreen')}
+        />
     </SafeAreaView>
   )
 }

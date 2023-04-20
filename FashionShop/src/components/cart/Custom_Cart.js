@@ -31,7 +31,7 @@ const Custom_Cart = props => {
     // )
     
   return (
-    <TouchableOpacity {...props} style={{borderWidth:1}}>
+    <TouchableOpacity {...props} >
       <View key={props.id} style={styles.container}>
         <View style={styles.imgContainer}>
           <Image
@@ -64,8 +64,9 @@ const Custom_Cart = props => {
             </View>
             <Text style={styles.prodPrice}>${props.price*count}</Text>       
         </View>
-        <TouchableOpacity onPress={() => props.removeHandler(props.id)} style={{alignSelf:'center', marginLeft:scale(70)}}> 
-          <IC_CartDelete />
+        <TouchableOpacity onPress={() => props.removeHandler(props.id)} 
+        style={{alignSelf:'center',marginLeft:scale(70), backgroundColor:'#DEDEDE',height:scale(134)}}> 
+          <IC_CartDelete style={{marginTop:scale(55), marginLeft:scale(18)}}/>
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
@@ -79,19 +80,19 @@ const styles = StyleSheet.create({
     width: scale(343),
     height: scale(134),
     flexDirection: 'row',
-    marginTop: scale(15),
+    alignSelf:'center'
   },
   imgContainer: {
     width: scale(100),
     height: scale(134),
   },
   img: {
-    position: 'absolute',
     width: scale(100),
     height: scale(134),
   },
   textContainer: {
     marginLeft: scale(12),
+    width:scale(100),
     overflow: 'hidden',
     flexDirection:'column',
     justifyContent:'space-around',
@@ -111,7 +112,6 @@ const styles = StyleSheet.create({
     width: scale(70),
     alignItems: 'center',
     justifyContent:'space-between',
-    borderWidth:1
   },
   Sub:{
     borderRadius: 360,

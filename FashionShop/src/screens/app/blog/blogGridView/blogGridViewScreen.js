@@ -23,67 +23,67 @@ import Custom_Tag2 from '../../../../components/tags/border';
   const blogs = [
     {
       img: IMG_Blog,
-      key: '1',
+      id: 1,
       name: '2021 Style Guide: The Biggest Fall Trends',
       initDate: 4,
     },
     {
       img: IMG_Blog,
-      key: '2',
+      id: 2,
+      name: '2021 Style Guide: The Biggest Summer Trends',
+      initDate: 4,
+    },
+    {
+      img: IMG_Blog,
+      id: 3,
+      name: '2021 Style Guide: The Trends',
+      initDate: 4,
+    },
+    {
+      img: IMG_Blog,
+      id: 4,
+      name: '2021 Style Guide: The Biggest Winter Trends',
+      initDate: 4,
+    },
+    {
+      img: IMG_Blog,
+      id: 5,
       name: '2021 Style Guide: The Biggest Fall Trends',
       initDate: 4,
     },
     {
       img: IMG_Blog,
-      key: '3',
+      id: 6,
+      name: '2021 Style Guide: The Biggest Winter Trends',
+      initDate: 4,
+    },
+    {
+      img: IMG_Blog,
+      id: 7,
       name: '2021 Style Guide: The Biggest Fall Trends',
       initDate: 4,
     },
     {
       img: IMG_Blog,
-      key: '4',
+      id: 8,
       name: '2021 Style Guide: The Biggest Fall Trends',
       initDate: 4,
     },
     {
       img: IMG_Blog,
-      key: '5',
+      id: 9,
+      name: '2021 Style Guide: The Biggest Summer Trends',
+      initDate: 4,
+    },
+    {
+      img: IMG_Blog,
+      id: 10,
       name: '2021 Style Guide: The Biggest Fall Trends',
       initDate: 4,
     },
     {
       img: IMG_Blog,
-      key: '6',
-      name: '2021 Style Guide: The Biggest Fall Trends',
-      initDate: 4,
-    },
-    {
-      img: IMG_Blog,
-      key: '7',
-      name: '2021 Style Guide: The Biggest Fall Trends',
-      initDate: 4,
-    },
-    {
-      img: IMG_Blog,
-      key: '8',
-      name: '2021 Style Guide: The Biggest Fall Trends',
-      initDate: 4,
-    },
-    {
-      img: IMG_Blog,
-      key: '9',
-      name: '2021 Style Guide: The Biggest Fall Trends',
-      initDate: 4,
-    },
-    {
-      img: IMG_Blog,
-      key: '10',
-      name: '2021 Style Guide: The Biggest Fall Trends',
-      initDate: 4,
-    },
-    {
-      img: IMG_Blog,
-      key: '11',
+      id: 11,
       name: '2021 Style Guide: The Biggest Fall Trends',
       initDate: 4,
     },
@@ -145,6 +145,9 @@ import Custom_Tag2 from '../../../../components/tags/border';
       const renderItem = ({ item }) => (
         <View>
           <BlogItems
+            onPress={() => props.navigation.navigate('BlogPostScreen', {
+              data: item,
+            })}
             image={item.img}
             prodName={item.name}
           />
@@ -195,7 +198,7 @@ import Custom_Tag2 from '../../../../components/tags/border';
                 contentContainerStyle={{alignContent: 'space-around', marginTop:scale(20)}}
                 horizontal={false}
                 data={data}
-                keyExtractor={item => `${item.key}`}
+                keyExtractor={item => `${item.id}`}
                 numColumns={1}
                 scrollEnabled={false}
                 renderItem={renderItem}
@@ -209,7 +212,7 @@ import Custom_Tag2 from '../../../../components/tags/border';
             <Custom_Footer 
             onAboutPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'OurStoryScreen' })}
             onContactPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'ContactUsScreen' })}
-            onBlogPress={() => props.navigation.navigate('BlogStackScreen', { screen: 'BlogGridViewScreen' })}/>
+            onBlogPress={() => props.navigation.replace('BlogStackScreen', { screen: 'BlogGridViewScreen' })}/>
           </ScrollView>
         </SafeAreaView>
       );
