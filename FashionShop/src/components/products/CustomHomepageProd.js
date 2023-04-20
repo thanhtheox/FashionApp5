@@ -7,7 +7,7 @@ import Color from '../../constants/color';
 
 const Custom_HomepageProd = props => {
   return (
-    <TouchableOpacity style={[styles.container,{width:props.width}]}>
+    <TouchableOpacity style={[styles.container,{width:props.width}]} onPress={props.onPress}>
       <View style={[styles.imgContainer,{width:props.width}]}>
         <Image source={props.image} style={[styles.img,{width:props.width}]} resizeMode={'stretch'} />
       </View>

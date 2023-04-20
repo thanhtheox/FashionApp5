@@ -1,11 +1,12 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View ,Platform, UIManager,LayoutAnimation, ScrollView} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import color from '../../../constants/color'
-import { IC_Call, IC_Close, IC_Down, IC_ForwardArrow, IC_Location, IC_Up } from '../../../assets/icons'
+import { IC_Call, IC_Close, IC_Down,IC_Profile, IC_ForwardArrow, IC_Location, IC_Up } from '../../../assets/icons'
 import FONT_FAMILY from '../../../constants/fonts'
 import scale from '../../../constants/responsive'
 import Custom_CategoryScrollView from './components/Custom_CategoryScrollView'
 import Custom_MenuFooter from './components/Custom_MenuFooter'
+import OKMessageBox from '../../../components/messageBox/OKMessageBox'
 
 if (
   Platform.OS === "android" &&
@@ -128,7 +129,7 @@ const Accordion = ({ item, onClickFunction }) => {
     </>
   );
 };
-const Menu = () => {
+const Menu = (props) => {
   const [listDataSource, setListDataSource] = useState(parents);
 
 
@@ -144,11 +145,15 @@ const Menu = () => {
       array[index]['isExpanded'] = !array[index]['isExpanded'];
     setListDataSource(array);
   };
-  
+  const [visible, setVisible] = useState(false);
+
   return (
     <SafeAreaView style={styles.container}>
+        <OKMessageBox visible={visible} clickCancel={() => {setVisible(false)}} 
+        title={"OUR ADDRESS"} 
+        message={"KTX Khu B"}  />
         {/* Icon Close */}
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => props.navigation.goBack()}>
             <IC_Close/>
         </TouchableOpacity>
         <ScrollView>
@@ -167,7 +172,13 @@ const Menu = () => {
             ))}
           </View>
           {/* Buttons */}
-          <TouchableOpacity style={styles.buttonView}>
+          <TouchableOpacity style={styles.buttonView} 
+          onPress={() => props.navigation.navigate('MyInfoScreen')}>
+            <IC_Profile/>
+            <Text style={styles.buttonText}>My Profile</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonView} 
+          onPress={() => props.navigation.navigate('AuthStackScreen', { screen: 'OnboardingScreen' })}>
             <IC_ForwardArrow/>
             <Text style={styles.buttonText}>Sign Out</Text>
           </TouchableOpacity>
@@ -175,7 +186,7 @@ const Menu = () => {
             <IC_Call/>
             <Text style={styles.buttonText}>{'(786) 713-8616'}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonView}>
+          <TouchableOpacity style={styles.buttonView} onPress={() => setVisible(true)}>
             <IC_Location/>
             <Text style={styles.buttonText}>Store locator</Text>
           </TouchableOpacity>

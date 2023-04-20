@@ -15,7 +15,7 @@ const Item = (props) => {
                     <Text style={styles.number} >{props.number}</Text>
                 </View>
                 <View style={styles.viewImage}>
-                    <Image style={styles.image} source={props.source}></Image>
+                    <Image style={styles.image} source={{uri: props.source || 'https://climate.onep.go.th/wp-content/uploads/2020/01/default-image.jpg'}}></Image>
                 </View>
                 <View style={styles.viewDescription}>
                     <Text style={styles.name} numberOfLines={1}>{props.name}</Text>

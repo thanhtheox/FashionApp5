@@ -5,12 +5,65 @@ import FONT_FAMILY from '../../constants/fonts'
 import { IC_Backward } from '../../assets/icons'
 import scale from '../../constants/responsive'
 import SaveButton from '../../components/buttons/Save'
-import { ColorPicker } from 'react-native-color-picker'
+import { TriangleColorPicker } from 'react-native-color-picker'
+import UnderLine from '../../components/underLineSwitch/underLineSwitch'
+import { validateHTMLColorHex } from 'validate-color'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
+import Message from '../../components/alearts.js/messageOnly'
 
 const AddColorScreen = (props) => {
     const [text, onChangeText] = useState("");
+    const [textColorPicker, onChangeTextColorPicker]= useState("#fffffff");
     const [textColor, onChangeTextColor]= useState("#ffffff");
-    
+    const [chosen, setChosen] = useState('hex');
+    const [valid, setValid] = useState(true);
+    const axiosPrivate = useAxiosPrivate();
+    const [loading, setLoading] = useState(false);
+
+    const [visible, setVisible] = useState(false);
+    const [title, setTitle] = useState('');
+    const [message, setMessage] = useState('');
+
+    const handleSubmit = async (name, code) => {
+        try {
+            setLoading(true);
+            const response = await axiosPrivate.post('/post-create-color',
+                JSON.stringify({ name: name, code: code }),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            );
+            console.log("success", JSON.stringify(response.data));
+            setTitle('Success');
+            setMessage(`New color with Name: ${name} and Code: ${code} has been created`)
+            setLoading(false);
+            } 
+        catch (err) {
+            console.log("err", err.response.data);
+            setTitle('Error')
+            setMessage(err.response.data.error)
+            setLoading(false);
+        }
+        finally {
+            setVisible(true);
+        }
+      };
+
+    const validateHex = (text) => {
+        onChangeTextColor(text);
+        console.log(textColor);
+        if (validateHTMLColorHex(text)) {
+            setValid(true);
+            console.log(true);
+            return true;
+        }
+        else {
+            console.log(true);
+        setValid(false);
+        return false;
+        }
+    }
   return (
     <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -21,8 +74,12 @@ const AddColorScreen = (props) => {
                 <Text style={styles.textHeader}>Add color</Text>
             </View>
         </View>
-
+{/* body */}
         <View style={styles.body}>
+            <View style={{flexDirection: 'row'}}>
+                <UnderLine text={'Enter hex code'} name={'hex'} onPress={() => setChosen('hex')} chosen={chosen}/>
+                <UnderLine text={'Color picker'} name={'pick'} onPress={() => setChosen('pick')} chosen={chosen}/>
+            </View>
             <View style={styles.viewTextTitle}>
                 <Text style={styles.textTitle}>Color information</Text>
             </View>
@@ -39,7 +96,8 @@ const AddColorScreen = (props) => {
                 />
 
             </View>
-
+            {chosen === 'hex'?(
+            <>
             <View style={styles.viewTextLabel}>
                 <Text style={styles.textLabel}>Color code</Text>
             </View>
@@ -51,26 +109,57 @@ const AddColorScreen = (props) => {
                             editable
                             numberOfLines={1}
                             maxLength={7}
-                            onChangeText={text => onChangeTextColor(text)}
+                            onChangeText={text => validateHex(text)}
                             keyboardType='ascii-capable'
                             value={textColor}
                 />
                 </View>
+                <View style={{width: '40%', height: scale(40), borderWidth: 1, backgroundColor: textColor}}></View>
             </View>
+            {valid?null:<Text style={styles.textWarning}>Invalid hex value</Text>}
+            </>):null}
+            {chosen === 'pick'?(
+                <>
+                <View style={styles.viewTextLabel}>
+                    <Text style={styles.textLabel}>Color code</Text>
+                </View>
+                <View style={styles.viewAdd}>
+                    <View style={styles.viewInputAdd}>
+                        <Text style={styles.textInput}>{textColorPicker}</Text>
+                    </View>
+                </View>
+                
             <View  style={styles.colorView}>
-            <ColorPicker
-                onColorSelected={color => onChangeTextColor(color)}
-                // onColorChange={onColorChange}
-                // color={textColor}
-                style={{flex: 1}}
-            />
+                <TriangleColorPicker
+                    onColorSelected={color => onChangeTextColorPicker(color)}
+                    style={{flex: 1}}
+                />
             </View>
+            </>):null}
+            
 
 
             <View style={styles.button}>
-                <SaveButton text={'Add color'} onPress={()=>props.navigation.navigate("ListColorAndSize")}></SaveButton>
+                {chosen==='hex'?(
+                    
+                    <SaveButton text={'Add color'} onPress={() => {handleSubmit(text, textColor)}} disabled={!valid || text===''}/>):(
+                    <SaveButton text={'Add color'} onPress={() => {handleSubmit(text, textColorPicker)}} disabled={text===''}/>
+                )}
+                
             </View>
         </View>
+        <Message 
+            visible={visible} 
+            title={title} 
+            clickCancel={() => {
+                if (title === 'Success') {
+                    props.navigation.goBack();
+                }
+                else {
+                    setVisible(false);
+                }
+            }} 
+            message={message}/>
     </SafeAreaView>
   )
 }
@@ -89,9 +178,9 @@ const styles = StyleSheet.create({
     },
     textHeader:{
         color: color.White,
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Bold,
         fontSize: 24,
-        fontWeight: '700',
+        fontWeight: '600',
     },
     body:{
         flex:0.9,
@@ -103,9 +192,9 @@ const styles = StyleSheet.create({
     },
     textTitle:{
         color: color.TitleActive,
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Bold,
         fontSize: 22,
-        fontWeight: '600',
+        fontWeight: '500',
     },
     viewTextInput:{
         borderBottomWidth: 1,
@@ -131,6 +220,13 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '400',
     },
+    textWarning:{
+        color: 'red',
+        fontFamily: FONT_FAMILY.Regular,
+        fontSize: 14,
+        fontWeight: '400',
+        marginLeft: scale(30),
+    },
     viewAdd:{
         flexDirection: 'row',
         marginTop: scale(10),
@@ -140,7 +236,9 @@ const styles = StyleSheet.create({
     viewInputAdd:{
         borderWidth: 1,
         width: '40%',
-        marginRight: scale(50)
+        marginRight: scale(50),
+        height: scale(40),
+        justifyContent: 'center',
     },
     // color:{
     //     borderWidth: 1,
@@ -149,6 +247,7 @@ const styles = StyleSheet.create({
     // },
     colorView:{
         height: Dimensions.get('screen').height*0.3,
+        padding: scale(15)
     },
     button:{
         marginTop: scale(70),

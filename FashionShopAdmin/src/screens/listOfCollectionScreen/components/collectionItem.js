@@ -8,13 +8,13 @@ import { IC_Address, IC_Backward, IC_Delete, IC_Heart } from '../../../assets/ic
 
 const CollectionItem = (props) => {
   return (
-    <TouchableOpacity style={styles.view}>
+    <TouchableOpacity style={styles.view} onPress={props.onPress}>
         <View style={styles.viewTitle}>
             <Text style={styles.textTitle} numberOfLines={1} >{props.name}</Text>
         </View>
         <View style={styles.viewImage}>
-            <ImageBackground source={props.source} style={styles.image} resizeMode='stretch'>
-                <TouchableOpacity style={styles.viewIcon}>
+            <ImageBackground source={{uri:props.source||'https://climate.onep.go.th/wp-content/uploads/2020/01/default-image.jpg'}} style={styles.image} resizeMode='stretch'>
+                <TouchableOpacity style={styles.viewIcon} onPress={props.onPressDelete}>
                     <IC_Delete />
                 </TouchableOpacity>
             </ImageBackground>

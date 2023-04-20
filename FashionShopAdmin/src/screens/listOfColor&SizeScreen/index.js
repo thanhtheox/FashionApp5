@@ -1,38 +1,61 @@
 import { SafeAreaView, StyleSheet, Text, View, ScrollView, TouchableOpacity,Dimensions } from 'react-native'
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import color from '../../constants/color'
 import scale from '../../constants/responsive'
 import FONT_FAMILY from '../../constants/fonts'
 import ItemColor from './components/itemColor'
 import ItemSize from './components/itemSize'
 import { IC_Backward, IC_BackwardArrow } from '../../assets/icons'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { useIsFocused } from '@react-navigation/native'
 
-
-const dataColor=[
-  {id: 1,name: 'Salmon', code: '#FA8072'},
-  {id: 2,name: 'Red', code: '#FF0000'},
-  {id: 3,name: 'Tan', code: '#D2B48C'},
-  {id: 4,name: 'Pink', code: '#FFC0CB'},
-  {id: 5,name: 'Tomato', code: '#FF6347'},
-  {id: 6,name: 'Orange', code: '#FFA500'},
-  {id: 7,name: 'Violet', code: '#EE82EE'},
-  {id: 8,name: 'BlueViolet', code: '#8A2BE2'},
-  {id: 9,name: 'LimeGreen', code: '#32CD32'},
-
-
-];
-
-const dataSize=[
-  {id: 1, size: 'S', width: '56', length: '68'},
-  {id: 2, size: 'M', width: '58', length: '72'},
-  {id: 3, size: 'L', width: '60', length: '74'},
-
-];
 const ListOfColor_SizeScreen = (props) => {
+
+  const axiosPrivate = useAxiosPrivate();
+  const [dataSize, setDataSize] = useState([]);
+  const [dataColor, setDataColor] = useState([]);
+
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
+    const getSizes = async () => {
+      try {
+        const response = await axiosPrivate.get('/get-all-size', {
+          signal: controller.signal,
+        });
+        console.log(response);
+        isMounted && setDataSize(response.data);
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    };
+    const getColors = async () => {
+      try {
+        const response = await axiosPrivate.get('/get-all-color', {
+          signal: controller.signal,
+        });
+        console.log(response);
+        isMounted && setDataColor(response.data);
+      } catch (err) {
+        console.log(err?.response?.data || "undefined error");
+      }
+    };
+
+    // const {data,error} = {data:{dafa},error,...}
+
+    isFocused && getSizes();
+    isFocused && getColors();
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, [isFocused]);
+
   return (
     <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-         
         <View style={styles.viewText}>
           <View style={styles.viewTitleText}>
             <TouchableOpacity style={{marginBottom: scale(40)}} onPress={()=>props.navigation.goBack()}>
@@ -61,7 +84,7 @@ const ListOfColor_SizeScreen = (props) => {
           <ScrollView >
           {dataColor.map((item,index)=>(
                   <ItemColor
-                  key={item.id}
+                  key={item._id}
                   number={index+1}                
                   name={item.name}
                   code={item.code}
@@ -93,8 +116,8 @@ const ListOfColor_SizeScreen = (props) => {
           <ScrollView >
           {dataSize.map((item,index)=>(
                   <ItemSize
-                  key={item.id}
-                  size={item.size}
+                  key={item._id}
+                  size={item.name}
                   width={item.width}
                   length={item.length}
                   />
@@ -118,7 +141,8 @@ const styles = StyleSheet.create({
       header: {
         height: Dimensions.get('screen').height*0.25,
         backgroundColor: color.TitleActive,
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+        paddingBottom: scale(20),
       },
       viewTitleText: {
         width: scale(250),

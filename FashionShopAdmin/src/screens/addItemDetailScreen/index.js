@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     backwardButton: {
         marginLeft: scale(15),
         marginTop: scale(10),
-        backgroundColor: color.GraySolid,
+        // backgroundColor: color.GraySolid,
     },
 
     //  body

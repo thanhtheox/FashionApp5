@@ -4,23 +4,39 @@ import color from '../../constants/color'
 import scale from '../../constants/responsive'
 import FONT_FAMILY from '../../constants/fonts'
 import { IMG_Collection, IMG_ModelFour, IMG_ModelOne, IMG_ModelThree, IMG_ModelTwo } from '../../assets/images'
-import { IC_Delete, IC_Edit, IC_Search, IC_See, IC_BackwardArrow, IC_Backward } from '../../assets/icons'
+import { IC_Delete, IC_Edit, IC_Search, IC_See, IC_BackwardArrow, IC_Backward, IC_Up } from '../../assets/icons'
 import Item from './components/item'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
-
-const data=[
-  {id:1,name: 'SAPPOCHE',description: 'cardigan green', price: '10.00', source: IMG_Collection},
-  {id:2,name: 'NAGAMI',description: 'cardigan pink', price: '34.00', source: IMG_ModelFour},
-  {id:3,name: 'NONUNO',description: 'cardigan blue', price: '5.00',source: IMG_ModelOne},
-  {id:4,name: 'SUMGA',description: 'cardigan brown', price: '25.00',source: IMG_ModelTwo},
-  {id:5,name: 'KAKHUKO',description: 'cardigan black', price: '40.00',source: IMG_ModelThree},
-  {id:6,name: 'RAPAMA',description: 'cardigan yellow', price: '30.00',source: IMG_ModelFour},
-  {id:7,name: 'TAKOYA',description: 'cardigan pastel', price: '50.00',source: IMG_ModelOne},
-
-]
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
 const ListOfItemScreen = (props) => {
+  const axiosPrivate = useAxiosPrivate();
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
+    const getProducts = async () => {
+        try {
+            const response = await axiosPrivate.get('/get-all-product', {
+                signal: controller.signal
+            });
+            console.log(response.data);
+            isMounted && setData(response.data);
+        } 
+        catch (err) {
+            console.log(err.response.data);
+        }
+    }
+
+    getProducts();
+
+    return () => {
+        isMounted = false;
+        controller.abort();
+    }
+
+  }, [])
 
   const [value, onChangeText] = useState("");
 
@@ -65,14 +81,14 @@ const ListOfItemScreen = (props) => {
             <ScrollView style={{height: '100%'}}>
                 {data.map((item,index)=>(
                   <Item
-                  key={item.id}
+                  key={item._id}
                   number={index+1}                
                   name={item.name}
                   description={item.description}
                   price={item.price}
-                  source={item.source}
+                  source = {item.posterImage.url}
                   onPress={()=>props.navigation.navigate("ItemDetail",{data: item})}
-                  onPressEdit={()=>props.navigation.navigate("AddItem",{data: item})}
+                  onPressEdit={()=>props.navigation.navigate("EditItem",{data: item})}
                   />
 
                 ))}
@@ -93,6 +109,7 @@ const styles = StyleSheet.create({
         backgroundColor: color.TitleActive,
         elevation: 1,
         justifyContent: 'flex-end',
+        paddingBottom: scale(20),
 
       },
       viewTitleText:{
