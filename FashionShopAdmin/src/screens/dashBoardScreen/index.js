@@ -169,6 +169,7 @@ export default DashBoardScreen
 
 const styles = StyleSheet.create({
     container: {
+      backgroundColor: color.White,
         flex: 1,
       },
       header: {
@@ -176,11 +177,11 @@ const styles = StyleSheet.create({
         backgroundColor: color.TitleActive,
       },
       viewText:{
-        marginTop: scale(80),
+        marginTop: '20%',
         marginLeft: scale(30),
       },
       viewTitleText: {
-        height: scale(50),
+        // height: scale(50),
       },
       textTile: {
         color: color.White,
@@ -189,10 +190,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
       },
       viewTextLabel:{
-        width: scale(198),
-        height: scale(36),
         marginTop: scale(10),
-
       },
       textLabel: {
         color: color.White,
@@ -244,14 +242,14 @@ const styles = StyleSheet.create({
         width:'100%',
         borderBottomWidth: 1,
         flexDirection: 'row',
-        backgroundColor: color.TitleActive,
-        opacity: 0.7,
+        backgroundColor: color.White,
+        opacity: 0.5,
       },
       textListBody:{
         fontFamily: FONT_FAMILY.Regular,
         fontSize: 24,
         fontWeight: '400',
-        color: color.White,
+        color: color.TitleActive,
         marginLeft: scale(20),
         opacity: 1
       },

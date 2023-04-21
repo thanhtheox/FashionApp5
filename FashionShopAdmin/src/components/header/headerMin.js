@@ -8,7 +8,7 @@ import scale from '../../constants/responsive';
 const HeaderMin = (props) => {
   return (
     <View style={styles.header}>
-      <TouchableOpacity onPress={() => props.navigation.goBack()}>
+      <TouchableOpacity onPress={props.onPress}>
         <IC_Backward stroke={color.White}></IC_Backward>
       </TouchableOpacity>
       <View>

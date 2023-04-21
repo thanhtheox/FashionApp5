@@ -24,8 +24,12 @@ const CONTENT = [
     isExpanded: false,
     title:'Woman',
     child:[
-        {id: 1,name: 'dress'},
-        {id: 2,name: 't-shirt'},
+        {id: 1,name: 't-shirt'},
+        {id: 2,name: 'blouse'},
+        {id: 3,name: 'jacket'},
+        {id: 4,name: 'skirt'},
+        {id: 5,name: 'shorts'},
+
     ]
 },
 {
@@ -33,46 +37,14 @@ const CONTENT = [
 
     title: 'Man',
     child:[
-        {id: 3,name:'T-shirt'},
-        {id: 4,name: 'coast'},
+      {id: 6,name: 't-shirt'},
+      {id: 7,name: 'blouse'},
+      {id: 8,name: 'suit'},
+      {id: 9,name: 'jacket'},
+      {id: 10,name: 'belt'},
+
     ]
 },
-{
-  isExpanded: false,
-
-    title: 'Man',
-    child:[
-        {id: 5,name:'T-shirt'},
-        {id: 6,name: 'coast'},
-    ]
-},
-{
-  isExpanded: false,
-
-    title: 'Man',
-    child:[
-        {id: 7,name:'T-shirt'},
-        {id: 8,name: 'coast'},
-    ]
-},
-{
-  isExpanded: false,
-
-    title: 'Man',
-    child:[
-        {id: 9,name:'T-shirt'},
-        {id: 10,name: 'coast'},
-    ]
-},
-{
-  isExpanded: false,
-
-    title: 'Man',
-    child:[
-        {id: 11,name:'T-shirt'},
-        {id: 12,name: 'coast'},
-    ]
-}
 ];
 
 const ExpandableComponent = ({ item, onClickFunction }) => {
@@ -277,9 +249,11 @@ const styles = StyleSheet.create({
   ///
 
   viewList:{
+    marginTop: scale(5),
     height: scale(68),
     width:'100%',
     borderBottomWidth: 1,
+    // borderWidth:1,
     flexDirection: 'row',
   },
   viewTextList:{
@@ -305,16 +279,16 @@ const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   viewListBody:{
-    height: scale(68),
+    height: scale(48),
     width:'100%',
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
     flexDirection: 'row',
-    backgroundColor: color.GraySolid,
-    opacity: 30,
+    backgroundColor: color.White,
+    opacity: 0.9,
   },
   textListBody:{
     fontFamily: FONT_FAMILY.Regular,
-    fontSize: 24,
+    fontSize: 12,
     fontWeight: '400',
     color: color.TitleActive,
     marginLeft: scale(30),
