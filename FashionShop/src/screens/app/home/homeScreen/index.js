@@ -199,7 +199,7 @@ const HomeScreen = (props) => {
             )}></FlatList>
             <TouchableOpacity><Text style={styles.exploreText}>Explore More ⇒</Text></TouchableOpacity>
           </View>
-          {/* Brand */}
+          {/* Brand
           <View style={styles.brandContainer}>
             <Image source={LineBottom} style={styles.lineBottom} resizeMode='stretch'/>
             <FlatList
@@ -221,7 +221,7 @@ const HomeScreen = (props) => {
               </View>
             )}></FlatList>
             <Image source={LineBottom} style={styles.lineBottom} resizeMode='stretch'/>
-          </View>
+          </View> */}
           {/* Collection */}
           <View style={styles.collectionContainer}>
             <Text style={styles.collectionText}>COLLECTIONS</Text>
