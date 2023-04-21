@@ -113,6 +113,7 @@ const CollectionDetailScreen = (props) => {
               keyExtractor={item => `${item.key}`}
               renderItem={({item}) => (
                   <SuggestiveCollection
+                    onPress={() => props.navigation.replace('CollectionDetailScreen')}
                     image={item.img}
                     prodName={item.name}
                     {...props}
