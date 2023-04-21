@@ -72,11 +72,13 @@ const SignInScreen = (props) => {
 
         <View style={styles.inputMailBox}>
           <TextInput
+            secureTextEntry={true}
             onChangeText={pass => setPass(pass)}
             placeholder="Password"
             placeholderTextColor={color.GraySolid}
             style={styles.inputText}
-            keyboardType="visible-password"
+            // keyboardType="visible-password"
+            // value={pass}
           />
         </View>
 

@@ -17,6 +17,7 @@ import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import { IC_Backward, IC_Forward , IC_Down, IC_BackwardArrow} from '../../assets/icons';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import HeaderMax from '../../components/header/headerMax';
 
 
 const CONTENT = [
@@ -24,8 +25,12 @@ const CONTENT = [
     isExpanded: false,
     title:'Woman',
     child:[
-        {id: 1,name: 'dress'},
-        {id: 2,name: 't-shirt'},
+        {id: 1,name: 't-shirt'},
+        {id: 2,name: 'blouse'},
+        {id: 3,name: 'jacket'},
+        {id: 4,name: 'skirt'},
+        {id: 5,name: 'shorts'},
+
     ]
 },
 {
@@ -33,46 +38,14 @@ const CONTENT = [
 
     title: 'Man',
     child:[
-        {id: 3,name:'T-shirt'},
-        {id: 4,name: 'coast'},
+      {id: 6,name: 't-shirt'},
+      {id: 7,name: 'blouse'},
+      {id: 8,name: 'suit'},
+      {id: 9,name: 'jacket'},
+      {id: 10,name: 'belt'},
+
     ]
 },
-{
-  isExpanded: false,
-
-    title: 'Man',
-    child:[
-        {id: 5,name:'T-shirt'},
-        {id: 6,name: 'coast'},
-    ]
-},
-{
-  isExpanded: false,
-
-    title: 'Man',
-    child:[
-        {id: 7,name:'T-shirt'},
-        {id: 8,name: 'coast'},
-    ]
-},
-{
-  isExpanded: false,
-
-    title: 'Man',
-    child:[
-        {id: 9,name:'T-shirt'},
-        {id: 10,name: 'coast'},
-    ]
-},
-{
-  isExpanded: false,
-
-    title: 'Man',
-    child:[
-        {id: 11,name:'T-shirt'},
-        {id: 12,name: 'coast'},
-    ]
-}
 ];
 
 const ExpandableComponent = ({ item, onClickFunction }) => {
@@ -174,20 +147,7 @@ const ListOfCategoryScreen = (props) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.header}>
-        
-        <View style={styles.viewText}>
-          <View style={styles.viewTitleText}>
-              <TouchableOpacity onPress={()=>props.navigation.goBack()}>
-                      <IC_Backward stroke={color.White}/>
-              </TouchableOpacity>
-            <Text style={styles.textTile}>List of categories</Text>
-          </View>
-          <TouchableOpacity style={styles.viewTextLabel} onPress={()=>props.navigation.navigate('AddCategory')}>
-            <Text style={styles.textLabel}>Add category</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <HeaderMax navigation={props.navigation} textTitle={'List of categories'} textLabel={'Add category'}/>
 
       <View style={styles.body}>
         <ScrollView>
@@ -215,42 +175,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
-    height: Dimensions.get('screen').height*0.25,
-    backgroundColor: color.TitleActive,
-    justifyContent:'flex-end',
-    paddingBottom: scale(30),
-  },
-  viewText:{
-    // marginTop: scale(80),
-  },
-  viewTitleText: {
-    height: scale(50),
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  textTile: {
-    color: color.White,
-    fontSize: 36,
-    fontFamily: FONT_FAMILY.JoseFinSans,
-    fontWeight: '700',
-  },
-  viewTextLabel:{
-    width: scale(170),
-    height: scale(36),
-    marginLeft: scale(30),
-    marginTop: scale(10),
-    backgroundColor: color.White,
-    justifyContent: 'center',
-    alignItems: 'center',
-
-  },
-  textLabel: {
-    color: color.TitleActive,
-    fontSize: 24,
-    fontFamily: FONT_FAMILY.JoseFinSans,
-    fontWeight: '700',
-  },
   body: {
     flex: 1,
     backgroundColor: color.White,
@@ -277,9 +201,11 @@ const styles = StyleSheet.create({
   ///
 
   viewList:{
+    marginTop: scale(5),
     height: scale(68),
     width:'100%',
     borderBottomWidth: 1,
+    // borderWidth:1,
     flexDirection: 'row',
   },
   viewTextList:{
@@ -305,16 +231,16 @@ const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   viewListBody:{
-    height: scale(68),
+    height: scale(48),
     width:'100%',
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
     flexDirection: 'row',
-    backgroundColor: color.GraySolid,
-    opacity: 30,
+    backgroundColor: color.White,
+    opacity: 0.9,
   },
   textListBody:{
     fontFamily: FONT_FAMILY.Regular,
-    fontSize: 24,
+    fontSize: 12,
     fontWeight: '400',
     color: color.TitleActive,
     marginLeft: scale(30),

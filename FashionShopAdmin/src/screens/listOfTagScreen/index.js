@@ -7,6 +7,7 @@ import { DataTable } from 'react-native-paper'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import { IC_Backward, IC_BackwardArrow } from '../../assets/icons'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
+import HeaderMax from '../../components/header/headerMax'
 
 // const tagData=[
 //     {id: 1,name: 'Salmon', type: {product: true, blog: true}},
@@ -21,10 +22,9 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 // ];
 
 const dataSize=[
-  {id: 1, size: 'S', width: '56', length: '68'},
-  {id: 2, size: 'M', width: '58', length: '72'},
-  {id: 3, size: 'L', width: '60', length: '74'},
-
+    {id: 1, size: 'S', width: '56', length: '68'},
+    {id: 2, size: 'M', width: '58', length: '72'},
+    {id: 3, size: 'L', width: '60', length: '74'},
 ];
 
 const ListOfTagScreen = (props) => {
@@ -58,23 +58,7 @@ const ListOfTagScreen = (props) => {
     }, [])
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-            
-                <View style={styles.viewText}>
-                
-                    <View style={styles.viewTitleText}>
-                        <TouchableOpacity onPress={()=>props.navigation.goBack()}>
-                            <IC_Backward stroke={color.White} ></IC_Backward>
-                        </TouchableOpacity>
-                        <Text style={styles.textTile}>List of tags</Text>
-                    </View>
-                    <View style={styles.viewLabel}>
-                        <TouchableOpacity style={styles.viewTextLabel} onPress={()=>props.navigation.navigate("AddTag")}>
-                            <Text style={styles.textLabel}>Add tag</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
+            <HeaderMax navigation={props.navigation} textTitle={'List of tags'} textLabel={'Add tags'}/>
 
 
             <View style={styles.body}>
@@ -131,54 +115,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    header: {
-        flex: 0.25,
-        backgroundColor: color.TitleActive,
-        justifyContent: 'flex-end',
-        paddingBottom: scale(20),
-    },
-    viewText:{
-        marginTop: scale(30),
-    },
-    
-    viewTitleText: {
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    textTile: {
-        color: color.White,
-        fontSize: scale(36),
-        fontFamily: FONT_FAMILY.JoseFinSans,
-        fontWeight: '600',
-    },
-    viewLabel:{
-        flexDirection: 'row',
-        marginTop: scale(10),
-        marginLeft: scale(30)
-    },
-    viewTextLabel:{
-        width: scale(122),
-        height: scale(36),
-        backgroundColor: color.AthensGray,
-        alignItems: 'center',
-        marginRight: scale(20)
-    },
-    textLabel: {
-        color: color.TitleActive,
-        fontSize: 24,
-        fontFamily: FONT_FAMILY.JoseFinSans,
-        fontWeight: '600',
-    },
     body:{
-        flex: 0.75,
+        flex: 1,
         padding: scale(15),
         backgroundColor: color.InputBackground,
     },
-    viewTextSize:{
-        width: '25%',
-        alignItems: 'center'
-    },
-    checkView: {width: scale(130), gap: scale(10), margin: scale(15), height: scale(20)},
     text: {
         fontWeight: '600', 
         fontSize: 18, 
