@@ -70,8 +70,8 @@ const MyNavigationContainer= () => {
 
 {/* Blog  */}
           <Stack.Screen name="ListBlog" component={ListOfBlogScreen} />
-         <Stack.Screen name="AddBlog" component={AddBlogScreen} />
-         <Stack.Screen name="EditBlog" component={EditBlogScreen} />
+          <Stack.Screen name="AddBlog" component={AddBlogScreen} />
+          <Stack.Screen name="EditBlog" component={EditBlogScreen} />
 
 
 {/*  collection */}
@@ -90,7 +90,7 @@ const MyNavigationContainer= () => {
           <Stack.Screen name="AddTag" component={AddTagScreen} />
 
 
-{/* Order no screen*/}
+  {/* Order no screen*/}
           <Stack.Screen name="ListOrder" component={ListOfOrderScreen} />
 
 

@@ -17,6 +17,7 @@ import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import { IC_Backward, IC_Forward , IC_Down, IC_BackwardArrow} from '../../assets/icons';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import HeaderMax from '../../components/header/headerMax';
 
 
 const CONTENT = [
@@ -146,20 +147,7 @@ const ListOfCategoryScreen = (props) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.header}>
-        
-        <View style={styles.viewText}>
-          <View style={styles.viewTitleText}>
-              <TouchableOpacity onPress={()=>props.navigation.goBack()}>
-                      <IC_Backward stroke={color.White}/>
-              </TouchableOpacity>
-            <Text style={styles.textTile}>List of categories</Text>
-          </View>
-          <TouchableOpacity style={styles.viewTextLabel} onPress={()=>props.navigation.navigate('AddCategory')}>
-            <Text style={styles.textLabel}>Add category</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <HeaderMax navigation={props.navigation} textTitle={'List of categories'} textLabel={'Add category'}/>
 
       <View style={styles.body}>
         <ScrollView>
@@ -186,42 +174,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-  },
-  header: {
-    height: Dimensions.get('screen').height*0.25,
-    backgroundColor: color.TitleActive,
-    justifyContent:'flex-end',
-    paddingBottom: scale(30),
-  },
-  viewText:{
-    // marginTop: scale(80),
-  },
-  viewTitleText: {
-    height: scale(50),
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  textTile: {
-    color: color.White,
-    fontSize: 36,
-    fontFamily: FONT_FAMILY.JoseFinSans,
-    fontWeight: '700',
-  },
-  viewTextLabel:{
-    width: scale(170),
-    height: scale(36),
-    marginLeft: scale(30),
-    marginTop: scale(10),
-    backgroundColor: color.White,
-    justifyContent: 'center',
-    alignItems: 'center',
-
-  },
-  textLabel: {
-    color: color.TitleActive,
-    fontSize: 24,
-    fontFamily: FONT_FAMILY.JoseFinSans,
-    fontWeight: '700',
   },
   body: {
     flex: 1,

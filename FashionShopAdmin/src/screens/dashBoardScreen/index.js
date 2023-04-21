@@ -171,6 +171,7 @@ const styles = StyleSheet.create({
     container: {
       backgroundColor: color.White,
         flex: 1,
+        backgroundColor: color.White,
       },
       header: {
         flex: 0.25,
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
       },
       textListBody:{
         fontFamily: FONT_FAMILY.Regular,
-        fontSize: 24,
+        fontSize: 22,
         fontWeight: '400',
         color: color.TitleActive,
         marginLeft: scale(20),

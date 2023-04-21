@@ -45,12 +45,11 @@ const styles = StyleSheet.create({
       textTile: {
         color: color.White,
         fontSize: 36,
-        fontFamily: FONT_FAMILY.JoseFinSans,
-        fontWeight: 700,
+        fontFamily: FONT_FAMILY.Bold,
       },
       viewTextLabel: {
         marginLeft: scale(30),
-        backgroundColor: color.Alto,
+        backgroundColor: color.InputBackground,
         paddingHorizontal:scale(5),
         alignSelf:'flex-start',
         alignItems: 'center',
@@ -59,8 +58,6 @@ const styles = StyleSheet.create({
       textLabel: {
         color: color.TitleActive,
         fontSize: 24,
-        fontFamily: FONT_FAMILY.JoseFinSans,
-        fontWeight: 700,
+        fontFamily: FONT_FAMILY.Bold,
       },
-   
 })
