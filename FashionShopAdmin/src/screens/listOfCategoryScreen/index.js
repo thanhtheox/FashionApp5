@@ -153,7 +153,7 @@ const ListOfCategoryScreen = (props) => {
               <TouchableOpacity onPress={()=>props.navigation.goBack()}>
                       <IC_Backward stroke={color.White}/>
               </TouchableOpacity>
-            <Text style={styles.textTile}>List of categories</Text>
+            <Text style={styles.textTile}>List of category</Text>
           </View>
           <TouchableOpacity style={styles.viewTextLabel} onPress={()=>props.navigation.navigate('AddCategory')}>
             <Text style={styles.textLabel}>Add category</Text>
