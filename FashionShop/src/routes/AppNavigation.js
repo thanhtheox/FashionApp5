@@ -8,6 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Custom_Header from '../components/header/Custom_Header';
 
 import { BlogStackScreen } from '../screens/app/blog/blogNavigation';
+import CheckOut from '../screens/app/checkout';
 import CartScreen from '../screens/app/cart';
 import { CollectionStackScreen } from '../screens/app/collection/collectionNavigation';
 import { HomeStackScreen } from '../screens/app/home/HomeNavigation';
@@ -38,6 +39,15 @@ const AppStackScreen = () => {
       <AppStack.Screen
         name="BlogStackScreen"
         component={BlogStackScreen}
+        options={({navigation}) => ({
+          headerTitle: () => (
+            <Custom_Header navigation={navigation}/>
+          ),
+        })}
+      />
+      <AppStack.Screen
+        name="CheckOutScreen"
+        component={CheckOut}
         options={({navigation}) => ({
           headerTitle: () => (
             <Custom_Header navigation={navigation}/>
@@ -92,10 +102,8 @@ const AppStackScreen = () => {
       <AppStack.Screen
         name="MyInfoScreen"
         component={MyInfoScreen}
-        options={({navigation}) => ({
-          headerTitle: () => (
-            <Custom_Header navigation={navigation}/>
-          ),
+        options={() => ({
+          headerShown:false
         })}
       />
     </AppStack.Navigator>

@@ -17,7 +17,8 @@ import {
   import { IMG_OurStory, IMG_ModelOne } from '../../../../assets/images';
   import Custom_Tag2 from '../../../../components/tags/border';
 
-  const BlogPostScreen = (props) => {  
+  const BlogPostScreen = (props) => { 
+    const {data} = props.route.params; 
     const productImages = [
         {
           key: '1',
@@ -46,11 +47,12 @@ import {
       <SafeAreaView style={styles.container}>
         <ScrollView>
         {/* Image */}
-        <Image source={IMG_OurStory} resizeMode='stretch' style={{width:'100%'}}/>
+        <Image source={data.img} resizeMode='stretch' style={{width:'100%'}}/>
         {/* Blog title */}
         <View style={styles.bodyViewTop}>
-            <Text style={{fontFamily:FONT_FAMILY.Regular,fontSize:scale(14),lineHeight:scale(18),color:color.TitleActive}}>
-                {'2021 STYLE GUIDE: THE BIGGEST FALL TRENDS'}
+            <Text style={{fontFamily:FONT_FAMILY.Regular,fontSize:scale(18),textAlign:'center',
+              lineHeight:scale(18),textTransform: 'uppercase',color:color.TitleActive}}>
+                {data.name}
             </Text>
             <Text style={{fontFamily:FONT_FAMILY.Regular,fontSize:scale(14),lineHeight:scale(18),color:color.Body,marginTop:scale(10)}}>
                 {'You guys know how much I love mixing high and low-end – it’s the best way to get the most bang for your buck while still elevating your wardrobe. The same goes for handbags! And honestly they are probably the best pieces to mix and match. I truly think the key to completing a look is with a great bag and I found so many this year that I wanted to share a round-up of my most worn handbags.'}
@@ -85,7 +87,7 @@ import {
         {/* Post Date */}
         <View style={{flexDirection:'row',marginLeft:scale(30),marginTop:scale(30),paddingBottom:scale(20)}}>
             <Text style={{fontFamily:FONT_FAMILY.Regular,fontSize:scale(14),lineHeight:scale(18),color:color.Body}}>Posted by OpenFashion |</Text>
-            <Text style={{fontFamily:FONT_FAMILY.Regular,fontSize:scale(14),lineHeight:scale(18),color:color.Body,marginLeft:scale(5)}}>3 Days ago</Text>
+            <Text style={{fontFamily:FONT_FAMILY.Regular,fontSize:scale(14),lineHeight:scale(18),color:color.Body,marginLeft:scale(5)}}>{data.initDate} Days ago</Text>
         </View>
         <View style={styles.tagView}>
             {tags.map(item =>            
@@ -98,7 +100,8 @@ import {
         </View>
         <Custom_Footer
           onAboutPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'OurStoryScreen' })}
-          onContactPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'ContactUsScreen' })}/>
+          onContactPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'ContactUsScreen' })}
+          onBlogPress={() => props.navigation.replace('BlogStackScreen', { screen: 'BlogGridViewScreen' })}/>
         </ScrollView>
       </SafeAreaView>
     );
@@ -128,6 +131,7 @@ import {
     productContainer:{
         justifyContent: 'center',
         alignItems: 'center',
+        height:scale(450),
         width: '100%',
       },
       wrapDot: {
@@ -138,13 +142,13 @@ import {
       },
       dotActive: {
         marginHorizontal: scale(3),
-        bottom:scale(50),
+        bottom:scale(5),
         width: scale(7),
         height: scale(7),
       },
       dot: {
         marginHorizontal: scale(3),
-        bottom:scale(50),
+        bottom:scale(5),
         opacity: 0.27,
         size: 3,
         width: scale(7),

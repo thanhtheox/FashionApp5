@@ -14,46 +14,40 @@ import SuggestiveCollection from './components/suggestiveCollections'
 const CollectionDetailScreen = (props) => {
     const collectionProducts = [
       {
+        id: 1,
+        name: ' reversible ',
+        price: 120,
         img: IMG_ModelOne,
-        key: '1',
-        name: '21WN',
-        description:'reversible angora cardigan',
-        price: '$120',
       },
       {
+        id: 2,
+        name: '21WN cardigan',
+        price: 140,
         img: IMG_ModelTwo,
-        key: '2',
-        name: '21WN',
-        description:'reversible angora cardigan',
-        price: '$120',
       },
       {
+        id: 3,
+        name: '21WN angora',
+        price: 180,
         img: IMG_ModelThree,
-        key: '3',
-        name: '21WN',
-        description:'reversible angora cardigan',
-        price: '$120',
       },
       {
-        img: IMG_ModelFour,
-        key: '4',
+        id: 4,
         name: 'Oblong bag',
-        description:'reversible angora cardigan',
-        price: '$120',
+        price: 220,
+        img: IMG_ModelFour,
       },
       {
+        id: 5,
+        name: '21WN angora',
+        price: 180,
         img: IMG_ModelThree,
-        key: '5',
-        name: '21WN',
-        description:'reversible angora cardigan',
-        price: '$120',
       },
       {
-        img: IMG_ModelFour,
-        key: '6',
+        id: 6,
         name: 'Oblong bag',
-        description:'reversible angora cardigan',
-        price: '$120',
+        price: 220,
+        img: IMG_ModelFour,
       },
   ];
   const collections = [
@@ -89,17 +83,22 @@ const CollectionDetailScreen = (props) => {
               contentContainerStyle={{alignContent: 'space-around', marginTop:scale(20)}}
               horizontal={false}
               data={collectionProducts}
-              keyExtractor={item => `${item.key}`}
+              keyExtractor={item => `${item.id}`}
               numColumns={2}
               scrollEnabled={false}
               columnWrapperStyle={{marginBottom:scale(5)}}
               renderItem={({item}) => (
-                  <CollectionProduct
-                    image={item.img}
-                    prodName={item.name}
-                    prodDescription={item.description}
-                    prodPrice={item.price}
-                  />
+                <CollectionProduct
+                image={item.img}
+                prodName={item.name}
+                prodPrice={item.price}
+                onPress={() => props.navigation.replace('ProductDetailsScreen', {
+                  // categoryName: props.categoryName,
+                  data: item,
+                })}
+                // {...props}
+                // categoryData={item}
+                />
               )}
             />      
           </View>
@@ -114,6 +113,7 @@ const CollectionDetailScreen = (props) => {
               keyExtractor={item => `${item.key}`}
               renderItem={({item}) => (
                   <SuggestiveCollection
+                    onPress={() => props.navigation.replace('CollectionDetailScreen')}
                     image={item.img}
                     prodName={item.name}
                     {...props}

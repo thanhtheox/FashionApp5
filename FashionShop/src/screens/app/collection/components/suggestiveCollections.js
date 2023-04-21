@@ -7,7 +7,7 @@ import fontStyles from '../../../../constants/fontStyle';
 
 const SuggestiveCollection = props => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={props.onPress}>
       <View style={styles.imgContainer}>
         <Image source={props.image} style={styles.img} />
       </View>

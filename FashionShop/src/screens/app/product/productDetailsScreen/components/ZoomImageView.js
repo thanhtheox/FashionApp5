@@ -7,28 +7,7 @@ import color from '../../../../../constants/color'
 import SwiperFlatList from 'react-native-swiper-flatlist'
 
 const ZoomImageView = (props) => {
-    const productImages = [
-        {
-          key: '1',
-          image: IMG_ModelFour,
-        },
-        {
-          key: '2',
-          image: IMG_ModelFour,
-        },
-        {
-          key: '3',
-          image: IMG_ModelFour,
-        },
-        {
-          key: '4',
-          image: IMG_ModelFour,
-        },
-        {
-          key: '5',
-          image: IMG_ModelFour,
-        },
-      ];
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.productContainer}>
@@ -47,7 +26,7 @@ const ZoomImageView = (props) => {
             paginationStyleItemInactive={styles.dot}
             paginationDefaultColor={color.TitleActive}
             paginationActiveColor={color.Primary}
-            data={productImages}
+            data={props.productImages}
             renderItem={({ item }) => (
               <View style={{width:Dimensions.get('window').width,
               alignItems:'center', justifyContent:'center', flexDirection:'column',height:scale(510) }} key={item => `${item.key}`} >

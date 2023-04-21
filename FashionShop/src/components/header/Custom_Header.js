@@ -4,8 +4,12 @@ import Color from '../../constants/color'
 import {IC_Menu, IC_Search, IC_ShoppingBag} from '../../assets/icons'
 import scale from '../../constants/responsive'
 import { IC_Logo } from '../logo'
+import { useSelector,connect } from 'react-redux';
 
 const Custom_Header = ({logoColor, menuColor,searchColor,cartColor,navigation}) => {
+//   const cart = useSelector((state) => state.cart);
+//   const { cartItems } = cart;
+//   const numberOfProduct = cartItems.length;
   return (
     <View style={styles.container}>
         {/* Menu */}

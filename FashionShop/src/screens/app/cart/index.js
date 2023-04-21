@@ -4,64 +4,79 @@ import FONT_FAMILY from '../../../constants/fonts'
 import scale from '../../../constants/responsive'
 import color from '../../../constants/color'
 import { IC_Close } from '../../../assets/icons'
-import { IMG_ModelFour } from '../../../assets/images'
 import Custom_Cart from '../../../components/cart/Custom_Cart'
 import Button from './components/button'
+import { useDispatch,useSelector } from 'react-redux'
+import {
+  removeFromCart,
+  adjustQTY,
+  resetCartWhenOrder,
+} from '../../../redux/actions/cartActions';
 
 const CartScreen = (props) => {
+  const dispatch = useDispatch();
   const [totalAmount, setTotalAmount] = useState(0);
   const [visible, setVisible] = useState(true);
-  const cartItems = [
-    {
-      id: '1',
-      imgUrl: IMG_ModelFour,
-      qty: 1,
-      name: 'LAMEREI',
-      description: 'Recycle Boucle Knit Cardigan Pink',
-      price: 120,
-    },
-    {
-      id: '2',
-      imgUrl: IMG_ModelFour,
-      qty: 1,
-      name: 'LAMEREI',
-      description: 'Recycle Boucle Knit Cardigan Pink',
-      price: 120,
-    },
-    {
-      id: '3',
-      imgUrl: IMG_ModelFour,
-      qty: 1,
-      name: 'LAMEREI',
-      description: 'Recycle Boucle Knit Cardigan Pink',
-      price: 120,
-    },
-    {
-      id: '4',
-      imgUrl: IMG_ModelFour,
-      qty: 1,
-      name: 'LAMEREI',
-      description: 'Recycle Boucle Knit Cardigan Pink',
-      price: 120,
-    },
-    {
-      id: '5',
-      imgUrl: IMG_ModelFour,
-      qty: 1,
-      name: 'LAMEREI',
-      description: 'Recycle Boucle Knit Cardigan Pink',
-      price: 120,
-    },
-    {
-      id: '6',
-      imgUrl: IMG_ModelFour,
-      qty: 1,
-      name: 'LAMEREI',
-      description: 'Recycle Boucle Knit Cardigan Pink',
-      price: 120,
-    },
-  ];
+
+  const cart = useSelector(state => state.cart);
+  const {cartItems} = cart;
+  
+
+  // const cartItems = [
+  //   {
+  //     id: '1',
+  //     imgUrl: IMG_ModelFour,
+  //     qty: 1,
+  //     name: 'LAMEREI',
+  //     description: 'Recycle Boucle Knit Cardigan Pink',
+  //     price: 120,
+  //   },
+  //   {
+  //     id: '2',
+  //     imgUrl: IMG_ModelFour,
+  //     qty: 1,
+  //     name: 'LAMEREI',
+  //     description: 'Recycle Boucle Knit Cardigan Pink',
+  //     price: 120,
+  //   },
+  //   {
+  //     id: '3',
+  //     imgUrl: IMG_ModelFour,
+  //     qty: 1,
+  //     name: 'LAMEREI',
+  //     description: 'Recycle Boucle Knit Cardigan Pink',
+  //     price: 120,
+  //   },
+  //   {
+  //     id: '4',
+  //     imgUrl: IMG_ModelFour,
+  //     qty: 1,
+  //     name: 'LAMEREI',
+  //     description: 'Recycle Boucle Knit Cardigan Pink',
+  //     price: 120,
+  //   },
+  //   {
+  //     id: '5',
+  //     imgUrl: IMG_ModelFour,
+  //     qty: 1,
+  //     name: 'LAMEREI',
+  //     description: 'Recycle Boucle Knit Cardigan Pink',
+  //     price: 120,
+  //   },
+  //   {
+  //     id: '6',
+  //     imgUrl: IMG_ModelFour,
+  //     qty: 1,
+  //     name: 'LAMEREI',
+  //     description: 'Recycle Boucle Knit Cardigan Pink',
+  //     price: 120,
+  //   },
+  // ];
   useEffect(() => {
+    console.log('render!')
+
+    console.log('Cart Screen cart: ' + JSON.stringify(cart));
+    console.log('Cart Screen: ' + JSON.stringify(cartItems));
     onCalculateAmount();
     
     if(totalAmount === 0)
@@ -72,7 +87,7 @@ const CartScreen = (props) => {
       setVisible(true);
     }
 
-  }, [cartItems,totalAmount]);
+  }, [cart,totalAmount]);
 
   const onCalculateAmount = () => {
     let total = 0;
@@ -82,6 +97,18 @@ const CartScreen = (props) => {
       });
     }
     setTotalAmount(total);
+  };
+
+  const qtyChangeHandler = (id, qty) => {
+    dispatch(adjustQTY(id, qty));
+  };
+
+  const removeFromCartHandler = id => {
+    dispatch(removeFromCart(id));
+  };
+
+  const resetCartHandler = () => {
+    dispatch(resetCartWhenOrder());
   };
 
   return (
@@ -98,15 +125,18 @@ const CartScreen = (props) => {
             <ScrollView showsVerticalScrollIndicator={false}>
               {cartItems.map(item => (
                 <Custom_Cart
+                  onPress={() => props.navigation.navigate('ProductDetailsScreen', {
+                  data: item,
+                  })}
                   id={item.id}
-                  textNumber={item.qty}
-                  textDescription={item.description}
-                  textName={item.name}
-                  textPrice={item.price*item.qty}
-                  img={item.imgUrl}
+                  qty={item.qty}
+                  // textDescription={item.description}
+                  name={item.name}
+                  price={item.price}
+                  img={item.img}
                   key={item.id}
-                  // qtyChangeHandler={qtyChangeHandler}
-                  // removeHandler={removeFromCartHandler}
+                  qtyChangeHandler={qtyChangeHandler}
+                  removeHandler={removeFromCartHandler}
                 />
               ))}
             </ScrollView>
@@ -137,7 +167,10 @@ const CartScreen = (props) => {
         </View>
         )}
         {/* Button */}
-        <Button text={visible? 'BUY NOW':'CONTINUE SHOPPING'}/>
+        <Button 
+        text={visible? 'BUY NOW':'CONTINUE SHOPPING'}
+        onPress={() => visible? props.navigation.navigate('CheckOutScreen'):props.navigation.navigate('HomeScreen')}
+        />
     </SafeAreaView>
   )
 }
