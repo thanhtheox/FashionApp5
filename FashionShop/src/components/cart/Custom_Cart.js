@@ -31,7 +31,7 @@ const Custom_Cart = props => {
     // )
     
   return (
-    <TouchableOpacity {...props} >
+    <TouchableOpacity onPress={props.onPress}>
       <View key={props.id} style={styles.container}>
         <View style={styles.imgContainer}>
           <Image

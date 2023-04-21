@@ -125,6 +125,9 @@ const CartScreen = (props) => {
             <ScrollView showsVerticalScrollIndicator={false}>
               {cartItems.map(item => (
                 <Custom_Cart
+                  onPress={() => props.navigation.navigate('ProductDetailsScreen', {
+                  data: item,
+                  })}
                   id={item.id}
                   qty={item.qty}
                   // textDescription={item.description}
