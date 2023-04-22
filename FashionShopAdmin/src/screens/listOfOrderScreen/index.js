@@ -4,18 +4,12 @@ import color from '../../constants/color'
 import FONT_FAMILY from '../../constants/fonts'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { IC_Backward } from '../../assets/icons'
+import HeaderMin from '../../components/header/headerMin'
 
-const ListOfOrderScreen = () => {
+const ListOfOrderScreen = (props) => {
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-          <TouchableOpacity onPress={()=>props.navigation.goBack()} >
-              <IC_Backward stroke={color.White}></IC_Backward>
-          </TouchableOpacity>
-          <View >
-              <Text style={styles.textHeader}>List of orders</Text>
-          </View>
-      </View>
+      <HeaderMin text={"List of orders"} onPress={()=>props.navigation.goBack()}/>
     </SafeAreaView>
   )
 }

@@ -15,7 +15,7 @@ const ItemProductOfCollection = (props) => {
         </View>
 
         <View style={styles.viewImage} >
-            <Image source={props.source} style={styles.image} resizeMode='stretch'></Image>
+            <Image source={{uri:props.source}} style={styles.image} resizeMode='stretch'></Image>
         </View>
 
         <View style={styles.viewTextName}>
