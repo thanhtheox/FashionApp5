@@ -7,7 +7,7 @@ import Custom_HomepageProd from '../../../../components/products/CustomHomepageP
 import Custom_Tag1 from '../../../../components/tags/fill'
 import scale from '../../../../constants/responsive'
 import { IMG_Collection, IMG_Logo, IMG_ModelFour, IMG_ModelOne, IMG_ModelThree, IMG_ModelTwo } from '../../../../assets/images'
-import { Boss,Burberry, Catier, Gucci, Prada, Tiffany, Sticker1,Sticker2,Sticker3,Sticker4,Sticker5} from './images'
+import {Sticker1,Sticker2,Sticker3,Sticker4,Sticker5} from './images'
 import { LineBottom } from '../../../../components/footer/images'
 import FONT_FAMILY from '../../../../constants/fonts'
 import color from '../../../../constants/color'
@@ -55,32 +55,6 @@ const HomeScreen = (props) => {
       name: 'Oblong bag',
       price: 220,
       img: IMG_ModelFour,
-    },
-  ];
-  const brands = [
-    {
-      key: '1',
-      brandName: Boss,
-    },
-    {
-      key: '2',
-      brandName: Burberry,
-    },
-    {
-      key: '3',
-      brandName: Catier,
-    },
-    {
-      key: '4',
-      brandName: Gucci,
-    },
-    {
-      key: '5',
-      brandName: Prada,
-    },
-    {
-      key: '6',
-      brandName: Tiffany,
     },
   ];
   const tags = [
@@ -199,29 +173,6 @@ const HomeScreen = (props) => {
             )}></FlatList>
             <TouchableOpacity><Text style={styles.exploreText}>Explore More ⇒</Text></TouchableOpacity>
           </View>
-          {/* Brand
-          <View style={styles.brandContainer}>
-            <Image source={LineBottom} style={styles.lineBottom} resizeMode='stretch'/>
-            <FlatList
-            contentContainerStyle={{alignContent: 'space-around', marginTop: scale(38)}}
-            horizontal={false}
-            data={brands}
-            keyExtractor={item => `${item.key}`}
-            numColumns={3}
-            scrollEnabled={false}
-            columnWrapperStyle={styles.wrapperBrand}
-            renderItem={({item}) => (
-              <View>
-                <Image
-                  source={item.brandName}
-                  style={item.key==1||item.key==4?{marginLeft:scale(0)}:{marginLeft:scale(50)}}
-                  {...props}
-                  categoryData={item}
-                />
-              </View>
-            )}></FlatList>
-            <Image source={LineBottom} style={styles.lineBottom} resizeMode='stretch'/>
-          </View> */}
           {/* Collection */}
           <View style={styles.collectionContainer}>
             <Text style={styles.collectionText}>COLLECTIONS</Text>
