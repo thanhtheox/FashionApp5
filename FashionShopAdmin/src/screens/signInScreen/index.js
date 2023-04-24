@@ -66,7 +66,6 @@ const SignInScreen = props => {
       const response = await axios.post(
         '/login',
         JSON.stringify({email: mail, password: pass}),
-        console.log(mail + pass),
         {
           headers: {'Content-Type': 'application/json'},
           withCredentials: true,
