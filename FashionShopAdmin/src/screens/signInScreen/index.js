@@ -66,6 +66,7 @@ const SignInScreen = props => {
       const response = await axios.post(
         '/login',
         JSON.stringify({email: mail, password: pass}),
+        console.log(mail + pass),
         {
           headers: {'Content-Type': 'application/json'},
           withCredentials: true,
@@ -87,10 +88,6 @@ const SignInScreen = props => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        {/* <TouchableOpacity style={styles.viewIcon} onPress={() => props.navigation.goBack()}>
-          <IC_BackwardArrow stroke={color.White} />
-        </TouchableOpacity> */}
-
         <View style={styles.ViewTitleText}>
           <Text style={styles.textTile}>Welcome Admin!</Text>
           <Text style={styles.textLabel}>Sign in to continue</Text>
@@ -106,7 +103,7 @@ const SignInScreen = props => {
             <View style={styles.inputMailBox}>
               <View style={styles.viewInput}>
               <TextInput
-                onChangeText={email => onChange(email)}
+                onChangeText={email => [onChange(email), setMail(email)]}
                 placeholder="Email"
                 value={value}
                 placeholderTextColor={color.GraySolid}
@@ -130,7 +127,7 @@ const SignInScreen = props => {
               <View style={styles.viewInput}>
               <TextInput
                 secureTextEntry={true}
-                onChangeText={pass => onChange(pass)}
+                onChangeText={password =>[ onChange(password),setPass(password)]}
                 value={value}
                 placeholder="Password"
                 placeholderTextColor={color.GraySolid}
