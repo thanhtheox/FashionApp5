@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 // Import required components
 import {
   SafeAreaView,
@@ -10,45 +10,47 @@ import {
   UIManager,
   TouchableOpacity,
   Platform,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 import scale from '../../constants/responsive';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
-import { IC_Backward, IC_Forward , IC_Down, IC_BackwardArrow} from '../../assets/icons';
+import {
+  IC_Backward,
+  IC_Forward,
+  IC_Down,
+  IC_BackwardArrow,
+} from '../../assets/icons';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import HeaderMax from '../../components/header/headerMax';
 
-
 const CONTENT = [
-  { 
+  {
     isExpanded: false,
-    title:'Woman',
-    child:[
-        {id: 1,name: 't-shirt'},
-        {id: 2,name: 'blouse'},
-        {id: 3,name: 'jacket'},
-        {id: 4,name: 'skirt'},
-        {id: 5,name: 'shorts'},
-
-    ]
-},
-{
-  isExpanded: false,
+    title: 'Woman',
+    child: [
+      {id: 1, name: 't-shirt'},
+      {id: 2, name: 'blouse'},
+      {id: 3, name: 'jacket'},
+      {id: 4, name: 'skirt'},
+      {id: 5, name: 'shorts'},
+    ],
+  },
+  {
+    isExpanded: false,
 
     title: 'Man',
-    child:[
-      {id: 6,name: 't-shirt'},
-      {id: 7,name: 'blouse'},
-      {id: 8,name: 'suit'},
-      {id: 9,name: 'jacket'},
-      {id: 10,name: 'belt'},
-
-    ]
-},
+    child: [
+      {id: 6, name: 't-shirt'},
+      {id: 7, name: 'blouse'},
+      {id: 8, name: 'suit'},
+      {id: 9, name: 'jacket'},
+      {id: 10, name: 'belt'},
+    ],
+  },
 ];
 
-const ExpandableComponent = ({ item, onClickFunction }) => {
+const ExpandableComponent = ({item, onClickFunction}) => {
   //Custom Component for the Expandable List
   const [layoutHeight, setLayoutHeight] = useState(0);
 
@@ -65,10 +67,10 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
       {/*Header of the Expandable List Item*/}
       <TouchableOpacity onPress={onClickFunction} style={styles.viewList}>
         <View style={styles.viewTextList}>
-            <Text style={styles.textList}>{item.title}</Text>
+          <Text style={styles.textList}>{item.title}</Text>
         </View>
         <View style={styles.viewIcon}>
-            <IC_Down></IC_Down>
+          <IC_Down></IC_Down>
         </View>
       </TouchableOpacity>
       <View
@@ -79,12 +81,14 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
         {/*Content under the header of the Expandable List Item*/}
         {item.child.map((item, index) => (
           <TouchableOpacity style={styles.viewListBody} key={item.id}>
-              <View style={styles.viewTextList}>
-                <Text style={styles.textListBody}>{index+1}.{item.name}</Text>
-              </View>
-              <View style={styles.viewIcon}>
-                  <IC_Forward></IC_Forward>
-              </View>
+            <View style={styles.viewTextList}>
+              <Text style={styles.textListBody}>
+                {index + 1}.{item.name}
+              </Text>
+            </View>
+            <View style={styles.viewIcon}>
+              <IC_Forward></IC_Forward>
+            </View>
           </TouchableOpacity>
         ))}
       </View>
@@ -92,7 +96,7 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
   );
 };
 
-const ListOfCategoryScreen = (props) => {
+const ListOfCategoryScreen = props => {
   const [listDataSource, setListDataSource] = useState(CONTENT);
   const [multiSelect, setMultiSelect] = useState(false);
 
@@ -100,19 +104,19 @@ const ListOfCategoryScreen = (props) => {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
-  const updateLayout = (index) => {
+  const updateLayout = index => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     const array = [...listDataSource];
     // if (multiSelect) {
     //   // If multiple select is enabled
-      array[index]['isExpanded'] = !array[index]['isExpanded'];
+    array[index]['isExpanded'] = !array[index]['isExpanded'];
     // } else {
-      // If single select is enabled
-      // array.map((value, placeindex) =>
-      //   placeindex === index
-      //     ? (array[placeindex]['isExpanded'] = !array[placeindex]['isExpanded'])
-      //     : (array[placeindex]['isExpanded'] = false)
-      // );
+    // If single select is enabled
+    // array.map((value, placeindex) =>
+    //   placeindex === index
+    //     ? (array[placeindex]['isExpanded'] = !array[placeindex]['isExpanded'])
+    //     : (array[placeindex]['isExpanded'] = false)
+    // );
     // }
     setListDataSource(array);
   };
@@ -124,30 +128,33 @@ const ListOfCategoryScreen = (props) => {
     const controller = new AbortController();
 
     const getCategories = async () => {
-        try {
-            const response = await axiosPrivate.get('/all-categories', {
-                signal: controller.signal
-            });
-            console.log(response.data);
-            isMounted && setData(response.data);
-        } 
-        catch (err) {
-            console.log(err.response.data);
-        }
-    }
+      try {
+        const response = await axiosPrivate.get('/all-categories', {
+          signal: controller.signal,
+        });
+        console.log(response.data);
+        isMounted && setData(response.data);
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    };
 
     getCategories();
 
     return () => {
-        isMounted = false;
-        controller.abort();
-    }
-
-  }, [])
+      isMounted = false;
+      controller.abort();
+    };
+  }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <HeaderMax navigation={props.navigation} textTitle={'List of categories'} textLabel={'Add category'}/>
+    <SafeAreaView style={{flex: 1}}>
+      <HeaderMax
+        onPress={() => props.navigation.navigate('AddCategory')}
+        onPressBack={() => props.navigation.goBack()}
+        textTitle={'List of categories'}
+        textLabel={'Add category'}
+      />
 
       <View style={styles.body}>
         <ScrollView>
@@ -179,7 +186,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: color.White,
   },
-  
+
   /////
   separator: {
     height: 0.5,
@@ -200,27 +207,27 @@ const styles = StyleSheet.create({
   },
   ///
 
-  viewList:{
+  viewList: {
     marginTop: scale(5),
     height: scale(68),
-    width:'100%',
+    width: '100%',
     borderBottomWidth: 1,
     // borderWidth:1,
     flexDirection: 'row',
   },
-  viewTextList:{
+  viewTextList: {
     // backgroundColor: color.Alto,
     justifyContent: 'center',
     width: scale(300),
     marginLeft: scale(20),
   },
-  textList:{
+  textList: {
     fontFamily: FONT_FAMILY.Regular,
     fontSize: 24,
     fontWeight: '400',
     color: color.TitleActive,
   },
-  viewIcon:{
+  viewIcon: {
     // backgroundColor: color.Alto,
     alignSelf: 'center',
   },
@@ -228,17 +235,17 @@ const styles = StyleSheet.create({
     height: 0,
   },
   list: {
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
-  viewListBody:{
+  viewListBody: {
     height: scale(48),
-    width:'100%',
+    width: '100%',
     borderBottomWidth: 0.5,
     flexDirection: 'row',
     backgroundColor: color.White,
     opacity: 0.9,
   },
-  textListBody:{
+  textListBody: {
     fontFamily: FONT_FAMILY.Regular,
     fontSize: 12,
     fontWeight: '400',
