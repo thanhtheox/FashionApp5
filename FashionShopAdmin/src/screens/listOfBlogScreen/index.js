@@ -29,7 +29,6 @@ import BlogItem from './components/blogItem';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import HeaderMax from '../../components/header/headerMax';
 
-
 const ListOfBlogScreen = props => {
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState([]);
@@ -59,7 +58,12 @@ const ListOfBlogScreen = props => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <HeaderMax navigation={props.navigation} textTitle={'List of blogs'} textLabel={'Add blog'}/>
+      <HeaderMax
+        onPress={() => props.navigation.navigate('AddBlog')}
+        onPressBack={() => props.navigation.goBack()}
+        textTitle={'List of blogs'}
+        textLabel={'Add blog'}
+      />
 
       <View style={styles.body}>
         <ScrollView>

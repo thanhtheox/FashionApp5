@@ -10,14 +10,14 @@ const HeaderMax = (props) => {
     <View style={styles.header}>
         <View style={styles.viewText}>
           <View style={styles.viewTitleText}>
-            <TouchableOpacity onPress={() => props.navigation.goBack()}>
+            <TouchableOpacity onPress={props.onPressBack}>
               <IC_Backward stroke={color.White} />
             </TouchableOpacity>
             <Text style={styles.textTile}>{props.textTitle}</Text>
           </View>
           <TouchableOpacity
             style={styles.viewTextLabel}
-            onPress={() => props.navigation.navigate('AddBlog')}>
+            onPress={props.onPress}>
             <Text style={styles.textLabel}>{props.textLabel}</Text>
           </TouchableOpacity>
         </View>
