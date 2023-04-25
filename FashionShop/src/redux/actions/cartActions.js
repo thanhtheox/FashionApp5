@@ -50,41 +50,41 @@ export const adjustQTY = (id, qty) => async (dispatch, getState) => {
   );
 };
 
-// export const resetCartWhenOrder = () => async (dispatch, getState) => {
-//   dispatch({
-//     type: actionTypes.CART_RESET,
-//     payload: {},
-//   });
+export const resetCartWhenOrder = () => async (dispatch, getState) => {
+  dispatch({
+    type: actionTypes.CART_RESET,
+    payload: {},
+  });
 
-//   await AsyncStorage.setItem(
-//     '@cart',
-//     JSON.stringify(getState().cart.cartItems),
-//   );
-// };
+  await AsyncStorage.setItem(
+    '@cart',
+    JSON.stringify(getState().cart.cartItems),
+  );
+};
 
-// export const resetCartWhenLogOut = () => async (dispatch, getState) => {
-//   dispatch({
-//     type: actionTypes.CART_RESET,
-//     payload: {},
-//   });
+export const resetCartWhenLogOut = () => async (dispatch, getState) => {
+  dispatch({
+    type: actionTypes.CART_RESET,
+    payload: {},
+  });
 
-//   await AsyncStorage.setItem(
-//     '@cart',
-//     JSON.stringify(getState().cart.cartItems),
-//   );
-// };
+  await AsyncStorage.setItem(
+    '@cart',
+    JSON.stringify(getState().cart.cartItems),
+  );
+};
 
-// export const initCartLogIn = (cart) => async (dispatch, getState) => {
-//   console.log("cart ->>", cart);
+export const initCartLogIn = (cart) => async (dispatch, getState) => {
+  console.log("cart ->>", cart);
 
 
-//   dispatch({
-//    type: actionTypes.INIT_CART,
-//     payload: {cart},
-//   });
+  dispatch({
+   type: actionTypes.INIT_CART,
+    payload: {cart},
+  });
 
-//   await AsyncStorage.setItem(
-//    '@cart',
-//    JSON.stringify(getState().cart.cartItems),
-//   );
-// };
+  await AsyncStorage.setItem(
+   '@cart',
+   JSON.stringify(getState().cart.cartItems),
+  );
+};

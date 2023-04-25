@@ -15,7 +15,7 @@ import {persistStore} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 import { cartReducer } from './reducer/cartReducer';
-// import { logout } from '../features/auth/userSlice';
+import useLogout from '../hooks/useLogout';
 
 const appReducer = combineReducers({
 //   user: userReducer,
@@ -23,9 +23,9 @@ const appReducer = combineReducers({
 });
 
 const rootReducer = (state, action) => {
-//   if (action.type === logout) {
-//     return appReducer(undefined, action)
-//   }
+  if (action.type === useLogout) {
+    return appReducer(undefined, action)
+  }
 
   return appReducer(state, action)
 }

@@ -7,6 +7,12 @@ import scale from '../../../constants/responsive'
 import Custom_CategoryScrollView from './components/Custom_CategoryScrollView'
 import Custom_MenuFooter from './components/Custom_MenuFooter'
 import OKMessageBox from '../../../components/messageBox/OKMessageBox'
+import useLogout from '../../../hooks/useLogout'
+import { useDispatch } from 'react-redux'
+import { initCartLogIn, resetCartWhenLogOut } from '../../../redux/actions/cartActions'
+import { useIsFocused } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 if (
   Platform.OS === "android" &&
@@ -132,6 +138,19 @@ const Accordion = ({ item, onClickFunction }) => {
 const Menu = (props) => {
   const [listDataSource, setListDataSource] = useState(parents);
 
+  const logout = useLogout();
+  const dispatch = useDispatch();
+
+  const signOut = async () => {
+      try {
+      await dispatch(logout());
+      await dispatch(resetCartWhenLogOut());
+      props.navigation.replace('AuthStackScreen');
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
 
   const updateLayout = (index) => {
     LayoutAnimation.configureNext({
@@ -178,7 +197,7 @@ const Menu = (props) => {
             <Text style={styles.buttonText}>My Profile</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttonView} 
-          onPress={() => props.navigation.replace('AuthStackScreen', { screen: 'OnboardingScreen' })}>
+          onPress={() => signOut()}>
             <IC_ForwardArrow/>
             <Text style={styles.buttonText}>Sign Out</Text>
           </TouchableOpacity>
