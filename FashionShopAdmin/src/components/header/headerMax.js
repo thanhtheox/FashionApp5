@@ -17,7 +17,7 @@ const HeaderMax = (props) => {
           </View>
           <TouchableOpacity
             style={styles.viewTextLabel}
-            onPress={() => props.navigation.navigate('AddBlog')}>
+            onPress={() => props.navigation.navigate(props.navigateScreen)}>
             <Text style={styles.textLabel}>{props.textLabel}</Text>
           </TouchableOpacity>
         </View>

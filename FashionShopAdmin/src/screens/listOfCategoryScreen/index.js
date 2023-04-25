@@ -15,38 +15,39 @@ import {
 import scale from '../../constants/responsive';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
-import { IC_Backward, IC_Forward , IC_Down, IC_BackwardArrow} from '../../assets/icons';
+import { IC_Forward , IC_Down, IC_BackwardArrow} from '../../assets/icons';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import HeaderMax from '../../components/header/headerMax';
+import { useIsFocused } from '@react-navigation/native';
 
 
-const CONTENT = [
-  { 
-    isExpanded: false,
-    title:'Woman',
-    child:[
-        {id: 1,name: 't-shirt'},
-        {id: 2,name: 'blouse'},
-        {id: 3,name: 'jacket'},
-        {id: 4,name: 'skirt'},
-        {id: 5,name: 'shorts'},
+// const CONTENT = [
+//   { 
+//     isExpanded: false,
+//     title:'Woman',
+//     child:[
+//         {id: 1,name: 't-shirt'},
+//         {id: 2,name: 'blouse'},
+//         {id: 3,name: 'jacket'},
+//         {id: 4,name: 'skirt'},
+//         {id: 5,name: 'shorts'},
 
-    ]
-},
-{
-  isExpanded: false,
+//     ]
+// },
+// {
+//   isExpanded: false,
 
-    title: 'Man',
-    child:[
-      {id: 6,name: 't-shirt'},
-      {id: 7,name: 'blouse'},
-      {id: 8,name: 'suit'},
-      {id: 9,name: 'jacket'},
-      {id: 10,name: 'belt'},
+//     title: 'Man',
+//     child:[
+//       {id: 6,name: 't-shirt'},
+//       {id: 7,name: 'blouse'},
+//       {id: 8,name: 'suit'},
+//       {id: 9,name: 'jacket'},
+//       {id: 10,name: 'belt'},
 
-    ]
-},
-];
+//     ]
+// },
+// ];
 
 const ExpandableComponent = ({ item, onClickFunction }) => {
   //Custom Component for the Expandable List
@@ -78,7 +79,7 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
         }}>
         {/*Content under the header of the Expandable List Item*/}
         {item.child.map((item, index) => (
-          <TouchableOpacity style={styles.viewListBody} key={item.id}>
+          <TouchableOpacity style={styles.viewListBody} key={item._id}>
               <View style={styles.viewTextList}>
                 <Text style={styles.textListBody}>{index+1}.{item.name}</Text>
               </View>
@@ -93,7 +94,7 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
 };
 
 const ListOfCategoryScreen = (props) => {
-  const [listDataSource, setListDataSource] = useState(CONTENT);
+  const [listDataSource, setListDataSource] = useState([]);
   const [multiSelect, setMultiSelect] = useState(false);
 
   if (Platform.OS === 'android') {
@@ -119,6 +120,7 @@ const ListOfCategoryScreen = (props) => {
 
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState([]);
+  const isFocused = useIsFocused();
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
@@ -128,7 +130,7 @@ const ListOfCategoryScreen = (props) => {
             const response = await axiosPrivate.get('/all-categories', {
                 signal: controller.signal
             });
-            console.log(response.data);
+            //console.log(response.data);
             isMounted && setData(response.data);
         } 
         catch (err) {
@@ -136,24 +138,55 @@ const ListOfCategoryScreen = (props) => {
         }
     }
 
-    getCategories();
+    isFocused && getCategories()
 
     return () => {
         isMounted = false;
         controller.abort();
     }
 
-  }, [])
+  }, [isFocused])
+  useEffect(() => {
+    const handleCategory = async() => {
+      try{
+        let parentCat = [{}];
+        let newContent = [];
+        parentCat = data.filter(item => !item.parentId);
+        //console.log({parentCat})
+        parentCat.map((item, index) => {
+          //console.log(item.name)
+          const obj = {};
+          obj.title = item.name;
+          obj._id = item._id;
+          obj.child = [];
+          obj.isExpanded = false
+          newContent[index] = obj
+          data.map(item => {
+            if( item.parentId === newContent[index]._id )
+              newContent[index].child.push(item)
+            }
+          )
+        })
+        //console.log(newContent[1].child);
+        setListDataSource(newContent);
+      }
+      catch (err) {
+        console.log(err)
+      }
+      
+    }; 
+    handleCategory();
+  }, [data])
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <HeaderMax navigation={props.navigation} textTitle={'List of categories'} textLabel={'Add category'}/>
+      <HeaderMax navigation={props.navigation} textTitle={'List of categories'} textLabel={'Add category'} navigateScreen={'AddCategory'}/>
 
       <View style={styles.body}>
         <ScrollView>
           {listDataSource.map((item, key) => (
             <ExpandableComponent
-              key={item.category_name}
+              key={item._id}
               onClickFunction={() => {
                 updateLayout(key);
               }}
@@ -221,7 +254,6 @@ const styles = StyleSheet.create({
     color: color.TitleActive,
   },
   viewIcon:{
-    // backgroundColor: color.Alto,
     alignSelf: 'center',
   },
   hidden: {

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View , SafeAreaView, TextInput} from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import color from '../../constants/color'
 import FONT_FAMILY from '../../constants/fonts'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -8,21 +8,91 @@ import scale from '../../constants/responsive'
 import SingleLine from '../../components/inputTexts/singleLine'
 import DropDownPicker from 'react-native-dropdown-picker'
 import SaveButton from '../../components/buttons/Save'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
+import Message from '../../components/alearts.js/messageOnly'
 
-const AddCategoryScreen = () => {
+const AddCategoryScreen = (props) => {
+    const [newCategory, setNewCategory] = useState({
+        name: '',
+        description: '',
+        parentId: ''
+    });
+    const [parentCategories, setParentCategories] = useState([]);
+    const [data, setData] = useState([]);
+    const axiosPrivate = useAxiosPrivate();
 
-    const [tag, setTag] = useState([
-        {label: '1', value: 'apple'},
-        {label: '2', value: 'banana'},
-        {label: '3', value: 'pie'},
-        {label: '4', value: 'orange'},
-        {label: '5', value: 's'},
-        {label: '6', value: 'ds'},
-        {label: '7', value: 'sa'},
-        {label: '8', value: 'dsa'},
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const getCategory = async () => {
+            try {
+                const response = await axiosPrivate.get('/all-categories', {
+                    signal: controller.signal
+                });
+                console.log(response.data);
+                isMounted && setData(response.data);
+            } 
+            catch (err) {
+                console.log(err.response.data);
+            }
+        }
+
+        getCategory();
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+    },[])
+    useEffect(() => {
+        console.log({data})
+        const handleCategory = async () => {
+            let parentCat = [{}];
+            parentCat = data.filter(item => !item.parentId);
+            parentCat = parentCat.map(item => ({
+                label: item.name,
+                value: item._id
+            }))
+            
+            setParentCategories(parentCat);
+        }
         
-    ]);
+        handleCategory();
+    },[data])
+    useEffect(() => {console.log({newCategory})},[newCategory])
+
+
     const [tagOpen, setTagOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const [visible, setVisible] = useState(false);
+    const [title, setTitle] = useState('');
+    const [message, setMessage] = useState('');
+    const handleSubmit = async () => {
+        try {
+            setLoading(true);
+            const response = await axiosPrivate.post('/category',
+                JSON.stringify({ name: newCategory.name, parentId: newCategory.parentId, description: newCategory.description }),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            );
+            console.log("success", JSON.stringify(response.data));
+            setTitle('Success');
+            setMessage(`New category with Name: ${newCategory.name} and has been created`)
+            setLoading(false);
+            } 
+        catch (err) {
+            console.log("err", err.response.data);
+            setTitle('Error')
+            setMessage(err.response.data.error)
+            setLoading(false);
+        }
+        finally {
+            setVisible(true);
+        }
+    };
     return (
         <SafeAreaView style={styles.container}>
     {/* header */}
@@ -45,21 +115,24 @@ const AddCategoryScreen = () => {
                         placeholderTextColor={color.PlaceHolder} 
                         selectionColor={color.TitleActive}
                         keyboardAppearance='dark'
+                        onChangeText={text => setNewCategory({...newCategory, name: text})}
                     />
                 </View>
                 <View style={styles.categoryBox}>
-                    <View>
+                    <View >
                         <DropDownPicker
+                            // listMode="MODAL"
+                            listMode="FLATLIST"
                             open={tagOpen}
                             placeholder="Parent"
                             style={styles.categoryDropDown}
                             textStyle={styles.dropdownText}
-                            items={tag}
+                            items={parentCategories}
                             setOpen={setTagOpen}
-                            modalProps={{
-                                animationType: "fade"
-                            }}
-                            onSelectItem={(item) => handlePickTag(item)}
+                            value={newCategory.parentId}
+                            onSelectItem={(item) => setNewCategory({...newCategory, parentId: item.value})}
+                            dropDownContainerStyle={{borderRadius: 0}}
+                            listItemContainerStyle={{backgroundColor: color.White}}
                         />
                     </View>
                 </View>
@@ -70,13 +143,27 @@ const AddCategoryScreen = () => {
                         selectionColor={color.GraySolid}
                         keyboardAppearance='dark'
                         multiline={true}
-                        maxLength={500}
+                        maxLength={500}            
+                        onChangeText={text => setNewCategory({...newCategory, description: text})}
                     />
                 </View>
                 <View style={styles.buttonView}>
-                    <SaveButton text={'Add category'} />
+                    <SaveButton text={'Add category'} onPress={() => handleSubmit()} disabled={!newCategory.name || !newCategory.description}/>
                 </View>
             </View>
+            <Message
+                visible={visible} 
+                title={title} 
+                clickCancel={() => {
+                    if (title === 'Success') {
+                        props.navigation.goBack();
+                    }
+                    else {
+                        setVisible(false);
+                    }
+                }} 
+                message={message}
+            />
         </SafeAreaView>
     )
 }
@@ -98,7 +185,6 @@ const styles = StyleSheet.create({
         color: color.White,
         fontFamily: FONT_FAMILY.Bold,
         fontSize: 24,
-        //fontWeight: '600',
     },
     body:{
         flex: 0.9,
@@ -143,6 +229,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         gap: scale(15),
+        alignSelf: 'flex-start',
+        borderWidth: 1,
+        zIndex: 1
     },
     categoryDropDown: {
         borderRadius: 0,
