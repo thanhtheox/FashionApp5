@@ -1,14 +1,14 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity,ActivityIndicator} from 'react-native';
 import React from 'react';
 import Color from '../../constants/color';
 import scale from '../../constants/responsive';
-import {IC_ForwardArrow} from '../../assets/icons';
 import FONT_FAMILY from '../../constants/fonts';
 
 const SaveButton = props => {
   return (
-    <TouchableOpacity style={styles.container} onPress={props.onPress}>
+    <TouchableOpacity style={[styles.container, {opacity: props.disabled?0.75:1}]} onPress={props.onPress} disabled={props.disabled}>
             <Text style={styles.text}>{props.text}</Text>
+            {props.loading?<ActivityIndicator size="large" color={Color.White} style={{position: 'absolute', right: scale(20)}}/>:null}
     </TouchableOpacity>
     
   );

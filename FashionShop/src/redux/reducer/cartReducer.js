@@ -37,16 +37,16 @@ export const cartReducer = (state = CART_INITIAL_STATE, action) => {
           x.id === action.payload.id ? {...x, qty: action.payload.qty} : x
         ),  
       };
-    // case actionTypes.CART_RESET:
-    //   return {
-    //     ...state,
-    //     cartItems: [] 
-    //   };
-    // case actionTypes.INIT_CART:
-    //   return {
-    //     ...state,
-    //     cartItems: action.payload.cart 
-    //   };
+    case actionTypes.CART_RESET:
+      return {
+        ...state,
+        cartItems: [] 
+      };
+    case actionTypes.INIT_CART:
+      return {
+        ...state,
+        cartItems: action.payload.cart 
+      };
     default:
       return state;
   }
