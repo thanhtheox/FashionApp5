@@ -1,4 +1,4 @@
-import { StyleSheet, Text, Pressable} from 'react-native'
+import { StyleSheet, Text, Pressable,View} from 'react-native'
 import React from 'react'
 import color from '../../../../constants/color';
 import scale from '../../../../constants/responsive';
@@ -12,7 +12,11 @@ const Custom_UnderlineButtonMenu = (props) => {
         style={{flexDirection:'column', alignItems:'center', paddingVertical:scale(3)}}
         >
         <Text style={[styles.text, textStyle]}>{children}</Text>
-        <Text style={[styles.background(isChoosing), style]}>━━━━━━━━━◆━━━━━━━━━</Text>
+        <View style={{flexDirection:'row'}}>
+          <View style={[styles.borderColor(isChoosing),{borderWidth:1,alignSelf:'center',height:scale(1),width:scale(80)}]}></View>
+          <Text style={[styles.background(isChoosing), style]}>◆</Text>
+          <View style={[styles.borderColor(isChoosing),{borderWidth:1,alignSelf:'center',height:scale(1),width:scale(80)}]}></View>
+        </View>        
     </Pressable>
   )
 }
@@ -23,6 +27,9 @@ const styles = StyleSheet.create({
   background: isChoosing => ({
     alignSelf: 'center',
     color: isChoosing ? color.Primary : color.GraySolid,
+  }),
+  borderColor: isChoosing => ({
+    borderColor: isChoosing ? color.Primary : color.GraySolid,
   }),
   text: {
     color: color.PlaceHolder,
