@@ -143,7 +143,7 @@ const Menu = (props) => {
 
   const signOut = async () => {
       try {
-      await dispatch(logout());
+      logout();
       await dispatch(resetCartWhenLogOut());
       props.navigation.replace('AuthStackScreen');
     } catch (error) {
