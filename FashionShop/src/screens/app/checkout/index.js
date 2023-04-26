@@ -23,7 +23,8 @@ import {
   import { useDispatch,useSelector } from 'react-redux'
   import {
     adjustQTY,
-    removeFromCart
+    removeFromCart, 
+    resetCartWhenOrder
   } from '../../../redux/actions/cartActions';
 
   const CheckOut = () => { 
@@ -48,41 +49,6 @@ import {
     const dispatch = useDispatch();
     const [totalAmount, setTotalAmount] = useState(0);
     const [visible, setVisible] = useState(true);
-  //   const cartItems = [
-  //   {
-  //     id: '1',
-  //     imgUrl: IMG_ModelFour,
-  //     qty: 1,
-  //     name: 'LAMEREI',
-  //     description: 'Recycle Boucle Knit Cardigan Pink',
-  //     price: 120,
-  //   },
-  //   {
-  //     id: '2',
-  //     imgUrl: IMG_ModelFour,
-  //     qty: 1,
-  //     name: 'LAMEREI',
-  //     description: 'Recycle Boucle Knit Cardigan Pink',
-  //     price: 120,
-  //   },
-  //   {
-  //     id: '3',
-  //     imgUrl: IMG_ModelFour,
-  //     qty: 1,
-  //     name: 'LAMEREI',
-  //     description: 'Recycle Boucle Knit Cardigan Pink',
-  //     price: 120,
-  //   },
-  //   {
-  //     id: '4',
-  //     imgUrl: IMG_ModelFour,
-  //     qty: 1,
-  //     name: 'LAMEREI',
-  //     description: 'Recycle Boucle Knit Cardigan Pink',
-  //     price: 120,
-  //   },
-  // ];
-  
   const cart = useSelector(state => state.cart);
   const {cartItems} = cart;
   useEffect(() => {
@@ -113,6 +79,10 @@ import {
 
   const removeFromCartHandler = id => {
     dispatch(removeFromCart(id));
+  };
+  
+  const resetCartHandler = () => {
+    dispatch(resetCartWhenOrder());
   };
     return (
       <SafeAreaView style={styles.container}>
@@ -183,7 +153,7 @@ import {
             <Text style={styles.total}>TOTAL</Text>
             <Text style={styles.price}>${totalAmount+methodValue}</Text>
         </View>
-        <TouchableOpacity style={styles.placeOrder}>
+        <TouchableOpacity style={styles.placeOrder} onPress={() => resetCartHandler()}>
           <Text style={styles.button}>PLACE ORDER</Text>
         </TouchableOpacity>       
       </SafeAreaView>

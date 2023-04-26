@@ -107,9 +107,6 @@ const CartScreen = (props) => {
     dispatch(removeFromCart(id));
   };
 
-  const resetCartHandler = () => {
-    dispatch(resetCartWhenOrder());
-  };
 
   return (
     <SafeAreaView style={styles.container}>
