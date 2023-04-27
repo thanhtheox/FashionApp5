@@ -28,16 +28,6 @@ import {IC_Backward, IC_BackwardArrow} from '../../assets/icons';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import HeaderMax from '../../components/header/headerMax';
 
-// const data=[
-//   {id:1,name: 'SAPPOCHE', source: IMG_Collection},
-//   {id:2,name: 'NAGAMI', source: IMG_ModelFour},
-//   {id:3,name: 'NONUNO',source: IMG_ModelOne},
-//   {id:4,name: 'SUMGA',source: IMG_ModelTwo},
-//   {id:5,name: 'KAKHUKO',source: IMG_ModelThree},
-//   {id:6,name: 'RAPAMA',source: IMG_ModelFour},
-//   {id:7,name: 'TAKOYA',source: IMG_ModelOne},
-
-// ]
 
 const ListOfCollectionScreen = props => {
   const axiosPrivate = useAxiosPrivate();
