@@ -74,6 +74,30 @@ const ListOfColor_SizeScreen = (props) => {
     setClickYes(() => newClickYes);
     setVisible(true);
   } 
+
+
+  const deleteSizer = async (id, name) => {
+    setTitle('Delete size');
+    setMessage(`Do you want to delete ${name} size`)
+    setStatus('new')
+    const newClickYes = async () => {
+      try {
+        setStatus('loading');
+        const response = await axiosPrivate.delete(`/delete-size/${id}`, {
+        });
+        console.log(response.data)
+        let newDataSize = dataSize.filter(item => item._id !== id)
+        setDataSize(newDataSize);
+        setTitle('Size deleted');
+        setMessage(`Size ${name} has been deleted`)
+        setStatus('done');
+      } catch (err) {
+        console.log(err?.response?.data || err.message);
+      } 
+    }
+    setClickYes(() => newClickYes);
+    setVisible(true);
+  } 
   const [status, setStatus] = useState('new')
   const [visible, setVisible] = useState(false);
   const [title, setTitle] = useState('');
@@ -157,6 +181,7 @@ const ListOfColor_SizeScreen = (props) => {
                   size={item.name}
                   width={item.width}
                   length={item.length}
+                  delete={()=>deleteSizer(item._id,item.name)}
                   />
 
                 ))}

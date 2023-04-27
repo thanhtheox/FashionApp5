@@ -21,7 +21,7 @@ const ItemSize = (props) => {
         </View>
         <View style={{width: '5%'}}></View>
         <View style={styles.viewFunction}>
-                    <TouchableOpacity style={styles.viewIcon}>
+                    <TouchableOpacity style={styles.viewIcon} onPress={props.delete}>
                     <IC_Delete></IC_Delete>
                     </TouchableOpacity>                    
                 </View>
