@@ -6,11 +6,44 @@ import { IC_Backward } from '../../assets/icons'
 import scale from '../../constants/responsive'
 import SaveButton from '../../components/buttons/Save'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
+import Message from '../../components/alearts.js/messageOnly'
+
 
 const AddTagScreen = (props) => {
     const [text, onChangeText] = useState("");
-    const [size, onChangeTextSize]= useState("");
-    const [length, onChangeTextLength]= useState("");
+
+    const axiosPrivate= useAxiosPrivate();
+    const [message,setMessage]= useState('');
+    const [title,setTitle]= useState('');
+    const [visible,setVisible]=useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = async(name)=>{
+        try{
+            setLoading(true);
+            const response = await axiosPrivate.post('/post-create-tag',
+            JSON.stringify({name: name}),
+            {
+                headers:{'Content-Type': 'application/json'},
+                withCredentials: true
+            });
+            console.log("success", JSON.stringify(response.data));
+            setTitle("Success");
+            setMessage(`New tag with name: ${name} has been created`)
+            setLoading(false);
+        }
+        catch(err){
+            console.log("err", err.response.data);
+            setTitle('Error')
+            setMessage(err.response.data.error)
+            setLoading(false);
+        }
+        finally{
+            setVisible(true)
+        }       
+};
+
 
   return (
     <SafeAreaView style={styles.container} >
@@ -71,9 +104,21 @@ const AddTagScreen = (props) => {
             
 
             <View style={styles.button}>
-                <SaveButton text={'Add Tag'} onPress={()=>props.navigation.navigate("ListTag")}></SaveButton>
+                <SaveButton text={'Add Tag'} onPress={()=>handleSubmit(text)}></SaveButton>
             </View>
         </View>
+        <Message 
+            visible={visible} 
+            title={title} 
+            clickCancel={() => {
+                if (title === 'Success') {
+                    props.navigation.goBack();
+                }
+                else {
+                    setVisible(false);
+                }
+            }} 
+            message={message}/>
     </SafeAreaView>
   )
 }

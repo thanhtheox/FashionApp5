@@ -8,6 +8,7 @@ import ItemSize from './components/itemSize'
 import { IC_Backward, IC_BackwardArrow } from '../../assets/icons'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { useIsFocused } from '@react-navigation/native'
+import MessageYN from '../../components/alearts.js/messageYN'
 
 const ListOfColor_SizeScreen = (props) => {
 
@@ -25,7 +26,6 @@ const ListOfColor_SizeScreen = (props) => {
         const response = await axiosPrivate.get('/get-all-size', {
           signal: controller.signal,
         });
-        console.log(response);
         isMounted && setDataSize(response.data);
       } catch (err) {
         console.log(err.response.data);
@@ -36,7 +36,6 @@ const ListOfColor_SizeScreen = (props) => {
         const response = await axiosPrivate.get('/get-all-color', {
           signal: controller.signal,
         });
-        console.log(response);
         isMounted && setDataColor(response.data);
       } catch (err) {
         console.log(err?.response?.data || "undefined error");
@@ -53,8 +52,45 @@ const ListOfColor_SizeScreen = (props) => {
     };
   }, [isFocused]);
 
+  const deleteColor = async (id, name) => {
+    setTitle('Delete color');
+    setMessage(`Do you want to delete ${name} color`)
+    setStatus('new')
+    const newClickYes = async () => {
+      try {
+        setStatus('loading');
+        const response = await axiosPrivate.delete(`/delete-color/${id}`, {
+        });
+        console.log(response.data)
+        let newDataColor = dataColor.filter(item => item._id !== id)
+        setDataColor(newDataColor);
+        setTitle('Color deleted');
+        setMessage(`Color ${name} has been deleted`)
+        setStatus('done');
+      } catch (err) {
+        console.log(err?.response?.data || err.message);
+      } 
+    }
+    setClickYes(() => newClickYes);
+    setVisible(true);
+  } 
+  const [status, setStatus] = useState('new')
+  const [visible, setVisible] = useState(false);
+  const [title, setTitle] = useState('');
+  const [message, setMessage] = useState('');
+  const [clickYes, setClickYes] = useState(() => async () => {setVisible(false)})
+  const [clickNo, setClickNo] = useState(() => () => {setVisible(false)})
   return (
     <SafeAreaView style={styles.container}>
+        <MessageYN 
+          visible={visible} 
+          title={title}
+          message={message}
+          clickYes={clickYes}
+          clickNo={clickNo}
+          status={status}
+          clickCancel={() => {setVisible(false)}}
+        />
         <View style={styles.header}>
         <View style={styles.viewText}>
           <View style={styles.viewTitleText}>
@@ -88,6 +124,7 @@ const ListOfColor_SizeScreen = (props) => {
                   number={index+1}                
                   name={item.name}
                   code={item.code}
+                  delete={() => deleteColor(item._id, item.name)}
                   />
 
                 ))}

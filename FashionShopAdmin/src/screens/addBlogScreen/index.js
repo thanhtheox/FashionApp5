@@ -24,9 +24,38 @@ import ImageCropPicker from 'react-native-image-crop-picker';
 import { PERMISSIONS, check, RESULTS, request } from 'react-native-permissions';
 import Message from '../../components/alearts.js/messageOnly';
 import SaveButton from '../../components/buttons/Save';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const AddBlogScreen = (props) => {
     const [product, setProduct] = useState(init);
+
+    // const [tagData, setTagData] = useState([]);
+    // const axiosPrivate = useAxiosPrivate();
+  
+    // useEffect(() => {
+    //   let isMounted = true;
+    //   const controller = new AbortController();
+  
+    //   const getTags = async () => {
+    //     try {
+    //       const response = await axiosPrivate.get('/get-all-tag', {
+    //         signal: controller.signal,
+    //       });
+    //       console.log(response.data);
+    //       isMounted && setTag(response.data);
+    //     } catch (err) {
+    //       console.log(err.response.data);
+    //     }
+    //   };
+  
+    //   getTags();
+  
+    //   return () => {
+    //     isMounted = false;
+    //     controller.abort();
+    //   };
+    // }, []);
+
 
     const [tag, setTag] = useState([
         {label: '1', value: 'apple'},

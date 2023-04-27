@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 // Import required components
 import {
   SafeAreaView,
@@ -10,7 +10,7 @@ import {
   UIManager,
   TouchableOpacity,
   Platform,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 import scale from '../../constants/responsive';
 import color from '../../constants/color';
@@ -49,7 +49,7 @@ import { useIsFocused } from '@react-navigation/native';
 // },
 // ];
 
-const ExpandableComponent = ({ item, onClickFunction }) => {
+const ExpandableComponent = ({item, onClickFunction}) => {
   //Custom Component for the Expandable List
   const [layoutHeight, setLayoutHeight] = useState(0);
 
@@ -66,10 +66,10 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
       {/*Header of the Expandable List Item*/}
       <TouchableOpacity onPress={onClickFunction} style={styles.viewList}>
         <View style={styles.viewTextList}>
-            <Text style={styles.textList}>{item.title}</Text>
+          <Text style={styles.textList}>{item.title}</Text>
         </View>
         <View style={styles.viewIcon}>
-            <IC_Down></IC_Down>
+          <IC_Down></IC_Down>
         </View>
       </TouchableOpacity>
       <View
@@ -101,19 +101,19 @@ const ListOfCategoryScreen = (props) => {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
-  const updateLayout = (index) => {
+  const updateLayout = index => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     const array = [...listDataSource];
     // if (multiSelect) {
     //   // If multiple select is enabled
-      array[index]['isExpanded'] = !array[index]['isExpanded'];
+    array[index]['isExpanded'] = !array[index]['isExpanded'];
     // } else {
-      // If single select is enabled
-      // array.map((value, placeindex) =>
-      //   placeindex === index
-      //     ? (array[placeindex]['isExpanded'] = !array[placeindex]['isExpanded'])
-      //     : (array[placeindex]['isExpanded'] = false)
-      // );
+    // If single select is enabled
+    // array.map((value, placeindex) =>
+    //   placeindex === index
+    //     ? (array[placeindex]['isExpanded'] = !array[placeindex]['isExpanded'])
+    //     : (array[placeindex]['isExpanded'] = false)
+    // );
     // }
     setListDataSource(array);
   };
@@ -180,7 +180,13 @@ const ListOfCategoryScreen = (props) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <HeaderMax navigation={props.navigation} textTitle={'List of categories'} textLabel={'Add category'} navigateScreen={'AddCategory'}/>
+      <HeaderMax 
+        navigation={props.navigation} 
+        textTitle={'List of categories'} 
+        textLabel={'Add category'} 
+        onPress={() => props.navigation.navigate('AddCategory')}
+        onPressBack={() => props.navigation.goBack()}
+      />
 
       <View style={styles.body}>
         <ScrollView>
@@ -212,7 +218,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: color.White,
   },
-  
+
   /////
   separator: {
     height: 0.5,
@@ -233,21 +239,21 @@ const styles = StyleSheet.create({
   },
   ///
 
-  viewList:{
+  viewList: {
     marginTop: scale(5),
     height: scale(68),
-    width:'100%',
+    width: '100%',
     borderBottomWidth: 1,
     // borderWidth:1,
     flexDirection: 'row',
   },
-  viewTextList:{
+  viewTextList: {
     // backgroundColor: color.Alto,
     justifyContent: 'center',
     width: scale(300),
     marginLeft: scale(20),
   },
-  textList:{
+  textList: {
     fontFamily: FONT_FAMILY.Regular,
     fontSize: 24,
     fontWeight: '400',
@@ -260,17 +266,17 @@ const styles = StyleSheet.create({
     height: 0,
   },
   list: {
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
-  viewListBody:{
+  viewListBody: {
     height: scale(48),
-    width:'100%',
+    width: '100%',
     borderBottomWidth: 0.5,
     flexDirection: 'row',
     backgroundColor: color.White,
     opacity: 0.9,
   },
-  textListBody:{
+  textListBody: {
     fontFamily: FONT_FAMILY.Regular,
     fontSize: 12,
     fontWeight: '400',

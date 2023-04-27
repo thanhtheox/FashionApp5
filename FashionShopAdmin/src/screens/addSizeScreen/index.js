@@ -5,11 +5,44 @@ import FONT_FAMILY from '../../constants/fonts'
 import { IC_Backward } from '../../assets/icons'
 import scale from '../../constants/responsive'
 import SaveButton from '../../components/buttons/Save'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
+import Message from '../../components/alearts.js/messageOnly'
 
 const AddSizeScreen = (props) => {
+    const axiosPrivate= useAxiosPrivate();
+    const [message,setMessage]= useState('');
+    const [title,setTitle]= useState('');
+    const [visible,setVisible]=useState(false);
+    const [loading, setLoading] = useState(false);
+
     const [text, onChangeText] = useState("");
-    const [size, onChangeTextSize]= useState("");
+    const [width, onChangeTextWidth]= useState("");
     const [length, onChangeTextLength]= useState("");
+
+    const handleSubmit = async(name, width, length)=>{
+        try{
+            setLoading(true);
+            const response = await axiosPrivate.post('/post-create-size',
+            JSON.stringify({name: name, width: width, length: length }),
+            {
+                headers:{'Content-Type': 'application/json'},
+                withCredentials: true
+            });
+            console.log("success", JSON.stringify(response.data));
+            setTitle("Success");
+            setMessage(`New size with name: ${name} has been created`)
+            setLoading(false);
+        }
+        catch(err){
+            console.log("err", err.response.data);
+            setTitle('Error')
+            setMessage(err.response.data.error)
+            setLoading(false);
+        }
+        finally{
+            setVisible(true)
+        }       
+};
 
   return (
     <SafeAreaView style={styles.container}>
@@ -54,9 +87,9 @@ const AddSizeScreen = (props) => {
                             editable
                             numberOfLines={1}
                             maxLength={5}
-                            onChangeText={text => onChangeTextSize(text)}
+                            onChangeText={text => onChangeTextWidth(text)}
                             keyboardType='ascii-capable'
-                            value={size}
+                            value={width}
                 />
                 </View>
             </View>
@@ -79,9 +112,21 @@ const AddSizeScreen = (props) => {
             </View>
 
             <View style={styles.button}>
-                <SaveButton text={'Add size'} onPress={()=>props.navigation.navigate("ListColorAndSize")}></SaveButton>
+                <SaveButton text={'Add size'} onPress={() => {handleSubmit(text, width,length)}} ></SaveButton>
             </View>
         </View>
+        <Message 
+            visible={visible} 
+            title={title} 
+            clickCancel={() => {
+                if (title === 'Success') {
+                    props.navigation.goBack();
+                }
+                else {
+                    setVisible(false);
+                }
+            }} 
+            message={message}/>
     </SafeAreaView>
   )
 }

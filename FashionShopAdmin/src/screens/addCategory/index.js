@@ -53,6 +53,7 @@ const AddCategoryScreen = (props) => {
                 label: item.name,
                 value: item._id
             }))
+            parentCat.push({label: "No parent", value: ""});
             
             setParentCategories(parentCat);
         }
@@ -230,7 +231,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         gap: scale(15),
         alignSelf: 'flex-start',
-        borderWidth: 1,
         zIndex: 1
     },
     categoryDropDown: {

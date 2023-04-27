@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useRef} from 'react';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import {IC_BackwardArrow} from '../../assets/icons';
@@ -14,34 +14,72 @@ import scale from '../../constants/responsive';
 import SaveButton from '../../components/buttons/Save';
 import axios from '../../apis/axios';
 import useAuth from '../../hooks/useAuth';
+import * as yup from 'yup';
+import {Controller, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
 
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
-const SignInScreen = (props) => {
-  const { setAuth } = useAuth();
+const signInPayLoadSchema = yup.object({
+  email: yup
+    .string()
+    .required('Email cannot be blank')
+    .email('Invalid email')
+    .max(50, 'Email length must be less than 50 characters'),
+  password: yup
+    .string()
+    .required('Password can not be blank')
+    .min(6, 'Password length must be more than 6 characters')
+    .max(16, 'Password length must be less than 16 characters')
+    .matches(
+      passwordRegex,
+      'Password must contain uppercase, lowercase and number characters',
+    )
+
+});
+
+const SignInScreen = props => {
+  const {setAuth} = useAuth();
   const [mail, setMail] = useState('');
   const [pass, setPass] = useState('');
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = async () => {
+
+
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    resolver: yupResolver(signInPayLoadSchema),
+  });
+
+  const handleSubmits = async () => {
     try {
       setLoading(true);
-      const response = await axios.post('/login',
-        JSON.stringify({ email: mail, password: pass }),
+      const response = await axios.post(
+        '/login',
+        JSON.stringify({email: mail, password: pass}),
         {
-            headers: { 'Content-Type': 'application/json' },
-            withCredentials: true
-        }
+          headers: {'Content-Type': 'application/json'},
+          withCredentials: true,
+        },
       );
-      console.log("success", JSON.stringify(response.data));
+      console.log('success', JSON.stringify(response.data));
 
       const accessToken = response?.data?.accessToken;
-      setAuth({ email: mail, accessToken })
+      setAuth({email: mail, accessToken});
       setLoading(false);
       props.navigation.navigate('DashBoard');
-    } 
-    catch (err) 
-    {
-      console.log("err", err.response.data);
+    } catch (err) {
+      console.log('err', err.response.data);
+      setErrorMessage(err.message);
       setLoading(false);
     }
   };
@@ -49,10 +87,6 @@ const SignInScreen = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        {/* <TouchableOpacity style={styles.viewIcon} onPress={() => props.navigation.goBack()}>
-          <IC_BackwardArrow stroke={color.White} />
-        </TouchableOpacity> */}
-
         <View style={styles.ViewTitleText}>
           <Text style={styles.textTile}>Welcome Admin!</Text>
           <Text style={styles.textLabel}>Sign in to continue</Text>
@@ -60,30 +94,58 @@ const SignInScreen = (props) => {
       </View>
 
       <View style={styles.body}>
-        <View style={styles.inputMailBox}>
-          <TextInput
-            onChangeText={email => setMail(email)}
-            placeholder="Email"
-            placeholderTextColor={color.GraySolid}
-            style={styles.inputText}
-            keyboardType="email-address"
-          />
-        </View>
+        {/* emailInput */}
+        <Controller
+          name="email"
+          control={control}
+          render={({field: {onChange, value}}) => (
+            <View style={styles.inputMailBox}>
+              <View style={styles.viewInput}>
+              <TextInput
+                onChangeText={email => [onChange(email), setMail(email)]}
+                placeholder="Email"
+                value={value}
+                placeholderTextColor={color.GraySolid}
+                style={styles.inputText}
+                keyboardType="email-address"
+              />
+              </View>
+              {errors?.email && (
+                <Text style={styles.textFailed}>{errors.email.message}</Text>
+              )}
+            </View>
+          )}
+        />
 
-        <View style={styles.inputMailBox}>
-          <TextInput
-            secureTextEntry={true}
-            onChangeText={pass => setPass(pass)}
-            placeholder="Password"
-            placeholderTextColor={color.GraySolid}
-            style={styles.inputText}
-            // keyboardType="visible-password"
-            // value={pass}
-          />
-        </View>
+        {/* passwordInput */}
+        <Controller
+          name="password"
+          control={control}
+          render={({field: {onChange, value}}) => (
+            <View style={styles.inputMailBox}>
+              <View style={styles.viewInput}>
+              <TextInput
+                secureTextEntry={true}
+                onChangeText={password =>[ onChange(password),setPass(password)]}
+                value={value}
+                placeholder="Password"
+                placeholderTextColor={color.GraySolid}
+                style={styles.inputText}
+              />
+              </View>
+              {errors?.password && (
+                <Text style={styles.textFailed}>{errors.password.message}</Text>
+              )}
+            </View>
+          )}
+        />
 
         <View style={styles.buttonSignIn}>
-          <SaveButton text={'Sign In'} onPress={handleSubmit} loading={loading}/>
+          <SaveButton
+            text={'Sign In'}
+            onPress={handleSubmit(handleSubmits)}
+            loading={loading}
+          />
         </View>
 
         <TouchableOpacity style={styles.ViewForgotText}>
@@ -103,7 +165,7 @@ const styles = StyleSheet.create({
   header: {
     flex: 0.3,
     backgroundColor: color.TitleActive,
-    justifyContent:'flex-end',
+    justifyContent: 'flex-end',
   },
   viewIcon: {
     marginLeft: scale(30),
@@ -114,8 +176,7 @@ const styles = StyleSheet.create({
   },
   ViewTitleText: {
     marginLeft: scale(30),
-    marginBottom: scale(30)
-
+    marginBottom: scale(30),
   },
   textTile: {
     color: color.White,
@@ -137,13 +198,19 @@ const styles = StyleSheet.create({
     backgroundColor: color.White,
     alignItems: 'center',
   },
+  
   inputMailBox: {
     marginTop: scale(10),
     width: scale(295),
-    height: scale(51),
-    borderColor: color.GraySolid,
+    height: scale(75),
+    justifyContent:'center',
+  },
+  viewInput:{
+    height: scale(100),
     borderBottomWidth: 1,
     justifyContent: 'flex-end',
+    borderColor: color.GraySolid,
+
   },
   inputText: {
     color: color.TitleActive,
@@ -163,5 +230,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 400,
     fontFamily: FONT_FAMILY.JoseFinSans,
+  },
+  textFailed: {
+    paddingLeft: scale(25),
+    marginTop: scale(7),
+    justifyContent: 'center',
+    fontFamily: FONT_FAMILY.Italic,
+    fontSize: scale(12),
+    color: color.RedSolid,
   },
 });
