@@ -15,7 +15,7 @@ const CollectionItem = (props) => {
         </View>
         <View style={styles.viewImage}>
             <ImageBackground source={{uri:`${props.source}`}} style={styles.image} resizeMode='cover'>
-                <TouchableOpacity style={styles.viewIcon} onPress={props.onPressDelete}>
+                <TouchableOpacity style={styles.viewIcon} onPress={props.delete}>
                     <IC_Delete />
                 </TouchableOpacity>
             </ImageBackground>

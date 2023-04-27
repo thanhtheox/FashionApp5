@@ -76,7 +76,7 @@ const ListOfColor_SizeScreen = (props) => {
   } 
 
 
-  const deleteSizer = async (id, name) => {
+  const deleteSize = async (id, name) => {
     setTitle('Delete size');
     setMessage(`Do you want to delete ${name} size`)
     setStatus('new')
@@ -181,7 +181,7 @@ const ListOfColor_SizeScreen = (props) => {
                   size={item.name}
                   width={item.width}
                   length={item.length}
-                  delete={()=>deleteSizer(item._id,item.name)}
+                  delete={()=>deleteSize(item._id,item.name)}
                   />
 
                 ))}

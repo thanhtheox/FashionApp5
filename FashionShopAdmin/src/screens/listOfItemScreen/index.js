@@ -3,15 +3,24 @@ import React, { useEffect, useState } from 'react'
 import color from '../../constants/color'
 import scale from '../../constants/responsive'
 import FONT_FAMILY from '../../constants/fonts'
-import { IMG_Collection, IMG_ModelFour, IMG_ModelOne, IMG_ModelThree, IMG_ModelTwo } from '../../assets/images'
 import { IC_Delete, IC_Edit, IC_Search, IC_See, IC_BackwardArrow, IC_Backward, IC_Up } from '../../assets/icons'
 import Item from './components/item'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
+import { useIsFocused } from '@react-navigation/native'
+import MessageYN from '../../components/alearts.js/messageYN'
+
 
 const ListOfItemScreen = (props) => {
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState([]);
+
+  // const [dataProduct, setDataProduct] = useState([]);
+  const [message, setMessage] = useState('');
+  const [title, setTitle] = useState('');
+  const [status, setStatus] = useState('new')
+  const [visible, setVisible] = useState(false);
+  const [clickYes, setClickYes] = useState(() => async () => {setVisible(false)})
+  const [clickNo, setClickNo] = useState(() => () => {setVisible(false)})
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
@@ -38,10 +47,42 @@ const ListOfItemScreen = (props) => {
 
   }, [])
 
+  
+  const deleteItem = async (id, name) => {
+    setTitle('Delete product');
+    setMessage(`Do you want to delete ${name} product`)
+    setStatus('new')
+    const newClickYes = async () => {
+      try {
+        setStatus('loading');
+        const response = await axiosPrivate.delete(`/delete-product/${id}`, {
+        });
+        console.log(response.data)
+        let newDataProduct = data.filter(item => item._id !== id)
+        setData(newDataProduct);
+        setTitle('Product deleted');
+        setMessage(`Product ${name} has been deleted`)
+        setStatus('done');
+      } catch (err) {
+        console.log(err?.response?.data || err.message);
+      } 
+    }
+    setClickYes(() => newClickYes);
+    setVisible(true);
+  } 
   const [value, onChangeText] = useState("");
 
   return (
     <SafeAreaView style={styles.container}>
+       <MessageYN 
+          visible={visible} 
+          title={title}
+          message={message}
+          clickYes={clickYes}
+          clickNo={clickNo}
+          status={status}
+          clickCancel={() => {setVisible(false)}}
+        />
         <View style={styles.header}>
         
           <View style={styles.viewText}>
@@ -88,6 +129,7 @@ const ListOfItemScreen = (props) => {
                   price={item.price}
                   source = {item.posterImage.url}
                   onPress={()=>props.navigation.navigate("ItemDetail",{data: item})}
+                  delete={()=>deleteItem(item._id,item.name)}
                   onPressEdit={()=>props.navigation.navigate("EditItem",{data: item})}
                   />
 
