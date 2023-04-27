@@ -21,7 +21,7 @@ const ItemColor = (props) => {
             <Text style={styles.text} numberOfLines={1}>{props.code}</Text>
         </View>
         <View style={styles.viewFunction}>
-                    <TouchableOpacity style={styles.viewIcon}>
+                    <TouchableOpacity style={styles.viewIcon} onPress={props.delete}>
                     <IC_Delete></IC_Delete>
                     </TouchableOpacity>
                     
