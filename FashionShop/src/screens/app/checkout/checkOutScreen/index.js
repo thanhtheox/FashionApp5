@@ -10,22 +10,22 @@ import {
     Icon,
   } from 'react-native';
   import React, {useState, useEffect} from 'react';
-  import color from '../../../constants/color';
-  import FONT_FAMILY from '../../../constants/fonts';
-  import scale from '../../../constants/responsive';
-  import { LineBottom } from '../../../components/footer/images';
-  import SaveButton from '../../../components/buttons/Save';
-  import { IC_Down, IC_Forward, IC_Plus } from '../../../assets/icons';
+  import color from '../../../../constants/color';
+  import FONT_FAMILY from '../../../../constants/fonts';
+  import scale from '../../../../constants/responsive';
+  import { LineBottom } from '../../../../components/footer/images';
+  import SaveButton from '../../../../components/buttons/Save';
+  import { IC_Down, IC_Forward, IC_Plus } from '../../../../assets/icons';
   import DropDownPicker from 'react-native-dropdown-picker';
   import { useForm, Controller } from 'react-hook-form';
-  import Custom_Cart from '../../../components/cart/Custom_Cart';
-  import { IMG_ModelFour } from '../../../assets/images';
+  import Custom_Cart from '../../../../components/cart/Custom_Cart';
+  import { IMG_ModelFour } from '../../../../assets/images';
   import { useDispatch,useSelector } from 'react-redux'
   import {
     adjustQTY,
     removeFromCart, 
     resetCartWhenOrder
-  } from '../../../redux/actions/cartActions';
+  } from '../../../../redux/actions/cartActions';
 
   const CheckOut = () => { 
     const [method, setMethod] = useState([
