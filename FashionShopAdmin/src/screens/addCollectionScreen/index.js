@@ -33,8 +33,6 @@ import DropDownPicker from 'react-native-dropdown-picker';
 const AddCollectionScreen = props => {
   const [data, setData] = useState([]);
   const [selected, setSelected] = useState([]);
-  // const [selectedValues, setSelectedValues] = useState([]);
-  // const [open, setOpen] = useState(false);
 
   const [text, onChangeText] = useState('');
   const [image, setImage] = useState('');
@@ -44,6 +42,8 @@ const AddCollectionScreen = props => {
   const [title, setTitle] = useState('');
   const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState('');
+
+  // const [product, setProduct] = useState([]);
 
   useEffect(() => {
     let isMounted = true;
@@ -67,7 +67,6 @@ const AddCollectionScreen = props => {
       }
     };
 
-    
     getProducts();
 
     return () => {
@@ -76,7 +75,59 @@ const AddCollectionScreen = props => {
     };
   }, []);
 
-  const handleSubmit = async (name, image, product) => {
+  //   const getProductById = async (id) => {
+  //     try {
+  //         const response = await axiosPrivate.get(`/get-product-by-id/${id}`);
+  //         setProduct(response.data);
+  //     }
+  //     catch (err) {
+  //         console.log(err.response.data);
+  //     }
+  // };
+
+  // useEffect(()=>{
+  //   const getProduct = async()=>{
+  //     const pro = await getProductById(JSON.stringify(selected[selected.length]));
+  //     setProduct(pro);
+  //   };
+  //   getProduct();
+  // },[selected]);
+
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   const controller = new AbortController();
+
+  //   const getProduct = async (id) => {
+  //     try {
+  //       const response = await axiosPrivate.get(`/get-product-by-id/${id}`, {
+  //         signal: controller.signal
+  //       });
+  //       isMounted && setProduct(response.data);
+  //     }
+  //     catch (err) {
+  //       console.log(err.response.data);
+  //     }
+  //   }
+
+  //   selected.forEach(id => getProduct(id));
+
+  //   return () => {
+  //     isMounted = false;
+  //     controller.abort();
+  //   }
+  // }, [selected]);
+
+  const handleSelected = (id)=>{
+    console.log(id)
+    data.map((item)=>{
+      console.log(item._id)
+      if(item._id===id){
+        setSelected(...selected,item)
+      }
+    })
+  }
+
+  async function handleSubmit(name, image, product) {
     try {
       setLoading(true);
       const response = await axiosPrivate.post(
@@ -99,7 +150,7 @@ const AddCollectionScreen = props => {
     } finally {
       setVisible(true);
     }
-  };
+  }
 
   let options = {
     savePhotos: true,
@@ -159,40 +210,37 @@ const AddCollectionScreen = props => {
         </View>
 
         <View style={styles.viewSelectProduct}>
-          <MultipleSelectList 
-                        setSelected={(val) => setSelected(val)} 
-                        data={data} 
-                        save={['value','key']}
-                        // save='value'
-                        onSelect={()=>console.log(selected)} 
-                        label="product"
-                        dropdownItemStyles={styles.textInput}
-                        dropdownTextStyles={{color: color.TitleActive}}
-
-                        // numberOfLines={1}
-                        // badgeTextStyles={{fontSize: 10, color: color.White}}
-                        // badgeStyles={{width: '20%', height: scale(25), alignSelf: 'center',justifyContent: 'center'}}
-                    />
-          {/* <DropDownPicker
-            items={data}
-            open={open}
-            setOpen={setOpen}
-            multiple={true}
-            onChangeItem={item => setSelectedItems(item)}
-            // maxHeight={100}
-          /> */}
+          <MultipleSelectList
+            setSelected={val => setSelected(val)}
+            data={data}
+            save={['value', 'key']}
+            // save='value'
+            onSelect={() => console.log(selected)}
+            label="product"
+            dropdownItemStyles={styles.textInput}
+            dropdownTextStyles={{color: color.TitleActive}}
+          />
         </View>
         {/* product  */}
         <View style={styles.viewProduct}>
           <ScrollView>
-            {selected.map((item, index) => (
+            {selected.map((item, index) =>
+                  <ItemProductOfCollection
+                    key={id}
+                    number={index + 1}
+                    name={item.name}
+                    source={item.posterImage}
+                  />
+            )}
+
+            {/* { product.map((item, index) => (
               <ItemProductOfCollection
                 key={index}
                 number={index + 1}
-                name={item.value}
-                source={item.source}
+                name={item.name}
+                source={item.posterImage}
               />
-            ))}
+            ))} */}
           </ScrollView>
         </View>
 

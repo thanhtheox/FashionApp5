@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import React,{useState, useEffect} from 'react'
 import color from '../../constants/color'
 import FONT_FAMILY from '../../constants/fonts'
 import scale from '../../constants/responsive'
@@ -7,21 +7,41 @@ import { IC_Backward } from '../../assets/icons'
 import { ScrollView } from 'react-native-gesture-handler'
 import { IMG_Collection, IMG_Logo, IMG_ModelFour, IMG_ModelOne, IMG_ModelThree, IMG_ModelTwo } from '../../assets/images'
 import SaveButton from '../../components/buttons/Save'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-const data=[
-    {id:1, name: "Thu hien", phone: "0336708086", date: "03/11/2023",source:IMG_Collection},
-    {id:2, name: "khoi mai", phone: "0341283402", date: "03/11/2023",source:IMG_ModelFour},
-    {id:3, name: "mai khoi", phone: "0336708036", date: "03/11/2023",source:IMG_ModelOne},
-    {id:4, name: "tri dao", phone: "0336713086", date: "03/11/2023",source:IMG_ModelThree},
-    {id:5, name: "dao tham", phone: "03367133486", date: "03/11/2023",source:IMG_ModelTwo},
-    {id:6, name: "thanh thao", phone: "03363428086", date: "03/11/2023",source:IMG_Collection},
-    {id:7, name: "anh quoc", phone: "0336701386", date: "03/11/2023",source:IMG_ModelFour},
-    {id:8, name: "chinh", phone: "0436708086", date: "03/11/2023",source:IMG_ModelThree},
-    {id:9, name: "hehe", phone: "0356708086", date: "03/11/2023",source:IMG_Logo},
-
-];
 
 const EditUserScreen = (props) => {
+    const { data } = props.route.params;
+    console.log(data);
+
+    const axiosPrivate = useAxiosPrivate();
+    const [address, setAddress] = useState({});
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const getAddress = async () => {
+            try {
+                const response = await axiosPrivate.get(`/get-address-by-user-id/${data._id}`, {
+                    signal: controller.signal
+                });
+                isMounted && setAddress(response.data);
+                console.log(response.data)
+            } 
+            catch (err) {
+                console.log(err.response.data);
+            }
+        }
+    
+        getAddress();
+    
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+    }, [])
+
+
   return (
     <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -35,7 +55,7 @@ const EditUserScreen = (props) => {
 
         <ScrollView style={styles.body}>
             <View style={styles.viewImage}>
-                <Image style={styles.image} resizeMode='center' source={IMG_ModelFour}/>
+                <Image style={styles.image} resizeMode='center' source={{uri:data.profileImage}}/>
             </View>
 
 {/* name */}
@@ -44,7 +64,7 @@ const EditUserScreen = (props) => {
                         <Text style={styles.textLabel}>Name: </Text>
                     </View>
                     <View style={styles.viewText}>
-                        <Text style={styles.text}>Le Thi Thu Hien</Text>
+                        <Text style={styles.text}>{data.firstName+ " "+ data.lastName}</Text>
                     </View>
                 </View>
 {/* email */}
@@ -53,7 +73,7 @@ const EditUserScreen = (props) => {
                         <Text style={styles.textLabel}>Email: </Text>
                     </View>
                     <View style={styles.viewText}>
-                        <Text style={styles.text}>thuhien@gmail.com</Text>
+                        <Text style={styles.text}>{data.email}</Text>
                     </View>
                 </View>
 
@@ -63,7 +83,7 @@ const EditUserScreen = (props) => {
                         <Text style={styles.textLabel}>Phone: </Text>
                     </View>
                     <View style={styles.viewText}>
-                        <Text style={styles.text}>0336728920</Text>
+                        <Text style={styles.text}>{data.phoneNumber}</Text>
                     </View>
                 </View>
 {/* address */}
@@ -72,7 +92,7 @@ const EditUserScreen = (props) => {
                         <Text style={styles.textLabel}>Address: </Text>
                     </View>
                     <View style={styles.viewText}>
-                        <Text style={styles.text}>Phuong Linh Trung -Thu Duc</Text>
+                        <Text style={styles.text}>{address.address}</Text>
                     </View>
                 </View>
 {/* button           */}

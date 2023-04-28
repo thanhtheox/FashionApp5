@@ -12,7 +12,7 @@ const UserItem = (props) => {
         <Text style={styles.number}>{props.number}</Text>
     </View>
     <View style={styles.viewImage}>
-        <Image source={props.source} style={styles.image} resizeMode='stretch'></Image>
+        <Image source={{uri:props.source}} style={styles.image} resizeMode='stretch'></Image>
     </View>
     <View style={styles.viewInfo}>
         <Text style={styles.textName} numberOfLines={1} >{props.name}</Text>

@@ -27,21 +27,22 @@ import CollectionItem from './components/collectionItem';
 import {IC_Backward, IC_BackwardArrow} from '../../assets/icons';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import HeaderMax from '../../components/header/headerMax';
+// import { useIsFocused } from '@react-navigation/native'
+import MessageYN from '../../components/alearts.js/messageYN'
 
-// const data=[
-//   {id:1,name: 'SAPPOCHE', source: IMG_Collection},
-//   {id:2,name: 'NAGAMI', source: IMG_ModelFour},
-//   {id:3,name: 'NONUNO',source: IMG_ModelOne},
-//   {id:4,name: 'SUMGA',source: IMG_ModelTwo},
-//   {id:5,name: 'KAKHUKO',source: IMG_ModelThree},
-//   {id:6,name: 'RAPAMA',source: IMG_ModelFour},
-//   {id:7,name: 'TAKOYA',source: IMG_ModelOne},
-
-// ]
 
 const ListOfCollectionScreen = props => {
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState([]);
+
+  // const isFocused = useIsFocused();
+
+  const [message, setMessage] = useState('');
+  const [title, setTitle] = useState('');
+  const [status, setStatus] = useState('new')
+  const [visible, setVisible] = useState(false);
+  const [clickYes, setClickYes] = useState(() => async () => {setVisible(false)})
+  const [clickNo, setClickNo] = useState(() => () => {setVisible(false)})
 
   useEffect(() => {
     let isMounted = true;
@@ -52,7 +53,6 @@ const ListOfCollectionScreen = props => {
         const response = await axiosPrivate.get('/get-all-collection', {
           signal: controller.signal,
         });
-        console.log(response.data);
         isMounted && setData(response.data);
       } catch (err) {
         console.log(err.response.data);
@@ -66,8 +66,40 @@ const ListOfCollectionScreen = props => {
     };
   }, []);
 
+  const deleteCollection = async (id, name) => {
+    setTitle('Delete Collection');
+    setMessage(`Do you want to delete ${name} Collection`)
+    setStatus('new')
+    const newClickYes = async () => {
+      try {
+        setStatus('loading');
+        const response = await axiosPrivate.delete(`/delete-Collection/${id}`, {
+        });
+        console.log(response.data)
+        let newDataCollection = data.filter(item => item._id !== id)
+        setData(newDataCollection);
+        setTitle('Collection deleted');
+        setMessage(`Collection ${name} has been deleted`)
+        setStatus('done');
+      } catch (err) {
+        console.log(err?.response?.data || err.message);
+      } 
+    }
+    setClickYes(() => newClickYes);
+    setVisible(true);
+  } 
+
   return (
     <SafeAreaView style={styles.container}>
+      <MessageYN 
+          visible={visible} 
+          title={title}
+          message={message}
+          clickYes={clickYes}
+          clickNo={clickNo}
+          status={status}
+          clickCancel={() => {setVisible(false)}}
+        />
       <HeaderMax
         onPress={() => props.navigation.navigate('AddCollection')}
         onPressBack={() => props.navigation.goBack()}
@@ -86,7 +118,8 @@ const ListOfCollectionScreen = props => {
             <CollectionItem
               name={item.name}
               source={item.posterImage.url}
-              onPress={() => props.navigation.navigate('EditCollection')}
+              // onPress={() => props.navigation.navigate('EditCollection')}
+              delete ={()=>deleteCollection(item._id,item.name)}
             />
           )}
         />
