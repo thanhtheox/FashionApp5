@@ -1,33 +1,35 @@
 import { SafeAreaView, ScrollView, StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions,Modal } from 'react-native'
-import React,{useState} from 'react'
-import Custom_Header from '../../../components/header/Custom_Header'
+import React,{useState,useEffect} from 'react'
 import Custom_Footer from '../../../components/footer/Custom_Footer'
 import color from '../../../constants/color'
 import scale from '../../../constants/responsive'
 import FONT_FAMILY from '../../../constants/fonts'
 import CollectionItems from './components/collectionItems'
 import {IMG_Collection } from '../../../assets/images'
+import collectionApi from '../../../services/collectionApi'
 
 
 
 const CollectionScreen = (props) => {
-    const collections = [
-    {
-      img: IMG_Collection,
-      key: '1',
-      name: 'OCTOBER COLLECTION',
-    },
-    {
-      img: IMG_Collection,
-      key: '2',
-      name: 'BLACK COLLECTION',
-    },
-    {
-      img: IMG_Collection,
-      key: '3',
-      name: 'HAE BY HAEKIM',
-    },
-  ];
+  const [collectionData, setCollectionData] = useState([]);
+
+  const getCollection = async () => {
+    try {
+      console.log('a');
+      const {collections} = await collectionApi.getRandom();
+      setCollectionData(collections);
+      console.log(collectionData);
+      
+      // setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getCollection();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
         {/* Collection */}
@@ -39,7 +41,7 @@ const CollectionScreen = (props) => {
             <FlatList
               contentContainerStyle={{justifyContent: 'space-between', marginVertical:scale(20)}}
               horizontal={false}
-              data={collections}
+              data={collectionData}
               keyExtractor={item => `${item.key}`}
               scrollEnabled={false}
               renderItem={({item}) => (

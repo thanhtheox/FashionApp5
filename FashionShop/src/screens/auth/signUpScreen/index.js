@@ -12,42 +12,96 @@ import FONT_FAMILY from '../../../constants/fonts';
 import {IC_BackwardArrow} from '../../../assets/icons';
 import scale from '../../../constants/responsive';
 import SaveButton from '../../../components/buttons/Save';
-// import * as yup from 'yup';
-// import {Controller, useForm} from 'react-hook-form';
-// import {yupResolver} from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import {Controller, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import { useDispatch } from 'react-redux';
+import useAuth from '../../../hooks/useAuth';
 
-// const passwordRegex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-// const signUpPayloadSchema = yup.object({
-//   firstName: yup.string()
-//   .max(30,'Họ tên không hợp lệ')
-//   .required('Họ tên không được để trống'),
-//   lastName: yup.string()
-//   .max(30,'Họ tên không hợp lệ')
-//   .required('Họ tên không được để trống'),
-//   email: yup
-//     .string()
-//     .email('Email không hợp lệ')
-//     .max(30, 'Độ dài email phải nhỏ hơn 30 kí tự')
-//     .required('Email không được để trống'),
-//   password: yup
-//     .string()
-//     .matches(passwordRegex,'Mật khẩu phải chứa ký tự hoa, thường và số')
-//     .min(8, 'Độ dài mật khẩu phải lớn hơn 8')
-//     .max(16, 'Độ dài mật khẩu phải nhỏ hơn 16')
-//     .required('Mật khẩu không được để trống'),
-//   passConfirm: yup
-//   .string()
-//   .oneOf([Yup.ref('password'), null], 'Passwords must match')
-// });
+const passwordRegex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+const signUpPayloadSchema = yup.object({
+  firstName: yup.string()
+  .max(30,'Invalid name')
+  .required('Name cannot be blank'),
+  lastName: yup.string()
+  .max(30,'Invalid name')
+  .required('Name cannot be blank'),
+  email: yup
+    .string()
+    .email('Invalid email')
+    .max(50, 'Email length must be less than 50 characters')
+    .required('Email cannot be blank'),
+  password: yup
+    .string()
+    .matches(passwordRegex,'Password must contain uppercase, lowercase and number characters')
+    .min(6, 'Password length must be more than 6 characters')
+    .max(16, 'Password length must be less than 16 characters')
+    .required('Password can not be blank'),
+  passConfirm: yup
+  .string()
+  .oneOf([yup.ref('password'), null], 'Passwords must match')
+});
 
 const SignUpScreen = (props) => {
+  const {setAuth} = useAuth();
   const [mail, setMail] = useState('');
   const [pass, setPass] = useState('');
   const [passConfirm, setPassConfirm] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
-  //data
+  const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      passConfirm: '',
+    },
+    resolver: yupResolver(signUpPayloadSchema),
+  });
+
+  const handleSignup = async (data) => {
+    try {
+      // console.log("🚀 ~ file: index.js:66 ~ handleSignup ~ data", data)
+      setLoading(true);
+      const response = await axios.post(
+        '/signup',
+        JSON.stringify({
+          firstName: firstName,
+          lastName: lastName,
+          email: mail, 
+          password: pass,
+          passConfirm: passConfirm,
+        }),
+        {
+          headers: {'Content-Type': 'application/json'},
+          withCredentials: true,
+        },
+      );
+      console.log('success', JSON.stringify(response.data));
+
+      const accessToken = response?.data?.accessToken;
+      setAuth({email: mail, accessToken});
+      setLoading(false);
+      navigation.navigate('AppStackScreen');
+    } catch (error) {
+      setErrorMessage(error.message);
+      setLoading(false);
+      console.log("🚀 ~ file: index.js:70 ~ handleSignup ~ error", error)
+      console.log(error);
+  };
+}
 
   return (
     <SafeAreaView style={styles.container}>
