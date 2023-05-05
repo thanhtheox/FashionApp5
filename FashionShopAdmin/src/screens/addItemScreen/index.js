@@ -10,8 +10,8 @@ import {
     ScrollView,
     KeyboardAvoidingView,
 } from 'react-native';
-import React, { useState, useRef } from 'react';
-import { IC_Backward } from '../../assets/icons';
+import React, { useState, useEffect } from 'react';
+import { IC_Backward, IC_Tick } from '../../assets/icons';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import scale from '../../constants/responsive';
@@ -23,35 +23,120 @@ import TagWithoutDelete from '../../components/tags/tagWithoutDelete';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import { PERMISSIONS, check, RESULTS, request } from 'react-native-permissions';
 import Message from '../../components/alearts.js/messageOnly';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import LoadingModal from '../../components/loadingModal/loadingModal';
 
 const AddItemScreen = (props) => {
+    const axiosPrivate = useAxiosPrivate();
     const [product, setProduct] = useState(init);
+    const [loading, setLoading] = useState(false);
 
-    const [category, setCategory] = useState([
-        {label: '1', value: 'apple'},
-        {label: '2', value: 'banana'},
-        {label: '3', value: 'pie'},
-        {label: '4', value: 'orange'},
-        {label: '5', value: 's'},
-        {label: '6', value: 'ds'},
-        {label: '7', value: 'sa'},
-        {label: '8', value: 'dsa'},
-        
-    ]);
-    const [tag, setTag] = useState([
-        {label: '1', value: 'apple'},
-        {label: '2', value: 'banana'},
-        {label: '3', value: 'pie'},
-        {label: '4', value: 'orange'},
-        {label: '5', value: 's'},
-        {label: '6', value: 'ds'},
-        {label: '7', value: 'sa'},
-        {label: '8', value: 'dsa'},
-        
-    ]);
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const getCategory = async () => {
+            try {
+                const response = await axiosPrivate.get('/category-child', {
+                    signal: controller.signal
+                });
+                const handledCategory = [];
+                await Promise.all(
+                    response.data.category.map((item) => {
+                        handledCategory.push({label: item.name + ' (' + item.parentName + ')', value: item._id})
+                    })
+                )
+                isMounted && setCategory(handledCategory);
+            } 
+            catch (err) {
+                console.log(err.response.data);
+            }
+        }
+
+        const getTags = async () => {
+            try {
+                const response = await axiosPrivate.get('/get-all-tag', {
+                    signal: controller.signal,
+                });
+
+                const handledTag = [];
+                await Promise.all(
+                    response.data.map((item) => {
+                        handledTag.push({label: item.name, value: item._id});
+                    })
+                )
+                isMounted && setTag(handledTag);
+            } catch (err) {
+            console.log(err.response.data);
+            }
+        };
+
+        getTags()
+        getCategory();
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+    },[])
+
+    // {label: '1', value: 'apple'},
+    // {label: '2', value: 'banana'},
+    // {label: '3', value: 'pie'},
+    // {label: '4', value: 'orange'},
+    // {label: '5', value: 's'},
+    // {label: '6', value: 'ds'},
+    // {label: '7', value: 'sa'},
+    // {label: '8', value: 'dsa'},
+
+    const [category, setCategory] = useState([]);
+    const [tag, setTag] = useState([]);
     const [categoryOpen, setCategoryOpen] = useState(false);
     const [tagOpen, setTagOpen] = useState(false);
 
+    const createProduct = async () => {
+        setLoading(true);
+        const formData = new FormData();
+        await Promise.all(images.map(item => {
+            formData.append('imageProduct', {
+                name: new Date() + '_imageProduct',
+                uri: item,
+                type: 'image/jpg',
+            });
+        }));
+        formData.append('categoryId', product.categoryId);
+        formData.append('name', product.name);
+        formData.append('price', product.price);
+        formData.append('material', product.materialDescription);
+        formData.append('care', product.careDescription);
+        formData.append('description', product.description);
+        product.tag.map(item => {
+            formData.append('tag', item.tagId);
+        })
+        console.log(formData._parts);
+        try {
+            const res = await axiosPrivate.post('/post-create-product', formData, {
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            console.log(res.data);
+            props.navigation.navigate("AddDetailItem")
+
+        } catch (err) {
+            console.log(err.response.data);
+            setTitle('Error');
+            setMessage(err.response.data.error);
+            setVisible(true);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const [visible, setVisible] = useState(false);
+    const [title, setTitle] = useState('');
+    const [message, setMessage] = useState('');
     const handleChange = (e, prop)=>{
         setProduct({
             ...product, 
@@ -65,7 +150,8 @@ const AddItemScreen = (props) => {
         console.log(val)
         setProduct({
             ...product, 
-            categoryId: val
+            categoryId: val.value,
+            categoryName: val.label
         });
 
         console.log(product)
@@ -73,13 +159,13 @@ const AddItemScreen = (props) => {
 
     const handlePickTag = (val)=>{
         // add pick tag
-        const newTag = {tagName: val.value, tagId: val.label};
+        const newTag = {tagName: val.label, tagId: val.value};
         const newTagArray = [...product.tag, newTag];
         setProduct({
             ...product, 
             tag: newTagArray
         });
-
+        console.log(product);
         // remove picked tag
         const newTagList = tag.filter((tag) => tag.label !== newTag.tagId);
         setTag(newTagList);
@@ -122,6 +208,7 @@ const AddItemScreen = (props) => {
                     .then(image => {
                         setImages([...images, image.path]);
                         console.log(images)
+                        console.log(image)
                     })
                     .catch(err => console.log('Error: ', err.message))
                     break;
@@ -138,10 +225,9 @@ const AddItemScreen = (props) => {
             console.log(response)
         })
     }
-
-    const [visible, setVisible] = useState(false)
     return (
         <SafeAreaView style={styles.container}>
+            <LoadingModal modalVisible={loading}/>
 {/* header */}
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backwardButton} onPress={()=>props.navigation.goBack()}>
@@ -201,6 +287,12 @@ const AddItemScreen = (props) => {
                                 handleChange={handleChange} 
                                 keyboardType='default'
                             />
+                            <Text style={styles.propText}>Description: (max 300 characters)</Text>
+                            <MultiLine 
+                                name="description" 
+                                handleChange={handleChange} 
+                                keyboardType='default'
+                            />
     {/* category */}
                             <View style={styles.categoryBox}>
                                 <View>
@@ -215,12 +307,12 @@ const AddItemScreen = (props) => {
                                         modalProps={{
                                             animationType: "fade"
                                         }}
-                                        onSelectItem={(item) => handlePickCategory(item.value)}
+                                        onSelectItem={(item) => handlePickCategory(item)}
                                     />
                                 </View>
                                 <View style={styles.categoryView}>
                                     <Text style={styles.dropdownText}>Chosen category:</Text>
-                                    <TagWithoutDelete value={product.categoryId} cancel={false}/>
+                                    <TagWithoutDelete value={product.categoryName} cancel={false}/>
                                 </View>            
                             </View>
     {/* tag */}
@@ -253,9 +345,11 @@ const AddItemScreen = (props) => {
                                 </View>
                             </View>
                             <View style={{borderTopWidth: 1, borderTopColor: color.PlaceHolder, marginTop: scale(20),}}></View>
-                            <TouchableOpacity onPress={()=>props.navigation.navigate("AddDetailItem")}>
+                            <TouchableOpacity onPress={()=>{
+                                createProduct();
+                            }}>
                                 <View style={styles.itemDetailButton}> 
-                                    <Text style={styles.propText}>Item detail</Text>
+                                    <Text style={styles.propText}>Create item & move to Item detail</Text>
                                     <View style={{marginTop: scale(20), transform: [{ rotate: '180deg'}]}}>
                                         <IC_Backward stroke={color.TitleActive}></IC_Backward>               
                                     </View>
@@ -267,7 +361,13 @@ const AddItemScreen = (props) => {
                 </KeyboardAvoidingView>
             </View>
             
-            <Message visible={visible} clickCancel={() => setVisible(false)}/> 
+            <Message 
+                visible={visible} 
+                title={title} 
+                clickCancel={() => {
+                        setVisible(false);
+                }} 
+                message={message}/> 
         </SafeAreaView>
     )
 };
@@ -280,7 +380,9 @@ const init = {
     materialDescription: '',
     careDescription: '',
     tag: [],
-    categoryId: ''
+    categoryId: '',
+    categoryName: '',
+    description: '',
 }
 
 const styles = StyleSheet.create({

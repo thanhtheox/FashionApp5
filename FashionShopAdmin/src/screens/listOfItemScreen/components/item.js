@@ -23,7 +23,7 @@ const Item = (props) => {
                     <Text style={styles.price} numberOfLines={1}>{props.price}$</Text>
                 </View>
                 <View style={styles.viewFunction}>
-                    <TouchableOpacity style={styles.viewIcon} onPress={props.onPressDelete}>
+                    <TouchableOpacity style={styles.viewIcon} onPress={props.delete}>
                     <IC_Delete></IC_Delete>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.viewIcon} onPress={props.onPressEdit}>
