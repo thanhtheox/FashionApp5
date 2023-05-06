@@ -10,13 +10,8 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
-<<<<<<< HEAD
 import React, {useState, useEffect} from 'react';
-import {IC_Backward, IC_Tick} from '../../assets/icons';
-=======
-import React, { useState, useEffect } from 'react';
-import { IC_AddImage, IC_Backward, IC_Tick } from '../../assets/icons';
->>>>>>> bacecc05fc91ad6ac9890367ff177cdf1aa3dd82
+import {IC_AddImage, IC_Backward, IC_Tick} from '../../assets/icons';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import scale from '../../constants/responsive';
@@ -121,16 +116,11 @@ const AddItemScreen = props => {
       }
     };
 
-<<<<<<< HEAD
     const getTags = async () => {
       try {
         const response = await axiosPrivate.get('/get-all-tag', {
           signal: controller.signal,
         });
-=======
-            console.log(res.data);
-            props.navigation.navigate("AddDetailItem");
->>>>>>> bacecc05fc91ad6ac9890367ff177cdf1aa3dd82
 
         const handledTag = [];
         await Promise.all(
@@ -222,19 +212,19 @@ const AddItemScreen = props => {
     console.log(product);
   };
 
-  const handlePickTag = val => {
+  const handlePickTag = (val)=>{
     // add pick tag
     const newTag = {tagName: val.label, tagId: val.value};
     const newTagArray = [...product.tag, newTag];
     setProduct({
-      ...product,
-      tag: newTagArray,
+        ...product, 
+        tag: newTagArray
     });
     console.log(product);
     // remove picked tag
-    const newTagList = tag.filter(tag => tag.label !== newTag.tagId);
+    const newTagList = tag.filter((tag) => tag.value !== newTag.tagId);
     setTag(newTagList);
-  };
+}
 
   const handleUnpickTag = val => {
     // remove from picked tag
@@ -243,7 +233,7 @@ const AddItemScreen = props => {
     console.log(newProductTag, unpickedTag);
     setProduct({...product, tag: newProductTag});
     // add unpick tag
-    setTag([...tag, {label: unpickedTag.tagId, value: unpickedTag.tagName}]);
+    setTag([...tag, {label: unpickedTag.tagName, value: unpickedTag.tagId}]);
     console.log(product.tag, tag);
   };
 
@@ -333,11 +323,8 @@ const AddItemScreen = props => {
                         </View>
                       ))}
                       <TouchableOpacity onPress={checkReadImagePermission}>
-                        <View style={{width: scale(50), height: scale(67)}}>
-                          <Image
-                            style={{width: '100%', height: '100%'}}
-                            source={IMG_AddImage}
-                          />
+                        <View style={styles.imageView}>
+                          <IC_AddImage />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -560,7 +547,7 @@ const AddItemScreen = props => {
                                 value={tag.tagName}
                                 cancel={true}
                                 tagId={tag.tagId}
-                                onPress={handleUnpickTag,value=> onChange(value)}
+                                onPress={handleUnpickTag}
                               />
                             ))}
                           </View>
@@ -577,11 +564,7 @@ const AddItemScreen = props => {
               />
 
               <View
-                style={{
-                  borderTopWidth: 1,
-                  borderTopColor: color.PlaceHolder,
-                  marginTop: scale(20),
-                }}></View>
+                style={styles.line}></View>
               <TouchableOpacity onPress={handleSubmit(createProduct)}>
                 <View style={styles.itemDetailButton}>
                   <Text style={styles.propText}>
@@ -597,7 +580,6 @@ const AddItemScreen = props => {
                 </View>
               </TouchableOpacity>
             </View>
-<<<<<<< HEAD
           </ScrollView>
         </KeyboardAvoidingView>
       </View>
@@ -612,141 +594,6 @@ const AddItemScreen = props => {
       />
     </SafeAreaView>
   );
-=======
-{/* body */}
-            <View style={styles.body}>
-                <KeyboardAvoidingView style={{flex: 1}}>
-                    <ScrollView overScrollMode='auto' contentContainerStyle={{flexGrow: 1}}>
-    {/* image */}
-                        <View style={styles.imagePart}>
-                            <Text style={styles.bodyText}>Image</Text>
-                            <ScrollView horizontal={true}>
-                                <View style={styles.imageRow}>
-                                    {images.map((image) => (
-                                        <View key={image} style={{width: scale(50), height: scale(67)}}>
-                                            <Image resizeMode='cover' style={{width: '100%', height: '100%'}} source={{uri: image}}/>
-                                        </View>
-                                    ))}
-                                    <TouchableOpacity onPress={checkReadImagePermission}>
-                                        <View style={{width: scale(50), height: scale(67)}}>
-                                            <IC_AddImage />
-                                        </View>
-                                    </TouchableOpacity>
-                                    
-                                </View>
-                            </ScrollView>
-                        </View>
-    {/* input */}                    
-                        <View style={styles.informationPart}>
-                            <Text style={styles.bodyText}>Item information</Text>
-                            <SingleLine
-                                name="name" 
-                                placeholder={'Name'} 
-                                handleChange={handleChange} 
-                                keyboardType='default'
-                            />
-                            <SingleLine 
-                                name="price" 
-                                placeholder={'Price'} 
-                                handleChange={handleChange} 
-                                keyboardType='number-pad'
-                            />
-                            <Text style={styles.propText}>Material Description: (max 300 characters)</Text>
-                            <MultiLine 
-                                name="materialDescription" 
-                                handleChange={handleChange} 
-                                keyboardType='default'
-                            />
-                            <Text style={styles.propText}>Care Description: (max 300 characters)</Text>
-                            <MultiLine 
-                                name="careDescription" 
-                                handleChange={handleChange} 
-                                keyboardType='default'
-                            />
-                            <Text style={styles.propText}>Description: (max 300 characters)</Text>
-                            <MultiLine 
-                                name="description" 
-                                handleChange={handleChange} 
-                                keyboardType='default'
-                            />
-    {/* category */}
-                            <View style={styles.categoryBox}>
-                                <View>
-                                    <DropDownPicker
-                                        listMode="MODAL"
-                                        open={categoryOpen}
-                                        placeholder="Category"
-                                        style={styles.categoryDropDown}
-                                        textStyle={styles.dropdownText}
-                                        items={category}
-                                        setOpen={setCategoryOpen}
-                                        modalProps={{
-                                            animationType: "fade"
-                                        }}
-                                        onSelectItem={(item) => handlePickCategory(item)}
-                                    />
-                                </View>
-                                <View style={styles.categoryView}>
-                                    <Text style={styles.dropdownText}>Chosen category:</Text>
-                                    <TagWithoutDelete value={product.categoryName} cancel={false}/>
-                                </View>            
-                            </View>
-    {/* tag */}
-                            <View style={styles.categoryBox}>
-                                <View>
-                                    <DropDownPicker
-                                        listMode="MODAL"
-                                        open={tagOpen}
-                                        placeholder="Tags"
-                                        style={styles.categoryDropDown}
-                                        textStyle={styles.dropdownText}
-                                        items={tag}
-                                        setOpen={setTagOpen}
-                                        modalProps={{
-                                            animationType: "fade"
-                                        }}
-                                        onSelectItem={(item) => handlePickTag(item)}
-                                    />
-                                </View>
-                                
-                                <View style={{flex: 1}}>
-                                    <Text style={styles.dropdownText}>Chosen tags:</Text>
-                                        <ScrollView horizontal={true}>
-                                            <View style={{flex: 1, flexDirection: 'row' , gap: 10}}>
-                                                {product.tag.map((tag) => (  
-                                                    <TagWithoutDelete key={tag.tagId} value={tag.tagName} cancel={true} tagId={tag.tagId} onPress={handleUnpickTag}/>
-                                                ))}
-                                            </View>
-                                        </ScrollView>
-                                </View>
-                            </View>
-                            <View style={{borderTopWidth: 1, borderTopColor: color.PlaceHolder, marginTop: scale(20),}}></View>
-                            <TouchableOpacity onPress={()=>{
-                                createProduct();
-                            }}>
-                                <View style={styles.itemDetailButton}> 
-                                    <Text style={styles.propText}>Create item & move to Item detail</Text>
-                                    <View style={{marginTop: scale(20), transform: [{ rotate: '180deg'}]}}>
-                                        <IC_Backward stroke={color.TitleActive}></IC_Backward>               
-                                    </View>
-                                </View>                            
-                            </TouchableOpacity>
-                            
-                        </View>
-                    </ScrollView>
-                </KeyboardAvoidingView>
-            </View>
-            
-            <Message 
-                visible={visible} 
-                title={title} 
-                clickCancel={() => {
-                        setVisible(false);
-                }} 
-                message={message}/> 
-        </SafeAreaView>
-    )
->>>>>>> bacecc05fc91ad6ac9890367ff177cdf1aa3dd82
 };
 
 export default AddItemScreen;
@@ -811,6 +658,11 @@ const styles = StyleSheet.create({
     gap: 10,
     paddingHorizontal: scale(10),
   },
+  imageView: {
+    width: scale(50), 
+    height: scale(67), 
+    justifyContent: 'center'
+  },
 
   // information
   informationPart: {
@@ -853,6 +705,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  line: {
+    borderTopWidth: 1,
+    borderTopColor: color.PlaceHolder,
+    marginTop: scale(20),
   },
 
   //fail

@@ -16,7 +16,7 @@ const MultiLine = (props) => {
             keyboardType={props.keyboardType}
             multiline={true}
             maxLength={500}
-            value={props.value}
+            defaultValue={props.defaultValue}
         />
     )
 }
