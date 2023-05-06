@@ -11,7 +11,7 @@ import {
     KeyboardAvoidingView,
 } from 'react-native';
 import React, { useState, useRef, useEffect } from 'react';
-import { IC_Backward } from '../../assets/icons';
+import { IC_Add, IC_Backward } from '../../assets/icons';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import scale from '../../constants/responsive';
@@ -39,12 +39,7 @@ const ItemDetailScreen = (props) => {
     ]
     const [pickedColor, setPickedColor] = useState([]);
     const [colorOpen, setColorOpen] = useState(false);
-    const tags = [
-        {label: '1', value: 'apple'},
-        {label: '2', value: 'banana'},
-        {label: '3', value: 'pie'},
-        {label: '4', value: 'orange'},
-    ];
+    const [tags, setTags] = useState([]);
 
     const [category, setCategory] = useState({});
     const axiosPrivate = useAxiosPrivate();
@@ -63,8 +58,21 @@ const ItemDetailScreen = (props) => {
                 console.log(err.response.data);
             }
         }
+
+        const getTags = async () => {
+            try {
+                const response = await axiosPrivate.get(`/get-name-tag-by-productId/${data._id}`, {
+                    signal: controller.signal
+                }); 
+                isMounted && setTags(response.data)
+            } 
+            catch (err) {
+                console.log(err.response.data);
+            }
+        }
     
         getCategory();
+        getTags();
     
         return () => {
             isMounted = false;
@@ -114,12 +122,12 @@ const ItemDetailScreen = (props) => {
                                 <Text style={styles.propText}>{category.name}</Text>
                             </View>
                             
-                            <View style={{flexDirection: 'row', alignItems: 'center', gap: scale(10)}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center', gap: scale(10), marginTop: scale(5)}}>
                                 <Text style={styles.propTextTitle}>Tags:</Text>
                                     <ScrollView horizontal={true}>
                                         <View style={{flex: 1, flexDirection: 'row' , gap: 10}}>
                                             {tags.map((tag) => (  
-                                                <TagWithoutDelete key={tag.label} value={tag.value} cancel={true} tagId={tag.tagId} />
+                                                <TagWithoutDelete key={tag._id} value={tag.name}  tagId={tag._id} />
                                             ))}
                                         </View>
                                     </ScrollView>
@@ -131,7 +139,17 @@ const ItemDetailScreen = (props) => {
                             <Text style={styles.text}>{capitalizeFirstLetter(data.care)}</Text>
                         
                             <View style={styles.quantityView}>
-                                <Text style={styles.bodyText}>Quantities</Text>
+                                <View style={[styles.row]}>
+                                    <Text style={styles.bodyText}>Quantities</Text>
+                                    <TouchableOpacity 
+                                        style={[styles.row, {borderWidth: 0.5, padding: 5}]}
+                                        onPress={() => {props.navigation.navigate('AddDetailItem', {
+                                            data
+                                        })}}>
+                                        <IC_Add />
+                                        <Text style={styles.text}>Add more</Text>
+                                    </TouchableOpacity>
+                                </View>
                                 
                                 <DataTable style={{flex: 1}}>
                                     <DataTable.Header>
@@ -250,6 +268,10 @@ const styles = StyleSheet.create({
         gap: scale(15),
     },
     // Quantity
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
     quantityView: {
         marginTop: scale(35),
         gap: scale(15)

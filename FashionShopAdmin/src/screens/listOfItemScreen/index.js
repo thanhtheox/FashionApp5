@@ -30,7 +30,7 @@ const ListOfItemScreen = (props) => {
             const response = await axiosPrivate.get('/get-all-product', {
                 signal: controller.signal
             });
-            console.log(response.data);
+            //console.log(response.data);
             isMounted && setData(response.data);
         } 
         catch (err) {

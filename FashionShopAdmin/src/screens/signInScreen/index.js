@@ -102,7 +102,7 @@ const SignInScreen = props => {
             <View style={styles.inputMailBox}>
               <View style={styles.viewInput}>
               <TextInput
-                onChangeText={email => [onChange(email), setMail(email)]}
+                onChangeText={email => [onChange(email), setMail(email), console.log(value)]}
                 placeholder="Email"
                 value={value}
                 placeholderTextColor={color.GraySolid}

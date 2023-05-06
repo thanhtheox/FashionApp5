@@ -32,7 +32,7 @@ export default UnderLine
 const styles = StyleSheet.create({
   background: isChoosing => ({
     alignSelf: 'center',
-    color: isChoosing ? color.Primary : color.GraySolid,
+    color: isChoosing ? color.Secondary : color.GraySolid,
     letterSpacing: -0.5
     
   }),

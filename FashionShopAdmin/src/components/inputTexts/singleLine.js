@@ -11,9 +11,10 @@ const SingleLine = (props) => {
             placeholder={props.placeholder} 
             placeholderTextColor={color.PlaceHolder} 
             selectionColor={color.TitleActive}
-            onChange={(e) => props.handleChange(e, props.name)}
+            onChangeText={props.onChangeText}
             keyboardAppearance='dark'
             keyboardType={props.keyboardType}
+            value={props.value}
         />
     )
 }
