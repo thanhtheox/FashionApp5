@@ -10,8 +10,8 @@ import {
     ScrollView,
     KeyboardAvoidingView,
 } from 'react-native';
-import React, { useState, useRef } from 'react';
-import { IC_Backward } from '../../assets/icons';
+import React, { useState, useRef, useEffect } from 'react';
+import { IC_AddImage, IC_Backward } from '../../assets/icons';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import scale from '../../constants/responsive';
@@ -23,9 +23,42 @@ import TagWithoutDelete from '../../components/tags/tagWithoutDelete';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import { PERMISSIONS, check, RESULTS, request } from 'react-native-permissions';
 import Message from '../../components/alearts.js/messageOnly';
+import HeaderMin from '../../components/header/headerMin';
 
 const EditItemScreen = (props) => {
+    const oldItem = props.route.params.data;
     const [product, setProduct] = useState(init);
+
+    // useEffect(() => {
+
+    //     let isMounted = true;
+    //     const controller = new AbortController();
+    //     const getCategory = async () => {
+    //         try {
+    //             const response = await axiosPrivate.get('/category-child', {
+    //                 signal: controller.signal,
+    //             });
+    //             const handledCategory = [];
+    //             await Promise.all(
+    //                 response.data.category.map(item => {
+    //                 handledCategory.push({
+    //                     label: item.name + ' (' + item.parentName + ')',
+    //                     value: item._id,
+    //                 });
+    //                 }),
+    //             );
+    //             isMounted && setCategory(handledCategory);
+    //         } catch (err) {
+    //         console.log(err.response.data);
+    //         }
+    //     };
+
+    //     getCategory();
+    //     return () => {
+    //     isMounted = false;
+    //     controller.abort();
+    //     };
+    // }, [])
 
     const [category, setCategory] = useState([
         {label: '1', value: 'apple'},
@@ -143,14 +176,7 @@ const EditItemScreen = (props) => {
     return (
         <SafeAreaView style={styles.container}>
 {/* header */}
-            <View style={styles.header}>
-                <TouchableOpacity style={styles.backwardButton} onPress={()=>props.navigation.goBack()}>
-                    <IC_Backward stroke={color.White}></IC_Backward>
-                </TouchableOpacity>
-                <View >
-                    <Text style={styles.textHeader}>Edit item</Text>
-                </View>
-            </View>
+            <HeaderMin text={'Edit item'} onPress={()=>props.navigation.goBack()}/>
 {/* body */}
             <View style={styles.body}>
                 <KeyboardAvoidingView style={{flex: 1}}>
@@ -161,13 +187,13 @@ const EditItemScreen = (props) => {
                             <ScrollView horizontal={true}>
                                 <View style={styles.imageRow}>
                                     {images.map((image) => (
-                                        <View key={image} style={{width: scale(50), height: scale(67)}}>
+                                        <View key={image} style={styles.imageView}>
                                             <Image resizeMode='cover' style={{width: '100%', height: '100%'}} source={{uri: image}}/>
                                         </View>
                                     ))}
                                     <TouchableOpacity onPress={checkReadImagePermission}>
-                                        <View style={{width: scale(50), height: scale(67)}}>
-                                            <Image style={{width: '100%', height: '100%'}} source={IMG_AddImage}/>
+                                        <View style={styles.imageView}>
+                                            <IC_AddImage />
                                         </View>
                                     </TouchableOpacity>
                                     
@@ -182,24 +208,35 @@ const EditItemScreen = (props) => {
                                 placeholder={'Name'} 
                                 handleChange={handleChange} 
                                 keyboardType='default'
+                                defaultValue={oldItem.name}
                             />
                             <SingleLine 
                                 name="price" 
                                 placeholder={'Price'} 
                                 handleChange={handleChange} 
                                 keyboardType='number-pad'
+                                defaultValue={oldItem.price + ""}
                             />
                             <Text style={styles.propText}>Material Description: (max 300 characters)</Text>
                             <MultiLine 
                                 name="materialDescription" 
                                 handleChange={handleChange} 
                                 keyboardType='default'
+                                defaultValue={oldItem.material}
                             />
                             <Text style={styles.propText}>Care Description: (max 300 characters)</Text>
                             <MultiLine 
                                 name="careDescription" 
                                 handleChange={handleChange} 
                                 keyboardType='default'
+                                defaultValue={oldItem.care}
+                            />
+                            <Text style={styles.propText}>Description: (max 300 characters)</Text>
+                            <MultiLine 
+                                name="careDescription" 
+                                handleChange={handleChange} 
+                                keyboardType='default'
+                                defaultValue={oldItem.description}
                             />
     {/* category */}
                             <View style={styles.categoryBox}>
@@ -330,6 +367,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 10,
         paddingHorizontal: scale(10),
+    },
+    imageView: {
+        width: scale(50), 
+        height: scale(67), 
+        justifyContent: 'center'
     },
 
     // information

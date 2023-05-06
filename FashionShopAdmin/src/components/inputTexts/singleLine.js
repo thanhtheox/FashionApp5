@@ -14,7 +14,7 @@ const SingleLine = (props) => {
             onChangeText={props.onChangeText}
             keyboardAppearance='dark'
             keyboardType={props.keyboardType}
-            value={props.value}
+            defaultValue={props.defaultValue}
         />
     )
 }

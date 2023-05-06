@@ -12,7 +12,6 @@ import scale from '../../constants/responsive';
 import FONT_FAMILY from '../../constants/fonts';
 import {DataTable} from 'react-native-paper';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import {IC_Backward, IC_BackwardArrow} from '../../assets/icons';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import HeaderMax from '../../components/header/headerMax';
 
