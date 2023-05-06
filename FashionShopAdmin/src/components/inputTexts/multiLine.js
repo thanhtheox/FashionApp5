@@ -11,11 +11,12 @@ const MultiLine = (props) => {
             placeholder={props.placeholder} 
             placeholderTextColor={color.PlaceHolder} 
             selectionColor={color.GraySolid}
-            onChange={(e) => props.handleChange(e, props.name)}
+            onChangeText={props.onChangeText}
             keyboardAppearance='dark'
             keyboardType={props.keyboardType}
             multiline={true}
             maxLength={500}
+            value={props.value}
         />
     )
 }
