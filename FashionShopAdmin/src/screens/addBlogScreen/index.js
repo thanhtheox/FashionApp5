@@ -11,7 +11,7 @@ import {
     KeyboardAvoidingView,
 } from 'react-native';
 import React, { useState, useRef } from 'react';
-import { IC_Backward } from '../../assets/icons';
+import { IC_AddImage, IC_Backward } from '../../assets/icons';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import scale from '../../constants/responsive';
@@ -176,7 +176,8 @@ const AddBlogScreen = (props) => {
                                     ))}
                                     <TouchableOpacity onPress={checkReadImagePermission}>
                                         <View style={{width: scale(50), height: scale(67)}}>
-                                            <Image style={{width: '100%', height: '100%'}} source={IMG_AddImage}/>
+                                            {/* <Image style={{width: '100%', height: '100%'}} source={IMG_AddImage}/> */}
+                                            <IC_AddImage />
                                         </View>
                                     </TouchableOpacity>
                                     

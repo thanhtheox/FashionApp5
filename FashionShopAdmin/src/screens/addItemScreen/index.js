@@ -11,7 +11,7 @@ import {
     KeyboardAvoidingView,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { IC_Backward, IC_Tick } from '../../assets/icons';
+import { IC_AddImage, IC_Backward, IC_Tick } from '../../assets/icons';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import scale from '../../constants/responsive';
@@ -122,7 +122,7 @@ const AddItemScreen = (props) => {
             });
 
             console.log(res.data);
-            props.navigation.navigate("AddDetailItem")
+            props.navigation.navigate("AddDetailItem");
 
         } catch (err) {
             console.log(err.response.data);
@@ -253,7 +253,7 @@ const AddItemScreen = (props) => {
                                     ))}
                                     <TouchableOpacity onPress={checkReadImagePermission}>
                                         <View style={{width: scale(50), height: scale(67)}}>
-                                            <Image style={{width: '100%', height: '100%'}} source={IMG_AddImage}/>
+                                            <IC_AddImage />
                                         </View>
                                     </TouchableOpacity>
                                     

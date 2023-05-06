@@ -29,8 +29,7 @@ const styles = StyleSheet.create({
     },
     textHeader:{
         color: color.White,
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Bold,
         fontSize: 24,
-        fontWeight: '700',
     },
 });

@@ -28,6 +28,7 @@ import useAuth from '../hooks/useAuth';
 import AddCategoryScreen from '../screens/addCategory';
 import AddBlogScreen from '../screens/addBlogScreen';
 import EditBlogScreen from '../screens/editBlogScreen';
+import OrderDetailScreen from '../screens/orderDetailScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -90,8 +91,9 @@ const MyNavigationContainer= () => {
           <Stack.Screen name="AddTag" component={AddTagScreen} />
 
 
-  {/* Order no screen*/}
+  {/* Order */}
           <Stack.Screen name="ListOrder" component={ListOfOrderScreen} />
+          <Stack.Screen name="OrderDetail" component={OrderDetailScreen} />
 
 
 {/*Category */}
