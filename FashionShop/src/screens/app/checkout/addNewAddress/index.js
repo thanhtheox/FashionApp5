@@ -6,7 +6,6 @@ import scale from '../../../../constants/responsive';
 import { IMG_Logo } from '../../../../assets/images';
 import SaveButton from '../../../../components/buttons/Save';
 import { LineBottom } from '../../../../components/footer/images';
-import Custom_Header from '../../../../components/header/Custom_Header'
 
 const AddNewAddressScreen = props => {
   const [firstName, setFirstName] = useState('');
@@ -19,7 +18,6 @@ const AddNewAddressScreen = props => {
 
     return (
         <SafeAreaView style = {styles.container}>
-            <Custom_Header/>
             <View style={styles.introTextBox}>
                 <Text style={styles.introText}>ADD SHIPPNG ADDRESS</Text>
                 <Image source={LineBottom} style={{alignSelf: 'center'}}/>
@@ -136,7 +134,6 @@ const styles = StyleSheet.create({
         width: scale(295),
         height: scale(51),
         borderColor: color.GraySolid,
-        // borderBottomWidth: 1,
       },
       inputName: {
         flexDirection: 'row',
@@ -185,13 +182,13 @@ const styles = StyleSheet.create({
       },
       inputText: {
         color: color.TitleActive,
-        fontSize: 16,
-        top: scale(30),
+        fontSize: scale(16),
         marginLeft: scale(5),
+        marginTop:scale(10)
       },
       textFailed: {
         alignSelf: 'flex-start',
-        fontFamily: FONT_FAMILY.JoseFinSans,
+        fontFamily: FONT_FAMILY.Regular,
         fontSize: scale(12),
         color: color.RedSolid,
         marginTop: scale(5),

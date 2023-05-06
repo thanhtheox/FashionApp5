@@ -8,13 +8,11 @@ const CollectionItems = props => {
   return (
     <TouchableOpacity style={styles.container} onPress={props.onPress}>
       <View style={styles.imgContainer}>
-        <Image source={props.image} style={styles.img} />
+        <Image source={{uri:`${props.image}`}} style={styles.img} resizeMode='cover'/>
       </View>
       <View style={styles.textContainer}>
-        {/* <View style={{flexDirection:'row'}}> */}
-            <Text style={styles.prodNumber}>0{props.prodNumber}</Text>
-            <View style={styles.line}/>
-        {/* </View> */}
+        <Text style={styles.prodNumber}>0{props.prodNumber}</Text>
+        <View style={styles.line}/>
         <Text style={styles.prodName}>
           {props.prodName}
         </Text>
@@ -39,6 +37,7 @@ const styles = StyleSheet.create({
   },
   img: {
     width: '100%',
+    height: scale(300),
   },
   textContainer: {
     height: scale(40),

@@ -21,57 +21,6 @@ const CartScreen = (props) => {
   const cart = useSelector(state => state.cart);
   const {cartItems} = cart;
   
-
-  // const cartItems = [
-  //   {
-  //     id: '1',
-  //     imgUrl: IMG_ModelFour,
-  //     qty: 1,
-  //     name: 'LAMEREI',
-  //     description: 'Recycle Boucle Knit Cardigan Pink',
-  //     price: 120,
-  //   },
-  //   {
-  //     id: '2',
-  //     imgUrl: IMG_ModelFour,
-  //     qty: 1,
-  //     name: 'LAMEREI',
-  //     description: 'Recycle Boucle Knit Cardigan Pink',
-  //     price: 120,
-  //   },
-  //   {
-  //     id: '3',
-  //     imgUrl: IMG_ModelFour,
-  //     qty: 1,
-  //     name: 'LAMEREI',
-  //     description: 'Recycle Boucle Knit Cardigan Pink',
-  //     price: 120,
-  //   },
-  //   {
-  //     id: '4',
-  //     imgUrl: IMG_ModelFour,
-  //     qty: 1,
-  //     name: 'LAMEREI',
-  //     description: 'Recycle Boucle Knit Cardigan Pink',
-  //     price: 120,
-  //   },
-  //   {
-  //     id: '5',
-  //     imgUrl: IMG_ModelFour,
-  //     qty: 1,
-  //     name: 'LAMEREI',
-  //     description: 'Recycle Boucle Knit Cardigan Pink',
-  //     price: 120,
-  //   },
-  //   {
-  //     id: '6',
-  //     imgUrl: IMG_ModelFour,
-  //     qty: 1,
-  //     name: 'LAMEREI',
-  //     description: 'Recycle Boucle Knit Cardigan Pink',
-  //     price: 120,
-  //   },
-  // ];
   useEffect(() => {
     console.log('render!')
 
@@ -166,7 +115,7 @@ const CartScreen = (props) => {
         {/* Button */}
         <Button 
         text={visible? 'BUY NOW':'CONTINUE SHOPPING'}
-        onPress={() => visible? props.navigation.navigate('CheckOutScreen'):props.navigation.navigate('HomeScreen')}
+        onPress={() => visible? props.navigation.navigate('CheckOutStackScreen'):props.navigation.navigate('HomeScreen')}
         />
     </SafeAreaView>
   )

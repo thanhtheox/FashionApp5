@@ -9,7 +9,7 @@ const SuggestiveCollection = props => {
   return (
     <TouchableOpacity style={styles.container} onPress={props.onPress}>
       <View style={styles.imgContainer}>
-        <Image source={props.image} style={styles.img} />
+        <Image source={{uri:`${props.image}`}} style={styles.img} resizeMode='cover'/>
       </View>
       <View style={styles.textContainer}>
         <Text style={[fontStyles.bodySmallFont, styles.prodName]}>
