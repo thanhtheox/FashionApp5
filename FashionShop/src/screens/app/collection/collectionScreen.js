@@ -1,33 +1,40 @@
 import { SafeAreaView, ScrollView, StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions,Modal } from 'react-native'
-import React,{useState} from 'react'
-import Custom_Header from '../../../components/header/Custom_Header'
+import React,{useState,useEffect} from 'react'
 import Custom_Footer from '../../../components/footer/Custom_Footer'
 import color from '../../../constants/color'
 import scale from '../../../constants/responsive'
 import FONT_FAMILY from '../../../constants/fonts'
 import CollectionItems from './components/collectionItems'
-import {IMG_Collection } from '../../../assets/images'
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
 
 
 
 const CollectionScreen = (props) => {
-    const collections = [
-    {
-      img: IMG_Collection,
-      key: '1',
-      name: 'OCTOBER COLLECTION',
-    },
-    {
-      img: IMG_Collection,
-      key: '2',
-      name: 'BLACK COLLECTION',
-    },
-    {
-      img: IMG_Collection,
-      key: '3',
-      name: 'HAE BY HAEKIM',
-    },
-  ];
+  const [collectionData, setCollectionData] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const getCollections = async () => {
+      try {
+        const response = await axiosPrivate.get('/get-all-collection', {
+          signal: controller.signal,
+        });
+        // console.log(response.data);
+        setCollectionData(response.data);
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    };
+
+    getCollections();
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
+
   return (
     <SafeAreaView style={styles.container}>
         {/* Collection */}
@@ -39,15 +46,17 @@ const CollectionScreen = (props) => {
             <FlatList
               contentContainerStyle={{justifyContent: 'space-between', marginVertical:scale(20)}}
               horizontal={false}
-              data={collections}
-              keyExtractor={item => `${item.key}`}
+              data={collectionData}
+              keyExtractor={item => `${item._id}`}
               scrollEnabled={false}
               renderItem={({item}) => (
                   <CollectionItems
-                    image={item.img}
+                    image={item.posterImage.url}
                     prodName={item.name}
-                    prodNumber={item.key}
-                    onPress={() => props.navigation.navigate('CollectionDetailScreen')}
+                    prodNumber={item.__v}
+                    onPress={() => props.navigation.navigate('CollectionDetailScreen', {
+                      data: item,
+                    })}
                   />
               )}
             />      

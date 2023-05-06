@@ -12,7 +12,7 @@ import FONT_FAMILY from '../../../constants/fonts';
 import { IC_BackwardArrow } from '../../../assets/icons';
 import scale from '../../../constants/responsive';
 import SaveButton from '../../../components/buttons/Save';
-import axios from '../../../apis/axios';
+import axiosClient from '../../../apis/axios';
 import useAuth from '../../../hooks/useAuth';
 import * as yup from 'yup';
 import {Controller, useForm} from 'react-hook-form';
@@ -63,7 +63,7 @@ const SignInScreen = props => {
   const handleSubmits = async () => {
     try {
       setLoading(true);
-      const response = await axios.post(
+      const response = await axiosClient.post(
         '/login',
         JSON.stringify({email: mail, password: pass}),
         {

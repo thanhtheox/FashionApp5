@@ -8,7 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Custom_Header from '../components/header/Custom_Header';
 
 import { BlogStackScreen } from '../screens/app/blog/blogNavigation';
-import CheckOut from '../screens/app/checkout';
+import { CheckOutStackScreen } from '../screens/app/checkout/checkOutNavigation';
 import CartScreen from '../screens/app/cart';
 import { CollectionStackScreen } from '../screens/app/collection/collectionNavigation';
 import { HomeStackScreen } from '../screens/app/home/HomeNavigation';
@@ -46,8 +46,8 @@ const AppStackScreen = () => {
         })}
       />
       <AppStack.Screen
-        name="CheckOutScreen"
-        component={CheckOut}
+        name="CheckOutStackScreen"
+        component={CheckOutStackScreen}
         options={({navigation}) => ({
           headerTitle: () => (
             <Custom_Header navigation={navigation}/>
