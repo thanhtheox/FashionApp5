@@ -1,6 +1,5 @@
 import { SafeAreaView, ScrollView, StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions,Modal } from 'react-native'
-import React,{useState} from 'react'
-import Custom_Header from '../../../components/header/Custom_Header'
+import React,{useState,useEffect} from 'react'
 import Custom_Footer from '../../../components/footer/Custom_Footer'
 import color from '../../../constants/color'
 import scale from '../../../constants/responsive'
@@ -9,73 +8,56 @@ import CollectionProduct from './components/collectionProducts'
 import {IMG_Collection, IMG_ModelFour,IMG_ModelThree,IMG_ModelOne,IMG_ModelTwo } from '../../../assets/images'
 import { LineBottom } from '../../../components/footer/images'
 import SuggestiveCollection from './components/suggestiveCollections'
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
 
 
 const CollectionDetailScreen = (props) => {
-    const collectionProducts = [
-      {
-        id: 1,
-        name: ' reversible ',
-        price: 120,
-        img: IMG_ModelOne,
-      },
-      {
-        id: 2,
-        name: '21WN cardigan',
-        price: 140,
-        img: IMG_ModelTwo,
-      },
-      {
-        id: 3,
-        name: '21WN angora',
-        price: 180,
-        img: IMG_ModelThree,
-      },
-      {
-        id: 4,
-        name: 'Oblong bag',
-        price: 220,
-        img: IMG_ModelFour,
-      },
-      {
-        id: 5,
-        name: '21WN angora',
-        price: 180,
-        img: IMG_ModelThree,
-      },
-      {
-        id: 6,
-        name: 'Oblong bag',
-        price: 220,
-        img: IMG_ModelFour,
-      },
-  ];
-  const collections = [
-    {
-      img: IMG_Collection,
-      key: '1',
-      name: 'OCTOBER COLLECTION',
-    },
-    {
-      img: IMG_Collection,
-      key: '2',
-      name: 'BLACK COLLECTION',
-    },
-    {
-      img: IMG_Collection,
-      key: '3',
-      name: 'HAE BY HAEKIM',
-    },
-  ];
+  const {data} = props.route.params;
+  const [collectionProducts, setCollectionProducts] = useState([]);
+  const [suggestiveCollection, setSuggestiveCollection] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const getSuggestiveCollection = async () => {
+      try {
+        const response = await axiosPrivate.get('/get-random-collection', {
+          signal: controller.signal,
+        });
+        setSuggestiveCollection(response.data);
+        // console.log(suggestiveCollection);
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    };
+    const getCollectionProducts = async () => {
+      try {
+        const response = await axiosPrivate.get(`/get-product-by-id/${data.productId}`, {
+          signal: controller.signal, 
+        });
+        setCollectionProducts(response.data);
+        // console.log(collectionProducts);
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    };
+    getCollectionProducts();
+    getSuggestiveCollection();
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
+  
   return (
     <SafeAreaView style={styles.container}>
         {/* Collection */}
         <ScrollView>
           <View style={{backgroundColor:color.TitleActive}}>
-            <Text style={styles.nameCollectionText}>OCTOBER</Text>
+            <Text style={styles.nameCollectionText}>{data.name}</Text>
             <Text style={styles.collectionText}>COLLECTION</Text>
             <View style={styles.imgContainer}>
-              <Image source={IMG_Collection} style={styles.img} />
+              <Image source={{uri:`${data.posterImage.url}`}} style={styles.img} resizeMode='cover'/>
             </View>
           </View>
           <View style={styles.collectionContainer}>          
@@ -83,21 +65,18 @@ const CollectionDetailScreen = (props) => {
               contentContainerStyle={{alignContent: 'space-around', marginTop:scale(20)}}
               horizontal={false}
               data={collectionProducts}
-              keyExtractor={item => `${item.id}`}
+              keyExtractor={item => `${item._id}`}
               numColumns={2}
               scrollEnabled={false}
               columnWrapperStyle={{marginBottom:scale(5)}}
-              renderItem={({item}) => (
+              renderItem={({item,index}) => (
                 <CollectionProduct
-                image={item.img}
+                image={item.image[index]}
                 prodName={item.name}
                 prodPrice={item.price}
                 onPress={() => props.navigation.replace('ProductDetailsScreen', {
-                  // categoryName: props.categoryName,
                   data: item,
                 })}
-                // {...props}
-                // categoryData={item}
                 />
               )}
             />      
@@ -108,16 +87,16 @@ const CollectionDetailScreen = (props) => {
             <Text style={styles.line}>━━━━━━━━◆━━━━━━━━</Text>
             <FlatList
               contentContainerStyle={{alignContent: 'space-around', marginTop:scale(20)}}
-              data={collections}
+              data={suggestiveCollection}
               horizontal={true}
-              keyExtractor={item => `${item.key}`}
+              keyExtractor={item => `${item._id}`}
               renderItem={({item}) => (
                   <SuggestiveCollection
-                    onPress={() => props.navigation.replace('CollectionDetailScreen')}
-                    image={item.img}
+                    onPress={() => props.navigation.replace('CollectionDetailScreen', {
+                      data: item,
+                    })}
+                    image={item.posterImage.url}
                     prodName={item.name}
-                    {...props}
-                    categoryData={item}
                   />
               )}
             />      
@@ -147,6 +126,7 @@ const styles = StyleSheet.create({
     },
     img: {
       width: '100%',
+      height:scale(300),
     },
     wrapDot: {
       flexDirection: 'row',

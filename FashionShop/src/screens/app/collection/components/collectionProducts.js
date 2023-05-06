@@ -10,7 +10,7 @@ const CollectionProduct = props => {
   return (
     <TouchableOpacity style={styles.container} onPress={props.onPress} >
       <View style={styles.imgContainer}>
-        <Image source={props.image} style={styles.img} />
+        <Image source={{uri:`${props.image}`}} style={styles.img} resizeMode='cover'/>
         <TouchableOpacity
           onPress={() => setLike(Liked === true ? false : true)}>
           <IC_Heart

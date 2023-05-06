@@ -5,30 +5,35 @@ import color from '../../../constants/color'
 import scale from '../../../constants/responsive'
 import FONT_FAMILY from '../../../constants/fonts'
 import CollectionItems from './components/collectionItems'
-import {IMG_Collection } from '../../../assets/images'
-import collectionApi from '../../../services/collectionApi'
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
 
 
 
 const CollectionScreen = (props) => {
   const [collectionData, setCollectionData] = useState([]);
-
-  const getCollection = async () => {
-    try {
-      console.log('a');
-      const {collections} = await collectionApi.getRandom();
-      setCollectionData(collections);
-      console.log(collectionData);
-      
-      // setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
-    getCollection();
+    const controller = new AbortController();
+
+    const getCollections = async () => {
+      try {
+        const response = await axiosPrivate.get('/get-all-collection', {
+          signal: controller.signal,
+        });
+        // console.log(response.data);
+        setCollectionData(response.data);
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    };
+
+    getCollections();
+    return () => {
+      controller.abort();
+    };
   }, []);
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -42,14 +47,16 @@ const CollectionScreen = (props) => {
               contentContainerStyle={{justifyContent: 'space-between', marginVertical:scale(20)}}
               horizontal={false}
               data={collectionData}
-              keyExtractor={item => `${item.key}`}
+              keyExtractor={item => `${item._id}`}
               scrollEnabled={false}
               renderItem={({item}) => (
                   <CollectionItems
-                    image={item.img}
+                    image={item.posterImage.url}
                     prodName={item.name}
-                    prodNumber={item.key}
-                    onPress={() => props.navigation.navigate('CollectionDetailScreen')}
+                    prodNumber={item.__v}
+                    onPress={() => props.navigation.navigate('CollectionDetailScreen', {
+                      data: item,
+                    })}
                   />
               )}
             />      

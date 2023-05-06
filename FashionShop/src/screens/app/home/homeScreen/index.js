@@ -1,6 +1,5 @@
 import { SafeAreaView, ScrollView, StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native'
-import React from 'react'
-import Custom_Header from '../../../../components/header/Custom_Header'
+import React, { useEffect,useState } from 'react'
 import Custom_Footer from '../../../../components/footer/Custom_Footer'
 import Custom_ItemScrollView from './components/Custom_ItemScrollView'
 import Custom_HomepageProd from '../../../../components/products/CustomHomepageProd'
@@ -12,25 +11,35 @@ import { LineBottom } from '../../../../components/footer/images'
 import FONT_FAMILY from '../../../../constants/fonts'
 import color from '../../../../constants/color'
 import { SwiperFlatList } from 'react-native-swiper-flatlist'
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate'
 
 
 
 
 const HomeScreen = (props) => {
-  const banners = [
-    {
-      key: '1',
-      banner: IMG_Collection,
-    },
-    {
-      key: '2',
-      banner: IMG_Collection,
-    },
-    {
-      key: '3',
-      banner: IMG_Collection,
-    },
-  ];
+  
+  const [banners, setBanners] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const getBanners = async () => {
+      try {
+        const response = await axiosPrivate.get('/get-random-collection', {
+          signal: controller.signal,
+        });
+        setBanners(response.data);
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    };
+
+    getBanners();
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
   const products = [
     {
       id: 1,
@@ -130,9 +139,13 @@ const HomeScreen = (props) => {
               data={banners}
               renderItem={({ item }) => (
                 <TouchableOpacity style={{width:Dimensions.get('window').width}} 
-                key={item => `${item.key}`}
-                onPress={() => props.navigation.navigate('CollectionStackScreen', { screen: 'CollectionDetailScreen' })} >
-                  <Image source={item.banner} style={styles.bannerWrap} resizeMode='stretch'></Image>
+                key={item => `${item._id}`}
+                onPress={() => props.navigation.navigate('CollectionStackScreen', 
+                { screen: 'CollectionDetailScreen',
+                  params: {data:item},
+                }
+                )} >
+                  <Image source={{uri:`${item.posterImage.url}`}} style={styles.bannerWrap} resizeMode='stretch'></Image>
                 </TouchableOpacity>
               )}
             />     
@@ -163,11 +176,8 @@ const HomeScreen = (props) => {
                   prodName={item.name}
                   prodPrice={item.price}
                   onPress={() => props.navigation.navigate('ProductDetailsScreen', {
-                    // categoryName: props.categoryName,
                     data: item,
                   })}
-                  // {...props}
-                  // categoryData={item}
                 />
               </View>
             )}></FlatList>
@@ -188,7 +198,7 @@ const HomeScreen = (props) => {
           {/* Product */}
           <View style={styles.productContainer}>
             <Text style={styles.productText}>JUST FOR YOU</Text>
-            <Image source={LineBottom} style={styles.lineBottom} resizeMode='stretch'/>
+            <Image source={LineBottom} style={styles.lineBottom} resizeMode='cover'/>
             <SwiperFlatList
               showPagination
               paginationStyle={styles.wrapDot}
@@ -204,11 +214,8 @@ const HomeScreen = (props) => {
                   prodName={item.name}
                   prodPrice={item.price}
                   onPress={() => props.navigation.navigate('ProductDetailsScreen', {
-                    // categoryName: props.categoryName,
                     data: item,
                   })}
-                  // {...props}
-                  // categoryData={item}
                   />
                 </View>
               )}
@@ -275,6 +282,7 @@ const styles = StyleSheet.create({
       justifyContent:'center',
       alignSelf:'center',
       width:'100%',
+      height:scale(450),
     },
     exploreButton:{
       position:'absolute',
