@@ -34,7 +34,7 @@ const addItemSchema = yup.object({
   name: yup
     .string()
     .required('Name cannot be blank')
-    .max(100, 'Name length must be less than 50 characters'),
+    .max(100, 'Name length must be less than 100 characters'),
   price: yup.number().required('Price can not be blank'),
   material: yup
     .string()
