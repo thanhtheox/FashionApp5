@@ -59,12 +59,12 @@ const addItemSchema = yup.object({
     })
     .required('please select a category'),
   tag: yup
-    .object()
-    .shape({
-      tagName: yup.string().required('please select a tag'),
-    })
+    .array()
+    // .shape({
+    //   tagName: yup.string().required('please select a tag'),
+    // })
     .required('please select a tag'),
-  image: yup.string().required('please select an image'),
+  image: yup.array().required('please select an image'),
 });
 
 const AddItemScreen = props => {
@@ -84,10 +84,10 @@ const AddItemScreen = props => {
       material: '',
       care: '',
       description: '',
-      price: '',
-      tag: '',
-      category: '',
-      image: '',
+      price: null,
+      tag: null,
+      category: null,
+      image: [],
     },
     resolver: yupResolver(addItemSchema),
   });
@@ -226,8 +226,9 @@ const AddItemScreen = props => {
     setTag(newTagList);
 }
 
-  const handleUnpickTag = val => {
+  const handleUnpickTag = (val, onChange) => {
     // remove from picked tag
+    console.log("value", {val})
     const newProductTag = product.tag.filter(tag => tag.tagId !== val);
     const unpickedTag = product.tag.find(tag => tag.tagId === val);
     console.log(newProductTag, unpickedTag);
@@ -235,12 +236,13 @@ const AddItemScreen = props => {
     // add unpick tag
     setTag([...tag, {label: unpickedTag.tagName, value: unpickedTag.tagId}]);
     console.log(product.tag, tag);
+    onChange(newProductTag);
   };
 
   // image handle
   const [images, setImages] = useState([]);
 
-  const checkReadImagePermission = () => {
+  const checkReadImagePermission = (onchange) => {
     check(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES)
       .then(result => {
         switch (result) {
@@ -265,6 +267,7 @@ const AddItemScreen = props => {
                 setImages([...images, image.path]);
                 console.log(images);
                 console.log(image);
+                onchange(images)
               })
               .catch(err => console.log('Error: ', err.message));
             break;
@@ -322,7 +325,7 @@ const AddItemScreen = props => {
                           />
                         </View>
                       ))}
-                      <TouchableOpacity onPress={checkReadImagePermission}>
+                      <TouchableOpacity onPress={() => checkReadImagePermission(onchange)}>
                         <View style={styles.imageView}>
                           <IC_AddImage />
                         </View>
@@ -531,7 +534,7 @@ const AddItemScreen = props => {
                           }}
                           onSelectItem={item => [
                             handlePickTag(item),
-                            onChange(item),
+                            onChange(product.tag),
                           ]}
                         />
                       </View>
@@ -547,7 +550,7 @@ const AddItemScreen = props => {
                                 value={tag.tagName}
                                 cancel={true}
                                 tagId={tag.tagId}
-                                onPress={handleUnpickTag}
+                                onPress={val => handleUnpickTag(val , onChange)}
                               />
                             ))}
                           </View>
