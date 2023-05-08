@@ -49,7 +49,7 @@ const AddCategoryScreen = props => {
     defaultValues: {
       name: '',
       description: '',
-      parent: '',
+      parent: null,
     },
     resolver: yupResolver(addCategorySchema),
   });
@@ -208,7 +208,7 @@ const AddCategoryScreen = props => {
                 multiline={true}
                 maxLength={500}
                 onChangeText={text =>
-                  setNewCategory({...newCategory, description: text})
+                  setNewCategory({...newCategory, description: text}, onChange(text))
                 }
               />
               {errors?.description && (
@@ -223,7 +223,7 @@ const AddCategoryScreen = props => {
         <View style={styles.buttonView}>
           <SaveButton
             text={'Add category'}
-            onPress={() => handleSubmits()}
+            onPress={handleSubmit(handleSubmits)}
             disabled={!newCategory.name || !newCategory.description}
           />
         </View>
