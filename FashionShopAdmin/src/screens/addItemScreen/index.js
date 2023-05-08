@@ -10,9 +10,8 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
-
-import React, { useState, useEffect } from 'react';
-import { IC_AddImage, IC_Backward, IC_Tick } from '../../assets/icons';
+import React, {useState, useEffect} from 'react';
+import {IC_AddImage, IC_Backward, IC_Tick} from '../../assets/icons';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import scale from '../../constants/responsive';
@@ -34,7 +33,7 @@ const addItemSchema = yup.object({
   name: yup
     .string()
     .required('Name cannot be blank')
-    .max(100, 'Name length must be less than 100 characters'),
+    .max(100, 'Name length must be less than 50 characters'),
   price: yup.number().required('Price can not be blank'),
   material: yup
     .string()
@@ -60,12 +59,12 @@ const addItemSchema = yup.object({
     })
     .required('please select a category'),
   tag: yup
-    .object()
-    .shape({
-      tagName: yup.string().required('please select a tag'),
-    })
+    .array()
+    // .shape({
+    //   tagName: yup.string().required('please select a tag'),
+    // })
     .required('please select a tag'),
-  image: yup.string().required('please select an image'),
+  image: yup.array().required('please select an image'),
 });
 
 const AddItemScreen = props => {
@@ -85,10 +84,10 @@ const AddItemScreen = props => {
       material: '',
       care: '',
       description: '',
-      price: '',
-      tag: '',
-      category: '',
-      image: '',
+      price: null,
+      tag: null,
+      category: null,
+      image: [],
     },
     resolver: yupResolver(addItemSchema),
   });
@@ -122,6 +121,7 @@ const AddItemScreen = props => {
         const response = await axiosPrivate.get('/get-all-tag', {
           signal: controller.signal,
         });
+
         const handledTag = [];
         await Promise.all(
           response.data.map(item => {
@@ -212,35 +212,37 @@ const AddItemScreen = props => {
     console.log(product);
   };
 
-  const handlePickTag = val => {
+  const handlePickTag = (val)=>{
     // add pick tag
     const newTag = {tagName: val.label, tagId: val.value};
     const newTagArray = [...product.tag, newTag];
     setProduct({
-      ...product,
-      tag: newTagArray,
+        ...product, 
+        tag: newTagArray
     });
     console.log(product);
     // remove picked tag
-    const newTagList = tag.filter(tag => tag.label !== newTag.tagId);
+    const newTagList = tag.filter((tag) => tag.value !== newTag.tagId);
     setTag(newTagList);
-  };
+}
 
-  const handleUnpickTag = val => {
+  const handleUnpickTag = (val, onChange) => {
     // remove from picked tag
+    console.log("value", {val})
     const newProductTag = product.tag.filter(tag => tag.tagId !== val);
     const unpickedTag = product.tag.find(tag => tag.tagId === val);
     console.log(newProductTag, unpickedTag);
     setProduct({...product, tag: newProductTag});
     // add unpick tag
-    setTag([...tag, {label: unpickedTag.tagId, value: unpickedTag.tagName}]);
+    setTag([...tag, {label: unpickedTag.tagName, value: unpickedTag.tagId}]);
     console.log(product.tag, tag);
+    onChange(newProductTag);
   };
 
   // image handle
   const [images, setImages] = useState([]);
 
-  const checkReadImagePermission = () => {
+  const checkReadImagePermission = (onchange) => {
     check(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES)
       .then(result => {
         switch (result) {
@@ -265,6 +267,7 @@ const AddItemScreen = props => {
                 setImages([...images, image.path]);
                 console.log(images);
                 console.log(image);
+                onchange(images)
               })
               .catch(err => console.log('Error: ', err.message));
             break;
@@ -322,12 +325,9 @@ const AddItemScreen = props => {
                           />
                         </View>
                       ))}
-                      <TouchableOpacity onPress={checkReadImagePermission}>
-                        <View style={{width: scale(50), height: scale(67)}}>
-                          <Image
-                            style={{width: '100%', height: '100%'}}
-                            source={IMG_AddImage}
-                          />
+                      <TouchableOpacity onPress={() => checkReadImagePermission(onchange)}>
+                        <View style={styles.imageView}>
+                          <IC_AddImage />
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -534,7 +534,7 @@ const AddItemScreen = props => {
                           }}
                           onSelectItem={item => [
                             handlePickTag(item),
-                            onChange(item),
+                            onChange(product.tag),
                           ]}
                         />
                       </View>
@@ -550,7 +550,7 @@ const AddItemScreen = props => {
                                 value={tag.tagName}
                                 cancel={true}
                                 tagId={tag.tagId}
-                                onPress={handleUnpickTag,value=> onChange(value)}
+                                onPress={val => handleUnpickTag(val , onChange)}
                               />
                             ))}
                           </View>
@@ -567,11 +567,7 @@ const AddItemScreen = props => {
               />
 
               <View
-                style={{
-                  borderTopWidth: 1,
-                  borderTopColor: color.PlaceHolder,
-                  marginTop: scale(20),
-                }}></View>
+                style={styles.line}></View>
               <TouchableOpacity onPress={handleSubmit(createProduct)}>
                 <View style={styles.itemDetailButton}>
                   <Text style={styles.propText}>
@@ -665,6 +661,11 @@ const styles = StyleSheet.create({
     gap: 10,
     paddingHorizontal: scale(10),
   },
+  imageView: {
+    width: scale(50), 
+    height: scale(67), 
+    justifyContent: 'center'
+  },
 
   // information
   informationPart: {
@@ -707,6 +708,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  line: {
+    borderTopWidth: 1,
+    borderTopColor: color.PlaceHolder,
+    marginTop: scale(20),
   },
 
   //fail
