@@ -13,6 +13,7 @@ import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
 
 const CollectionDetailScreen = (props) => {
   const {data} = props.route.params;
+  console.log(data);
   const [collectionProducts, setCollectionProducts] = useState([]);
   const [suggestiveCollection, setSuggestiveCollection] = useState([]);
   const axiosPrivate = useAxiosPrivate();
@@ -25,23 +26,25 @@ const CollectionDetailScreen = (props) => {
           signal: controller.signal,
         });
         setSuggestiveCollection(response.data);
-        // console.log(suggestiveCollection);
       } catch (err) {
         console.log(err.response.data);
       }
     };
-    const getCollectionProducts = async () => {
-      try {
-        const response = await axiosPrivate.get(`/get-product-by-id/${data.productId}`, {
-          signal: controller.signal, 
-        });
-        setCollectionProducts(response.data);
-        // console.log(collectionProducts);
-      } catch (err) {
-        console.log(err.response.data);
-      }
+    const getCollectionProducts = async (idList) => {
+      const listOfProduct = [];
+      await Promise.all(idList.map(async(id) => {
+        try {
+          const response = await axiosPrivate.get(`/get-product-by-id/${id}`, {
+            signal: controller.signal, 
+          });
+          listOfProduct.push(response.data)
+        } catch (err) {
+          console.log(err.response.data);
+        }
+      }))
+      setCollectionProducts(listOfProduct);
     };
-    getCollectionProducts();
+    getCollectionProducts(data.productId);
     getSuggestiveCollection();
     return () => {
       controller.abort();
@@ -69,9 +72,9 @@ const CollectionDetailScreen = (props) => {
               numColumns={2}
               scrollEnabled={false}
               columnWrapperStyle={{marginBottom:scale(5)}}
-              renderItem={({item,index}) => (
+              renderItem={({item}) => (
                 <CollectionProduct
-                image={item.image[index]}
+                image={item.posterImage.url}
                 prodName={item.name}
                 prodPrice={item.price}
                 onPress={() => props.navigation.replace('ProductDetailsScreen', {

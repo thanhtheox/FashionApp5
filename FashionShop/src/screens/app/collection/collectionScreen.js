@@ -21,7 +21,7 @@ const CollectionScreen = (props) => {
         const response = await axiosPrivate.get('/get-all-collection', {
           signal: controller.signal,
         });
-        // console.log(response.data);
+        console.log(response.data);
         setCollectionData(response.data);
       } catch (err) {
         console.log(err.response.data);
