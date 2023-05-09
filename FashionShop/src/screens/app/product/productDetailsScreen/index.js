@@ -13,7 +13,7 @@ import FONT_FAMILY from '../../../../constants/fonts'
 import fontStyles from '../../../../constants/fontStyle'
 import Custom_GridViewProd from '../../../../components/products/CustomGridViewProd'
 import ZoomImageView from './components/ZoomImageView'
-import { useSelector,connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { addToCart } from '../../../../redux/actions/cartActions';
 
 
@@ -23,24 +23,28 @@ const ProductDetailsScreen = (props) => {
   const [count, setCount] = useState(1);
   const [colorChoose, setChooseColor] = useState('1');
   const [sizeChoose, setChooseSize] = useState('1');
+  const [productImages,setProductImages] = useState(null);
  
   const {data} = props.route.params;
-  // console.log(data);
+
   const dispatch = useDispatch();
   const addToCartHandler = () => {
     dispatch(addToCart(data.id, data.name,data.price,data.img,count));
-    // console.log(data.key, count);
   };
   const cart = useSelector((state) => state.cart);
-  // const { cartItems } = cart;
 
 
   useEffect(()=>{
-    console.log('cart change!')
-    console.log('pd screen:' + JSON.stringify(cart));
-  }, [cart])
-  // console.log('pd screen:' + cartItems);
-  // const numberOfProduct = cartItems.length;
+    const handleProductImages = async () => {
+      const listOfProductImages = [];
+      await Promise.all(data.image.map(async(image) => {
+        listOfProductImages.push({id:image._id, image:image.url})
+      }))
+      setProductImages(listOfProductImages);
+    };
+    handleProductImages();
+
+  }, [])
 
 
   const sizes = [
@@ -98,28 +102,7 @@ const ProductDetailsScreen = (props) => {
     },
   ];
   
-  const productImages = [
-    {
-      key: '1',
-      image: data.img,
-    },
-    {
-      key: '2',
-      image: data.img,
-    },
-    {
-      key: '3',
-      image: data.img,
-    },
-    {
-      key: '4',
-      image: data.img,
-    },
-    {
-      key: '5',
-      image: data.img,
-    },
-  ];
+  
 
   return (
     visible ? (
@@ -137,9 +120,9 @@ const ProductDetailsScreen = (props) => {
             data={productImages}
             renderItem={({ item }) => (
               <View style={{width:Dimensions.get('window').width, paddingHorizontal:scale(16),
-              alignItems:'center', justifyContent:'center', flexDirection:'column',height:scale(510) }} key={item => `${item.key}`} >
+              alignItems:'center', justifyContent:'center', flexDirection:'column',height:scale(510) }} key={item => `${item.id}`} >
                 <View style={styles.imgContainer}>
-                  <Image source={item.image} style={styles.img} resizeMode='contain'/>
+                  <Image source={{uri:`${item.image}`}} style={styles.img} resizeMode='contain'/>
                   <TouchableOpacity
                     onPress={() => setVisible(false)}
                     >

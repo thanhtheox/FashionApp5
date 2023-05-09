@@ -12,13 +12,13 @@ import FONT_FAMILY from '../../../constants/fonts';
 import { IC_BackwardArrow } from '../../../assets/icons';
 import scale from '../../../constants/responsive';
 import SaveButton from '../../../components/buttons/Save';
-import axiosClient from '../../../apis/axios';
+import { axiosPrivate } from '../../../apis/axios';
 import useAuth from '../../../hooks/useAuth';
 import * as yup from 'yup';
 import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
 
 const signInPayLoadSchema = yup.object({
   email: yup
@@ -29,7 +29,7 @@ const signInPayLoadSchema = yup.object({
   password: yup
     .string()
     .required('Password can not be blank')
-    .min(6, 'Password length must be more than 6 characters')
+    .min(8, 'Password length must be more than 8 characters')
     .max(16, 'Password length must be less than 16 characters')
     .matches(
       passwordRegex,
@@ -63,13 +63,9 @@ const SignInScreen = props => {
   const handleSubmits = async () => {
     try {
       setLoading(true);
-      const response = await axiosClient.post(
+      const response = await axiosPrivate.post(
         '/login',
         JSON.stringify({email: mail, password: pass}),
-        {
-          headers: {'Content-Type': 'application/json'},
-          withCredentials: true,
-        },
       );
       console.log('success', JSON.stringify(response.data));
 

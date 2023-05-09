@@ -17,8 +17,11 @@ import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import { useDispatch } from 'react-redux';
 import useAuth from '../../../hooks/useAuth';
+import axiosClient, { axiosPrivate } from '../../../apis/axios';
 
-const passwordRegex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+
 const signUpPayloadSchema = yup.object({
   firstName: yup.string()
   .max(30,'Invalid name')
@@ -31,10 +34,15 @@ const signUpPayloadSchema = yup.object({
     .email('Invalid email')
     .max(50, 'Email length must be less than 50 characters')
     .required('Email cannot be blank'),
+  phoneNumber: yup
+    .string()
+    .min(10,'Invalid phone number')
+    .max(11,'Invalid phone number')
+    .matches(phoneRegExp, 'Invalid phone number'),
   password: yup
     .string()
     .matches(passwordRegex,'Password must contain uppercase, lowercase and number characters')
-    .min(6, 'Password length must be more than 6 characters')
+    .min(8, 'Password length must be more than 8 characters')
     .max(16, 'Password length must be less than 16 characters')
     .required('Password can not be blank'),
   passConfirm: yup
@@ -44,9 +52,10 @@ const signUpPayloadSchema = yup.object({
 
 const SignUpScreen = (props) => {
   const {setAuth} = useAuth();
-  const [mail, setMail] = useState('');
-  const [pass, setPass] = useState('');
-  const [passConfirm, setPassConfirm] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
@@ -65,8 +74,9 @@ const SignUpScreen = (props) => {
       firstName: '',
       lastName: '',
       email: '',
+      phoneNumber: '',
       password: '',
-      passConfirm: '',
+      passwordConfirm: '',
     },
     resolver: yupResolver(signUpPayloadSchema),
   });
@@ -75,31 +85,33 @@ const SignUpScreen = (props) => {
     try {
       // console.log("🚀 ~ file: index.js:66 ~ handleSignup ~ data", data)
       setLoading(true);
-      const response = await axios.post(
+      const response = await axiosPrivate.post(
         '/signup',
         JSON.stringify({
           firstName: firstName,
           lastName: lastName,
-          email: mail, 
-          password: pass,
-          passConfirm: passConfirm,
+          email: email, 
+          phoneNumber: phoneNumber,
+          password: password,
+          passwordConfirm: passwordConfirm,
         }),
-        {
-          headers: {'Content-Type': 'application/json'},
-          withCredentials: true,
-        },
       );
       console.log('success', JSON.stringify(response.data));
-
-      const accessToken = response?.data?.accessToken;
-      setAuth({email: mail, accessToken});
+           
+      const responseLogin = await axiosPrivate.post(
+        '/login',
+        JSON.stringify({email: email, password: password}),
+      );
+      const accessToken = responseLogin?.data?.accessToken;
+      setAuth({email: email, accessToken}); 
+      console.log('success', JSON.stringify(response.data));
       setLoading(false);
-      navigation.navigate('AppStackScreen');
+      props.navigation.navigate('AppStackScreen')
     } catch (error) {
       setErrorMessage(error.message);
       setLoading(false);
       console.log("🚀 ~ file: index.js:70 ~ handleSignup ~ error", error)
-      console.log(error);
+      console.log(error.response.data);
   };
 }
 
@@ -115,65 +127,150 @@ const SignUpScreen = (props) => {
           <Text style={styles.textLabel}>Sign in to continue</Text>
         </View>
       </View>
-
       <View style={styles.body}>
-        {/* <View style={styles.viewInput}> */}
         <View style={styles.inputName}>
-          <View style={styles.inputFirstName}>
-            <TextInput
-              onChangeText={firstName => setFirstName(firstName)}
-              placeholder="First name"
-              placeholderTextColor={color.GraySolid}
-              style={styles.inputText}
-              keyboardType="default"
-            />
-          </View>
-
-          <View style={styles.inputLastName}>
-            <TextInput
-              onChangeText={lastName => setLastName(lastName)}
-              placeholder="Last name"
-              placeholderTextColor={color.GraySolid}
-              style={styles.inputText}
-              keyboardType="default"
-            />
-          </View>
-        </View>
-
-        <View style={styles.inputMailBox}>
-          <TextInput
-            onChangeText={email => setMail(email)}
-            placeholder="Email"
-            placeholderTextColor={color.GraySolid}
-            style={styles.inputText}
-            keyboardType="email-address"
+          {/* FirstName */}
+          <Controller
+            name="firstName"
+            control={control}
+            render={({field: {onChange, value}}) => (
+              <View style={styles.inputFirstName}>
+                <View style={styles.viewInput}>
+                <TextInput
+                  onChangeText={firstName => [onChange(firstName), setFirstName(firstName)]}
+                  placeholder="First name"
+                  value={value}
+                  placeholderTextColor={color.GraySolid}
+                  style={styles.inputText}
+                  keyboardType="default"
+                />
+                </View>
+                {errors?.firstName && (
+                  <Text style={styles.textFailed}>{errors.firstName.message}</Text>
+                )}
+              </View>
+            )}
+          />
+          {/* LastName */}
+          <Controller
+            name="lastName"
+            control={control}
+            render={({field: {onChange, value}}) => (
+              <View style={styles.inputLastName}>
+                <View style={styles.viewInput}>
+                <TextInput
+                  onChangeText={lastName => [onChange(lastName), setLastName(lastName)]}
+                  placeholder="Last name"
+                  value={value}
+                  placeholderTextColor={color.GraySolid}
+                  style={styles.inputText}
+                  keyboardType="default"
+                />
+                </View>
+                {errors?.lastName && (
+                  <Text style={styles.textFailed}>{errors.lastName.message}</Text>
+                )}
+              </View>
+            )}
           />
         </View>
+        {/* Email */}
+        <Controller
+          name="email"
+          control={control}
+          render={({field: {onChange, value}}) => (
+            <View style={styles.inputMailBox}>
+              <View style={styles.viewInput}>
+              <TextInput
+                onChangeText={email => [onChange(email), setEmail(email)]}
+                placeholder="Email"
+                value={value}
+                placeholderTextColor={color.GraySolid}
+                style={styles.inputText}
+                keyboardType="default"
+              />
+              </View>
+              {errors?.email && (
+                <Text style={styles.textFailed}>{errors.email.message}</Text>
+              )}
+            </View>
+          )}
+        />
+        {/* Email */}
+        <Controller
+          name="phoneNumber"
+          control={control}
+          render={({field: {onChange, value}}) => (
+            <View style={styles.inputPhoneNumber}>
+              <View style={styles.viewInput}>
+              <TextInput
+                onChangeText={phoneNumber => [onChange(phoneNumber), setPhoneNumber(phoneNumber)]}
+                placeholder="Phone number"
+                value={value}
+                placeholderTextColor={color.GraySolid}
+                style={styles.inputText}
+                keyboardType="default"
+              />
+              </View>
+              {errors?.phoneNumber && (
+                <Text style={styles.textFailed}>{errors.phoneNumber.message}</Text>
+              )}
+            </View>
+          )}
+        />
 
-        <View style={styles.inputMailBox}>
-          <TextInput
-            onChangeText={pass => setPass(pass)}
-            placeholder="Password"
-            placeholderTextColor={color.GraySolid}
-            style={styles.inputText}
-            keyboardType="visible-password"
-          />
-        </View>
-
-        <View style={styles.inputMailBox}>
-          <TextInput
-            onChangeText={passConfirm => setPassConfirm(passConfirm)}
-            placeholder="Confirm password"
-            placeholderTextColor={color.GraySolid}
-            style={styles.inputText}
-            keyboardType="visible-password"
-          />
-        </View>
+        {/* passwordInput */}
+        <Controller
+          name="password"
+          control={control}
+          render={({field: {onChange, value}}) => (
+            <View style={styles.inputPassword}>
+              <View style={styles.viewInput}>
+              <TextInput
+                secureTextEntry={true}
+                onChangeText={password =>[ onChange(password),setPassword(password)]}
+                value={value}
+                placeholder="Password"
+                placeholderTextColor={color.GraySolid}
+                style={styles.inputText}
+              />
+              </View>
+              {errors?.password && (
+                <Text style={styles.textFailed}>{errors.password.message}</Text>
+              )}
+            </View>
+          )}
+        />
+        {/* passwordInput */}
+        <Controller
+          name="passwordConfirm"
+          control={control}
+          render={({field: {onChange, value}}) => (
+            <View style={styles.inputPasswordConfirm}>
+              <View style={styles.viewInput}>
+              <TextInput
+                secureTextEntry={true}
+                onChangeText={passwordConfirm =>[ onChange(passwordConfirm),setPasswordConfirm(password)]}
+                value={value}
+                placeholder="Password Confirm"
+                placeholderTextColor={color.GraySolid}
+                style={styles.inputText}
+              />
+              </View>
+              {errors?.passwordConfirm && (
+                <Text style={styles.textFailed}>{errors.passwordConfirm.message}</Text>
+              )}
+            </View>
+          )}
+        />
 
         <View style={styles.buttonSignIn}>
-          <SaveButton text={'Sign Up'} onPress={() => props.navigation.navigate('OTPScreen')}/>
+          <SaveButton text={'Sign Up'} onPress={handleSubmit(handleSignup)}
+          loading={loading}
+          />
         </View>
       </View>
+      
     </SafeAreaView>
   );
 };
@@ -217,11 +314,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   viewInput: {
-    marginTop: scale(10),
     width: scale(295),
     height: scale(51),
     borderColor: color.GraySolid,
-    // borderBottomWidth: 1,
   },
   inputName: {
     flexDirection: 'row',
@@ -247,10 +342,31 @@ const styles = StyleSheet.create({
     borderColor: color.GraySolid,
     borderBottomWidth: 1,
   },
+  inputPhoneNumber:{
+    marginTop: scale(10),
+    width: scale(295),
+    height: scale(51),
+    borderColor: color.GraySolid,
+    borderBottomWidth: 1,
+  },
+  inputPassword: {
+    marginTop: scale(10),
+    width: scale(295),
+    height: scale(51),
+    borderColor: color.GraySolid,
+    borderBottomWidth: 1,
+  },
+  inputPasswordConfirm: {
+    marginTop: scale(10),
+    width: scale(295),
+    height: scale(51),
+    borderColor: color.GraySolid,
+    borderBottomWidth: 1,
+  },
   inputText: {
     color: color.TitleActive,
     fontSize: 16,
-    top: scale(15),
+    marginTop:scale(10),
     marginLeft: scale(5),
   },
   buttonSignIn: {
