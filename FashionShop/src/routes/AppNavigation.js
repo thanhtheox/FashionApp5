@@ -13,6 +13,7 @@ import CartScreen from '../screens/app/cart';
 import { CollectionStackScreen } from '../screens/app/collection/collectionNavigation';
 import { HomeStackScreen } from '../screens/app/home/HomeNavigation';
 import Menu from '../screens/app/menu';
+import CategoryGridViewScreen from '../screens/app/product/categoryGridView';
 import ProductDetailsScreen from '../screens/app/product/productDetailsScreen';
 import SearchDetailScreen from '../screens/app/search/searchDetailScreen/searchDetailScreen';
 import MyInfoScreen from '../screens/app/userInfo/myInfoScreen';
@@ -48,6 +49,15 @@ const AppStackScreen = () => {
       <AppStack.Screen
         name="CheckOutStackScreen"
         component={CheckOutStackScreen}
+        options={({navigation}) => ({
+          headerTitle: () => (
+            <Custom_Header navigation={navigation}/>
+          ),
+        })}
+      />
+      <AppStack.Screen
+        name="CategoryGridViewScreen"
+        component={CategoryGridViewScreen}
         options={({navigation}) => ({
           headerTitle: () => (
             <Custom_Header navigation={navigation}/>
