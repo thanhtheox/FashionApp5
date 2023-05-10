@@ -181,7 +181,9 @@ const HomeScreen = (props) => {
                 />
               </View>
             )}></FlatList>
-            <TouchableOpacity><Text style={styles.exploreText}>Explore More ⇒</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => props.navigation.navigate('CategoryGridViewScreen')}>
+              <Text style={styles.exploreText}>Explore More ⇒</Text>
+            </TouchableOpacity>
           </View>
           {/* Collection */}
           <View style={styles.collectionContainer}>
@@ -227,7 +229,7 @@ const HomeScreen = (props) => {
               <View style={styles.tagView}>
                 {tags.map(item =>            
                       <Custom_Tag1
-                        {...props}  
+                        onPress={() => props.navigation.navigate('CategoryGridViewScreen')}
                         key={item.key}
                         value={item.value}
                       />

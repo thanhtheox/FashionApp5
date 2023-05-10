@@ -23,7 +23,7 @@ const ProductDetailsScreen = (props) => {
   const [count, setCount] = useState(1);
   const [colorChoose, setChooseColor] = useState('1');
   const [sizeChoose, setChooseSize] = useState('1');
-  const [productImages,setProductImages] = useState(null);
+  const [productImages,setProductImages] = useState([]);
  
   const {data} = props.route.params;
 
@@ -140,6 +140,9 @@ const ProductDetailsScreen = (props) => {
           <View style={styles.nameView}>
             <Text style={[styles.prodName]}>{data.name}</Text>
           </View>
+          <View style={styles.descriptionView}>
+            <Text style={[styles.prodDescription]}>{data.description}</Text>
+          </View>
           <Text style={styles.prodPrice}>${data.price}</Text>
           <View style={{flexDirection:'row', marginTop:scale(18)}}>
             <View style={{flexDirection:'row',justifyContent:'space-between',paddingHorizontal:scale(12),width:'40%'}}>
@@ -172,10 +175,10 @@ const ProductDetailsScreen = (props) => {
         <View style={{marginTop:scale(24.5)}}><AddToBasket onPress={addToCartHandler}/></View>
         {/* Product Detail */}
         <View style={styles.detailView}>
-          <Text style={[fontStyles.subTitle14pxFont,styles.title]}>MATERIALS</Text>
-          <Text style={[fontStyles.bodyMediumFont,styles.subTitle]}>{"We work with monitoring programmes to ensure compliance with safety, health and quality standards for our products. "}</Text>
-          <Text style={[fontStyles.subTitle14pxFont,styles.title]}>CARE</Text>
-          <Text style={[fontStyles.bodyMediumFont,styles.subTitle]}>{"To keep your jackets and coats clean, you only need to freshen them up and go over them with a cloth or a clothes brush. If you need to dry clean a garment, look for a dry cleaner that uses technologies that are respectful of the environment. Check your clothes tag to see what you should notice"}</Text>
+          <Text style={[fontStyles.subTitle16pxFont,styles.title]}>MATERIALS</Text>
+          <Text style={[fontStyles.bodyMediumFont,styles.subTitle]}>{data.material}</Text>
+          <Text style={[fontStyles.subTitle16pxFont,styles.title]}>CARE</Text>
+          <Text style={[fontStyles.bodyMediumFont,styles.subTitle]}>{data.care}</Text>
           
         </View>
         {/* You May Also Like */}
@@ -196,11 +199,8 @@ const ProductDetailsScreen = (props) => {
               prodName={item.name}
               prodPrice={item.price}
               onPress={() => props.navigation.replace('ProductDetailsScreen', {
-                // categoryName: props.categoryName,
                 data: item,
               })}
-              // {...props}
-              // categoryData={item}
               />
             )}
           />      
@@ -273,18 +273,30 @@ const styles = StyleSheet.create({
     nameView: {
       flexDirection:'row',
       justifyContent:'space-between',
+      marginTop:scale(12),
+    },
+    descriptionView: {
+      flexDirection:'row',
+      justifyContent:'space-between',
       marginTop:scale(10),
     },
     prodName: {
       color: color.TitleActive,
       fontFamily: FONT_FAMILY.Regular,
-      lineHeight:scale(19),
-      fontSize:scale(20),
+      lineHeight:scale(18),
+      fontSize:scale(18),
+    },
+    prodDescription: {
+      color: color.TitleActive,
+      fontFamily: FONT_FAMILY.Regular,
+      lineHeight:scale(16),
+      fontSize:scale(16),
     },
     prodPrice: {
       fontFamily: FONT_FAMILY.Regular,
       lineHeight:scale(21),
       fontSize:scale(18),
+      marginTop:scale(10),
       color: color.Primary,
     },
     detailView: {
@@ -297,7 +309,8 @@ const styles = StyleSheet.create({
       color:color.TitleActive,
     },
     subTitle: {
-      color:color.Label,
+      marginLeft:scale(20),
+      color:color.TitleActive,
     },
     iconTextView:{
       flexDirection:'column',

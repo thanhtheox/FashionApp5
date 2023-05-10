@@ -9,98 +9,54 @@ import {
   ScrollView, 
   Button
   } from 'react-native';
-  import React, { useState } from 'react';
+  import React, { useState,useEffect } from 'react';
   import color from '../../../../constants/color';
   import scale from '../../../../constants/responsive';
   import FONT_FAMILY from '../../../../constants/fonts';
-  import Custom_Header from '../../../../components/header/Custom_Header';
-  import SearchResultBar from './component/searchResultBar';
-  import { IMG_ModelFour, IMG_ModelOne,IMG_ModelTwo, IMG_ModelThree } from '../../../../assets/images'
+  import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
   import Custom_GridViewProd from '../../../../components/products/CustomGridViewProd';  
   import {IC_DownSolid, IC_Filter} from '../../../../assets/icons';
 import Custom_Footer from '../../../../components/footer/Custom_Footer';
 
-const searchResult = [
-  {
-    img: IMG_ModelOne,
-    id: 1,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelTwo,
-    id: 2,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelThree,
-    id: 3,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelFour,
-    id: 4,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelOne,
-    id: 5,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelTwo,
-    id: 6,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelThree,
-    id: 7,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelFour,
-    id: 8,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelOne,
-    id: 9,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelTwo,
-    id: 10,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelThree,
-    id: 11,
-    name: '21WN reversible',
-    price: 120,
-  },
-];
 
-  const SearchDetailScreen = (props) => {
-    const [data, setData] = useState(searchResult.slice(0, 4));
+
+  const CategoryGridViewScreen = (props) => {
+
+    const [product, setProduct] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const getProducts = async () => {
+      try {
+        const response = await axiosPrivate.get('/get-all-product ', {
+          signal: controller.signal,
+        });
+        setProduct(response.data);
+        console.log(JSON.stringify(product))
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    };
+    getProducts();
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
     const [page, setPage] = useState(1);
+    const [data, setData] = useState(product.slice(4 * page));
+    
   
     const handleLoadMore = () => {
-      const newData = searchResult.slice(data, 4 * (page + 1));
+      const newData = product.slice(data, 4 * (page + 1));
       setData(newData);
+      console.log(JSON.stringify(data));
       setPage(page + 1);
     };
     const renderItem = ({ item }) => (
       <Custom_GridViewProd
-      image={item.img}
+      image={item.posterImage.url}
       prodName={item.name}
       prodPrice={item.price}
       onPress={() => props.navigation.navigate('ProductDetailsScreen', {
@@ -110,20 +66,13 @@ const searchResult = [
     );
     return (
       <SafeAreaView style={styles.container}>
-        <SearchResultBar />
         <View style={styles.resultSum}>
-          <Text style={styles.sum}>SEARCH RESULTS</Text>
+          <Text style={styles.sum}>{product.length + ' PRODUCTS'}</Text>
           <View style={styles.filterBorder}>
             <TouchableOpacity>
               <IC_Filter stroke = {'#DD8560'}/>
             </TouchableOpacity>
           </View>
-          {/* <View style={styles.newTag}>
-            <Text style={styles.new}>New</Text>
-            <TouchableOpacity>
-              <IC_DownSolid style={styles.iconDown}/>
-            </TouchableOpacity>
-          </View> */}
         </View>
         <ScrollView style={styles.list}>
           <View style={styles.likeProductContainer}>
@@ -131,13 +80,13 @@ const searchResult = [
               contentContainerStyle={{alignContent: 'space-around', marginTop:scale(20)}}
               horizontal={false}
               data={data}
-              keyExtractor={item => `${item.id}`}
+              keyExtractor={item => `${item._id}`}
               numColumns={2}
               scrollEnabled={false}
               columnWrapperStyle={styles.wrapperLikeProducts}
               renderItem={renderItem}
               />   
-              {searchResult.length > data.length && (
+              {product.length > data.length && (
                 <TouchableOpacity style={styles.button} onPress={handleLoadMore}>
                   <Text style={styles.text}>Load more</Text>
                 </TouchableOpacity>
@@ -151,7 +100,7 @@ const searchResult = [
       </SafeAreaView>
     );
   };
-  export default SearchDetailScreen;
+  export default CategoryGridViewScreen;
   
   const styles = StyleSheet.create({
     container: {
