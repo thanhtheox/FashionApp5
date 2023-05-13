@@ -15,14 +15,17 @@ import {
   import FONT_FAMILY from '../../../../constants/fonts';
   import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
   import Custom_GridViewProd from '../../../../components/products/CustomGridViewProd';  
-  import {IC_DownSolid, IC_Filter} from '../../../../assets/icons';
 import Custom_Footer from '../../../../components/footer/Custom_Footer';
+import Filter from '../../../../components/buttons/filter';
 
 
 
   const CategoryGridViewScreen = (props) => {
 
     const [product, setProduct] = useState([]);
+    const [page, setPage] = useState(1);
+    const [data, setData] = useState([]);
+    const [filterValue, setFilterValue] = useState(null);
   const axiosPrivate = useAxiosPrivate();
   useEffect(() => {
     const controller = new AbortController();
@@ -33,7 +36,6 @@ import Custom_Footer from '../../../../components/footer/Custom_Footer';
           signal: controller.signal,
         });
         setProduct(response.data);
-        console.log(JSON.stringify(product))
       } catch (err) {
         console.log(err.response.data);
       }
@@ -44,16 +46,33 @@ import Custom_Footer from '../../../../components/footer/Custom_Footer';
     };
   }, []);
 
-    const [page, setPage] = useState(1);
-    const [data, setData] = useState(product.slice(4 * page));
-    
+    useEffect(() => {  
+      arrangeProducts(filterValue);
+      setData(product.slice(0, 8));
+    }, [product,filterValue])
   
     const handleLoadMore = () => {
-      const newData = product.slice(data, 4 * (page + 1));
-      setData(newData);
-      console.log(JSON.stringify(data));
       setPage(page + 1);
+      const newData = product.slice(data, 8 * page);
+      setData(newData);
     };
+
+    
+
+    const arrangeProducts = (value) => {
+      setFilterValue(value)
+      switch(filterValue) {
+        case 'highest':
+          setProduct(product.sort((a,b) => b.price - a.price))
+          setData(product.slice(0,8*page))
+          break
+        case 'lowest':
+          setProduct(product.sort((a,b) => a.price - b.price))
+          setData(product.slice(0,8*page))
+          break
+      }
+    }
+
     const renderItem = ({ item }) => (
       <Custom_GridViewProd
       image={item.posterImage.url}
@@ -68,11 +87,9 @@ import Custom_Footer from '../../../../components/footer/Custom_Footer';
       <SafeAreaView style={styles.container}>
         <View style={styles.resultSum}>
           <Text style={styles.sum}>{product.length + ' PRODUCTS'}</Text>
-          <View style={styles.filterBorder}>
-            <TouchableOpacity>
-              <IC_Filter stroke = {'#DD8560'}/>
-            </TouchableOpacity>
-          </View>
+          <Filter onSortChange={arrangeProducts}
+                  selectedValue={filterValue}
+          />
         </View>
         <ScrollView style={styles.list}>
           <View style={styles.likeProductContainer}>
@@ -106,7 +123,7 @@ import Custom_Footer from '../../../../components/footer/Custom_Footer';
     container: {
       backgroundColor: color.OffWhite,
       flexDirection: 'column',
-      flex: 1,
+      flex: 1
     },
     button: {
       width: scale(295),
@@ -136,9 +153,6 @@ import Custom_Footer from '../../../../components/footer/Custom_Footer';
       fontFamily: FONT_FAMILY.JoseFinSansRegular,
     },
     newTag: {
-      // marginLeft: scale(-130),
-      // width: scale(72.75),
-      // height: scale(36),
       backgroundColor: color.AthensGray,
       borderRadius: scale(33),
       justifyContent: 'center',
@@ -156,17 +170,9 @@ import Custom_Footer from '../../../../components/footer/Custom_Footer';
       justifyContent: 'center',
       marginTop: scale(-15),
     },
-    filterBorder:{
-      marginLeft: scale(180),
-      width: scale(36),
-      height: scale(36),
-      backgroundColor: color.AthensGray,
-      borderRadius: scale(180),
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
     list: {
       marginTop: scale(10),
+      zIndex:-1,
     },
     likeProductContainer:
     {
