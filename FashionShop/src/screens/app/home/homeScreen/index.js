@@ -19,13 +19,14 @@ import useAxiosPrivate from '../../../../hooks/useAxiosPrivate'
 const HomeScreen = (props) => {
   
   const [banners, setBanners] = useState([]);
+  const [suggestiveCollection, setSuggestiveCollection] = useState([]);
   const axiosPrivate = useAxiosPrivate();
   useEffect(() => {
     const controller = new AbortController();
 
-    const getBanners = async () => {
+    const getBanners = async (number) => {
       try {
-        const response = await axiosPrivate.get('/get-random-collection', {
+        const response = await axiosPrivate.get(`/get-random-collection/${number}`, {
           signal: controller.signal,
         });
         setBanners(response.data);
@@ -33,8 +34,19 @@ const HomeScreen = (props) => {
         console.log(err.response.data);
       }
     };
+    const getSuggestiveCollection = async (number) => {
+      try {
+        const response = await axiosPrivate.get(`/get-random-collection/${number}`, {
+          signal: controller.signal,
+        });
+        setSuggestiveCollection(response.data);
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    };
 
-    getBanners();
+    getBanners(4);
+    getSuggestiveCollection(2);
     return () => {
       controller.abort();
     };

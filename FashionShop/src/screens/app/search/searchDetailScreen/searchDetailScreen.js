@@ -9,98 +9,71 @@ import {
   ScrollView, 
   Button
   } from 'react-native';
-  import React, { useState } from 'react';
+  import React, { useState,useEffect } from 'react';
   import color from '../../../../constants/color';
   import scale from '../../../../constants/responsive';
   import FONT_FAMILY from '../../../../constants/fonts';
-  import Custom_Header from '../../../../components/header/Custom_Header';
   import SearchResultBar from './component/searchResultBar';
-  import { IMG_ModelFour, IMG_ModelOne,IMG_ModelTwo, IMG_ModelThree } from '../../../../assets/images'
+  import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
   import Custom_GridViewProd from '../../../../components/products/CustomGridViewProd';  
-  import {IC_DownSolid, IC_Filter} from '../../../../assets/icons';
+  import Filter from '../../../../components/buttons/filter';
 import Custom_Footer from '../../../../components/footer/Custom_Footer';
 
-const searchResult = [
-  {
-    img: IMG_ModelOne,
-    id: 1,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelTwo,
-    id: 2,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelThree,
-    id: 3,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelFour,
-    id: 4,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelOne,
-    id: 5,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelTwo,
-    id: 6,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelThree,
-    id: 7,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelFour,
-    id: 8,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelOne,
-    id: 9,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelTwo,
-    id: 10,
-    name: '21WN reversible',
-    price: 120,
-  },
-  {
-    img: IMG_ModelThree,
-    id: 11,
-    name: '21WN reversible',
-    price: 120,
-  },
-];
-
   const SearchDetailScreen = (props) => {
-    const [data, setData] = useState(searchResult.slice(0, 4));
+    const [searchResult, setSearchResult] = useState([]);
     const [page, setPage] = useState(1);
+    const [data, setData] = useState([]);
+    const [filterValue, setFilterValue] = useState(null);
+  const axiosPrivate = useAxiosPrivate();
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const getProducts = async () => {
+      try {
+        const response = await axiosPrivate.get('/get-all-product ', {
+          signal: controller.signal,
+        });
+        setSearchResult(response.data);
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    };
+    getProducts();
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
+    useEffect(() => {  
+      arrangeProducts(filterValue);
+      setData(searchResult.slice(0, 8));
+    }, [searchResult,filterValue])
   
     const handleLoadMore = () => {
-      const newData = searchResult.slice(data, 4 * (page + 1));
-      setData(newData);
       setPage(page + 1);
+      const newData = searchResult.slice(data, 8 * page);
+      setData(newData);
     };
+
+    
+
+    const arrangeProducts = (value) => {
+      setFilterValue(value)
+      switch(filterValue) {
+        case 'highest':
+          setSearchResult(searchResult.sort((a,b) => b.price - a.price))
+          setData(searchResult.slice(0,8*page))
+          break
+        case 'lowest':
+          setSearchResult(searchResult.sort((a,b) => a.price - b.price))
+          setData(searchResult.slice(0,8*page))
+          break
+      }
+    }
+
     const renderItem = ({ item }) => (
       <Custom_GridViewProd
-      image={item.img}
+      image={item.posterImage.url}
       prodName={item.name}
       prodPrice={item.price}
       onPress={() => props.navigation.navigate('ProductDetailsScreen', {
@@ -112,18 +85,10 @@ const searchResult = [
       <SafeAreaView style={styles.container}>
         <SearchResultBar />
         <View style={styles.resultSum}>
-          <Text style={styles.sum}>SEARCH RESULTS</Text>
-          <View style={styles.filterBorder}>
-            <TouchableOpacity>
-              <IC_Filter stroke = {'#DD8560'}/>
-            </TouchableOpacity>
-          </View>
-          {/* <View style={styles.newTag}>
-            <Text style={styles.new}>New</Text>
-            <TouchableOpacity>
-              <IC_DownSolid style={styles.iconDown}/>
-            </TouchableOpacity>
-          </View> */}
+          <Text style={styles.sum}>{searchResult.length + ' SEARCH RESULTS'}</Text>
+          <Filter onSortChange={arrangeProducts}
+                  selectedValue={filterValue}
+          />
         </View>
         <ScrollView style={styles.list}>
           <View style={styles.likeProductContainer}>
@@ -131,7 +96,7 @@ const searchResult = [
               contentContainerStyle={{alignContent: 'space-around', marginTop:scale(20)}}
               horizontal={false}
               data={data}
-              keyExtractor={item => `${item.id}`}
+              keyExtractor={item => `${item._id}`}
               numColumns={2}
               scrollEnabled={false}
               columnWrapperStyle={styles.wrapperLikeProducts}
@@ -187,9 +152,6 @@ const searchResult = [
       fontFamily: FONT_FAMILY.JoseFinSansRegular,
     },
     newTag: {
-      // marginLeft: scale(-130),
-      // width: scale(72.75),
-      // height: scale(36),
       backgroundColor: color.AthensGray,
       borderRadius: scale(33),
       justifyContent: 'center',
@@ -218,6 +180,7 @@ const searchResult = [
     },
     list: {
       marginTop: scale(10),
+      zIndex:-1,
     },
     likeProductContainer:
     {
