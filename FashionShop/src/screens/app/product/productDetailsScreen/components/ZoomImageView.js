@@ -31,7 +31,7 @@ const ZoomImageView = (props) => {
               <View style={{width:Dimensions.get('window').width,
               alignItems:'center', justifyContent:'center', flexDirection:'column',height:scale(510) }} key={item => `${item.key}`} >
                 <View style={styles.imgContainer}>
-                  <Image source={item.image} style={styles.img} resizeMode='contain'/>
+                  <Image source={{uri: item.image}} style={styles.img} resizeMode='contain'/>
                 </View>
               </View>
             )}

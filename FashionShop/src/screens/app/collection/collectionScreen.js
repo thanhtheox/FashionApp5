@@ -49,11 +49,11 @@ const CollectionScreen = (props) => {
               data={collectionData}
               keyExtractor={item => `${item._id}`}
               scrollEnabled={false}
-              renderItem={({item}) => (
+              renderItem={({item,index}) => (
                   <CollectionItems
                     image={item.posterImage.url}
                     prodName={item.name}
-                    prodNumber={item.__v}
+                    prodNumber={index+1}
                     onPress={() => props.navigation.navigate('CollectionDetailScreen', {
                       data: item,
                     })}

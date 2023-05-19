@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     alignItems: 'center',
-    marginHorizontal:scale(6),
+    width:scale(170),
     height: scale(285),
   },
   imgContainer: {

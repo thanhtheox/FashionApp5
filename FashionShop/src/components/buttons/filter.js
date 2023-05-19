@@ -46,8 +46,12 @@ const Filter = (props) => {
   };
   export default Filter;
   const styles = StyleSheet.create({
+    container: {
+      width:scale(80),
+      marginLeft:scale(30)
+    },
     filterBorder:{
-      marginLeft: scale(180),
+      marginLeft: scale(160),
       width: scale(36),
       height: scale(36),
       backgroundColor: color.AthensGray,
@@ -56,15 +60,15 @@ const Filter = (props) => {
       alignItems: 'center',
     },
     filterContainer: {
-      marginLeft: scale(16),
-      marginTop:scale(38),
+      marginTop:scale(40),
       width: scale(200),
-      height: scale(100),
-      backgroundColor:color.OffWhite,
+      height: scale(120),
+      backgroundColor:color.AthensGray,
       justifyContent: 'center',
       alignItems: 'center',
       zIndex:2,
-      position:'absolute'
+      position:'absolute',
+      borderRadius:scale(50)
     },
     text: {
       fontWeight: '400',

@@ -32,11 +32,11 @@ const styles = StyleSheet.create({
     borderColor: isChoosing ? color.Primary : color.GraySolid,
   }),
   text: {
-    color: color.PlaceHolder,
+    color: color.TitleActive,
     paddingHorizontal: scale(26),
     fontWeight: '400',
     fontSize: scale(4),
     alignSelf: 'center',
-    fontFamily: FONT_FAMILY.JoseFinSansRegular,
+    fontFamily: FONT_FAMILY.Regular,
   }
 })

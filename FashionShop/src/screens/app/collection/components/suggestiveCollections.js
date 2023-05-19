@@ -12,7 +12,7 @@ const SuggestiveCollection = props => {
         <Image source={{uri:`${props.image}`}} style={styles.img} resizeMode='cover'/>
       </View>
       <View style={styles.textContainer}>
-        <Text style={[fontStyles.bodySmallFont, styles.prodName]}>
+        <Text style={[fontStyles.bodyLargeFont, styles.prodName]}>
           {props.prodName}
         </Text>
         <Text style={[fontStyles.bodySmallFont, styles.prodDescription]}>
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
   },
   prodName: {
     marginTop: 5,
+    alignSelf:'center',
     color: color.OffWhite,
   },
   prodDescription: {

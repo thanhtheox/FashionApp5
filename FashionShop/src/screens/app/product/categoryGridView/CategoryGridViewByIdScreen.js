@@ -20,41 +20,64 @@ import Filter from '../../../../components/buttons/filter';
 
 
 
-  const CategoryGridViewScreen = (props) => {
-
+  const CategoryGridViewByIdScreen = (props) => {
+    const {data} = props.route.params;
+    // console.log(data)
     const [product, setProduct] = useState([]);
+    const [categoryParentName, setCategoryParentName] = useState();
+    const [categoryParentNameBool, setCategoryParentNameBool] = useState(false);
     const [page, setPage] = useState(1);
-    const [data, setData] = useState([]);
+    const [productPage, setProductPage] = useState([]);
     const [filterValue, setFilterValue] = useState(null);
   const axiosPrivate = useAxiosPrivate();
   useEffect(() => {
     const controller = new AbortController();
 
-    const getProducts = async () => {
-      try {
-        const response = await axiosPrivate.get('/get-all-product ', {
-          signal: controller.signal,
-        });
-        setProduct(response.data);
-      } catch (err) {
-        console.log(err.response.data);
-      }
+    const getProductsByTag = async (id) => {
+        try {
+          const response = await axiosPrivate.get(`/get-product-by-tag-id/${id}`, {
+            signal: controller.signal, 
+          });
+          setProduct(response.data)
+        } catch (err) {
+          console.log(err.response.data);
+        }
     };
-    getProducts();
+    const getProductsByCategory = async (id,parentId) => {
+        try {
+          const response = await axiosPrivate.get(`/get-product-by-category-id/${id}`, {
+            signal: controller.signal, 
+          });
+          const responseParent = await axiosPrivate.get(`/category/${parentId}`, {
+            signal: controller.signal, 
+          });
+          setProduct(response.data)
+          setCategoryParentName(responseParent.data.name)
+        } catch (err) {
+          console.log(err.response.data);
+        }
+    };
+    if(!data.parentId)
+      getProductsByTag(data._id);
+    else
+    {
+      getProductsByCategory(data._id,data.parentId);
+      setCategoryParentNameBool(true);
+    }
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [data]);
 
     useEffect(() => {  
       arrangeProducts(filterValue);
-      setData(product.slice(0, 8));
+      setProductPage(product.slice(0, 8));
     }, [product,filterValue])
   
     const handleLoadMore = () => {
       setPage(page + 1);
-      const newData = product.slice(data, 8 * page);
-      setData(newData);
+      const newData = product.slice(productPage, 8 * page);
+      setProductPage(newData);
     };
 
     
@@ -64,11 +87,11 @@ import Filter from '../../../../components/buttons/filter';
       switch(filterValue) {
         case 'highest':
           setProduct(product.sort((a,b) => b.price - a.price))
-          setData(product.slice(0,8*page))
+          setProductPage(product.slice(0,8*page))
           break
         case 'lowest':
           setProduct(product.sort((a,b) => a.price - b.price))
-          setData(product.slice(0,8*page))
+          setProductPage(product.slice(0,8*page))
           break
       }
     }
@@ -86,24 +109,30 @@ import Filter from '../../../../components/buttons/filter';
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.resultSum}>
-          <Text style={styles.sum}>{product.length + ' PRODUCTS'}</Text>
-          <Filter onSortChange={arrangeProducts}
-                  selectedValue={filterValue}
-          />
+          <View style={styles.sumText}>
+            <Text style={styles.sum}>
+            {categoryParentNameBool ? 
+              (product.length + ' products\nof ' + data.name + '\nfor ' + categoryParentName)
+              :(product.length + ' products\nof ' + data.name)}
+            </Text>
+            <Filter onSortChange={arrangeProducts}
+                    selectedValue={filterValue}
+            />
+          </View>
         </View>
         <ScrollView style={styles.list}>
           <View style={styles.likeProductContainer}>
             <FlatList
               contentContainerStyle={{alignContent: 'space-around', marginTop:scale(20)}}
               horizontal={false}
-              data={data}
+              data={productPage}
               keyExtractor={item => `${item._id}`}
               numColumns={2}
               scrollEnabled={false}
               columnWrapperStyle={styles.wrapperLikeProducts}
               renderItem={renderItem}
               />   
-              {product.length > data.length && (
+              {product.length > productPage.length && (
                 <TouchableOpacity style={styles.button} onPress={handleLoadMore}>
                   <Text style={styles.text}>Load more</Text>
                 </TouchableOpacity>
@@ -117,7 +146,7 @@ import Filter from '../../../../components/buttons/filter';
       </SafeAreaView>
     );
   };
-  export default CategoryGridViewScreen;
+  export default CategoryGridViewByIdScreen;
   
   const styles = StyleSheet.create({
     container: {
@@ -141,10 +170,16 @@ import Filter from '../../../../components/buttons/filter';
       fontFamily: FONT_FAMILY.JoseFinSansRegular,
     },
     resultSum:{
-      marginTop: scale(20),
+      marginTop:scale(30),
       alignItems: 'center',
       flexDirection: 'row',
       alignSelf: 'center',
+      paddingHorizontal:scale(15),
+      width:'100%'
+    },
+    sumText:{
+      alignItems:'center',
+      flexDirection:'row',
     },
     sum: {
       fontWeight: '400',

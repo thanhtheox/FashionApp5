@@ -69,21 +69,22 @@ const CartScreen = (props) => {
           {/* Cart Items */}
           <View style={styles.viewScroll}>
             <ScrollView showsVerticalScrollIndicator={false}>
-              {cartItems.map(item => (
+              {cartItems.map((item,index) => (
+                <View key={index}>
                 <Custom_Cart
                   onPress={() => props.navigation.navigate('ProductDetailsScreen', {
                   data: item,
                   })}
                   id={item.id}
                   qty={item.qty}
-                  // textDescription={item.description}
                   name={item.name}
+                  description={item.description}
                   price={item.price}
                   img={item.img}
-                  key={item.id}
                   qtyChangeHandler={qtyChangeHandler}
                   removeHandler={removeFromCartHandler}
                 />
+                </View>
               ))}
             </ScrollView>
           </View>
