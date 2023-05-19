@@ -15,6 +15,7 @@ import Custom_GridViewProd from '../../../../components/products/CustomGridViewP
 import ZoomImageView from './components/ZoomImageView'
 import { useSelector } from 'react-redux';
 import { addToCart } from '../../../../redux/actions/cartActions';
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 
 
 
@@ -24,14 +25,15 @@ const ProductDetailsScreen = (props) => {
   const [colorChoose, setChooseColor] = useState('1');
   const [sizeChoose, setChooseSize] = useState('1');
   const [productImages,setProductImages] = useState([]);
+  const [suggestiveProduct, setSuggestiveProduct] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
  
   const {data} = props.route.params;
 
   const dispatch = useDispatch();
   const addToCartHandler = () => {
-    dispatch(addToCart(data.id, data.name,data.price,data.img,count));
+    dispatch(addToCart(data._id, data.name,data.description,data.price,data.posterImage.url,count));
   };
-  const cart = useSelector((state) => state.cart);
 
 
   useEffect(()=>{
@@ -101,6 +103,26 @@ const ProductDetailsScreen = (props) => {
       img: IMG_ModelFour,
     },
   ];
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const getSuggestiveProduct = async (number) => {
+      try {
+        const response = await axiosPrivate.get(`/get-random-product/${number}`, {
+          signal: controller.signal,
+        });
+        setSuggestiveProduct(response.data);
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    };
+    getSuggestiveProduct(4);
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
   
   
 
@@ -123,17 +145,17 @@ const ProductDetailsScreen = (props) => {
               alignItems:'center', justifyContent:'center', flexDirection:'column',height:scale(510) }} key={item => `${item.id}`} >
                 <View style={styles.imgContainer}>
                   <Image source={{uri:`${item.image}`}} style={styles.img} resizeMode='contain'/>
-                  <TouchableOpacity
-                    onPress={() => setVisible(false)}
-                    >
-                    <IC_Resize
-                      style={{right:scale(5),bottom:scale(3),position:'absolute'}}
-                    />
-                  </TouchableOpacity>
                 </View>
               </View>
             )}
           /> 
+          <TouchableOpacity
+            onPress={() => setVisible(false)}
+            >
+            <IC_Resize
+              style={{left:scale(130),bottom:scale(30),position:'absolute'}}
+            />
+          </TouchableOpacity>
         </View>
         {/* Product Variation */}
         <View style={styles.productVariationContainer}>
@@ -188,14 +210,14 @@ const ProductDetailsScreen = (props) => {
           <FlatList
             contentContainerStyle={{alignContent: 'space-around', marginTop:scale(20)}}
             horizontal={false}
-            data={likeProducts}
-            keyExtractor={item => `${item.id}`}
+            data={suggestiveProduct}
+            keyExtractor={item => `${item._id}`}
             numColumns={2}
             scrollEnabled={false}
             columnWrapperStyle={styles.wrapperLikeProducts}
             renderItem={({item}) => (
               <Custom_GridViewProd
-              image={item.img}
+              image={item.posterImage.url}
               prodName={item.name}
               prodPrice={item.price}
               onPress={() => props.navigation.replace('ProductDetailsScreen', {
@@ -323,7 +345,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       marginTop:scale(69),
       paddingTop: scale(32),
-      paddingHorizontal: scale(16),
+      paddingHorizontal: scale(10),
     },
     likeProductText: {
       fontSize: scale(18),

@@ -14,14 +14,14 @@ const Custom_GridViewProd = props => {
     <TouchableOpacity style={styles.container} onPress={props.onPress} >
       <View style={styles.imgContainer}>
         <Image source={{uri:`${props.image}`}} style={styles.img} resizeMode='cover'/>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => setLike(Liked === true ? false : true)}>
           <IC_Heart
-            style={{top: scale(220), left: scale(135)}}
+            style={{left: scale(135)}}
             stroke={Color.Secondary}
             fill={Liked ? Color.Secondary : 'none'}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.prodName}>
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     marginHorizontal:scale(6),
-    height: scale(250),
+    height: scale(300),
     width:scale(170),
   },
   imgContainer: {

@@ -19,7 +19,11 @@ import useAxiosPrivate from '../../../../hooks/useAxiosPrivate'
 const HomeScreen = (props) => {
   
   const [banners, setBanners] = useState([]);
-  const [suggestiveCollection, setSuggestiveCollection] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [suggestiveCollectionOne, setSuggestiveCollectionOne] = useState([]);
+  const [suggestiveCollectionTwo, setSuggestiveCollectionTwo] = useState([]);
+  const [suggestiveProduct, setSuggestiveProduct] = useState([]);
+  
   const axiosPrivate = useAxiosPrivate();
   useEffect(() => {
     const controller = new AbortController();
@@ -34,106 +38,58 @@ const HomeScreen = (props) => {
         console.log(err.response.data);
       }
     };
-    const getSuggestiveCollection = async (number) => {
+    const getTags = async () => {
       try {
-        const response = await axiosPrivate.get(`/get-random-collection/${number}`, {
+        const response = await axiosPrivate.get(`/get-all-tag`, {
           signal: controller.signal,
         });
-        setSuggestiveCollection(response.data);
+        setTags(response.data);
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    };
+    // const getSuggestiveCollectionOne = async (number) => {
+    //   try {
+    //     const response = await axiosPrivate.get(`/get-random-product/${number}`, {
+    //       signal: controller.signal,
+    //     });
+    //     setSuggestiveCollectionOne(response.data);
+    //   } catch (err) {
+    //     console.log(err.response.data);
+    //   }
+    // };
+    // const getSuggestiveCollectionTwo = async (number) => {
+    //   try {
+    //     const response = await axiosPrivate.get(`/get-random-product/${number}`, {
+    //       signal: controller.signal,
+    //     });
+    //     setSuggestiveCollectionOne(response.data);
+    //   } catch (err) {
+    //     console.log(err.response.data);
+    //   }
+    // };
+    const getSuggestiveProduct = async (number) => {
+      try {
+        const response = await axiosPrivate.get(`/get-random-product/${number}`, {
+          signal: controller.signal,
+        });
+        setSuggestiveProduct(response.data);
       } catch (err) {
         console.log(err.response.data);
       }
     };
 
     getBanners(4);
-    getSuggestiveCollection(2);
+    getTags();
+    // getSuggestiveCollectionOne(1);
+    // getSuggestiveCollectionTwo(1);
+    getSuggestiveProduct(4);
     return () => {
       controller.abort();
     };
   }, []);
 
-  const products = [
-    {
-      id: 1,
-      name: ' reversible angora cardigan',
-      price: 120,
-      img: IMG_ModelOne,
-    },
-    {
-      id: 2,
-      name: '21WN reversible cardigan',
-      price: 140,
-      img: IMG_ModelTwo,
-    },
-    {
-      id: 3,
-      name: '21WN angora cardigan',
-      price: 180,
-      img: IMG_ModelThree,
-    },
-    {
-      id: 4,
-      name: 'Oblong bag',
-      price: 220,
-      img: IMG_ModelFour,
-    },
-  ];
-  const tags = [
-    {
-      key: '1',
-      value: '#Boss',
-    },
-    {
-      key: '2',
-      value: '#Burberry',
-    },
-    {
-      key: '3',
-      value: '#Catier',
-    },
-    {
-      key: '4',
-      value: '#Gucci',
-    },
-    {
-      key: '5',
-      value: '#Prada',
-    },
-    {
-      key: '6',
-      value: '#Tiffany',
-    },
-    {
-      key: '7',
-      value: '#Prada',
-    },
-    {
-      key: '8',
-      value: '#Tiffany',
-    },
-  ];
-  const stickers = [
-    {
-      key: '1',
-      image: Sticker1,
-      text:'Fast shipping. Free on orders over $25.',
-    },
-    {
-      key: '2',
-      image:Sticker2,
-      text: 'Sustainable process from start to finish.',
-    },
-    {
-      key: '3',
-      image:Sticker3,
-      text: 'Unique designs and high-quality materials.',
-    },
-    {
-      key: '4',
-      image:Sticker4,
-      text: 'Fast shipping. Free on orders over $25.',
-    },
-  ];
+  
 
 
   return (
@@ -171,12 +127,11 @@ const HomeScreen = (props) => {
           <View style={styles.arrivalContainer}>
             <Text style={styles.arrivalText}>NEW ARRIVAL</Text>
             <Image source={LineBottom} style={{alignSelf: 'center'}} resizeMode='stretch'/>
-            <Custom_ItemScrollView style={{marginTop:scale(24),alignSelf:'center'}}/>
             <FlatList
-            contentContainerStyle={{alignContent: 'space-around'}}
+            contentContainerStyle={{alignContent: 'space-around',marginTop:scale(20)}}
             horizontal={false}
-            data={products}
-            keyExtractor={item => `${item.id}`}
+            data={suggestiveProduct}
+            keyExtractor={item => `${item._id}`}
             numColumns={2}
             scrollEnabled={false}
             columnWrapperStyle={styles.wrapperArrival}
@@ -184,7 +139,7 @@ const HomeScreen = (props) => {
               <View>
                 <Custom_HomepageProd
                   width={165}
-                  image={item.img}
+                  image={item.posterImage.url}
                   prodName={item.name}
                   prodPrice={item.price}
                   onPress={() => props.navigation.navigate('ProductDetailsScreen', {
@@ -193,22 +148,22 @@ const HomeScreen = (props) => {
                 />
               </View>
             )}></FlatList>
-            <TouchableOpacity onPress={() => props.navigation.navigate('CategoryGridViewScreen')}>
+            <TouchableOpacity onPress={() => props.navigation.navigate('CategoryGridViewAllScreen')}>
               <Text style={styles.exploreText}>Explore More ⇒</Text>
             </TouchableOpacity>
           </View>
           {/* Collection */}
-          <View style={styles.collectionContainer}>
+          {/* <View style={styles.collectionContainer}>
             <Text style={styles.collectionText}>COLLECTIONS</Text>
             <TouchableOpacity style={{alignItems:'center', width:'100%'}} 
             onPress={() => props.navigation.navigate('CollectionStackScreen', { screen: 'CollectionDetailScreen' })}>
-              <Image source={IMG_ModelOne} resizeMode='stretch' style={{width:'100%', marginTop:scale(15)}}/>
+              <Image source={{uri:suggestiveCollectionOne.posterImage.url}} resizeMode='stretch' style={{width:'100%', marginTop:scale(15)}}/>
             </TouchableOpacity>
             <TouchableOpacity 
             onPress={() => props.navigation.navigate('CollectionStackScreen', { screen: 'CollectionDetailScreen' })}>
-              <Image source={IMG_ModelFour} resizeMode='stretch' style={{marginTop:scale(35)}}/>
+              <Image source={{uri:suggestiveCollectionTwo.posterImage.url}} resizeMode='stretch' style={{marginTop:scale(35)}}/>
             </TouchableOpacity>
-          </View>        
+          </View>         */}
           {/* Product */}
           <View style={styles.productContainer}>
             <Text style={styles.productText}>JUST FOR YOU</Text>
@@ -218,13 +173,13 @@ const HomeScreen = (props) => {
               paginationStyle={styles.wrapDot}
               paginationStyleItemActive={styles.dotActive}
               paginationStyleItemInactive={styles.dot}
-              data={products}
+              data={suggestiveProduct}
               renderItem={({ item }) => (
-                <View key={item => `${item.key}`} style={styles.productWrap}>
+                <View key={item => `${item._id}`} style={styles.productWrap}>
                   <Custom_HomepageProd
                   height={387}
                   width={255}
-                  image={item.img}
+                  image={item.posterImage.url}
                   prodName={item.name}
                   prodPrice={item.price}
                   onPress={() => props.navigation.navigate('ProductDetailsScreen', {
@@ -241,9 +196,11 @@ const HomeScreen = (props) => {
               <View style={styles.tagView}>
                 {tags.map(item =>            
                       <Custom_Tag1
-                        onPress={() => props.navigation.navigate('CategoryGridViewScreen')}
-                        key={item.key}
-                        value={item.value}
+                        onPress={() => props.navigation.navigate('CategoryGridViewByIdScreen', {
+                          data: item,
+                        })}
+                        key={item._id}
+                        value={item.name}
                       />
                 )}
               </View>
@@ -253,21 +210,6 @@ const HomeScreen = (props) => {
           <View style={styles.openFashionContainer}>
             <Image source={IMG_Logo} style={styles.openFashionText}/>
             <Image source={LineBottom} style={{alignSelf: 'center',marginTop: scale(5),}} resizeMode='stretch'/>
-            <FlatList
-            contentContainerStyle={{alignContent: 'space-around'}}
-            horizontal={false}
-            data={stickers}
-            keyExtractor={item => `${item.key}`}
-            numColumns={2}
-            scrollEnabled={false}
-            columnWrapperStyle={styles.wrapperArrival}
-            renderItem={({item}) => (
-                <View key={item.key} style={styles.stickerView}>
-                  <Image source={item.image}></Image>
-                  <Text>{item.text}</Text>
-                </View>
-              )}></FlatList> 
-            <Image source={Sticker5}></Image>
           </View>
           <Custom_Footer style={{justifyContent: 'flex-end'}} 
           onAboutPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'OurStoryScreen' })}
@@ -386,10 +328,10 @@ const styles = StyleSheet.create({
   tagView: {
     flexDirection:'row',
     justifyContent: 'space-around',
-    alignItems: 'center',
     flex: 1,
     flexWrap: 'wrap',
     paddingHorizontal: scale(30),
+    marginHorizontal: scale(10),
   },
   productWrap: {
     justifyContent:'space-around',

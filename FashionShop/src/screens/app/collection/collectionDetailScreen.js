@@ -20,9 +20,9 @@ const CollectionDetailScreen = (props) => {
   useEffect(() => {
     const controller = new AbortController();
 
-    const getSuggestiveCollection = async () => {
+    const getSuggestiveCollection = async (number) => {
       try {
-        const response = await axiosPrivate.get('/get-random-collection', {
+        const response = await axiosPrivate.get(`/get-random-collection/${number}`, {
           signal: controller.signal,
         });
         setSuggestiveCollection(response.data);
@@ -45,7 +45,7 @@ const CollectionDetailScreen = (props) => {
       setCollectionProducts(listOfProduct);
     };
     getCollectionProducts(data.productId);
-    getSuggestiveCollection();
+    getSuggestiveCollection(4);
     return () => {
       controller.abort();
     };
@@ -71,7 +71,7 @@ const CollectionDetailScreen = (props) => {
               keyExtractor={item => `${item._id}`}
               numColumns={2}
               scrollEnabled={false}
-              columnWrapperStyle={{marginBottom:scale(5)}}
+              columnWrapperStyle={{marginBottom:scale(10)}}
               renderItem={({item}) => (
                 <CollectionProduct
                 image={item.posterImage.url}
@@ -100,6 +100,7 @@ const CollectionDetailScreen = (props) => {
                     })}
                     image={item.posterImage.url}
                     prodName={item.name}
+                    prodDescription={item.description}
                   />
               )}
             />      
@@ -159,7 +160,6 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       paddingTop: scale(10),
-      paddingHorizontal: scale(16),
       backgroundColor:color.TitleActive,
     },
     collectionText: {

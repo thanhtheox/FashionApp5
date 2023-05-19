@@ -137,7 +137,7 @@ import {
                 <Custom_Cart
                 id={item.id}
                 qty={item.qty}
-                // textDescription={item.description}
+                description={item.description}
                 name={item.name}
                 price={item.price}
                 img={item.img}

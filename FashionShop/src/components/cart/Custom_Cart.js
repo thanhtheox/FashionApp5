@@ -22,29 +22,23 @@ const Custom_Cart = props => {
     };
     useEffect(() => {
       props.qtyChangeHandler(props.id, count)}
-      // props.removeHandler(props.id)}
       , [count])
-    // useEffect(() => {
-    //   // if(msg)
-    //   props.removeHandler(props.id)}
-    //   // ,[msg]
-    // )
     
   return (
-    <TouchableOpacity onPress={props.onPress}>
-      <View key={props.id} style={styles.container}>
+    <TouchableOpacity onPress={props.onPress} key={props.id}>
+      <View style={styles.container}>
         <View style={styles.imgContainer}>
           <Image
-            source={props.img}
+            source={{uri:`${props.img}`}}
             style={styles.img}
-            resizeMode={'contain'}
+            resizeMode={'stretch'}
           />
         </View>
         <View style={styles.textContainer}>
             <Text style={styles.prodName}>{props.name}</Text>
-            {/* <Text style={styles.prodDescription}>
-            {props.textDescription}
-            </Text> */}
+            <Text style={styles.prodDescription}>
+            {props.description}
+            </Text>
             <View style={styles.viewValue}>
                 <View style={styles.Sub}>
                     <TouchableOpacity 
@@ -65,8 +59,8 @@ const Custom_Cart = props => {
             <Text style={styles.prodPrice}>${props.price*count}</Text>       
         </View>
         <TouchableOpacity onPress={() => props.removeHandler(props.id)} 
-        style={{alignSelf:'center',marginLeft:scale(70), backgroundColor:'#DEDEDE',height:scale(134)}}> 
-          <IC_CartDelete style={{marginTop:scale(55), marginLeft:scale(18)}}/>
+        style={{alignSelf:'center',backgroundColor:'#DEDEDE',height:scale(150),width:scale(90),alignItems:'center'}}> 
+          <IC_CartDelete style={{marginTop:scale(60),marginLeft:scale(30)}}/>
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
@@ -78,38 +72,45 @@ export default Custom_Cart;
 const styles = StyleSheet.create({
   container: {
     width: scale(343),
-    height: scale(134),
+    height: scale(160),
     flexDirection: 'row',
-    alignSelf:'center'
+    alignSelf:'center',
+    justifyContent:'space-between',
+    borderBottomWidth:1,
+    borderTopWidth:1,
   },
   imgContainer: {
+    alignSelf:'center',
     width: scale(100),
-    height: scale(134),
+    height: scale(150),
   },
   img: {
-    width: scale(100),
-    height: scale(134),
+    width: '100%',
+    height: scale(150),
   },
   textContainer: {
-    marginLeft: scale(12),
-    width:scale(100),
-    overflow: 'hidden',
+    width:scale(160),
+    height:scale(150),
     flexDirection:'column',
-    justifyContent:'space-around',
+    alignSelf:'center',
+    justifyContent:'space-between',
   },
   prodName: {
     fontFamily: FONT_FAMILY.Regular,
-    fontSize: scale(18),
+    fontSize: scale(15),
+    marginLeft:scale(10),
     color: Color.Body,
   },
   prodDescription: {
     fontFamily: FONT_FAMILY.Regular,
-    fontSize: scale(15),
+    fontSize: scale(14),
+    marginLeft:scale(10),
     color: Color.Label,
   },
   viewValue: {
     flexDirection: 'row',
     width: scale(70),
+    marginLeft:scale(20),
     alignItems: 'center',
     justifyContent:'space-between',
   },
@@ -133,6 +134,7 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.Regular,
     fontSize: scale(16),
     color: Color.Secondary,
+    marginLeft:scale(20),
   },
   
 });

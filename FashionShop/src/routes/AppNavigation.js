@@ -13,7 +13,8 @@ import CartScreen from '../screens/app/cart';
 import { CollectionStackScreen } from '../screens/app/collection/collectionNavigation';
 import { HomeStackScreen } from '../screens/app/home/HomeNavigation';
 import Menu from '../screens/app/menu';
-import CategoryGridViewScreen from '../screens/app/product/categoryGridView';
+import CategoryGridViewAllScreen from '../screens/app/product/categoryGridView/CategoryGridViewAllScreen';
+import CategoryGridViewByIdScreen from '../screens/app/product/categoryGridView/CategoryGridViewByIdScreen';
 import ProductDetailsScreen from '../screens/app/product/productDetailsScreen';
 import SearchDetailScreen from '../screens/app/search/searchDetailScreen/searchDetailScreen';
 import MyInfoScreen from '../screens/app/userInfo/myInfoScreen';
@@ -56,8 +57,17 @@ const AppStackScreen = () => {
         })}
       />
       <AppStack.Screen
-        name="CategoryGridViewScreen"
-        component={CategoryGridViewScreen}
+        name="CategoryGridViewByIdScreen"
+        component={CategoryGridViewByIdScreen}
+        options={({navigation}) => ({
+          headerTitle: () => (
+            <Custom_Header navigation={navigation}/>
+          ),
+        })}
+      />
+      <AppStack.Screen
+        name="CategoryGridViewAllScreen"
+        component={CategoryGridViewAllScreen}
         options={({navigation}) => ({
           headerTitle: () => (
             <Custom_Header navigation={navigation}/>
