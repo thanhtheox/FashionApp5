@@ -200,7 +200,7 @@ const HomeScreen = (props) => {
                           data: item,
                         })}
                         key={item._id}
-                        value={item.name}
+                        value={'#' + item.name}
                       />
                 )}
               </View>

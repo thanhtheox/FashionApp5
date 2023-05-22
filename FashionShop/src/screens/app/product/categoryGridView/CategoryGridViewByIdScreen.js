@@ -17,6 +17,7 @@ import {
   import Custom_GridViewProd from '../../../../components/products/CustomGridViewProd';  
 import Custom_Footer from '../../../../components/footer/Custom_Footer';
 import Filter from '../../../../components/buttons/filter';
+import Custom_Tag2 from '../../../../components/tags/border';
 
 
 
@@ -110,11 +111,15 @@ import Filter from '../../../../components/buttons/filter';
       <SafeAreaView style={styles.container}>
         <View style={styles.resultSum}>
           <View style={styles.sumText}>
-            <Text style={styles.sum}>
-            {categoryParentNameBool ? 
-              (product.length + ' products\nof ' + data.name + '\nfor ' + categoryParentName)
-              :(product.length + ' products\nof ' + data.name)}
-            </Text>
+            {categoryParentNameBool ? (
+              <View style={{flexDirection:'row'}}>
+                <Custom_Tag2 value={data.name}/>
+                <Custom_Tag2 value={categoryParentName}/>
+              </View>
+            ):(<View>
+                <Custom_Tag2 value={'#' + data.name}/>
+              </View>
+              )}
             <Filter onSortChange={arrangeProducts}
                     selectedValue={filterValue}
             />
