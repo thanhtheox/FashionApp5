@@ -9,17 +9,78 @@ import {Avatar, Title, Caption} from 'react-native-paper';
 import { useState } from 'react';
 import SaveButton from '../../../../components/buttons/Save';
 import { ScrollView } from 'react-native';
+import ImageCropPicker from 'react-native-image-crop-picker';
+import ImagePicker from 'react-native-image-crop-picker';
+
+const [image, setImage] = useState('https://drive.google.com/file/d/1Snr93Bao8zv0tBTNONR7T2NpRs_gTtkz/view?usp=share_link');
+      const takePhotoFromCamera = () => {
+        ImagePicker.openCamera({
+          compressImageMaxWidth: scale(300),
+          compressImageMaxHeight: scale(300),
+          cropping: true,
+          compressImageQuality: 0.7
+        }).then(image => {
+          console.log(image);
+          setImage(image.path);
+          this.bs.current.snapTo(1);
+        });
+      }
+      const choosePhotoFromLibrary = () => {
+        ImagePicker.openPicker({
+          width: scale(300),
+          height: scale(300),
+          cropping: true,
+          compressImageQuality: 0.7
+        }).then(image => {
+          console.log(image);
+          setImage(image.path);
+          this.bs.current.snapTo(1);
+        });
+      }
+      renderInner = () => (
+        <View style={stylePanel.panel}>
+          <View style={{alignItems: 'center'}}>
+            <Text style={stylePanel.panelTitle}>Tải ảnh</Text>
+            <Text style={stylePanel.panelSubtitle}>Chọn ảnh đại diện của bạn</Text>
+          </View>
+          <TouchableOpacity style={stylePanel.panelButton} onPress={takePhotoFromCamera}>
+            <Text style={stylePanel.panelButtonTitle}>Chụp ảnh</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={stylePanel.panelButton} onPress={choosePhotoFromLibrary}>
+            <Text style={stylePanel.panelButtonTitle}>Chọn từ thư viện</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={stylePanel.panelButton}
+            onPress={() => this.bs.current.snapTo(1)}>
+            <Text style={stylePanel.panelButtonTitle}>Thoát</Text>
+          </TouchableOpacity>
+        </View>
+      );
+      renderHeader = () => (
+        <View style={stylePanel.header}>
+          <View style={stylePanel.panelHeader}>
+            <View style={stylePanel.panelHandle} />
+          </View>
+        </View>
+      );
+    
+      bs = React.createRef();
+      fall = new Animated.Value(1);
 const MyInfoScreen = props => {
     const [mail, setMail] = useState('');
     const [pass, setPass] = useState('');
     const [passConfirm, setPassConfirm] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const handleShowPassword = () => {
+        setShowPassword(!showPassword);
+    }
     return (
         <ScrollView>
         <SafeAreaView style = {styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.viewIcon} onPress={() => props.navigation.goBack()}>
+                <TouchableOpacity style={styles.viewIcon}>
                     <IC_BackwardArrow/>
                 </TouchableOpacity>
                
@@ -51,8 +112,10 @@ const MyInfoScreen = props => {
                 {/* password */}
                 <View style={styles.inputBox}>
                     <View style={styles.icon}>
-                        <IC_Password />
-                        <Text style={styles.inputText}>FS123456</Text>
+                        <TouchableOpacity onPress={handleShowPassword}>
+                            <IC_Password />
+                        </TouchableOpacity>
+                        {showPassword && <Text style={styles.inputText}>FS123456</Text>}
                     </View>
                 </View>
                 {/* phone number */}
