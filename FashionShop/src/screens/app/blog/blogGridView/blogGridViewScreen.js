@@ -9,7 +9,7 @@ import {
     ScrollView, 
     Button
     } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import color from '../../../../constants/color';
 import scale from '../../../../constants/responsive';
 import FONT_FAMILY from '../../../../constants/fonts';
@@ -19,75 +19,9 @@ import Custom_Footer from '../../../../components/footer/Custom_Footer';
 import BlogItems from './components/blogItems';
 import Custom_Tag1 from '../../../../components/tags/fill';
 import Custom_Tag2 from '../../../../components/tags/border';
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
   
-  const blogs = [
-    {
-      img: IMG_Blog,
-      id: 1,
-      name: '2021 Style Guide: The Biggest Fall Trends',
-      initDate: 4,
-    },
-    {
-      img: IMG_Blog,
-      id: 2,
-      name: '2021 Style Guide: The Biggest Summer Trends',
-      initDate: 4,
-    },
-    {
-      img: IMG_Blog,
-      id: 3,
-      name: '2021 Style Guide: The Trends',
-      initDate: 4,
-    },
-    {
-      img: IMG_Blog,
-      id: 4,
-      name: '2021 Style Guide: The Biggest Winter Trends',
-      initDate: 4,
-    },
-    {
-      img: IMG_Blog,
-      id: 5,
-      name: '2021 Style Guide: The Biggest Fall Trends',
-      initDate: 4,
-    },
-    {
-      img: IMG_Blog,
-      id: 6,
-      name: '2021 Style Guide: The Biggest Winter Trends',
-      initDate: 4,
-    },
-    {
-      img: IMG_Blog,
-      id: 7,
-      name: '2021 Style Guide: The Biggest Fall Trends',
-      initDate: 4,
-    },
-    {
-      img: IMG_Blog,
-      id: 8,
-      name: '2021 Style Guide: The Biggest Fall Trends',
-      initDate: 4,
-    },
-    {
-      img: IMG_Blog,
-      id: 9,
-      name: '2021 Style Guide: The Biggest Summer Trends',
-      initDate: 4,
-    },
-    {
-      img: IMG_Blog,
-      id: 10,
-      name: '2021 Style Guide: The Biggest Fall Trends',
-      initDate: 4,
-    },
-    {
-      img: IMG_Blog,
-      id: 11,
-      name: '2021 Style Guide: The Biggest Fall Trends',
-      initDate: 4,
-    },
-  ];
+  
   const tags = [
     {
       key: '1',
@@ -134,13 +68,75 @@ import Custom_Tag2 from '../../../../components/tags/border';
   ];
   
     const BlogGridViewScreen = (props) => {
-      const [data, setData] = useState(blogs.slice(0, 4));
+      const [blogs,setBlogs] = useState([]);
+      const [tags, setTags] = useState([]);
+      const [blogPage, setBlogPage] = useState([]);
       const [page, setPage] = useState(1);
+      const axiosPrivate = useAxiosPrivate();
+
+      useEffect(() => {
+        const controller = new AbortController();
     
+        const getAllBlogs = async () => {
+          try {
+            let listOfBlogs = [];
+            const response = await axiosPrivate.get(`/get-all-blog`, {
+              signal: controller.signal, 
+            });
+            listOfBlogs = response.data;
+            // await Promise.all(listOfBlogs.map(item => {
+            //   getTags(item.tag);
+            //   const obj = {};
+            //   obj = item;              
+            //   try{
+            //     let tagName = [];
+            //     tags.map(item => {
+            //       tagName.push(item.name)
+            //     })
+                
+            //     obj.tagName = tagName;
+            //     item = obj
+            //   }
+            //   catch (err) {
+            //     console.log(err)
+            //   }
+            // }))
+            setBlogs(response.data)
+            console.log(JSON.stringify( blogs))
+          } catch (err) {
+            console.log(err.response.data);
+          }
+      };
+      // const getTags = async (idList) => {
+      //   const listOfTags = [];
+      //   await Promise.all(idList.map(async(id) => {
+      //     try {
+      //       const response = await axiosPrivate.get(`/get-tag-by-id/${id}`, {
+      //         signal: controller.signal, 
+      //       });
+      //       listOfTags.push(response.data)
+      //     } catch (err) {
+      //       console.log(err.response.data);
+      //     }
+      //   }))
+      //   setTags(listOfTags);
+      // };
+        getAllBlogs();
+        console.log(blogs)
+        return () => {
+          controller.abort();
+        };
+      }, []);
+    
+    
+      useEffect(() => {  
+        setBlogPage(blogs.slice(0, 8));
+      }, [blogs])
+
       const handleLoadMore = () => {
-        const newData = blogs.slice(data, 4 * (page + 1));
-        setData(newData);
         setPage(page + 1);
+        const newData = blogs.slice(blogPage, 8 * page);
+        setBlogPage(newData);
       };
       const renderItem = ({ item }) => (
         <View>
@@ -148,29 +144,21 @@ import Custom_Tag2 from '../../../../components/tags/border';
             onPress={() => props.navigation.navigate('BlogPostScreen', {
               data: item,
             })}
-            image={item.img}
-            prodName={item.name}
+            image={item.posterImage.url}
+            prodName={item.title}
           />
-          <View style={styles.tagContainer}>
-            <FlatList
-            contentContainerStyle={{height:scale(70)}}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            data={blogTags}
-            keyExtractor={item => `${item.key}`}
-            scrollEnabled={false}
-            renderItem={({item}) => (
-              <Custom_Tag2
-              value={item.value}
+          {/* <View style={styles.tagContainer} >
+            {item.tagName.map((itemTag,index) => {
+            <View key={index}>
+              <Text style={{color:color.TitleActive}}>{itemTag}</Text>
+              {/* <Custom_Tag2
+              value={itemTag}
               marginLeft={scale(10)}
               visible={false}
-              />
-            )}></FlatList>
-            <Text style={{fontFamily:FONT_FAMILY.Regular,fontWeight:'400',
-            fontSize:scale(14),lineHeight:scale(20),color:color.PlaceHolder,alignSelf:'center'}}>
-              {item.initDate} days ago
-            </Text>
-          </View> 
+              /> 
+            </View> 
+            })}
+          </View> */}
         </View>
       );
       return (
@@ -179,31 +167,18 @@ import Custom_Tag2 from '../../../../components/tags/border';
             <Text style={styles.blogText}>BLOG</Text>
             <Image source={LineBottom} style={{alignSelf: 'center'}} resizeMode='stretch'/>
           </View>
-          <FlatList
-            contentContainerStyle={{justifyContent: 'space-around',height:scale(70),marginLeft:scale(12)}}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            data={tags}
-            keyExtractor={item => `${item.key}`}
-            scrollEnabled={true}
-            renderItem={({item}) => (
-              <Custom_Tag1
-              value={item.value}
-              marginLeft={scale(12)}
-              />
-            )}></FlatList>
           <ScrollView style={styles.list}>
             <View style={styles.BlogsContainer}>
               <FlatList
                 contentContainerStyle={{alignContent: 'space-around', marginTop:scale(20)}}
                 horizontal={false}
-                data={data}
-                keyExtractor={item => `${item.id}`}
+                data={blogPage}
+                keyExtractor={item => `${item._id}`}
                 numColumns={1}
                 scrollEnabled={false}
                 renderItem={renderItem}
               />  
-                {blogs.length > data.length && (
+                {blogs.length > blogPage.length && (
                   <TouchableOpacity style={styles.button} onPress={handleLoadMore}>
                     <Text style={styles.text}>LOAD MORE</Text>
                   </TouchableOpacity>
@@ -246,6 +221,7 @@ import Custom_Tag2 from '../../../../components/tags/border';
         marginTop:scale(10),
         justifyContent:'center',
         height:scale(40),
+        borderWidth:1
       },
       blogTextView:{
         marginTop: scale(20),

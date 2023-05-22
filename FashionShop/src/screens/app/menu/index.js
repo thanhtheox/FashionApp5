@@ -124,7 +124,7 @@ useEffect(() => {
                   isChoosing={tab === item.title}
                   onPress={() => [setTab(item.title),updateLayout(key)]}
                   textStyle={styles.categoryText(tab === item.title)}>
-                  {item.title}
+                  {item.title.toUpperCase()}
                 </Custom_UnderlineButtonMenu>
               </View>
             ))}
@@ -139,7 +139,7 @@ useEffect(() => {
                   }
                 )}>
                   <View style={styles.viewTextList}>
-                    <Text style={styles.textList}>{itemChild.name}</Text>
+                    <Text style={styles.textList}>{itemChild.name.toUpperCase()}</Text>
                   </View>
                   <View style={{alignItem:'center',alignSelf:'center'}}>
                     <IC_Forward/>
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     }),
     textList:{
       fontFamily: FONT_FAMILY.Regular,
-      fontSize: scale(20),
+      fontSize: scale(15),
       lineHeight:scale(48),
       color: color.TitleActive,
     },

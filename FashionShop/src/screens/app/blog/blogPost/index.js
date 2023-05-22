@@ -7,59 +7,71 @@ import {
     Image,
     ScrollView
   } from 'react-native';
-  import React from 'react';
-  import Custom_Header from '../../../../components/header/Custom_Header';
+  import React, { useEffect,useState } from 'react';
   import Custom_Footer from '../../../../components/footer/Custom_Footer';
   import color from '../../../../constants/color';
   import FONT_FAMILY from '../../../../constants/fonts';
   import SwiperFlatList from 'react-native-swiper-flatlist';
   import scale from '../../../../constants/responsive';
-  import { IMG_OurStory, IMG_ModelOne } from '../../../../assets/images';
   import Custom_Tag2 from '../../../../components/tags/border';
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 
   const BlogPostScreen = (props) => { 
     const {data} = props.route.params; 
-    const productImages = [
-        {
-          key: '1',
-          image: IMG_ModelOne,
-        },
-        {
-          key: '2',
-          image: IMG_ModelOne,
-        },
-        {
-          key: '3',
-          image: IMG_ModelOne,
-        },
-      ];
-      const tags = [
-        {
-          key: '1',
-          value: '#Boss',
-        },
-        {
-          key: '2',
-          value: '#Burberry',
-        },
-      ];
+      const [tags, setTags] = useState([]);
+      const [blogImages, setBlogImages] = useState([]);
+      const axiosPrivate = useAxiosPrivate();
+      useEffect(()=>{
+        const getBlogImages = async () => {
+          const listOfBlogImages = [];
+          await Promise.all(data.image.map(async(image) => {
+            listOfBlogImages.push({id:image._id, image:image.url})
+          }))
+          setBlogImages(listOfBlogImages);
+        };
+        getBlogImages();
+      }, [])
+
+      useEffect(() => {
+        const controller = new AbortController();
+    
+        const getTags = async (idList) => {
+          const listOfTags = [];
+          await Promise.all(idList.map(async(id) => {
+            try {
+              const response = await axiosPrivate.get(`/get-tag-by-id/${id}`, {
+                signal: controller.signal, 
+              });
+              listOfTags.push(response.data)
+            } catch (err) {
+              console.log(err.response.data);
+            }
+          }))
+          setTags(listOfTags);
+        };
+        getTags(data.tag);
+        return () => {
+          controller.abort();
+        };
+      }, []);
+
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView>
         {/* Image */}
-        <Image source={data.img} resizeMode='stretch' style={{width:'100%'}}/>
+        <Image source={{uri:data.posterImage.url}} resizeMode='stretch' style={{alignSelf:'center',width:scale(300),height:scale(420)}}/>
         {/* Blog title */}
         <View style={styles.bodyViewTop}>
             <Text style={{fontFamily:FONT_FAMILY.Regular,fontSize:scale(18),textAlign:'center',
               lineHeight:scale(18),textTransform: 'uppercase',color:color.TitleActive}}>
-                {data.name}
+                {data.title}
             </Text>
             <Text style={{fontFamily:FONT_FAMILY.Regular,fontSize:scale(14),lineHeight:scale(18),color:color.Body,marginTop:scale(10)}}>
-                {'You guys know how much I love mixing high and low-end – it’s the best way to get the most bang for your buck while still elevating your wardrobe. The same goes for handbags! And honestly they are probably the best pieces to mix and match. I truly think the key to completing a look is with a great bag and I found so many this year that I wanted to share a round-up of my most worn handbags.'}
+                {data.detail.toLowerCase()}
             </Text>
         </View>
         {/* Image */}
-        <View style={styles.productContainer}>
+        <View style={styles.imageContainer}>
           <SwiperFlatList
             showPagination
             paginationStyle={styles.wrapDot}
@@ -67,12 +79,12 @@ import {
             paginationStyleItemInactive={styles.dot}
             paginationDefaultColor={color.PlaceHolder}
             paginationActiveColor={color.TitleActive}
-            data={productImages}
+            data={blogImages}
             renderItem={({ item }) => (
               <View style={{width:Dimensions.get('window').width, paddingHorizontal:scale(16),
               alignItems:'center', justifyContent:'center', flexDirection:'column',height:scale(510) }} key={item => `${item.key}`} >
                 <View style={styles.imgContainer}>
-                  <Image source={item.image} style={styles.img} resizeMode='contain'/>
+                  <Image source={{uri:`${item.image}`}} style={styles.img} resizeMode='contain'/>
                 </View>
               </View>
             )}
@@ -81,20 +93,19 @@ import {
         {/* Blog title */}
         <View style={styles.bodyViewBottom}>
             <Text style={{fontFamily:FONT_FAMILY.Regular,fontSize:scale(14),lineHeight:scale(18),color:color.Body,marginTop:scale(10)}}>
-                {'I found this Saint Laurent canvas handbag this summer and immediately fell in love. The neutral fabrics are so beautiful and I like how this handbag can also carry into fall. The mini Fendi bucket bag with the sheer fabric is so fun and such a statement bag. Also this DeMellier off white bag is so cute to carry to a dinner with you or going out, it’s small but not too small to fit your phone and keys still.'}
+                {data.description.toLowerCase()}
             </Text>
         </View>
         {/* Post Date */}
         <View style={{flexDirection:'row',marginLeft:scale(30),marginTop:scale(30),paddingBottom:scale(20)}}>
-            <Text style={{fontFamily:FONT_FAMILY.Regular,fontSize:scale(14),lineHeight:scale(18),color:color.Body}}>Posted by OpenFashion |</Text>
-            <Text style={{fontFamily:FONT_FAMILY.Regular,fontSize:scale(14),lineHeight:scale(18),color:color.Body,marginLeft:scale(5)}}>{data.initDate} Days ago</Text>
+            <Text style={{fontFamily:FONT_FAMILY.Regular,fontSize:scale(14),lineHeight:scale(18),color:color.Body}}>Posted by OpenFashion</Text>
         </View>
         <View style={styles.tagView}>
             {tags.map(item =>            
                 <Custom_Tag2
                 {...props}  
-                key={item.key}
-                value={item.value}
+                key={item._id}
+                value={'#' + item.name}
                 />
             )}
         </View>
@@ -128,7 +139,7 @@ import {
         alignSelf:'center',
         paddingHorizontal:scale(15),
     },
-    productContainer:{
+    imageContainer:{
         justifyContent: 'center',
         alignItems: 'center',
         height:scale(450),
