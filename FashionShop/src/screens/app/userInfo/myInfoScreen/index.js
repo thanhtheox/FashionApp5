@@ -133,7 +133,7 @@ const MyInfoScreen = props => {
                     </View>
                 </View>
                 <View style={styles.buttonSignIn}>
-                    <SaveButton text={'Edit Profile'} />
+                    <SaveButton text={'Edit Profile'} onPress={() => props.navigation.navigate('EditMyInfoScreen')}/>
                 </View>
             </View>
         </SafeAreaView>

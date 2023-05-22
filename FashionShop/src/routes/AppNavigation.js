@@ -17,7 +17,7 @@ import CategoryGridViewAllScreen from '../screens/app/product/categoryGridView/C
 import CategoryGridViewByIdScreen from '../screens/app/product/categoryGridView/CategoryGridViewByIdScreen';
 import ProductDetailsScreen from '../screens/app/product/productDetailsScreen';
 import SearchDetailScreen from '../screens/app/search/searchDetailScreen/searchDetailScreen';
-import MyInfoScreen from '../screens/app/userInfo/myInfoScreen';
+import MyInfoStackScreen from '../screens/app/userInfo/myInfoNavigation';
 
 const AppStack = createNativeStackNavigator();
 
@@ -120,8 +120,8 @@ const AppStackScreen = () => {
         })}
       />
       <AppStack.Screen
-        name="MyInfoScreen"
-        component={MyInfoScreen}
+        name="MyInfoStackScreen"
+        component={MyInfoStackScreen}
         options={() => ({
           headerShown:false
         })}
