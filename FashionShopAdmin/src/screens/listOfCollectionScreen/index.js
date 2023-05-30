@@ -29,11 +29,14 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import HeaderMax from '../../components/header/headerMax';
 // import { useIsFocused } from '@react-navigation/native'
 import MessageYN from '../../components/alearts.js/messageYN'
+import { useIsFocused } from '@react-navigation/native';
 
 
 const ListOfCollectionScreen = props => {
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState([]);
+  const isFocused = useIsFocused();
+
 
   // const isFocused = useIsFocused();
 
@@ -59,12 +62,12 @@ const ListOfCollectionScreen = props => {
       }
     };
 
-    getCollections();
+    isFocused && getCollections();
     return () => {
       isMounted = false;
       controller.abort();
     };
-  }, []);
+  }, [isFocused]);
 
   const deleteCollection = async (id, name) => {
     setTitle('Delete Collection');
@@ -111,14 +114,14 @@ const ListOfCollectionScreen = props => {
         <FlatList
           style={styles.flat}
           data={data}
-          keyExtractor={item => `${item.id}`}
+          keyExtractor={item => `${item._id}`}
           numColumns={2}
           columnWrapperStyle={{alignSelf: 'center'}}
           renderItem={({item}) => (
             <CollectionItem
               name={item.name}
               source={item.posterImage.url}
-              // onPress={() => props.navigation.navigate('EditCollection')}
+              onPress={() => props.navigation.navigate('EditCollection', {oldCollection: item})}
               delete ={()=>deleteCollection(item._id,item.name)}
             />
           )}

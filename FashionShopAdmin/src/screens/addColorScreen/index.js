@@ -28,7 +28,7 @@ const addColorSchema = yup.object({
     .required('Name cannot be blank')
     .min(1, 'A name must have minimum of 1 character')
     .max(100, 'A name must have maximum of 100 character'),
-  code: yup.string().required('code cannot be blank'),
+  code: yup.string().required('Code cannot be blank'),
 });
 
 const AddColorScreen = props => {
@@ -157,12 +157,13 @@ const AddColorScreen = props => {
             <View style={styles.viewTextLabel}>
               <Text style={styles.textLabel}>Color code</Text>
             </View>
-            <View style={styles.viewAdd}>
+            
               <Controller
                 name="code"
                 control={control}
                 render={({field: {onChange, value}}) => (
                   <>
+                  <View style={styles.viewAdd}>
                     <View style={styles.viewInputAdd}>
                       <TextInput
                         style={styles.textInput}
@@ -179,16 +180,7 @@ const AddColorScreen = props => {
                         value={value}
                       />
                     </View>
-                    {errors?.code && (
-                      <Text style={styles.textFailed}>
-                        {errors.code.message}
-                      </Text>
-                    )}
-                  </>
-                )}
-              />
-
-              <View
+                    <View
                 style={{
                   width: '40%',
                   height: scale(40),
@@ -196,6 +188,16 @@ const AddColorScreen = props => {
                   backgroundColor: textColor,
                 }}></View>
             </View>
+                    {errors?.code && (
+                      <Text style={[styles.textFailed,{marginLeft: scale(10)}]}>
+                        {errors.code.message}
+                      </Text>
+                    )}
+                  </>
+                )}
+              />
+
+              
             {valid ? null : (
               <Text style={styles.textWarning}>Invalid hex value</Text>
             )}

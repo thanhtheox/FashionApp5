@@ -11,11 +11,10 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {IC_AddImage, IC_Backward, IC_Tick} from '../../assets/icons';
+import {IC_AddImage, IC_Backward, IC_Close} from '../../assets/icons';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import scale from '../../constants/responsive';
-import {IMG_AddImage} from '../../assets/images';
 import SingleLine from '../../components/inputTexts/singleLine';
 import MultiLine from '../../components/inputTexts/multiLine';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -52,19 +51,15 @@ const addItemSchema = yup.object({
     .max(500, 'A description must have maximum of 500 character'),
   //   category: yup.object().string().required('please select a category'),
   //   tag: yup.object().string().required('please select a tag'),
-  category: yup
-    .object()
-    .shape({
-      categoryName: yup.string().required('please select a category'),
-    })
-    .required('please select a category'),
+  categoryId: yup
+    .string().required('Please choose category for the product'),
   tag: yup
     .array()
     // .shape({
     //   tagName: yup.string().required('please select a tag'),
     // })
     .required('please select a tag'),
-  image: yup.array().required('please select an image'),
+  image: yup.number().moreThan(0, 'A blog must have at least 1 image').lessThan(6, 'A blog should have no more than 5 images')
 });
 
 const AddItemScreen = props => {
@@ -86,8 +81,8 @@ const AddItemScreen = props => {
       description: '',
       price: null,
       tag: null,
-      category: null,
-      image: [],
+      categoryId: null,
+      image: null,
     },
     resolver: yupResolver(addItemSchema),
   });
@@ -147,7 +142,7 @@ const AddItemScreen = props => {
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [tagOpen, setTagOpen] = useState(false);
 
-  const createProduct = async () => {
+  const createProduct = async (data) => {
     setLoading(true);
     const formData = new FormData();
     await Promise.all(
@@ -160,15 +155,15 @@ const AddItemScreen = props => {
       }),
     );
     formData.append('categoryId', product.categoryId);
-    formData.append('name', product.name);
-    formData.append('price', product.price);
-    formData.append('material', product.materialDescription);
-    formData.append('care', product.careDescription);
-    formData.append('description', product.description);
+    formData.append('name', data.name);
+    formData.append('price', data.price);
+    formData.append('material', data.material);
+    formData.append('care', data.care);
+    formData.append('description', data.description);
     product.tag.map(item => {
       formData.append('tag', item.tagId);
     });
-    console.log(formData._parts);
+    console.log("hi", formData._parts);
     try {
       const res = await axiosPrivate.post('/post-create-product', formData, {
         headers: {
@@ -178,7 +173,7 @@ const AddItemScreen = props => {
       });
 
       console.log(res.data);
-      props.navigation.navigate('AddDetailItem');
+      props.navigation.navigate('AddDetailItem', {data: res.data.product});
     } catch (err) {
       console.log(err.response.data);
       setTitle('Error');
@@ -197,8 +192,6 @@ const AddItemScreen = props => {
       ...product,
       [prop]: e.nativeEvent.text,
     });
-
-    console.log(product);
   };
 
   const handlePickCategory = val => {
@@ -237,6 +230,8 @@ const AddItemScreen = props => {
     setTag([...tag, {label: unpickedTag.tagName, value: unpickedTag.tagId}]);
     console.log(product.tag, tag);
     onChange(newProductTag);
+    if(newProductTag.length === 0 ) onChange(null);
+
   };
 
   // image handle
@@ -264,10 +259,9 @@ const AddItemScreen = props => {
               cropping: true,
             })
               .then(image => {
+                onchange(images.length + 1);
                 setImages([...images, image.path]);
                 console.log(images);
-                console.log(image);
-                onchange(images)
               })
               .catch(err => console.log('Error: ', err.message));
             break;
@@ -284,6 +278,12 @@ const AddItemScreen = props => {
       console.log(response);
     });
   };
+
+  const removeImage = (path, onChange) => {
+    const newImageArray = images.filter(image => image !== path);
+    setImages(newImageArray);
+    onChange(newImageArray.length);
+  }
   return (
     <SafeAreaView style={styles.container}>
       <LoadingModal modalVisible={loading} />
@@ -308,7 +308,7 @@ const AddItemScreen = props => {
             <Controller
               name="image"
               control={control}
-              render={({field: {onchange, value}}) => (
+              render={({field: {onChange, value}}) => (
                 <View style={styles.imagePart}>
                   <Text style={styles.bodyText}>Image</Text>
                   <ScrollView horizontal={true}>
@@ -317,6 +317,9 @@ const AddItemScreen = props => {
                         <View
                           key={image}
                           style={{width: scale(50), height: scale(67)}}>
+                          <TouchableOpacity style={styles.removeButton} hitSlop={10} onPress={() => removeImage(image, onChange)}>
+                            <IC_Close viewBox={`-3 -3 30 30`}/>                                       
+                          </TouchableOpacity> 
                           <Image
                             resizeMode="cover"
                             style={{width: '100%', height: '100%'}}
@@ -325,7 +328,7 @@ const AddItemScreen = props => {
                           />
                         </View>
                       ))}
-                      <TouchableOpacity onPress={() => checkReadImagePermission(onchange)}>
+                      <TouchableOpacity onPress={() => checkReadImagePermission(onChange)}>
                         <View style={styles.imageView}>
                           <IC_AddImage />
                         </View>
@@ -471,7 +474,7 @@ const AddItemScreen = props => {
 
               {/* category */}
               <Controller
-                name="category"
+                name="categoryId"
                 control={control}
                 render={({field: {onChange, value}}) => (
                   <View>
@@ -488,10 +491,10 @@ const AddItemScreen = props => {
                           modalProps={{
                             animationType: 'fade',
                           }}
-                          onSelectItem={item => [
-                            handlePickCategory(item),
-                            onChange(item),
-                          ]}
+                          onSelectItem={item => {
+                            handlePickCategory(item);
+                            onChange(item.value);
+                          }}
                         />
                       </View>
                       <View style={styles.categoryView}>
@@ -504,9 +507,9 @@ const AddItemScreen = props => {
                         />
                       </View>
                     </View>
-                    {errors?.category && (
+                    {errors?.categoryId && (
                       <Text style={styles.textFailed}>
-                        {errors.category.message}
+                        {errors.categoryId.message}
                       </Text>
                     )}
                   </View>
@@ -591,7 +594,11 @@ const AddItemScreen = props => {
         visible={visible}
         title={title}
         clickCancel={() => {
-          setVisible(false);
+          if (title === 'Success') {
+            props.navigation.goBack();
+          } else {
+            setVisible(false);
+          }
         }}
         message={message}
       />
@@ -666,6 +673,18 @@ const styles = StyleSheet.create({
     height: scale(67), 
     justifyContent: 'center'
   },
+  removeButton: {
+    position: 'absolute', 
+    width: scale(20), 
+    height: scale(20), 
+    alignItems: 'center', 
+    justifyContent: 'center',
+    zIndex: 1, 
+    top: scale(-7), 
+    right: scale(-7), 
+    borderRadius: 100, 
+    backgroundColor: color.Line
+  },
 
   // information
   informationPart: {
@@ -697,7 +716,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     gap: scale(15),
-    // borderWidth: 1,
   },
   categoryView: {
     alignItems: 'flex-start',
