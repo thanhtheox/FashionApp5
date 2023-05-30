@@ -21,7 +21,7 @@ const CollectionScreen = (props) => {
         const response = await axiosPrivate.get('/get-all-collection', {
           signal: controller.signal,
         });
-        // console.log(response.data);
+        console.log(response.data);
         setCollectionData(response.data);
       } catch (err) {
         console.log(err.response.data);
@@ -49,11 +49,11 @@ const CollectionScreen = (props) => {
               data={collectionData}
               keyExtractor={item => `${item._id}`}
               scrollEnabled={false}
-              renderItem={({item}) => (
+              renderItem={({item,index}) => (
                   <CollectionItems
                     image={item.posterImage.url}
                     prodName={item.name}
-                    prodNumber={item.__v}
+                    prodNumber={index+1}
                     onPress={() => props.navigation.navigate('CollectionDetailScreen', {
                       data: item,
                     })}

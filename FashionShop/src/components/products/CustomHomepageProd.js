@@ -9,7 +9,7 @@ const Custom_HomepageProd = props => {
   return (
     <TouchableOpacity style={[styles.container,{width:props.width}]} onPress={props.onPress} >
       <View style={[styles.imgContainer,{width:props.width}]}>
-        <Image source={props.image} style={[styles.img,{width:props.width}]} resizeMode={'stretch'} />
+        <Image source={{uri: props.image}} style={[styles.img,{width:props.width}]} resizeMode={'stretch'} />
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.prodName}>{props.prodName}</Text>

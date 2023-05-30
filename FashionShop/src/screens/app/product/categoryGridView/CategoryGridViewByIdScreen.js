@@ -13,46 +13,72 @@ import {
   import color from '../../../../constants/color';
   import scale from '../../../../constants/responsive';
   import FONT_FAMILY from '../../../../constants/fonts';
-  import SearchResultBar from './component/searchResultBar';
   import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
   import Custom_GridViewProd from '../../../../components/products/CustomGridViewProd';  
-  import Filter from '../../../../components/buttons/filter';
 import Custom_Footer from '../../../../components/footer/Custom_Footer';
+import Filter from '../../../../components/buttons/filter';
+import Custom_Tag2 from '../../../../components/tags/border';
 
-  const SearchDetailScreen = (props) => {
-    const [searchResult, setSearchResult] = useState([]);
+
+
+  const CategoryGridViewByIdScreen = (props) => {
+    const {data} = props.route.params;
+    // console.log(data)
+    const [product, setProduct] = useState([]);
+    const [categoryParentName, setCategoryParentName] = useState();
+    const [categoryParentNameBool, setCategoryParentNameBool] = useState(false);
     const [page, setPage] = useState(1);
-    const [data, setData] = useState([]);
+    const [productPage, setProductPage] = useState([]);
     const [filterValue, setFilterValue] = useState(null);
   const axiosPrivate = useAxiosPrivate();
   useEffect(() => {
     const controller = new AbortController();
 
-    const getProducts = async () => {
-      try {
-        const response = await axiosPrivate.get('/get-all-product ', {
-          signal: controller.signal,
-        });
-        setSearchResult(response.data);
-      } catch (err) {
-        console.log(err.response.data);
-      }
+    const getProductsByTag = async (id) => {
+        try {
+          const response = await axiosPrivate.get(`/get-product-by-tag-id/${id}`, {
+            signal: controller.signal, 
+          });
+          setProduct(response.data)
+        } catch (err) {
+          console.log(err.response.data);
+        }
     };
-    getProducts();
+    const getProductsByCategory = async (id,parentId) => {
+        try {
+          const response = await axiosPrivate.get(`/get-product-by-category-id/${id}`, {
+            signal: controller.signal, 
+          });
+          const responseParent = await axiosPrivate.get(`/category/${parentId}`, {
+            signal: controller.signal, 
+          });
+          setProduct(response.data)
+          setCategoryParentName(responseParent.data.name)
+        } catch (err) {
+          console.log(err.response.data);
+        }
+    };
+    if(!data.parentId)
+      getProductsByTag(data._id);
+    else
+    {
+      getProductsByCategory(data._id,data.parentId);
+      setCategoryParentNameBool(true);
+    }
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [data]);
 
     useEffect(() => {  
       arrangeProducts(filterValue);
-      setData(searchResult.slice(0, 8));
-    }, [searchResult,filterValue])
+      setProductPage(product.slice(0, 8));
+    }, [product,filterValue])
   
     const handleLoadMore = () => {
       setPage(page + 1);
-      const newData = searchResult.slice(data, 8 * page);
-      setData(newData);
+      const newData = product.slice(productPage, 8 * page);
+      setProductPage(newData);
     };
 
     
@@ -61,12 +87,12 @@ import Custom_Footer from '../../../../components/footer/Custom_Footer';
       setFilterValue(value)
       switch(filterValue) {
         case 'highest':
-          setSearchResult(searchResult.sort((a,b) => b.price - a.price))
-          setData(searchResult.slice(0,8*page))
+          setProduct(product.sort((a,b) => b.price - a.price))
+          setProductPage(product.slice(0,8*page))
           break
         case 'lowest':
-          setSearchResult(searchResult.sort((a,b) => a.price - b.price))
-          setData(searchResult.slice(0,8*page))
+          setProduct(product.sort((a,b) => a.price - b.price))
+          setProductPage(product.slice(0,8*page))
           break
       }
     }
@@ -83,26 +109,35 @@ import Custom_Footer from '../../../../components/footer/Custom_Footer';
     );
     return (
       <SafeAreaView style={styles.container}>
-        <SearchResultBar />
         <View style={styles.resultSum}>
-          <Text style={styles.sum}>{searchResult.length + ' SEARCH RESULTS'}</Text>
-          <Filter onSortChange={arrangeProducts}
-                  selectedValue={filterValue}
-          />
+          <View style={styles.sumText}>
+            {categoryParentNameBool ? (
+              <View style={{flexDirection:'row'}}>
+                <Custom_Tag2 value={data.name}/>
+                <Custom_Tag2 value={categoryParentName}/>
+              </View>
+            ):(<View>
+                <Custom_Tag2 value={'#' + data.name}/>
+              </View>
+              )}
+            <Filter onSortChange={arrangeProducts}
+                    selectedValue={filterValue}
+            />
+          </View>
         </View>
         <ScrollView style={styles.list}>
           <View style={styles.likeProductContainer}>
             <FlatList
               contentContainerStyle={{alignContent: 'space-around', marginTop:scale(20)}}
               horizontal={false}
-              data={data}
+              data={productPage}
               keyExtractor={item => `${item._id}`}
               numColumns={2}
               scrollEnabled={false}
               columnWrapperStyle={styles.wrapperLikeProducts}
               renderItem={renderItem}
               />   
-              {searchResult.length > data.length && (
+              {product.length > productPage.length && (
                 <TouchableOpacity style={styles.button} onPress={handleLoadMore}>
                   <Text style={styles.text}>Load more</Text>
                 </TouchableOpacity>
@@ -116,13 +151,13 @@ import Custom_Footer from '../../../../components/footer/Custom_Footer';
       </SafeAreaView>
     );
   };
-  export default SearchDetailScreen;
+  export default CategoryGridViewByIdScreen;
   
   const styles = StyleSheet.create({
     container: {
       backgroundColor: color.OffWhite,
       flexDirection: 'column',
-      flex: 1,
+      flex: 1
     },
     button: {
       width: scale(295),
@@ -140,10 +175,16 @@ import Custom_Footer from '../../../../components/footer/Custom_Footer';
       fontFamily: FONT_FAMILY.JoseFinSansRegular,
     },
     resultSum:{
-      marginTop: scale(20),
+      marginTop:scale(30),
       alignItems: 'center',
       flexDirection: 'row',
       alignSelf: 'center',
+      paddingHorizontal:scale(15),
+      width:'100%'
+    },
+    sumText:{
+      alignItems:'center',
+      flexDirection:'row',
     },
     sum: {
       fontWeight: '400',
@@ -168,15 +209,6 @@ import Custom_Footer from '../../../../components/footer/Custom_Footer';
       marginLeft: scale(40),
       justifyContent: 'center',
       marginTop: scale(-15),
-    },
-    filterBorder:{
-      marginLeft: scale(180),
-      width: scale(36),
-      height: scale(36),
-      backgroundColor: color.AthensGray,
-      borderRadius: scale(180),
-      justifyContent: 'center',
-      alignItems: 'center',
     },
     list: {
       marginTop: scale(10),

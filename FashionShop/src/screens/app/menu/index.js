@@ -1,143 +1,86 @@
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View ,Platform, UIManager,LayoutAnimation, ScrollView} from 'react-native'
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View ,Alert, ScrollView, Linking} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import color from '../../../constants/color'
-import { IC_Call, IC_Close, IC_Down,IC_Profile, IC_ForwardArrow, IC_Location, IC_Up } from '../../../assets/icons'
+import { IC_Call, IC_Close,IC_Profile, IC_ForwardArrow, IC_Location,IC_Forward } from '../../../assets/icons'
 import FONT_FAMILY from '../../../constants/fonts'
 import scale from '../../../constants/responsive'
-import Custom_CategoryScrollView from './components/Custom_CategoryScrollView'
 import Custom_MenuFooter from './components/Custom_MenuFooter'
 import OKMessageBox from '../../../components/messageBox/OKMessageBox'
 import useLogout from '../../../hooks/useLogout'
 import { useDispatch } from 'react-redux'
-import { initCartLogIn, resetCartWhenLogOut } from '../../../redux/actions/cartActions'
-import { useIsFocused } from '@react-navigation/native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
-
-if (
-  Platform.OS === "android" &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
-const parents = [
-  {
-    key: '1',
-    tittle:'New',
-    isExpanded:false,
-    children: [
-      {
-        childKey: '1',
-        childTittle:'Outer',
-      },
-      {
-        childKey: '2',
-        childTittle:'Dress',
-      },
-      {
-        childKey: '3',
-        childTittle:'Shirt',
-      },
-    ]
-  },
-  {
-    key: '2',
-    tittle:'Apparel',
-    isExpanded:false,
-    children: [
-      {
-        childKey: '1',
-        childTittle:'Outer',
-      },
-      {
-        childKey: '2',
-        childTittle:'Dress',
-      },
-      {
-        childKey: '3',
-        childTittle:'Shirt',
-      },
-    ]
-  },
-  {
-    key: '3',
-    tittle:'Bag',
-    isExpanded:false,
-    children: [
-      {
-        childKey: '1',
-        childTittle:'Outer',
-      },
-      {
-        childKey: '2',
-        childTittle:'Dress',
-      },
-      {
-        childKey: '3',
-        childTittle:'Shirt',
-      },
-    ]
-  },
-  {
-    key: '4',
-    tittle:'Accessories',
-    isExpanded:false,
-    children: [
-      {
-        childKey: '1',
-        childTittle:'Outer',
-      },
-      {
-        childKey: '2',
-        childTittle:'Dress',
-      },
-      {
-        childKey: '3',
-        childTittle:'Shirt',
-      },
-    ]
-  },
-];
-const Accordion = ({ item, onClickFunction }) => {
-  const [layoutHeight, setLayoutHeight] = useState(0);
-
-  useEffect(() => {
-    if (item.isExpanded) {
-      setLayoutHeight(null);
-    } else {
-      setLayoutHeight(0);
-    }
-  }, [item.isExpanded]);
-
-  return (
-    <>
-        <View style={{marginTop:scale(10)}}>
-          <TouchableOpacity onPress={onClickFunction} style={styles.viewList} activeOpacity={0.6}>
-            <View style={styles.viewTextList}>
-              <Text style={styles.textList}>{item.tittle}</Text>
-            </View>
-            <View style={styles.viewIcon}>
-              {item.isExpanded? <IC_Up/> : <IC_Down/>}
-            </View>
-          </TouchableOpacity>
-          <View style={{height: layoutHeight,overflow: 'hidden'}}>
-            {item.children.map((item,key) =>
-              <View key={key}>
-                <TouchableOpacity style={styles.viewListBody}>
-                  <View style={styles.viewTextList}>
-                    <Text style={styles.textListBody}>{item.childTittle}</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-        </View>
-    </>
-  );
-};
+import {  resetCartWhenLogOut } from '../../../redux/actions/cartActions'
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
+import Custom_UnderlineButtonMenu from './components/Custom_UnderlineButtonMenu'
+import Clipboard from '@react-native-clipboard/clipboard'
 const Menu = (props) => {
-  const [listDataSource, setListDataSource] = useState(parents);
 
+  const [category, setCategory] = useState([]);
+  const [data, setData] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
+  const locationUrl ='https://www.google.com/maps/search/UIT/@10.824217,106.7037515,13z/data=!3m1!4b1?hl=vi-VN'
+  const openUrl = async (url) => {
+    try{
+        await Linking.openURL(url);
+    }
+    catch {
+        Alert.alert(`Do not know how to open this url: ${url}`);
+    }
+}
+const handleCopy = async (textToCopy) => {
+  await Clipboard.setString(textToCopy);
+  setVisible(true);
+};
+
+useEffect(() => {
+  const controller = new AbortController();
+
+  const getCategory = async () => {
+    try {
+      const response = await axiosPrivate.get(`/all-categories`, {
+        signal: controller.signal,
+      });
+      setData(response.data);
+    } catch (err) {
+      console.log(err.response.data);
+    }
+    
+  };
+  getCategory();
+  return () => {
+    controller.abort();
+  };
+}, []);
+useEffect(() => {
+  const handleCategory = async() => {
+    try{
+      let parentCat = [{}];
+      let newContent = [];
+      parentCat = data.filter(item => !item.parentId);
+      parentCat.map((item, index) => {
+        const obj = {};
+        obj.title = item.name;
+        obj._id = item._id;
+        if(index === 0 )
+          obj.isShowed = true;
+        else
+          obj.isShowed = false;
+        obj.child = [];
+        newContent[index] = obj;
+        data.map(item => {
+          if( item.parentId === newContent[index]._id)
+            newContent[index].child.push(item)
+          }
+        )
+      })
+      setCategory(newContent)
+    }
+    catch (err) {
+      console.log(err)
+    }
+    
+  }; 
+  handleCategory();
+}, [data])
   const logout = useLogout();
   const dispatch = useDispatch();
 
@@ -150,49 +93,66 @@ const Menu = (props) => {
       console.log(error);
     }
   }
-  
-
-  const updateLayout = (index) => {
-    LayoutAnimation.configureNext({
-      duration: 500,
-      initialVelocity: 300,
-      create: {type: 'linear', property: 'opacity'},
-      update: {type: 'spring', springDamping: 0.4},
-      delete: {type: 'linear', property: 'opacity'},
-    });
-    const array = [...listDataSource];
-      array[index]['isExpanded'] = !array[index]['isExpanded'];
-    setListDataSource(array);
+  const updateLayout = index => {
+    const array = [...category];
+    array.map((value,placeIndex) =>
+    placeIndex === index
+        ? (array[placeIndex]['isShowed'] = !array[placeIndex]['isShowed'])
+        : (array[placeIndex]['isShowed'] = false)
+    );
+    setCategory(array);
   };
-  const [visible, setVisible] = useState(false);
 
+  const [visible, setVisible] = useState(false);
+  const [tab, setTab] = useState('women');
   return (
     <SafeAreaView style={styles.container}>
         <OKMessageBox visible={visible} clickCancel={() => {setVisible(false)}} 
-        title={"OUR ADDRESS"} 
-        message={"KTX Khu B"}  />
+        title={"NOTIFICATION"} 
+        message={`Phone number was copied!`}  />
         {/* Icon Close */}
         <TouchableOpacity onPress={() => props.navigation.goBack()}>
             <IC_Close/>
         </TouchableOpacity>
         <ScrollView>
           {/* Categories */}
-          <Custom_CategoryScrollView/>
-          {/* Types */}
-          <View>
-            {listDataSource.map((item, key) => (
-              <Accordion
-                key={item.key}
-                onClickFunction={() => {
-                  updateLayout(key);
-                }}
-                item={item}
-              />
+          <ScrollView contentContainerStyle={{ horizontal: true}} scrollEnabled={true}>
+          <View style={styles.categoryView}>
+            {category.map((item,key) => (
+              <View key={item._id} >
+                <Custom_UnderlineButtonMenu
+                  isChoosing={tab === item.title}
+                  onPress={() => [setTab(item.title),updateLayout(key)]}
+                  textStyle={styles.categoryText(tab === item.title)}>
+                  {item.title.toUpperCase()}
+                </Custom_UnderlineButtonMenu>
+              </View>
             ))}
           </View>
+          {category.map((item,key) => (
+          <View key={key} style={{width:'100%'}}>
+            {item.child.map(itemChild => item.isShowed && (
+              <View style={{marginTop:scale(10)}} key={itemChild._id}>
+                <TouchableOpacity  style={styles.viewList} activeOpacity={0.6} onPress={() => props.navigation.navigate('CategoryGridViewByIdScreen',
+                  {
+                    data: itemChild,
+                  }
+                )}>
+                  <View style={styles.viewTextList}>
+                    <Text style={styles.textList}>{itemChild.name.toUpperCase()}</Text>
+                  </View>
+                  <View style={{alignItem:'center',alignSelf:'center'}}>
+                    <IC_Forward/>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            ))}
+          </View>
+          ))}
+        </ScrollView>
           {/* Buttons */}
           <TouchableOpacity style={styles.buttonView} 
-          onPress={() => props.navigation.navigate('MyInfoScreen')}>
+          onPress={() => props.navigation.navigate('MyInfoStackScreen')}>
             <IC_Profile/>
             <Text style={styles.buttonText}>My Profile</Text>
           </TouchableOpacity>
@@ -201,11 +161,11 @@ const Menu = (props) => {
             <IC_ForwardArrow/>
             <Text style={styles.buttonText}>Sign Out</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonView}>
+          <TouchableOpacity style={styles.buttonView} onPress={() => handleCopy('0333883127')}>
             <IC_Call/>
             <Text style={styles.buttonText}>{'(786) 713-8616'}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonView} onPress={() => setVisible(true)}>
+          <TouchableOpacity style={styles.buttonView} onPress={() => {openUrl(locationUrl)}}>
             <IC_Location/>
             <Text style={styles.buttonText}>Store locator</Text>
           </TouchableOpacity>
@@ -231,7 +191,7 @@ const styles = StyleSheet.create({
     // --------------------------- //
     viewList:{
       height: scale(50),
-      width:'95%',
+      width:'100%',
       flexDirection: 'row',
       justifyContent:'space-between',
     },
@@ -239,9 +199,18 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       marginLeft: scale(20),
     },
+    categoryView: {
+      flexDirection: 'row',
+      marginTop:scale(15),
+    },
+    categoryText: isChoosing => ({
+      color: isChoosing ? color.Primary : color.TitleActive,
+      fontSize: scale(17),
+      fontFamily: FONT_FAMILY.Bold,
+    }),
     textList:{
       fontFamily: FONT_FAMILY.Regular,
-      fontSize: scale(20),
+      fontSize: scale(15),
       lineHeight:scale(48),
       color: color.TitleActive,
     },

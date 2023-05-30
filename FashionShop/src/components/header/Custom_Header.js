@@ -17,9 +17,9 @@ const Custom_Header = ({logoColor, menuColor,searchColor,cartColor,navigation}) 
             <IC_Menu fill={menuColor}/>
         </TouchableOpacity>
         {/* Logo */}
-        <View style={styles.logoContainer}>
+        <TouchableOpacity style={styles.logoContainer} onPress={() => navigation.navigate('HomeScreen')}>
             <IC_Logo fill={logoColor}/>
-        </View>
+        </TouchableOpacity>
         <View style={{flexDirection: 'row'}}>
             {/* Search */}
             <TouchableOpacity style={styles.searchContainer} onPress={() => navigation.navigate('SearchDetailScreen')}>

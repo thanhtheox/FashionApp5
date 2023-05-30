@@ -13,9 +13,11 @@ import CartScreen from '../screens/app/cart';
 import { CollectionStackScreen } from '../screens/app/collection/collectionNavigation';
 import { HomeStackScreen } from '../screens/app/home/HomeNavigation';
 import Menu from '../screens/app/menu';
+import CategoryGridViewAllScreen from '../screens/app/product/categoryGridView/CategoryGridViewAllScreen';
+import CategoryGridViewByIdScreen from '../screens/app/product/categoryGridView/CategoryGridViewByIdScreen';
 import ProductDetailsScreen from '../screens/app/product/productDetailsScreen';
 import SearchDetailScreen from '../screens/app/search/searchDetailScreen/searchDetailScreen';
-import MyInfoScreen from '../screens/app/userInfo/myInfoScreen';
+import MyInfoStackScreen from '../screens/app/userInfo/myInfoNavigation';
 
 const AppStack = createNativeStackNavigator();
 
@@ -48,6 +50,24 @@ const AppStackScreen = () => {
       <AppStack.Screen
         name="CheckOutStackScreen"
         component={CheckOutStackScreen}
+        options={({navigation}) => ({
+          headerTitle: () => (
+            <Custom_Header navigation={navigation}/>
+          ),
+        })}
+      />
+      <AppStack.Screen
+        name="CategoryGridViewByIdScreen"
+        component={CategoryGridViewByIdScreen}
+        options={({navigation}) => ({
+          headerTitle: () => (
+            <Custom_Header navigation={navigation}/>
+          ),
+        })}
+      />
+      <AppStack.Screen
+        name="CategoryGridViewAllScreen"
+        component={CategoryGridViewAllScreen}
         options={({navigation}) => ({
           headerTitle: () => (
             <Custom_Header navigation={navigation}/>
@@ -100,8 +120,8 @@ const AppStackScreen = () => {
         })}
       />
       <AppStack.Screen
-        name="MyInfoScreen"
-        component={MyInfoScreen}
+        name="MyInfoStackScreen"
+        component={MyInfoStackScreen}
         options={() => ({
           headerShown:false
         })}

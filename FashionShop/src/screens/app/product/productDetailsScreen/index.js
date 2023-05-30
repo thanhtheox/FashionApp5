@@ -13,8 +13,9 @@ import FONT_FAMILY from '../../../../constants/fonts'
 import fontStyles from '../../../../constants/fontStyle'
 import Custom_GridViewProd from '../../../../components/products/CustomGridViewProd'
 import ZoomImageView from './components/ZoomImageView'
-import { useSelector,connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { addToCart } from '../../../../redux/actions/cartActions';
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 
 
 
@@ -23,24 +24,29 @@ const ProductDetailsScreen = (props) => {
   const [count, setCount] = useState(1);
   const [colorChoose, setChooseColor] = useState('1');
   const [sizeChoose, setChooseSize] = useState('1');
+  const [productImages,setProductImages] = useState([]);
+  const [suggestiveProduct, setSuggestiveProduct] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
  
   const {data} = props.route.params;
-  // console.log(data);
+
   const dispatch = useDispatch();
   const addToCartHandler = () => {
-    dispatch(addToCart(data.id, data.name,data.price,data.img,count));
-    // console.log(data.key, count);
+    dispatch(addToCart(data._id, data.name,data.description,data.price,data.posterImage.url,count));
   };
-  const cart = useSelector((state) => state.cart);
-  // const { cartItems } = cart;
 
 
   useEffect(()=>{
-    console.log('cart change!')
-    console.log('pd screen:' + JSON.stringify(cart));
-  }, [cart])
-  // console.log('pd screen:' + cartItems);
-  // const numberOfProduct = cartItems.length;
+    const handleProductImages = async () => {
+      const listOfProductImages = [];
+      await Promise.all(data.image.map(async(image) => {
+        listOfProductImages.push({id:image._id, image:image.url})
+      }))
+      setProductImages(listOfProductImages);
+    };
+    handleProductImages();
+
+  }, [])
 
 
   const sizes = [
@@ -97,29 +103,28 @@ const ProductDetailsScreen = (props) => {
       img: IMG_ModelFour,
     },
   ];
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const getSuggestiveProduct = async (number) => {
+      try {
+        const response = await axiosPrivate.get(`/get-random-product/${number}`, {
+          signal: controller.signal,
+        });
+        setSuggestiveProduct(response.data);
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    };
+    getSuggestiveProduct(4);
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
   
-  const productImages = [
-    {
-      key: '1',
-      image: data.img,
-    },
-    {
-      key: '2',
-      image: data.img,
-    },
-    {
-      key: '3',
-      image: data.img,
-    },
-    {
-      key: '4',
-      image: data.img,
-    },
-    {
-      key: '5',
-      image: data.img,
-    },
-  ];
+  
 
   return (
     visible ? (
@@ -137,25 +142,28 @@ const ProductDetailsScreen = (props) => {
             data={productImages}
             renderItem={({ item }) => (
               <View style={{width:Dimensions.get('window').width, paddingHorizontal:scale(16),
-              alignItems:'center', justifyContent:'center', flexDirection:'column',height:scale(510) }} key={item => `${item.key}`} >
+              alignItems:'center', justifyContent:'center', flexDirection:'column',height:scale(510) }} key={item => `${item.id}`} >
                 <View style={styles.imgContainer}>
-                  <Image source={item.image} style={styles.img} resizeMode='contain'/>
-                  <TouchableOpacity
-                    onPress={() => setVisible(false)}
-                    >
-                    <IC_Resize
-                      style={{right:scale(5),bottom:scale(3),position:'absolute'}}
-                    />
-                  </TouchableOpacity>
+                  <Image source={{uri:`${item.image}`}} style={styles.img} resizeMode='contain'/>
                 </View>
               </View>
             )}
           /> 
+          <TouchableOpacity
+            onPress={() => setVisible(false)}
+            >
+            <IC_Resize
+              style={{left:scale(130),bottom:scale(30),position:'absolute'}}
+            />
+          </TouchableOpacity>
         </View>
         {/* Product Variation */}
         <View style={styles.productVariationContainer}>
           <View style={styles.nameView}>
             <Text style={[styles.prodName]}>{data.name}</Text>
+          </View>
+          <View style={styles.descriptionView}>
+            <Text style={[styles.prodDescription]}>{data.description}</Text>
           </View>
           <Text style={styles.prodPrice}>${data.price}</Text>
           <View style={{flexDirection:'row', marginTop:scale(18)}}>
@@ -189,10 +197,10 @@ const ProductDetailsScreen = (props) => {
         <View style={{marginTop:scale(24.5)}}><AddToBasket onPress={addToCartHandler}/></View>
         {/* Product Detail */}
         <View style={styles.detailView}>
-          <Text style={[fontStyles.subTitle14pxFont,styles.title]}>MATERIALS</Text>
-          <Text style={[fontStyles.bodyMediumFont,styles.subTitle]}>{"We work with monitoring programmes to ensure compliance with safety, health and quality standards for our products. "}</Text>
-          <Text style={[fontStyles.subTitle14pxFont,styles.title]}>CARE</Text>
-          <Text style={[fontStyles.bodyMediumFont,styles.subTitle]}>{"To keep your jackets and coats clean, you only need to freshen them up and go over them with a cloth or a clothes brush. If you need to dry clean a garment, look for a dry cleaner that uses technologies that are respectful of the environment. Check your clothes tag to see what you should notice"}</Text>
+          <Text style={[fontStyles.subTitle16pxFont,styles.title]}>MATERIALS</Text>
+          <Text style={[fontStyles.bodyMediumFont,styles.subTitle]}>{data.material}</Text>
+          <Text style={[fontStyles.subTitle16pxFont,styles.title]}>CARE</Text>
+          <Text style={[fontStyles.bodyMediumFont,styles.subTitle]}>{data.care}</Text>
           
         </View>
         {/* You May Also Like */}
@@ -202,22 +210,19 @@ const ProductDetailsScreen = (props) => {
           <FlatList
             contentContainerStyle={{alignContent: 'space-around', marginTop:scale(20)}}
             horizontal={false}
-            data={likeProducts}
-            keyExtractor={item => `${item.id}`}
+            data={suggestiveProduct}
+            keyExtractor={item => `${item._id}`}
             numColumns={2}
             scrollEnabled={false}
             columnWrapperStyle={styles.wrapperLikeProducts}
             renderItem={({item}) => (
               <Custom_GridViewProd
-              image={item.img}
+              image={item.posterImage.url}
               prodName={item.name}
               prodPrice={item.price}
               onPress={() => props.navigation.replace('ProductDetailsScreen', {
-                // categoryName: props.categoryName,
                 data: item,
               })}
-              // {...props}
-              // categoryData={item}
               />
             )}
           />      
@@ -290,18 +295,30 @@ const styles = StyleSheet.create({
     nameView: {
       flexDirection:'row',
       justifyContent:'space-between',
+      marginTop:scale(12),
+    },
+    descriptionView: {
+      flexDirection:'row',
+      justifyContent:'space-between',
       marginTop:scale(10),
     },
     prodName: {
       color: color.TitleActive,
       fontFamily: FONT_FAMILY.Regular,
-      lineHeight:scale(19),
-      fontSize:scale(20),
+      lineHeight:scale(18),
+      fontSize:scale(18),
+    },
+    prodDescription: {
+      color: color.TitleActive,
+      fontFamily: FONT_FAMILY.Regular,
+      lineHeight:scale(16),
+      fontSize:scale(16),
     },
     prodPrice: {
       fontFamily: FONT_FAMILY.Regular,
       lineHeight:scale(21),
       fontSize:scale(18),
+      marginTop:scale(10),
       color: color.Primary,
     },
     detailView: {
@@ -314,7 +331,8 @@ const styles = StyleSheet.create({
       color:color.TitleActive,
     },
     subTitle: {
-      color:color.Label,
+      marginLeft:scale(20),
+      color:color.TitleActive,
     },
     iconTextView:{
       flexDirection:'column',
@@ -327,7 +345,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       marginTop:scale(69),
       paddingTop: scale(32),
-      paddingHorizontal: scale(16),
+      paddingHorizontal: scale(10),
     },
     likeProductText: {
       fontSize: scale(18),

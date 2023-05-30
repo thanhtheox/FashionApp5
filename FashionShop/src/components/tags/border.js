@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: FONT_FAMILY.Regular,
-    fontSize: scale(14),
+    fontSize: scale(16),
     color: color.Body,
     alignSelf: 'center',
   },

@@ -13,36 +13,39 @@ import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
 
 const CollectionDetailScreen = (props) => {
   const {data} = props.route.params;
+  console.log(data);
   const [collectionProducts, setCollectionProducts] = useState([]);
   const [suggestiveCollection, setSuggestiveCollection] = useState([]);
   const axiosPrivate = useAxiosPrivate();
   useEffect(() => {
     const controller = new AbortController();
 
-    const getSuggestiveCollection = async () => {
+    const getSuggestiveCollection = async (number) => {
       try {
-        const response = await axiosPrivate.get('/get-random-collection', {
+        const response = await axiosPrivate.get(`/get-random-collection/${number}`, {
           signal: controller.signal,
         });
         setSuggestiveCollection(response.data);
-        // console.log(suggestiveCollection);
       } catch (err) {
         console.log(err.response.data);
       }
     };
-    const getCollectionProducts = async () => {
-      try {
-        const response = await axiosPrivate.get(`/get-product-by-id/${data.productId}`, {
-          signal: controller.signal, 
-        });
-        setCollectionProducts(response.data);
-        // console.log(collectionProducts);
-      } catch (err) {
-        console.log(err.response.data);
-      }
+    const getCollectionProducts = async (idList) => {
+      const listOfProduct = [];
+      await Promise.all(idList.map(async(id) => {
+        try {
+          const response = await axiosPrivate.get(`/get-product-by-id/${id}`, {
+            signal: controller.signal, 
+          });
+          listOfProduct.push(response.data)
+        } catch (err) {
+          console.log(err.response.data);
+        }
+      }))
+      setCollectionProducts(listOfProduct);
     };
-    getCollectionProducts();
-    getSuggestiveCollection();
+    getCollectionProducts(data.productId);
+    getSuggestiveCollection(4);
     return () => {
       controller.abort();
     };
@@ -68,10 +71,10 @@ const CollectionDetailScreen = (props) => {
               keyExtractor={item => `${item._id}`}
               numColumns={2}
               scrollEnabled={false}
-              columnWrapperStyle={{marginBottom:scale(5)}}
-              renderItem={({item,index}) => (
+              columnWrapperStyle={{marginBottom:scale(10)}}
+              renderItem={({item}) => (
                 <CollectionProduct
-                image={item.image[index]}
+                image={item.posterImage.url}
                 prodName={item.name}
                 prodPrice={item.price}
                 onPress={() => props.navigation.replace('ProductDetailsScreen', {
@@ -97,6 +100,7 @@ const CollectionDetailScreen = (props) => {
                     })}
                     image={item.posterImage.url}
                     prodName={item.name}
+                    prodDescription={item.description}
                   />
               )}
             />      
@@ -156,7 +160,6 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       paddingTop: scale(10),
-      paddingHorizontal: scale(16),
       backgroundColor:color.TitleActive,
     },
     collectionText: {
