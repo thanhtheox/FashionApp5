@@ -1,151 +1,404 @@
-import { Dimensions, SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image , TextInput, ScrollView} from 'react-native'
-import React , {useState}from 'react'
-import color from '../../constants/color'
-import FONT_FAMILY from '../../constants/fonts'
-import { IC_Backward } from '../../assets/icons'
-import scale from '../../constants/responsive'
-import SaveButton from '../../components/buttons/Save'
-import { launchImageLibrary } from 'react-native-image-picker'
-import ItemProductOfCollection from '../addCollectionScreen/components/ProductOfCollection'
-import { IMG_AddImage,IMG_Collection, IMG_ModelFour, IMG_ModelOne, IMG_ModelThree, IMG_ModelTwo } from '../../assets/images'
+import {
+    Dimensions,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    View,
+    TouchableOpacity,
+    Image,
+    TextInput,
+    FlatList,
+    ScrollView,
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import color from '../../constants/color';
+import FONT_FAMILY from '../../constants/fonts';
+import {IC_Backward} from '../../assets/icons';
+import scale from '../../constants/responsive';
+import SaveButton from '../../components/buttons/Save';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {IMG_AddImage} from '../../assets/images';
+import {MultipleSelectList} from 'react-native-dropdown-select-list';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import Message from '../../components/alearts.js/messageOnly';
+import DropDownPicker from 'react-native-dropdown-picker';
+import * as yup from 'yup';
+import {Controller, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import Item from './components/item';
 
-data=[
-    {id:1,name: 'SAPPOCHE', source: IMG_Collection},
-    {id:2,name: 'NAGAMI', source: IMG_ModelFour},
-    {id:3,name: 'NONUNO',source: IMG_ModelOne},
-    {id:4,name: 'SUMGA',source: IMG_ModelTwo},
-    {id:5,name: 'KAKHUKO',source: IMG_ModelThree},
-    {id:6,name: 'RAPAMA',source: IMG_ModelFour},
-    {id:7,name: 'TAKOYA',source: IMG_ModelOne},
-]
 
-const EditCollectionScreen = (props) => {
-    const [text, onChangeText] = useState("");
-    const [image,setImage]= useState(null);
 
-    let options={
+const EditCollectionScreen = props => {
+    const { oldCollection } = props.route.params;
+    console.log({ oldCollection })
+
+    const editCollectionSchema = yup.object({
+        name: yup
+            .string()
+            .required('Name cannot be blank')
+            .max(100, 'Name length must be less than 100 characters'),
+        product: yup.number().moreThan(0, 'A collection must have at least 1 product'),
+        image: yup.string().required('please select an image'),
+    });
+
+    const [product, setProduct] = useState([]);
+    const [selectedProduct, setSelectedProduct] = useState([])
+    const [data, setData] = useState([]);
+    const [selected, setSelected] = useState(oldCollection.productId);
+
+    const [text, onChangeText] = useState(oldCollection.name);
+    const [images, setImages] = useState(oldCollection.posterImage.url);
+
+    const axiosPrivate = useAxiosPrivate();
+    const [loading, setLoading] = useState(false);
+    const [title, setTitle] = useState('');
+    const [visible, setVisible] = useState(false);
+    const [message, setMessage] = useState('');
+
+    const {
+        control,
+        handleSubmit,
+        formState: {errors},
+    } = useForm({
+        mode: 'onChange',
+        defaultValues: {
+        name: oldCollection.name,
+        product: oldCollection.productId.length,
+        image: oldCollection.posterImage.url,
+        },
+        resolver: yupResolver(editCollectionSchema),
+    });
+    // const [product, setProduct] = useState([]);
+
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const getProducts = async () => {
+        try {
+            const response = await axiosPrivate.get('/get-all-product', {
+            signal: controller.signal,
+            });
+            console.log(response.data);
+            const handledProduct = [];
+            const handleSelectedProduct = [];
+            await Promise.all(
+                response.data.map(item => {
+                    handledProduct.push({label: item.name, value: item._id});
+                    let include = false;
+                    oldCollection.productId.map((prodId) => {
+                        if( prodId === item._id ) {
+                            include = true;
+                            handleSelectedProduct.push({...item})
+                        }
+                    })
+                }),
+            );
+            isMounted && setData(handledProduct);
+            console.log({handleSelectedProduct})
+            isMounted && setSelectedProduct(handleSelectedProduct);
+            isMounted && setProduct(response.data);
+            //isMounted && setData(newArray);
+            console.log(data);
+        } catch (err) {
+            console.log(err.response.data);
+        }
+        };
+
+        getProducts();
+
+        return () => {
+        isMounted = false;
+        controller.abort();
+        };
+    }, []);
+
+
+    useEffect(() => {
+        const handleSelectedProduct = []
+        selected.map((id) => {
+            const item = product.filter(e => e._id === id)
+            if ( item.length > 0) {
+                handleSelectedProduct.push({...item[0]})
+            }
+        })
+        setSelectedProduct(handleSelectedProduct);
+    }, [selected])
+    const handleSelected = id => {
+        console.log(id);
+        data.map(item => {
+        console.log(item._id);
+        if (item._id === id) {
+            setSelected(...selected, item);
+        }
+        });
+    };
+
+    async function handleSubmits(name, image, product) {
+        setLoading(true);
+        const formData = new FormData();
+        formData.append('imageCollection', {
+        name: new Date() + '_imageCollection',
+        uri: images,
+        type: 'image/jpg',
+        });
+        formData.append('name', name);
+        await Promise.all(
+        selected.map(item => {
+            formData.append('productId', item);
+        }),
+        );
+        try {
+        const response = await axiosPrivate.put(
+            `/put-update-collection/${oldCollection._id}`,
+            formData,
+            {
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'multipart/form-data',
+            },
+            withCredentials: true
+            },
+        );
+        console.log('success', JSON.stringify(response.data));
+        setTitle('Success');
+        setMessage(`Collection with Name: ${name} has been updated`);
+        console.log(message)
+        setLoading(false);
+        } catch (err) {
+        console.log('err', err.response.data);
+        setTitle('Error');
+        setMessage(err.response.data.error);
+        setLoading(false);
+        } finally {
+        setVisible(true);
+        }
+    };
+
+    let options = {
         savePhotos: true,
-        mediaType:'photo',
-    }
+        mediaType: 'photo',
+    };
 
-    const openGallery = async()=>{
+    const openGallery = async (onChange, value) => {
         const result = await launchImageLibrary(options);
-        setImage(result.assets[0].uri)
-    }
+        setImages(result.assets[0].uri);
+        onChange(result.assets[0].uri);
+        //value(images);
+    };
 
-  return (
-    <SafeAreaView style={styles.container}>
-{/* header  */}
+    const [open, setOpen] = useState(false);
+    return (
+        <SafeAreaView style={styles.container}>
+        {/* header  */}
         <View style={styles.header}>
-            <TouchableOpacity onPress={()=>props.navigation.goBack()}>
-                <IC_Backward stroke={color.White}></IC_Backward>
+            <TouchableOpacity onPress={() => props.navigation.goBack()}>
+            <IC_Backward stroke={color.White}></IC_Backward>
             </TouchableOpacity>
-            <View >
-                <Text style={styles.textHeader}>Edit collection</Text>
+            <View>
+            <Text style={styles.textHeader}>Edit collection</Text>
             </View>
         </View>
 
-{/* body  */}
-
+        {/* body  */}
         <View style={styles.body}>
             <View style={styles.viewTextTitle}>
-                <Text style={styles.textTitle}>Collection information</Text>
-            </View>
-            <View style={styles.viewTextInput}>
-                <TextInput style={styles.textInput}
-                            placeholder="Name ..."
-                            placeholderTextColor={color.GraySolid}
-                            editable
-                            numberOfLines={1}
-                            maxLength={30}
-                            onChangeText={text => onChangeText(text)}
-                            keyboardType='ascii-capable'
-                            value={text}
-                />
-
+            <Text style={styles.textTitle}>Collection information</Text>
             </View>
 
-{/* poster image */}
+            {/* name */}
+            <Controller
+            name="name"
+            control={control}
+            render={({field: {onChange, value}}) => (
+                <>
+                <View style={styles.viewTextInput}>
+                    <TextInput
+                    style={styles.textInput}
+                    placeholder="Name ..."
+                    placeholderTextColor={color.GraySolid}
+                    editable
+                    numberOfLines={1}
+                    maxLength={100}
+                    onChangeText={text => [onChangeText(text), onChange(text)]}
+                    keyboardType="ascii-capable"
+                    value={value}
+                    />
+                </View>
+
+                {errors?.name && (
+                    <Text style={styles.textFailed}>{errors.name.message}</Text>
+                )}
+                </>
+            )}
+            />
+
+            {/* poster image */}
             <View style={styles.viewAddImage}>
-                <View style={styles.viewTextAdd}>
-                    <Text style={styles.textAdd}>Poster image</Text>
-                </View>
-                <View style={styles.viewImageAdd}>
-                    <TouchableOpacity style={styles.viewIconAdd} onPress={openGallery}>
+            <View style={styles.viewTextAdd}>
+                <Text style={styles.textAdd}>Poster image</Text>
+            </View>
+
+            <Controller
+                name="image"
+                control={control}
+                render={({field: {onChange, value}}) => (
+                <>
+                    <View>
+                    <View style={styles.viewImageAdd}>
+                        <TouchableOpacity
+                        style={styles.viewIconAdd}
+                        onPress={() => openGallery(onChange, value)}>
                         <Image source={IMG_AddImage} style={styles.icon}></Image>
-                    </TouchableOpacity>
-                    <View style={styles.viewImage}>
-                        <Image source={{uri:image}} style={styles.image}></Image>
+                        </TouchableOpacity>
+                        {images === null ? (
+                        <></>
+                        ) : (
+                        <View style={styles.viewImage}>
+                            <Image
+                            source={{uri: images}}
+                            style={styles.image}></Image>
+                        </View>
+                        )}
                     </View>
-                </View>
+                    {errors?.image && (
+                        <Text style={styles.textFailed}>
+                        {errors.image.message}
+                        </Text>
+                    )}
+                    </View>
+                </>
+                )}
+            />
             </View>
 
-{/* product  */}
-            <View style={styles.viewProduct}>
-                <ScrollView>
-                {data.map((item,index)=>(
-                  <ItemProductOfCollection
-                  key={index}
-                  number={index+1}
-                  name={item.name}
-                  source={item.source}
-                  />
+            {/* product  */}
+            <Controller
+                name="product"
+                control={control}
+                render={({field: {onChange, value}}) => (
+                <>
+                    <View style={styles.viewSelectProduct}>
+                        <DropDownPicker
+                            scrollViewProps={{
+                                decelerationRate: "fast"
+                            }}
+                            multiple={true}
+                            listMode="MODAL"
+                            open={open}
+                            placeholder="Products"
+                            style={styles.categoryDropDown}
+                            textStyle={styles.dropdownText}
+                            dropDownContainerStyle={styles.dropdownStyle}
+                            items={data}
+                            setOpen={setOpen}
+                            value={selected}
+                            setValue={setSelected}
+                            // onSelectItem={item => [
+                            //     handlePickTag(item),
+                            //     onChange(product.tag),
+                            // ]}
+                            onClose={() => onChange(selected.length)}
 
-                ))}
-                </ScrollView>
-            </View>
+                        />
+                    </View>
+                    {errors?.product && (
+                    <Text style={styles.textFailed}>
+                        {errors.product.message}
+                    </Text>
+                    )}
+                </>
+                )}
+            />
+            <FlatList
+                data={selectedProduct}
+                removeClippedSubviews={true}
+                maxToRenderPerBatch={8}
+                windowSize={11}
+                initialNumToRender={8}
+                keyExtractor={item => item._id}
+                renderItem={({item, index}) => (
+                    <Item
+                        key={item._id}
+                        number={index+1}                
+                        name={item.name}
+                        description={item.description}
+                        price={item.price}
+                        source = {item.posterImage.url}
+                        onPress={()=>props.navigation.navigate("ItemDetail",{data: item})}
+                        delete={()=>deleteItem(item._id,item.name)}
+                        onPressEdit={() => pressEdit(item)}
+                    />)}
+            />
 
-{/* button */}
+            {/* button */}
             <View style={styles.button}>
-                <SaveButton text={'Edit collection'} onPress={()=>props.navigation.navigate("ListCollection")}></SaveButton>
+            <SaveButton
+                loading={loading}
+                text={'Edit collection'}
+                onPress={handleSubmit(()=>handleSubmits(text, images, selected))}></SaveButton>
             </View>
         </View>
-    </SafeAreaView>
-  )
-}
 
-export default EditCollectionScreen
+        <Message
+            visible={visible}
+            title={title}
+            clickCancel={() => {
+            if (title === 'Success') {
+                props.navigation.goBack();
+            } else {
+                setVisible(false);
+            }
+            }}
+            message={message}
+        />
+        </SafeAreaView>
+    );
+};
+
+export default EditCollectionScreen;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-//header
-    header:{
+    //header
+    header: {
         flexDirection: 'row',
         backgroundColor: color.TitleActive,
-        flex:0.1,
-        alignItems: 'center'
+        flex: 0.1,
+        alignItems: 'center',
     },
-    textHeader:{
+    textHeader: {
         color: color.White,
         fontFamily: FONT_FAMILY.Regular,
         fontSize: 24,
         fontWeight: '700',
     },
-//body
-    body:{
+    //body
+    body: {
         flex: 0.9,
         backgroundColor: color.White,
     },
-    viewTextTitle:{
+    viewTextTitle: {
         marginLeft: scale(15),
         marginTop: scale(15),
     },
-    textTitle:{
+    textTitle: {
         color: color.TitleActive,
         fontFamily: FONT_FAMILY.Regular,
         fontSize: 22,
         fontWeight: '600',
     },
-    viewTextInput:{
+    viewTextInput: {
         borderBottomWidth: 1,
         width: '90%',
         alignSelf: 'center',
         borderColor: color.GraySolid,
-        marginTop: scale(10)
+        marginTop: scale(10),
     },
-    textInput:{
+    textInput: {
         color: color.TitleActive,
         fontFamily: FONT_FAMILY.Regular,
         fontSize: 16,
@@ -153,56 +406,90 @@ const styles = StyleSheet.create({
         marginLeft: scale(10),
     },
 
-//add image
-    viewAddImage:{
+    //add image
+    viewAddImage: {
         marginTop: scale(10),
-        height: '15%',
+        height: '25%',
         width: '90%',
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
-    viewTextAdd:{
+    viewTextAdd: {
         height: '30%',
-        justifyContent:'center',
+        justifyContent: 'center',
     },
-    textAdd:{
+    textAdd: {
         color: color.TitleActive,
         fontFamily: FONT_FAMILY.Regular,
-        fontSize:16,
+        fontSize: 16,
         fontWeight: '500',
     },
-    viewImageAdd:{
+    viewImageAdd: {
         height: '70%',
         flexDirection: 'row',
     },
-    viewImage:{
+    viewImage: {
         alignItems: 'center',
         justifyContent: 'center',
         width: '20%',
     },
-    image:{
+    image: {
         width: '75%',
         height: '75%',
     },
-    viewIconAdd:{
+    viewIconAdd: {
         alignItems: 'center',
         justifyContent: 'center',
         width: '20%',
     },
-    icon:{
+    icon: {
         width: '50%',
-        height: '50%'
+        height: '50%',
     },
-
-// product 
-    viewProduct:{
+    //select
+    dropdownStyle: {
+        borderRadius: 0,
+        width: '80%', 
+        alignSelf: 'center'
+    },
+    viewSelectProduct: {       
+        //marginTop: scale(15),
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        gap: scale(15),
+        backgroundColor: color.White,
+        zIndex: 1
+    },
+    categoryDropDown: {
+        borderRadius: 0,
+        borderColor: color.PlaceHolder,
+        width: '80%',
+        paddingVertical: 15,
+        alignSelf: 'center'
+    },
+    inputStyles: {
+        backgroundColor: color.Line,
+    },
+    // product
+    viewProduct: {
         marginTop: scale(10),
-        height: '45%',
+        height: '30',
+        elevation: 2,
     },
 
-//button
-    button:{
+    //button
+    button: {
         // justifyContent: 'flex-end',
         marginTop: scale(20),
         alignItems: 'center',
+        marginBottom: scale(20),
     },
-})
+    //fail
+    textFailed: {
+        paddingLeft: scale(25),
+        // marginTop: scale(7),
+        justifyContent: 'center',
+        fontFamily: FONT_FAMILY.Italic,
+        fontSize: scale(12),
+        color: color.RedSolid,
+    },
+});

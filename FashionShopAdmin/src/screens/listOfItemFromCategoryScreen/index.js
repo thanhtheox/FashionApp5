@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,SafeAreaView, ScrollView, Image, TouchableOpacity, TextInput,Platform, KeyboardAvoidingView, Dimensions, FlatList } from 'react-native'
+import { StyleSheet, Text, View,SafeAreaView, ScrollView, Image, TouchableOpacity, TextInput,Platform, KeyboardAvoidingView, Dimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import color from '../../constants/color'
 import scale from '../../constants/responsive'
@@ -8,9 +8,14 @@ import Item from './components/item'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 import { useIsFocused } from '@react-navigation/native'
 import MessageYN from '../../components/alearts.js/messageYN'
+import HeaderMin from '../../components/header/headerMin'
+import { capitalizeFirstLetter } from '../../config/uppercaseFirstLetter'
+import { FlatList } from 'react-native-gesture-handler'
 
 
-const ListOfItemScreen = (props) => {
+const ListOfItemFromCategoryScreen = (props) => {
+  const {categoryId, categoryName} = props.route.params;
+  console.log(categoryId)
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState([]);
 
@@ -21,13 +26,13 @@ const ListOfItemScreen = (props) => {
   const [visible, setVisible] = useState(false);
   const [clickYes, setClickYes] = useState(() => async () => {setVisible(false)})
   const [clickNo, setClickNo] = useState(() => () => {setVisible(false)})
-  const isFocus = useIsFocused();
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
+
     const getProducts = async () => {
         try {
-            const response = await axiosPrivate.get('/get-all-product', {
+            const response = await axiosPrivate.get(`/get-product-by-category-id/${categoryId}`, {
                 signal: controller.signal
             });
             //console.log(response.data);
@@ -45,28 +50,9 @@ const ListOfItemScreen = (props) => {
         controller.abort();
     }
 
-  }, [isFocus])
+  }, [])
 
-  const pressEdit = async (item) => {
-    const controller = new AbortController();
-    let categoryName = '';
-    try {
-      const response = await axiosPrivate.get(`/category/${item.categoryId}`, {
-          signal: controller.signal
-      });
-      categoryName = response.data.name + ' (' + response.data.parentName + ')';
-      console.log(response.data);
-    } 
-    catch (err) {
-        console.log(err);
-    }
-    console.log(categoryName)
-    props.navigation.navigate("EditItem",{
-      data: item,
-      categoryName: categoryName
-    })
-  }
-
+  
   const deleteItem = async (id, name) => {
     setTitle('Delete product');
     setMessage(`Do you want to delete ${name} product`)
@@ -140,6 +126,25 @@ const ListOfItemScreen = (props) => {
     props.navigation.navigate("ItemDetail",{data: item, size, productDetail: dataArray})
   }
 
+  const pressEdit = async (item) => {
+    const controller = new AbortController();
+    let categoryName = '';
+    try {
+      const response = await axiosPrivate.get(`/category/${item.categoryId}`, {
+          signal: controller.signal
+      });
+      categoryName = response.data.name + ' (' + response.data.parentName + ')';
+      console.log(response.data);
+    } 
+    catch (err) {
+        console.log(err);
+    }
+    console.log(categoryName)
+    props.navigation.navigate("EditItem",{
+      data: item,
+      categoryName: categoryName
+    })
+  }
   return (
     <SafeAreaView style={styles.container}>
        <MessageYN 
@@ -151,69 +156,36 @@ const ListOfItemScreen = (props) => {
           status={status}
           clickCancel={() => {setVisible(false)}}
         />
-        <View style={styles.header}>
-        
-          <View style={styles.viewText}>
-            <View style={styles.viewTitleText}>
-              <TouchableOpacity onPress={()=>props.navigation.goBack()}>
-                  <IC_Backward stroke={color.White}/>
-              </TouchableOpacity>
-              <Text style={styles.textTile}>List of items</Text>
-            </View>
-              <View style={styles.viewTextAndSearch}>
-                    <TouchableOpacity style={styles.viewTextLabel} onPress={()=>props.navigation.navigate("AddItem")}>
-                      <Text style={styles.textLabel}>Add item</Text>
-                    </TouchableOpacity>
-                    <View style={styles.viewSearch}> 
-                          <TextInput style={styles.textInput}
-                            placeholder="Search ..."
-                            placeholderTextColor={color.AthensGray}
-                            editable
-                            numberOfLines={1}
-                            maxLength={40}
-                            onChangeText={text => onChangeText(text)}
-                            keyboardType='ascii-capable'
-                            value={value}
-                          >
-
-                          </TextInput>
-                          <View style={styles.viewIcon}>
-                            <IC_Search stroke = {color.White}/>
-                          </View>
-
-                    </View>
-              </View>
-          </View>
-        </View>
+        <HeaderMin text={capitalizeFirstLetter(`${categoryName}'s items`)} onPress={() => props.navigation.goBack()}/>
         
         <View style={styles.body}>
-            <FlatList
-              data={data}
-              removeClippedSubviews={true}
-              maxToRenderPerBatch={8}
-              windowSize={11}
-              initialNumToRender={8}
-              keyExtractor={item => item._id}
-              renderItem={({item, index}) => (
-                <Item
-                  key={item._id}
-                  number={index+1}                
-                  name={item.name}
-                  description={item.description}
-                  price={item.price}
-                  source = {item.posterImage.url}
-                  onPress={() => moveItemDetail(item)}
-                  delete={()=>deleteItem(item._id,item.name)}
-                  onPressEdit={() => pressEdit(item)}
-                  />
-              )}
-            />
+          <FlatList
+                data={data}
+                removeClippedSubviews={true}
+                maxToRenderPerBatch={8}
+                windowSize={11}
+                initialNumToRender={8}
+                keyExtractor={item => item._id}
+                renderItem={({item, index}) => (
+                  <Item
+                    key={item._id}
+                    number={index+1}                
+                    name={item.name}
+                    description={item.description}
+                    price={item.price}
+                    source = {item.posterImage.url}
+                    onPress={() => moveItemDetail(item)}
+                    delete={()=>deleteItem(item._id,item.name)}
+                    onPressEdit={() => pressEdit(item)}
+                    />
+                )}
+          />
         </View>
     </SafeAreaView>
   )
 }
 
-export default ListOfItemScreen
+export default ListOfItemFromCategoryScreen
 
 const styles = StyleSheet.create({
     container: {
