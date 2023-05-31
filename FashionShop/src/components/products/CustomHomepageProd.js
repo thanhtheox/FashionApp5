@@ -7,9 +7,20 @@ import Color from '../../constants/color';
 
 const Custom_HomepageProd = props => {
   return (
-    <TouchableOpacity style={[styles.container,{width:props.width}]} onPress={props.onPress} >
-      <View style={[styles.imgContainer,{width:props.width}]}>
-        <Image source={{uri: props.image}} style={[styles.img,{width:props.width}]} resizeMode={'stretch'} />
+    <TouchableOpacity
+      style={[styles.container, {width: props.width}, {height: props.height}]}
+      onPress={props.onPress}>
+      <View
+        style={[
+          styles.imgContainer,
+          {width: props.width},
+          {height: props.height},
+        ]}>
+        <Image
+          source={{uri: props.image}}
+          style={[styles.img, {width: props.width}, {height: props.height}]}
+          resizeMode={'stretch'}
+        />
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.prodName}>{props.prodName}</Text>
@@ -25,7 +36,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     alignItems: 'center',
-    marginHorizontal:scale(8),
+    marginHorizontal: scale(8),
     height: scale(260.16),
   },
   imgContainer: {

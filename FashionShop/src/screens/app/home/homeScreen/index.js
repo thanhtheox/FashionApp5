@@ -1,38 +1,54 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native'
-import React, { useEffect,useState } from 'react'
-import Custom_Footer from '../../../../components/footer/Custom_Footer'
-import Custom_ItemScrollView from './components/Custom_ItemScrollView'
-import Custom_HomepageProd from '../../../../components/products/CustomHomepageProd'
-import Custom_Tag1 from '../../../../components/tags/fill'
-import scale from '../../../../constants/responsive'
-import { IMG_Collection, IMG_Logo, IMG_ModelFour, IMG_ModelOne, IMG_ModelThree, IMG_ModelTwo } from '../../../../assets/images'
-import {Sticker1,Sticker2,Sticker3,Sticker4,Sticker5} from './images'
-import { LineBottom } from '../../../../components/footer/images'
-import FONT_FAMILY from '../../../../constants/fonts'
-import color from '../../../../constants/color'
-import { SwiperFlatList } from 'react-native-swiper-flatlist'
-import useAxiosPrivate from '../../../../hooks/useAxiosPrivate'
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import Custom_Footer from '../../../../components/footer/Custom_Footer';
+import Custom_ItemScrollView from './components/Custom_ItemScrollView';
+import Custom_HomepageProd from '../../../../components/products/CustomHomepageProd';
+import Custom_Tag1 from '../../../../components/tags/fill';
+import scale from '../../../../constants/responsive';
+import {
+  IMG_Collection,
+  IMG_Logo,
+  IMG_ModelFour,
+  IMG_ModelOne,
+  IMG_ModelThree,
+  IMG_ModelTwo,
+} from '../../../../assets/images';
+import {Sticker1, Sticker2, Sticker3, Sticker4, Sticker5} from './images';
+import {LineBottom} from '../../../../components/footer/images';
+import FONT_FAMILY from '../../../../constants/fonts';
+import color from '../../../../constants/color';
+import {SwiperFlatList} from 'react-native-swiper-flatlist';
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 
-
-
-
-const HomeScreen = (props) => {
-  
+const HomeScreen = props => {
   const [banners, setBanners] = useState([]);
   const [tags, setTags] = useState([]);
   const [suggestiveCollectionOne, setSuggestiveCollectionOne] = useState([]);
   const [suggestiveCollectionTwo, setSuggestiveCollectionTwo] = useState([]);
   const [suggestiveProduct, setSuggestiveProduct] = useState([]);
-  
+
   const axiosPrivate = useAxiosPrivate();
   useEffect(() => {
     const controller = new AbortController();
 
-    const getBanners = async (number) => {
+    const getBanners = async number => {
       try {
-        const response = await axiosPrivate.get(`/get-random-collection/${number}`, {
-          signal: controller.signal,
-        });
+        const response = await axiosPrivate.get(
+          `/get-random-collection/${number}`,
+          {
+            signal: controller.signal,
+          },
+        );
         setBanners(response.data);
       } catch (err) {
         console.log(err.response.data);
@@ -68,11 +84,14 @@ const HomeScreen = (props) => {
     //     console.log(err.response.data);
     //   }
     // };
-    const getSuggestiveProduct = async (number) => {
+    const getSuggestiveProduct = async number => {
       try {
-        const response = await axiosPrivate.get(`/get-random-product/${number}`, {
-          signal: controller.signal,
-        });
+        const response = await axiosPrivate.get(
+          `/get-random-product/${number}`,
+          {
+            signal: controller.signal,
+          },
+        );
         setSuggestiveProduct(response.data);
       } catch (err) {
         console.log(err.response.data);
@@ -89,46 +108,60 @@ const HomeScreen = (props) => {
     };
   }, []);
 
-  
-
-
   return (
     <SafeAreaView style={styles.container}>
-        {/* Header */}
-        {/* <Custom_Header/> */}
-        <ScrollView >
-          {/* Banner */}
-          <View style={styles.bannerContainer}>
-            <SwiperFlatList
-              showPagination
-              paginationStyle={styles.wrapDot}
-              paginationStyleItemActive={styles.dotActive}
-              paginationStyleItemInactive={styles.dot}
-              data={banners}
-              renderItem={({ item }) => (
-                <TouchableOpacity style={{width:Dimensions.get('window').width}} 
+      {/* Header */}
+      {/* <Custom_Header/> */}
+      <ScrollView>
+        {/* Banner */}
+        <View style={styles.bannerContainer}>
+          <SwiperFlatList
+            showPagination
+            paginationStyle={styles.wrapDot}
+            paginationStyleItemActive={styles.dotActive}
+            paginationStyleItemInactive={styles.dot}
+            data={banners}
+            renderItem={({item}) => (
+              <TouchableOpacity
+                style={{width: Dimensions.get('window').width}}
                 key={item => `${item._id}`}
-                onPress={() => props.navigation.navigate('CollectionStackScreen', 
-                { screen: 'CollectionDetailScreen',
-                  params: {data:item},
-                }
-                )} >
-                  <Image source={{uri:`${item.posterImage.url}`}} style={styles.bannerWrap} resizeMode='stretch'></Image>
-                </TouchableOpacity>
-              )}
-            />     
-            <View style={styles.exploreButton}>
-              <TouchableOpacity onPress={() => props.navigation.navigate('CollectionStackScreen', { screen: 'CollectionScreen' })}>
-                <Text style={styles.exploreButtonText}>Explore Collection</Text>
+                onPress={() =>
+                  props.navigation.navigate('CollectionStackScreen', {
+                    screen: 'CollectionDetailScreen',
+                    params: {data: item},
+                  })
+                }>
+                <Image
+                  source={{uri: `${item.posterImage.url}`}}
+                  style={styles.bannerWrap}
+                  resizeMode="stretch"></Image>
               </TouchableOpacity>
-            </View> 
+            )}
+          />
+          <View style={styles.exploreButton}>
+            <TouchableOpacity
+              onPress={() =>
+                props.navigation.navigate('CollectionStackScreen', {
+                  screen: 'CollectionScreen',
+                })
+              }>
+              <Text style={styles.exploreButtonText}>Explore Collection</Text>
+            </TouchableOpacity>
           </View>
-          {/* New Arrival */}
-          <View style={styles.arrivalContainer}>
-            <Text style={styles.arrivalText}>NEW ARRIVAL</Text>
-            <Image source={LineBottom} style={{alignSelf: 'center'}} resizeMode='stretch'/>
-            <FlatList
-            contentContainerStyle={{alignContent: 'space-around',marginTop:scale(20)}}
+        </View>
+        {/* New Arrival */}
+        <View style={styles.arrivalContainer}>
+          <Text style={styles.arrivalText}>NEW ARRIVAL</Text>
+          <Image
+            source={LineBottom}
+            style={{alignSelf: 'center'}}
+            resizeMode="stretch"
+          />
+          <FlatList
+            contentContainerStyle={{
+              alignContent: 'space-around',
+              marginTop: scale(20),
+            }}
             horizontal={false}
             data={suggestiveProduct}
             keyExtractor={item => `${item._id}`}
@@ -138,22 +171,28 @@ const HomeScreen = (props) => {
             renderItem={({item}) => (
               <View>
                 <Custom_HomepageProd
+                  height={230}
                   width={165}
                   image={item.posterImage.url}
                   prodName={item.name}
                   prodPrice={item.price}
-                  onPress={() => props.navigation.navigate('ProductDetailsScreen', {
-                    data: item,
-                  })}
+                  onPress={() =>
+                    props.navigation.navigate('ProductDetailsScreen', {
+                      data: item,
+                    })
+                  }
                 />
               </View>
             )}></FlatList>
-            <TouchableOpacity onPress={() => props.navigation.navigate('CategoryGridViewAllScreen')}>
-              <Text style={styles.exploreText}>Explore More ⇒</Text>
-            </TouchableOpacity>
-          </View>
-          {/* Collection */}
-          {/* <View style={styles.collectionContainer}>
+          <TouchableOpacity
+            onPress={() =>
+              props.navigation.navigate('CategoryGridViewAllScreen')
+            }>
+            <Text style={styles.exploreText}>Explore More ⇒</Text>
+          </TouchableOpacity>
+        </View>
+        {/* Collection */}
+        {/* <View style={styles.collectionContainer}>
             <Text style={styles.collectionText}>COLLECTIONS</Text>
             <TouchableOpacity style={{alignItems:'center', width:'100%'}} 
             onPress={() => props.navigation.navigate('CollectionStackScreen', { screen: 'CollectionDetailScreen' })}>
@@ -164,124 +203,147 @@ const HomeScreen = (props) => {
               <Image source={{uri:suggestiveCollectionTwo.posterImage.url}} resizeMode='stretch' style={{marginTop:scale(35)}}/>
             </TouchableOpacity>
           </View>         */}
-          {/* Product */}
-          <View style={styles.productContainer}>
-            <Text style={styles.productText}>JUST FOR YOU</Text>
-            <Image source={LineBottom} style={styles.lineBottom} resizeMode='cover'/>
-            <SwiperFlatList
-              showPagination
-              paginationStyle={styles.wrapDot}
-              paginationStyleItemActive={styles.dotActive}
-              paginationStyleItemInactive={styles.dot}
-              data={suggestiveProduct}
-              renderItem={({ item }) => (
-                <View key={item => `${item._id}`} style={styles.productWrap}>
-                  <Custom_HomepageProd
-                  height={387}
-                  width={255}
+        {/* Product */}
+        <View style={styles.productContainer}>
+          <Text style={styles.productText}>JUST FOR YOU</Text>
+          <Image
+            source={LineBottom}
+            style={styles.lineBottom}
+            resizeMode="cover"
+          />
+          <SwiperFlatList
+            showPagination
+            paginationStyle={styles.wrapDot}
+            paginationStyleItemActive={styles.dotActive}
+            paginationStyleItemInactive={styles.dot}
+            data={suggestiveProduct}
+            style={styles.productWrap1}
+            renderItem={({item}) => (
+              <View key={item => `${item._id}`} style={styles.productWrap}>
+                <Custom_HomepageProd
+                  height={300}
+                  width={245}
                   image={item.posterImage.url}
                   prodName={item.name}
                   prodPrice={item.price}
-                  onPress={() => props.navigation.navigate('ProductDetailsScreen', {
-                    data: item,
-                  })}
-                  />
-                </View>
-              )}
-            />      
-          </View>
-          {/* Trending */}
-          <View style={styles.trendContainer}>
-              <Text style={styles.trendingText}>@Trending</Text>
-              <View style={styles.tagView}>
-                {tags.map(item =>            
-                      <Custom_Tag1
-                        onPress={() => props.navigation.navigate('CategoryGridViewByIdScreen', {
-                          data: item,
-                        })}
-                        key={item._id}
-                        value={'#' + item.name}
-                      />
-                )}
+                  onPress={() =>
+                    props.navigation.navigate('ProductDetailsScreen', {
+                      data: item,
+                    })
+                  }
+                />
               </View>
-              
-          </View>
-          {/* Open Fashion */}
-          <View style={styles.openFashionContainer}>
-            <Image source={IMG_Logo} style={styles.openFashionText}/>
-            <Image source={LineBottom} style={{alignSelf: 'center',marginTop: scale(5),}} resizeMode='stretch'/>
-          </View>
-          <Custom_Footer style={{justifyContent: 'flex-end'}} 
-          onAboutPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'OurStoryScreen' })}
-          onContactPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'ContactUsScreen' })}
-          onBlogPress={() => props.navigation.navigate('BlogStackScreen', { screen: 'BlogGridViewScreen' })}
+            )}
           />
-        </ScrollView>
+        </View>
+        {/* Trending */}
+        <View style={styles.trendContainer}>
+          <Text style={styles.trendingText}>@Trending</Text>
+          <View style={styles.tagView}>
+            {tags.map(item => (
+              <Custom_Tag1
+                onPress={() =>
+                  props.navigation.navigate('CategoryGridViewByIdScreen', {
+                    data: item,
+                  })
+                }
+                key={item._id}
+                value={'#' + item.name}
+              />
+            ))}
+          </View>
+        </View>
+        {/* Open Fashion */}
+        <View style={styles.openFashionContainer}>
+          <Image source={IMG_Logo} style={styles.openFashionText} />
+          <Image
+            source={LineBottom}
+            style={{alignSelf: 'center', marginTop: scale(5)}}
+            resizeMode="stretch"
+          />
+        </View>
+        <Custom_Footer
+          style={{justifyContent: 'flex-end'}}
+          onAboutPress={() =>
+            props.navigation.navigate('HomeStackScreen', {
+              screen: 'OurStoryScreen',
+            })
+          }
+          onContactPress={() =>
+            props.navigation.navigate('HomeStackScreen', {
+              screen: 'ContactUsScreen',
+            })
+          }
+          onBlogPress={() =>
+            props.navigation.navigate('BlogStackScreen', {
+              screen: 'BlogGridViewScreen',
+            })
+          }
+        />
+      </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default HomeScreen
+export default HomeScreen;
 
 const styles = StyleSheet.create({
-    container:{
-        flex:1,
-        flexDirection: 'column',
-        backgroundColor: color.OffWhite,
-    },
-    bannerContainer:{
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100%',
-    },
-    bannerWrap: {
-      justifyContent:'center',
-      alignSelf:'center',
-      width:'100%',
-      height:scale(450),
-    },
-    exploreButton:{
-      position:'absolute',
-      borderRadius:scale(30),
-      paddingHorizontal:scale(30),
-      paddingVertical:scale(8),
-      flexDirection:'row',
-      display:'flex',
-      alignItems:'center',
-      bottom: scale(43),
-      backgroundColor:'rgba(0, 0, 0, 0.4)',
-    },
-    exploreButtonText: {
-
-      fontFamily:FONT_FAMILY.Regular,
-      fontSize:scale(16),
-      lineHeight:scale(24),
-      color:color.OffWhite,
-    },
-    arrivalContainer:
-    {
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      paddingTop: scale(32),
-      paddingHorizontal: scale(16),
-    },
-    arrivalText: {
-      fontSize: scale(18),
-      lineHeight: scale(40),
-      textAlign: 'center',
-      fontFamily: FONT_FAMILY.Regular,
-      color: color.TitleActive,
-    },
-    lineBottom:{
-      alignSelf: 'center',
-      marginTop: scale(30),
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: color.OffWhite,
   },
-    wrapperArrival:{
-      marginBottom: scale(5),
+  bannerContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
   },
-    wrapperBrand:{
-      marginBottom: scale(35),
+  bannerWrap: {
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width: '100%',
+    height: scale(450),
+  },
+  exploreButton: {
+    position: 'absolute',
+    borderRadius: scale(30),
+    paddingHorizontal: scale(30),
+    paddingVertical: scale(8),
+    flexDirection: 'row',
+    display: 'flex',
+    alignItems: 'center',
+    bottom: scale(43),
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  },
+  exploreButtonText: {
+    fontFamily: FONT_FAMILY.Regular,
+    fontSize: scale(16),
+    lineHeight: scale(24),
+    color: color.OffWhite,
+  },
+  arrivalContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: scale(32),
+    paddingHorizontal: scale(16),
+  },
+  arrivalText: {
+    fontSize: scale(18),
+    lineHeight: scale(40),
+    textAlign: 'center',
+    fontFamily: FONT_FAMILY.Regular,
+    color: color.TitleActive,
+  },
+  lineBottom: {
+    alignSelf: 'center',
+    marginTop: scale(30),
+  },
+  wrapperArrival: {
+    marginBottom: scale(65),
+  },
+  wrapperBrand: {
+    marginBottom: scale(35),
   },
   exploreText: {
     fontFamily: FONT_FAMILY.Regular,
@@ -290,8 +352,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: color.TitleActive,
   },
-  brandContainer:
-  {
+  brandContainer: {
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -303,10 +364,10 @@ const styles = StyleSheet.create({
   },
   collectionText: {
     fontFamily: FONT_FAMILY.Regular,
-    fontSize:scale(18),
-    lineHeight:scale(40),
-    color:color.TitleActive,
-    letterSpacing:scale(4),
+    fontSize: scale(18),
+    lineHeight: scale(40),
+    color: color.TitleActive,
+    letterSpacing: scale(4),
   },
   videoContainer: {
     flexDirection: 'column',
@@ -326,7 +387,7 @@ const styles = StyleSheet.create({
     color: color.TitleActive,
   },
   tagView: {
-    flexDirection:'row',
+    flexDirection: 'row',
     justifyContent: 'space-around',
     flex: 1,
     flexWrap: 'wrap',
@@ -334,15 +395,18 @@ const styles = StyleSheet.create({
     marginHorizontal: scale(10),
   },
   productWrap: {
-    justifyContent:'space-around',
-    height:scale(380), 
+    justifyContent: 'space-around',
+    height: scale(450),
     width: scale(265),
-    alignItems:'center',
-    flexDirection:'column', 
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  productWrap1: {
+    marginTop: scale(-40),
   },
   wrapDot: {
     flexDirection: 'row',
-    alignSelf: 'center',   
+    alignSelf: 'center',
     width: '100%',
   },
   dotActive: {
@@ -359,8 +423,7 @@ const styles = StyleSheet.create({
     width: scale(7),
     height: scale(7),
   },
-  productContainer:
-  {
+  productContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
@@ -380,23 +443,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: scale(32),
     paddingHorizontal: scale(16),
-    marginBottom:scale(18),
+    marginBottom: scale(18),
   },
   openFashionText: {
-    width:scale(230),
-    height:scale(200),
+    width: scale(230),
+    height: scale(200),
   },
   stickerView: {
-    width:scale(155),
-    height:scale(82),
+    width: scale(155),
+    height: scale(82),
     paddingHorizontal: scale(8),
     paddingVertical: scale(6),
     alignSelf: 'flex-start',
     marginHorizontal: '1%',
     marginBottom: scale(6),
     flexDirection: 'column',
-    alignItems:'center',
-    justifyContent:'space-around',
-    marginLeft:scale(18),
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    marginLeft: scale(18),
   },
-})
+});
