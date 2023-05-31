@@ -18,8 +18,9 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import { useDispatch } from 'react-redux';
 import useAuth from '../../../hooks/useAuth';
 import axiosClient, { axiosPrivate } from '../../../apis/axios';
+import { initUser } from '../../../redux/actions/userActions';
 
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+const passwordRegex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
 const signUpPayloadSchema = yup.object({
@@ -61,7 +62,6 @@ const SignUpScreen = (props) => {
 
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
-
   const dispatch = useDispatch();
 
   const {
@@ -83,7 +83,6 @@ const SignUpScreen = (props) => {
 
   const handleSignup = async (data) => {
     try {
-      // console.log("🚀 ~ file: index.js:66 ~ handleSignup ~ data", data)
       setLoading(true);
       const response = await axiosPrivate.post(
         '/signup',
@@ -103,7 +102,8 @@ const SignUpScreen = (props) => {
         JSON.stringify({email: email, password: password}),
       );
       const accessToken = responseLogin?.data?.accessToken;
-      setAuth({email: email, accessToken}); 
+      dispatch(initUser(responseLogin.data.user));
+      setAuth({email: email, accessToken, emailVerified: responseLogin.data.user.emailVerified, userId: responseLogin.data.user._id}); 
       console.log('success', JSON.stringify(response.data));
       setLoading(false);
       props.navigation.navigate('AppStackScreen')
@@ -124,7 +124,7 @@ const SignUpScreen = (props) => {
 
         <View style={styles.ViewTitleText}>
           <Text style={styles.textTile}>Welcome!</Text>
-          <Text style={styles.textLabel}>Sign in to continue</Text>
+          <Text style={styles.textLabel}>Sign up to continue</Text>
         </View>
       </View>
       <View style={styles.body}>
@@ -228,7 +228,7 @@ const SignUpScreen = (props) => {
               <View style={styles.viewInput}>
               <TextInput
                 secureTextEntry={true}
-                onChangeText={password =>[ onChange(password),setPassword(password)]}
+                onChangeText={password =>[onChange(password),setPassword(password)]}
                 value={value}
                 placeholder="Password"
                 placeholderTextColor={color.GraySolid}
@@ -386,7 +386,7 @@ const styles = StyleSheet.create({
   textFailed: {
     alignSelf: 'flex-start',
     fontFamily: FONT_FAMILY.JoseFinSans,
-    fontSize: scale(12),
+    fontSize: scale(10),
     color: color.RedSolid,
     marginTop: scale(5),
   },

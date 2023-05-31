@@ -16,23 +16,81 @@ import {
   import FONT_FAMILY from '../../../constants/fonts';
   import SaveButton from '../../../components/buttons/Save';
   import {useRef} from 'react';
+import useLogout from '../../../hooks/useLogout';
+import { useDispatch, useSelector } from 'react-redux';
+import useAuth from '../../../hooks/useAuth';
+import { axiosPrivate } from '../../../apis/axios';
+import { resetCartWhenLogOut } from '../../../redux/actions/cartActions';
+import {Controller, useForm} from 'react-hook-form';
+import { resetUserWhenLogOut, userVerified } from '../../../redux/actions/userActions';
 
   
-  const OTPScreen = props => {
+  const OTPScreen = props => {  
     const firstInput = useRef();
     const secondInput = useRef();
     const thirdInput = useRef();
     const fourthInput = useRef();
-    const fifthInput = useRef();
-    const sixthInput = useRef();
-    const [otp, setOtp] = useState({1: '', 2: '', 3: '', 4: '', 5: '', 6: ''});
+    const [otp, setOtp] = useState("");
+    const [otp1, setOtp1] = useState("");
+    const [otp2, setOtp2] = useState("");
+    const [otp3, setOtp3] = useState("");
+    const [otp4, setOtp4] = useState("");
+    const logout = useLogout();
+    const dispatch = useDispatch();
+    const {auth, setAuth} = useAuth();
+    const signOut = async () => {
+        try {
+        logout();
+         dispatch(resetCartWhenLogOut());
+         dispatch(resetUserWhenLogOut());
+        props.navigation.replace('AuthStackScreen');
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    const {
+      control,
+      handleSubmit,
+      formState: {errors},
+    } = useForm({
+      mode: 'onChange',
+      defaultValues: {
+        otp: '',
+        otp1: '',
+        otp2: '',
+        otp3: '',
+        otp4: '',
+        userId: auth.userId,
+      },
+      
+    });
+    const handleVerified = async () => {
+        try {
+            const response = await axiosPrivate.post(
+              '/verify-email',
+              JSON.stringify({otp: otp1+otp2+otp3+otp4, userId: auth.userId}),
+            );
+            console.log('success', JSON.stringify(response.data));
+            if(response?.status === 200)
+            {
+              setAuth(prev => {
+              return {...prev,_id: auth.userId, emailVerified: true}
+              })
+              dispatch(userVerified(true))
+            }
+          } catch (err) {
+            console.log('err', err);
+            console.log(JSON.stringify(otp))
+          }
+    }
     
     return (
       <TouchableWithoutFeedback
         onPress={() => Keyboard.dismiss() && TextInput.clearFocus()}>
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.viewIcon} onPress={() => props.navigation.goBack()}>
+                <TouchableOpacity style={styles.viewIcon} onPress={() => signOut()}>
                     <IC_BackwardArrow stroke={color.White} />
                 </TouchableOpacity>
 
@@ -42,85 +100,82 @@ import {
                 </View>
             </View>
             <View style={styles.body}>
-                <View style={styles.otpContainer}>
-                    <View style={styles.otpBox}>
-                        <TextInput
-                            style={styles.otpText}
-                            keyboardType="ascii-capable-number-pad"
-                            maxLength={1}
-                            ref={firstInput}
-                            onChangeText={text => {
-                            setOtp({...otp, 1: text});
-                            text && secondInput.current.focus();
-                            }}
-                        />
-                        
-                        
-                    </View>
-                    <View style={styles.otpBox}>
-                        <TextInput
-                            style={styles.otpText}
-                            keyboardType="ascii-capable-number-pad"
-                            maxLength={1}
-                            ref={secondInput}
-                            onChangeText={text => {
-                            setOtp({...otp, 2: text});
-                            text ? thirdInput.current.focus() : firstInput.current.focus();
-                            }}
-                        />
-                    </View>
-                    <View style={styles.otpBox}>
-                        <TextInput
-                            style={styles.otpText}
-                            keyboardType="ascii-capable-number-pad"
-                            maxLength={1}
-                            ref={thirdInput}
-                            onChangeText={text => {
-                            setOtp({...otp, 3: text});
-                            text ? fourthInput.current.focus() : secondInput.current.focus();
-                            }}
-                        />
-                    </View>
-                    <View style={styles.otpBox}>
-                        <TextInput
-                            style={styles.otpText}
-                            keyboardType="ascii-capable-number-pad"
-                            maxLength={1}
-                            ref={fourthInput}
-                            onChangeText={text => {
-                            setOtp({...otp, 4: text});
-                            text ? fifthInput.current.focus() : thirdInput.current.focus();
-                            }}
-                        />
-                    </View>
-                    <View style={styles.otpBox}>
-                        <TextInput
-                            style={styles.otpText}
-                            keyboardType="ascii-capable-number-pad"
-                            maxLength={1}
-                            ref={fifthInput}
-                            onChangeText={text => {
-                            setOtp({...otp, 5: text});
-                            text ? sixthInput.current.focus() : fourthInput.current.focus();
-                            }}
-                        />
-                    </View>
-                    <View style={styles.otpBox}>
-                        <TextInput
-                            style={styles.otpText}
-                            keyboardType="ascii-capable-number-pad"
-                            maxLength={1}
-                            ref={sixthInput}
-                            onChangeText={text => {
-                            setOtp({...otp, 6: text});
-                            !text && fifthInput.current.focus();
-                            }}
-                        />
-                    </View>
+              <View style={styles.otpContainer}>
+                <Controller
+                name="otp1"
+                control={control}
+                render={({field: {onChange, value}}) => (
+                  <View style={styles.otpBox}>
+                      <TextInput
+                          style={styles.otpText}
+                          keyboardType="ascii-capable-number-pad"
+                          maxLength={1}
+                          ref={firstInput}
+                          value={value}
+                          onChangeText={text => {
+                            [onChange(text), setOtp1(text)];
+                            text && secondInput.current.focus()}}
+                      />
+                  </View>
+                  )}
+                />
+                <Controller
+                name="otp2"
+                control={control}
+                render={({field: {onChange, value}}) => (
+                  <View style={styles.otpBox}>
+                      <TextInput
+                          style={styles.otpText}
+                          keyboardType="ascii-capable-number-pad"
+                          maxLength={1}
+                          ref={secondInput}
+                          value={value}
+                          onChangeText={text => {
+                            [onChange(text), setOtp2(text)];
+                            text ? thirdInput.current.focus() : firstInput.current.focus()}}
+                      />
+                  </View>
+                  )}
+                />
+                <Controller
+                name="otp3"
+                control={control}
+                render={({field: {onChange, value}}) => (
+                  <View style={styles.otpBox}>
+                      <TextInput
+                          style={styles.otpText}
+                          keyboardType="ascii-capable-number-pad"
+                          maxLength={1}
+                          ref={thirdInput}
+                          value={value}
+                          onChangeText={text => {
+                            [onChange(text), setOtp3(text)];
+                            text ? fourthInput.current.focus() : secondInput.current.focus()}}
+                      />
+                  </View>
+                  )}
+                />
+                    <Controller
+                name="otp4"
+                control={control}
+                render={({field: {onChange, value}}) => (
+                  <View style={styles.otpBox}>
+                      <TextInput
+                          style={styles.otpText}
+                          keyboardType="ascii-capable-number-pad"
+                          maxLength={1}
+                          ref={fourthInput}
+                          value={value}
+                          onChangeText={text => {
+                            [onChange(text), setOtp4(text)];
+                            !text && fourthInput.current.focus()}}
+                      />
+                  </View>
+                  )}
+                />
                 </View>
-    
                 <View style={styles.buttonVerification}>
-                    <SaveButton text={'Verify'} onPress={() => props.navigation.navigate('AppStackScreen')}/>
+                    <SaveButton text={'Verify'} onPress={handleSubmit(handleVerified)}/>
                 </View>
                 <View style={styles.checkVerification}>
                     <Text style={styles.question}>Did not get an OTP code?</Text>

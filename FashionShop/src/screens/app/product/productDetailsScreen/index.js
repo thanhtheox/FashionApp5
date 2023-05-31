@@ -22,9 +22,11 @@ import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 const ProductDetailsScreen = (props) => {
   const [visible,setVisible] = useState(true);
   const [count, setCount] = useState(1);
-  const [colorChoose, setChooseColor] = useState('1');
-  const [sizeChoose, setChooseSize] = useState('1');
+  const [colorChoose, setChooseColor] = useState(0);
+  const [sizeChoose, setChooseSize] = useState(0);
   const [productImages,setProductImages] = useState([]);
+  const [colors,setColors] = useState([]);
+  const [sizes,setSizes] = useState([]);
   const [suggestiveProduct, setSuggestiveProduct] = useState([]);
   const axiosPrivate = useAxiosPrivate();
  
@@ -49,64 +51,31 @@ const ProductDetailsScreen = (props) => {
   }, [])
 
 
-  const sizes = [
-    {
-      key: '1',
-      size:'S',
-    },
-    {
-      key: '2',
-      size:'M',
-    },
-    {
-      key: '3',
-      size:'L',
-    },
-  ];
-  const colors = [
-    {
-      key: '1',
-      color:'#0F140D',
-    },
-    {
-      key: '2',
-      color:'#DD8560',
-    },
-    {
-      key: '3',
-      color:'#E1E0DB',
-    },
-  ];
-  const likeProducts = [
-    {
-      id: 1,
-      name: ' reversible ',
-      price: 120,
-      img: IMG_ModelOne,
-    },
-    {
-      id: 2,
-      name: '21WN cardigan',
-      price: 140,
-      img: IMG_ModelTwo,
-    },
-    {
-      id: 3,
-      name: '21WN angora',
-      price: 180,
-      img: IMG_ModelThree,
-    },
-    {
-      id: 4,
-      name: 'Oblong bag',
-      price: 220,
-      img: IMG_ModelFour,
-    },
-  ];
+
 
   useEffect(() => {
     const controller = new AbortController();
 
+    const getColorsById = async (id) => {
+      try {
+        const response = await axiosPrivate.get(`/get-color-by-id/${id}`, {
+          signal: controller.signal, 
+        });
+        setColors(response.data)
+      } catch (err) {
+        console.log(err.response.data);
+      }
+  };
+  const getSizesById = async (id) => {
+    try {
+      const response = await axiosPrivate.get(`/get-size-by-id/${id}`, {
+        signal: controller.signal, 
+      });
+      setSizes(response.data)
+    } catch (err) {
+      console.log(err.response.data);
+    }
+};
     const getSuggestiveProduct = async (number) => {
       try {
         const response = await axiosPrivate.get(`/get-random-product/${number}`, {
@@ -118,6 +87,8 @@ const ProductDetailsScreen = (props) => {
       }
     };
     getSuggestiveProduct(4);
+    getColorsById(data._id);
+    getSizesById(data._id);
     return () => {
       controller.abort();
     };
@@ -170,11 +141,11 @@ const ProductDetailsScreen = (props) => {
             <View style={{flexDirection:'row',justifyContent:'space-between',paddingHorizontal:scale(12),width:'40%'}}>
               <Text style={{color:color.Label, fontFamily:FONT_FAMILY.Regular,
                 fontSize:scale(16),lineHeight:scale(18)}}>Color</Text>
-              {colors.map(item => 
-                <TouchableOpacity style={{borderRadius:360,borderColor:color.PlaceHolder, borderWidth:colorChoose===item.key?1:0, alignItems:'center',
+              {colors.map((item,index) => 
+                <TouchableOpacity style={{borderRadius:360,borderColor:color.PlaceHolder, borderWidth:colorChoose===index?1:0, alignItems:'center',
                 justifyContent:'center',width:scale(22),height:scale(22)}} 
-                  onPress={() => setChooseColor(item.key)} key={item.key}>
-                  <View style={{borderRadius:360, backgroundColor:item.color,justifyContent:'center',
+                  onPress={() => setChooseColor(index)} key={item._id}>
+                  <View style={{borderRadius:360, backgroundColor:item.name,justifyContent:'center',
                   width:scale(16),height:scale(16)}}/> 
                 </TouchableOpacity>     
               )}
@@ -182,12 +153,12 @@ const ProductDetailsScreen = (props) => {
             <View style={{flexDirection:'row',justifyContent:'space-between',marginLeft:scale(35),paddingHorizontal:scale(12),width:'40%'}}>
               <Text style={{color:color.Label, fontFamily:FONT_FAMILY.Regular,
                 fontSize:scale(16),lineHeight:scale(18)}}>Size</Text>
-              {sizes.map(item => 
-                <TouchableOpacity style={{borderRadius:360, borderWidth:1, borderColor:sizeChoose===item.key?color.Body:color.Border,
-                  width:scale(16),height:scale(16), alignItems:'center',backgroundColor:sizeChoose===item.key?color.Body:color.OffWhite}}
-                  onPress={() => setChooseSize(item.key)} key={item.key}>
-                    <Text style={{color:sizeChoose===item.key?color.InputBackground:color.Label, fontFamily:FONT_FAMILY.Regular,
-                fontSize:scale(12),lineHeight:scale(14),textAlign:'center'}}>{item.size}</Text>
+              {sizes.map((item,index) => 
+                <TouchableOpacity style={{borderRadius:360, borderWidth:1, borderColor:sizeChoose===index?color.Body:color.Border,
+                  width:scale(16),height:scale(16), alignItems:'center',backgroundColor:sizeChoose===index?color.Body:color.OffWhite}}
+                  onPress={() => setChooseSize(index)} key={item._id}>
+                    <Text style={{color:sizeChoose===index?color.InputBackground:color.Label, fontFamily:FONT_FAMILY.Regular,
+                fontSize:scale(12),lineHeight:scale(14),textAlign:'center'}}>{item.name}</Text>
                 </TouchableOpacity>           
               )}
             </View>

@@ -22,54 +22,8 @@ import Custom_Tag2 from '../../../../components/tags/border';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
   
   
-  const tags = [
-    {
-      key: '1',
-      value: 'Boss',
-    },
-    {
-      key: '2',
-      value: 'Burberry',
-    },
-    {
-      key: '3',
-      value: 'Catier',
-    },
-    {
-      key: '4',
-      value: 'Gucci',
-    },
-    {
-      key: '5',
-      value: 'Prada',
-    },
-    {
-      key: '6',
-      value: 'Tiffany',
-    },
-    {
-      key: '7',
-      value: 'Prada',
-    },
-    {
-      key: '8',
-      value: 'Tiffany',
-    },
-  ];
-  const blogTags = [
-    {
-      key: '1',
-      value: '#Boss',
-    },
-    {
-      key: '2',
-      value: '#Burberry',
-    },
-  ];
-  
     const BlogGridViewScreen = (props) => {
       const [blogs,setBlogs] = useState([]);
-      const [tags, setTags] = useState([]);
       const [blogPage, setBlogPage] = useState([]);
       const [page, setPage] = useState(1);
       const axiosPrivate = useAxiosPrivate();
@@ -84,43 +38,12 @@ import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
               signal: controller.signal, 
             });
             listOfBlogs = response.data;
-            // await Promise.all(listOfBlogs.map(item => {
-            //   getTags(item.tag);
-            //   const obj = {};
-            //   obj = item;              
-            //   try{
-            //     let tagName = [];
-            //     tags.map(item => {
-            //       tagName.push(item.name)
-            //     })
-                
-            //     obj.tagName = tagName;
-            //     item = obj
-            //   }
-            //   catch (err) {
-            //     console.log(err)
-            //   }
-            // }))
             setBlogs(response.data)
-            console.log(JSON.stringify( blogs))
+            console.log(blogs)
           } catch (err) {
             console.log(err.response.data);
           }
       };
-      // const getTags = async (idList) => {
-      //   const listOfTags = [];
-      //   await Promise.all(idList.map(async(id) => {
-      //     try {
-      //       const response = await axiosPrivate.get(`/get-tag-by-id/${id}`, {
-      //         signal: controller.signal, 
-      //       });
-      //       listOfTags.push(response.data)
-      //     } catch (err) {
-      //       console.log(err.response.data);
-      //     }
-      //   }))
-      //   setTags(listOfTags);
-      // };
         getAllBlogs();
         console.log(blogs)
         return () => {
@@ -141,24 +64,14 @@ import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
       const renderItem = ({ item }) => (
         <View>
           <BlogItems
-            onPress={() => props.navigation.navigate('BlogPostScreen', {
+            blogOnPress={() => props.navigation.navigate('BlogPostScreen', {
               data: item,
             })}
+            navigation={props.navigation}
             image={item.posterImage.url}
             prodName={item.title}
+            tagId={item.tag}
           />
-          {/* <View style={styles.tagContainer} >
-            {item.tagName.map((itemTag,index) => {
-            <View key={index}>
-              <Text style={{color:color.TitleActive}}>{itemTag}</Text>
-              {/* <Custom_Tag2
-              value={itemTag}
-              marginLeft={scale(10)}
-              visible={false}
-              /> 
-            </View> 
-            })}
-          </View> */}
         </View>
       );
       return (
@@ -215,13 +128,6 @@ import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
         textAlign: 'center',
         color: color.TitleActive,
         fontFamily: FONT_FAMILY.Regular,
-      },
-      tagContainer: {
-        flexDirection:'row',
-        marginTop:scale(10),
-        justifyContent:'center',
-        height:scale(40),
-        borderWidth:1
       },
       blogTextView:{
         marginTop: scale(20),

@@ -1,9 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Image, TouchableOpacity, Text, View, StyleSheet} from 'react-native';
-import scale from '../constants/responsive';
 import color from '../constants/color';
-import FONT_FAMILY from '../constants/fonts';
-import { useIsFocused } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Custom_Header from '../components/header/Custom_Header';
 
@@ -18,18 +14,20 @@ import CategoryGridViewByIdScreen from '../screens/app/product/categoryGridView/
 import ProductDetailsScreen from '../screens/app/product/productDetailsScreen';
 import SearchDetailScreen from '../screens/app/search/searchDetailScreen/searchDetailScreen';
 import MyInfoScreen from '../screens/app/userInfo/myInfoScreen';
+import OTPScreen from '../screens/auth/otpScreen';
+import { useSelector } from 'react-redux';
 
-const AppStack = createNativeStackNavigator();
+const AppStackWithVerify = createNativeStackNavigator();
 
-const AppStackScreen = () => {
+const AppStackWithVerifyScreen = () => {
   return (
-    <AppStack.Navigator
+    <AppStackWithVerify.Navigator
       initialRouteName="HomeStackScreen"
       screenOptions={{
         headerShown: true,
         headerBackVisible: false,
       }}>
-      <AppStack.Screen
+      <AppStackWithVerify.Screen
         name="HomeStackScreen"
         component={HomeStackScreen}
         options={({navigation}) => ({
@@ -38,7 +36,7 @@ const AppStackScreen = () => {
           ),
         })}
       />
-      <AppStack.Screen
+      <AppStackWithVerify.Screen
         name="BlogStackScreen"
         component={BlogStackScreen}
         options={({navigation}) => ({
@@ -47,7 +45,7 @@ const AppStackScreen = () => {
           ),
         })}
       />
-      <AppStack.Screen
+      <AppStackWithVerify.Screen
         name="CheckOutStackScreen"
         component={CheckOutStackScreen}
         options={({navigation}) => ({
@@ -56,7 +54,7 @@ const AppStackScreen = () => {
           ),
         })}
       />
-      <AppStack.Screen
+      <AppStackWithVerify.Screen
         name="CategoryGridViewByIdScreen"
         component={CategoryGridViewByIdScreen}
         options={({navigation}) => ({
@@ -65,7 +63,7 @@ const AppStackScreen = () => {
           ),
         })}
       />
-      <AppStack.Screen
+      <AppStackWithVerify.Screen
         name="CategoryGridViewAllScreen"
         component={CategoryGridViewAllScreen}
         options={({navigation}) => ({
@@ -74,21 +72,21 @@ const AppStackScreen = () => {
           ),
         })}
       />
-      <AppStack.Screen
+      <AppStackWithVerify.Screen
         name="CartScreen"
         component={CartScreen}
         options={() => ({
           headerShown:false
         })}
       />
-      <AppStack.Screen
+      <AppStackWithVerify.Screen
         name="MenuScreen"
         component={Menu}
         options={() => ({
           headerShown:false
         })}
       />
-      <AppStack.Screen
+      <AppStackWithVerify.Screen
         name="CollectionStackScreen"
         component={CollectionStackScreen}
         options={({navigation}) => ({
@@ -101,7 +99,7 @@ const AppStackScreen = () => {
           ),
         })}
       />
-      <AppStack.Screen
+      <AppStackWithVerify.Screen
         name="ProductDetailsScreen"
         component={ProductDetailsScreen}
         options={({navigation}) => ({
@@ -110,7 +108,7 @@ const AppStackScreen = () => {
           ),
         })}
       />
-      <AppStack.Screen
+      <AppStackWithVerify.Screen
         name="SearchDetailScreen"
         component={SearchDetailScreen}
         options={({navigation}) => ({
@@ -119,14 +117,37 @@ const AppStackScreen = () => {
           ),
         })}
       />
-      <AppStack.Screen
+      <AppStackWithVerify.Screen
         name="MyInfoScreen"
         component={MyInfoScreen}
         options={() => ({
           headerShown:false
         })}
       />
-    </AppStack.Navigator>
+    </AppStackWithVerify.Navigator>
+  );
+};
+
+const AppStack = createNativeStackNavigator();
+
+const AppStackScreen = () => {
+  const user = useSelector(state => state.user);
+  const {userItems} = user;
+  const userInfo = userItems.user;
+  
+
+  return (
+    <AppStack.Navigator
+      initialRouteName="AppStackWithVerifyScreen"
+      screenOptions={{headerShown: false}}>
+        {userInfo.emailVerified === true ? (
+          <>
+        <AppStack.Screen name="AppStackWithVerifyScreen" component={AppStackWithVerifyScreen} />
+        </>
+        ):( 
+        <AppStack.Screen name="OTPScreen" component={OTPScreen} />
+        )}
+      </AppStack.Navigator>
   );
 };
 

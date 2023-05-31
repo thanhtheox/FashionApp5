@@ -70,7 +70,7 @@ const HomeScreen = (props) => {
     // };
     const getSuggestiveProduct = async (number) => {
       try {
-        const response = await axiosPrivate.get(`/get-random-product/${number}`, {
+        const response = await axiosPrivate.get(`/get-random-product/${4}`, {
           signal: controller.signal,
         });
         setSuggestiveProduct(response.data);
@@ -177,8 +177,8 @@ const HomeScreen = (props) => {
               renderItem={({ item }) => (
                 <View key={item => `${item._id}`} style={styles.productWrap}>
                   <Custom_HomepageProd
-                  height={387}
-                  width={255}
+                  height={360}
+                  width={300}
                   image={item.posterImage.url}
                   prodName={item.name}
                   prodPrice={item.price}
@@ -338,7 +338,8 @@ const styles = StyleSheet.create({
     height:scale(380), 
     width: scale(265),
     alignItems:'center',
-    flexDirection:'column', 
+    flexDirection:'row', 
+    paddingHorizontal:scale(7)
   },
   wrapDot: {
     flexDirection: 'row',

@@ -80,6 +80,10 @@ import Custom_Tag2 from '../../../../components/tags/border';
       const newData = product.slice(productPage, 8 * page);
       setProductPage(newData);
     };
+    const TextUpperCase = (text) => {
+      let newText = ''+text
+      return newText?.toUpperCase();
+    };
 
     
 
@@ -112,10 +116,7 @@ import Custom_Tag2 from '../../../../components/tags/border';
         <View style={styles.resultSum}>
           <View style={styles.sumText}>
             {categoryParentNameBool ? (
-              <View style={{flexDirection:'row'}}>
-                <Custom_Tag2 value={data.name}/>
-                <Custom_Tag2 value={categoryParentName}/>
-              </View>
+              <Text style={styles.textCategory}>{TextUpperCase(categoryParentName)+' > ' + TextUpperCase(data.name)}</Text>
             ):(<View>
                 <Custom_Tag2 value={'#' + data.name}/>
               </View>
@@ -172,7 +173,14 @@ import Custom_Tag2 from '../../../../components/tags/border';
       fontSize: scale(24),
       textAlign: 'center',
       color: color.White,
-      fontFamily: FONT_FAMILY.JoseFinSansRegular,
+      fontFamily: FONT_FAMILY.Regular,
+    },
+    textCategory: {
+      fontWeight: '400',
+      fontSize: scale(14),
+      textAlign: 'center',
+      color: color.TitleActive,
+      fontFamily: FONT_FAMILY.Regular,
     },
     resultSum:{
       marginTop:scale(30),

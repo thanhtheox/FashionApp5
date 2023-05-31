@@ -75,6 +75,7 @@ import {
   };
   const qtyChangeHandler = (id, qty) => {
     dispatch(adjustQTY(id, qty));
+    
   };
 
   const removeFromCartHandler = id => {

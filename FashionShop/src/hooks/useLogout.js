@@ -2,8 +2,7 @@ import axios from "../apis/axios";
 import useAuth from "./useAuth";
 
 const useLogout = () => {
-    const { setAuth } = useAuth();
-
+    const { auth,setAuth } = useAuth();
     const logout = async () => {
         setAuth({});
         try {
@@ -15,7 +14,7 @@ const useLogout = () => {
             )
         }
         catch (err) {
-            console.error(err);
+            console.log(err);
         }
     }
 

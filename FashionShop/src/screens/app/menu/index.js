@@ -12,6 +12,7 @@ import {  resetCartWhenLogOut } from '../../../redux/actions/cartActions'
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
 import Custom_UnderlineButtonMenu from './components/Custom_UnderlineButtonMenu'
 import Clipboard from '@react-native-clipboard/clipboard'
+import { resetUserWhenLogOut } from '../../../redux/actions/userActions'
 const Menu = (props) => {
 
   const [category, setCategory] = useState([]);
@@ -88,6 +89,7 @@ useEffect(() => {
       try {
       logout();
       await dispatch(resetCartWhenLogOut());
+      await dispatch(resetUserWhenLogOut());
       props.navigation.replace('AuthStackScreen');
     } catch (error) {
       console.log(error);
