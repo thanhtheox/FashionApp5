@@ -39,7 +39,7 @@ const EditMyInfoScreen = props => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [editingPassword, setEditingPassword] = useState(false);
-  const [passConfirm, setPassConfirm] = useState(false);
+  const [passConfirm, setPassConfirm] = useState('');
   const [mail, setMail] = useState('');
   const [pass, setPass] = useState('');
   const [address, setAddress] = useState('');
@@ -144,26 +144,31 @@ const EditMyInfoScreen = props => {
               secureTextEntry={!showPassword}
               placeholder="Enter password"
               value={password}
-              onChangeText={setPassword}
+              onFocus={handleEditingPassword}
+              onChangeText={password => setPassword(password)}
               style={styles.inputText}
               keyboardType="default"
               placeholderTextColor={color.PlaceHolder}
             />
           </View>
-
+          { editingPassword ? (
           <View style={styles.inputBox}>
-            <View style={styles.icon}></View>
+            <View style={styles.icon}>
+              <TouchableOpacity onPress={handleShowPassword}>
+                <IC_Password />
+              </TouchableOpacity>
+            </View>
             <TextInput
               secureTextEntry={!showPassword}
               placeholder="Confirm password"
               value={passConfirm}
-              onChangeText={setPassConfirm}
+              onChangeText={passConfirm => setPassConfirm(passConfirm)}
               keyboardType="default"
               placeholderTextColor={color.PlaceHolder}
               style={styles.inputText}
             />
           </View>
-
+          ) : (null)}
           {/* phone number */}
           <View style={styles.inputBox}>
             <View style={styles.icon1}>
@@ -247,7 +252,7 @@ const styles = StyleSheet.create({
   icon1: {
     alignItems: 'center',
     width: '10%',
-    marginBottom: scale(10),
+    marginBottom: scale(8),
     marginLeft: scale(5),
   },
   button: {
