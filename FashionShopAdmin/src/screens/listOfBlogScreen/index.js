@@ -14,21 +14,11 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import color from '../../constants/color';
-import scale from '../../constants/responsive';
-import FONT_FAMILY from '../../constants/fonts';
-import {
-  IMG_Collection,
-  IMG_ModelFour,
-  IMG_ModelOne,
-  IMG_ModelThree,
-  IMG_ModelTwo,
-} from '../../assets/images';
-import CollectionItem from '../listOfCollectionScreen/components/collectionItem';
-import {IC_Backward, IC_BackwardArrow} from '../../assets/icons';
 import BlogItem from './components/blogItem';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import HeaderMax from '../../components/header/headerMax';
 import MessageYN from '../../components/alearts.js/messageYN'
+import { useIsFocused } from '@react-navigation/native';
 
 
 const ListOfBlogScreen = props => {
@@ -41,6 +31,7 @@ const ListOfBlogScreen = props => {
   const [visible, setVisible] = useState(false);
   const [clickYes, setClickYes] = useState(() => async () => {setVisible(false)})
   const [clickNo, setClickNo] = useState(() => () => {setVisible(false)})
+  const isFocus = useIsFocused();
 
 
   useEffect(() => {
@@ -64,7 +55,7 @@ const ListOfBlogScreen = props => {
       isMounted = false;
       controller.abort();
     };
-  }, []);
+  }, [isFocus ]);
 
   const deleteBlog = async (id, name) => {
     setTitle('Delete Blog');
@@ -115,7 +106,7 @@ const ListOfBlogScreen = props => {
               key={index}
               source={item.posterImage.url}
               name={item.title}
-              onPress={() => props.navigation.navigate('EditBlog')}
+              onPress={() => props.navigation.navigate('EditBlog',{item})}
               delete={()=>deleteBlog(item._id,item.title)}
               ></BlogItem>
           ))}

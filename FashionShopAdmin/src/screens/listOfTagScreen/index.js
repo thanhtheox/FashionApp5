@@ -14,15 +14,20 @@ import {DataTable} from 'react-native-paper';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import HeaderMax from '../../components/header/headerMax';
+import { IC_Delete } from '../../assets/icons';
+import { useIsFocused } from '@react-navigation/native';
+import MessageYN from '../../components/alearts.js/messageYN';
 
 const ListOfTagScreen = props => {
   const [tagData, setTag] = useState([]);
   const axiosPrivate = useAxiosPrivate();
+  const isFocus = useIsFocused();
 
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
 
+    
     const getTags = async () => {
       try {
         const response = await axiosPrivate.get('/get-all-tag', {
@@ -34,16 +39,55 @@ const ListOfTagScreen = props => {
         console.log(err.response.data);
       }
     };
-
+    
     getTags();
-
+    
     return () => {
       isMounted = false;
       controller.abort();
     };
-  }, []);
+  }, [isFocus]);
+
+  const deleteTag = async (id, name) => {
+    setTitle('Delete Tag');
+    setMessage(`Do you want to delete ${name} tag`)
+    setStatus('new')
+    const newClickYes = async () => {
+      try {
+        setStatus('loading');
+        const response = await axiosPrivate.delete(`/delete-size/${id}`, {
+        });
+        console.log(response.data)
+        let newDataTag = tagData.filter(item => item._id !== id)
+        setTag(newDataTag                                                                                                                                                                                                                                                                               );
+        setTitle('Tag deleted');
+        setMessage(`Tag ${name} has been deleted`)
+        setStatus('done');
+      } catch (err) {
+        console.log(err?.response?.data || err.message);
+      } 
+    }
+    setClickYes(() => newClickYes);
+    setVisible(true);
+  }
+
+  const [status, setStatus] = useState('new')
+  const [visible, setVisible] = useState(false);
+  const [title, setTitle] = useState('');
+  const [message, setMessage] = useState('');
+  const [clickYes, setClickYes] = useState(() => async () => {setVisible(false)})
+  const [clickNo, setClickNo] = useState(() => () => {setVisible(false)})
   return (
     <SafeAreaView style={styles.container}>
+      <MessageYN
+          visible={visible} 
+          title={title}
+          message={message}
+          clickYes={clickYes}
+          clickNo={clickNo}
+          status={status}
+          clickCancel={() => {setVisible(false)}}
+        />
       <HeaderMax
         onPress={() => props.navigation.navigate('AddTag')}
         onPressBack={() => props.navigation.goBack()}
@@ -56,13 +100,15 @@ const ListOfTagScreen = props => {
           <DataTable.Header>
             <DataTable.Title textStyle={styles.text}>No.</DataTable.Title>
             <DataTable.Title textStyle={styles.text}>Name</DataTable.Title>
-            <DataTable.Title textStyle={styles.text}>Type</DataTable.Title>
+            <DataTable.Title textStyle={styles.text}>Delete</DataTable.Title>
           </DataTable.Header>
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{flexGrow: 1}}>
             {tagData.map((tag, index) => (
-              <TouchableOpacity key={tag._id}>
+              <TouchableOpacity key={tag._id} onPress={() => props.navigation.navigate("EditTag", {
+                tag: tag
+              })}>
                 <DataTable.Row style={{height: scale(70)}}>
                   <DataTable.Cell textStyle={styles.text}>
                     {index}
@@ -71,43 +117,9 @@ const ListOfTagScreen = props => {
                     {tag.name}
                   </DataTable.Cell>
                   <View>
-                    <BouncyCheckbox
-                      size={25}
-                      fillColor="black"
-                      unfillColor="#FFFFFF"
-                      text="Product"
-                      iconStyle={{borderColor: 'black', borderRadius: 0}}
-                      innerIconStyle={{borderWidth: 2, borderRadius: 0}}
-                      onPress={isChecked => {}}
-                      style={{
-                        flexDirection: 'row-reverse',
-                        justifyContent: 'space-between',
-                        gap: scale(15),
-                      }}
-                      textStyle={styles.text}
-                    />
-                    <View style={{height: scale(10)}} />
-                    <BouncyCheckbox
-                      size={25}
-                      fillColor="black"
-                      unfillColor="#FFFFFF"
-                      text="Blog"
-                      iconStyle={{borderColor: 'black', borderRadius: 0}}
-                      innerIconStyle={{borderWidth: 2, borderRadius: 0}}
-                      onPress={isChecked => {}}
-                      style={{
-                        flexDirection: 'row-reverse',
-                        justifyContent: 'space-between',
-                        gap: scale(15),
-                      }}
-                      textStyle={{
-                        fontWeight: '600',
-                        fontSize: 15,
-                        fontFamily: FONT_FAMILY.Regular,
-                        textDecorationLine: 'none',
-                        color: color.TitleActive,
-                      }}
-                    />
+                    <TouchableOpacity style={styles.viewIcon} onPress={() => deleteTag(tag._id, tag.name)}>
+                      <IC_Delete></IC_Delete>
+                    </TouchableOpacity>
                   </View>
                 </DataTable.Row>
               </TouchableOpacity>
@@ -137,4 +149,11 @@ const styles = StyleSheet.create({
     textDecorationLine: 'none',
     color: color.TitleActive,
   },
+  viewIcon:{
+    width: scale(100),
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: scale(5)
+  }
 });

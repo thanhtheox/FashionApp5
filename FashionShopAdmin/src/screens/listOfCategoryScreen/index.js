@@ -19,37 +19,10 @@ import { IC_Forward , IC_Down, IC_BackwardArrow} from '../../assets/icons';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import HeaderMax from '../../components/header/headerMax';
 import { useIsFocused } from '@react-navigation/native';
+import { Button, Menu, Divider, Provider, DefaultTheme } from 'react-native-paper';
+import MessageYN from '../../components/alearts.js/messageYN';
 
-
-// const CONTENT = [
-//   { 
-//     isExpanded: false,
-//     title:'Woman',
-//     child:[
-//         {id: 1,name: 't-shirt'},
-//         {id: 2,name: 'blouse'},
-//         {id: 3,name: 'jacket'},
-//         {id: 4,name: 'skirt'},
-//         {id: 5,name: 'shorts'},
-
-//     ]
-// },
-// {
-//   isExpanded: false,
-
-//     title: 'Man',
-//     child:[
-//       {id: 6,name: 't-shirt'},
-//       {id: 7,name: 'blouse'},
-//       {id: 8,name: 'suit'},
-//       {id: 9,name: 'jacket'},
-//       {id: 10,name: 'belt'},
-
-//     ]
-// },
-// ];
-
-const ExpandableComponent = ({item, onClickFunction}) => {
+const ExpandableComponent = ({item, onClickFunction, onPress, deleteCategory, navigation }) => {
   //Custom Component for the Expandable List
   const [layoutHeight, setLayoutHeight] = useState(0);
 
@@ -61,34 +34,92 @@ const ExpandableComponent = ({item, onClickFunction}) => {
     }
   }, [item.isExpanded]);
 
+  const [visible, setVisible] = React.useState(false);
+
+  const openMenu = () => setVisible(true);
+
+  const closeMenu = () => setVisible(false);
+
+  
+
+  const Item = ({item, index, deleteCategory, navigation}) => {
+    const [cvisible, setcVisible] = React.useState(false);
+
+    const opencMenu = () => setcVisible(true);
+
+    const closecMenu = () => setcVisible(false);
+    return (
+      <View>
+      <Menu
+            visible={cvisible}
+            onDismiss={closecMenu}
+            anchorPosition='bottom'
+            anchor={
+              <>
+                <TouchableOpacity style={styles.viewListBody} onLongPress={opencMenu} onPress={() => navigation.navigate("ListItemFromCategory", {
+                  categoryId: item._id,
+                  categoryName:item.name
+                })}>
+                  <View style={styles.viewTextList}>
+                    <Text style={styles.textListBody}>{index+1}.{item.name}</Text>
+                  </View>
+                  <View style={styles.viewIcon}>
+                      <IC_Forward></IC_Forward>
+                  </View>
+                </TouchableOpacity>
+              </>}>
+          <Menu.Item onPress={() => navigation.navigate("EditCategory", {
+                  name: item.name,
+                  description: item.description,
+                  parentId: item.parentId,
+                  id: item._id,
+                  isChild: true,
+                })} title="Edit category" />
+          <Divider />
+          <Menu.Item onPress={() => deleteCategory(item._id, item.name, true)} title="Delete category" />
+      </Menu>
+      </View>
+    )
+  }
   return (
     <View>
       {/*Header of the Expandable List Item*/}
-      <TouchableOpacity onPress={onClickFunction} style={styles.viewList}>
-        <View style={styles.viewTextList}>
-          <Text style={styles.textList}>{item.title}</Text>
-        </View>
-        <View style={styles.viewIcon}>
-          <IC_Down></IC_Down>
-        </View>
-      </TouchableOpacity>
-      <View
-        style={{
-          height: layoutHeight,
-          overflow: 'hidden',
-        }}>
-        {/*Content under the header of the Expandable List Item*/}
-        {item.child.map((item, index) => (
-          <TouchableOpacity style={styles.viewListBody} key={item._id}>
-              <View style={styles.viewTextList}>
-                <Text style={styles.textListBody}>{index+1}.{item.name}</Text>
-              </View>
-              <View style={styles.viewIcon}>
-                  <IC_Forward></IC_Forward>
-              </View>
-          </TouchableOpacity>
-        ))}
-      </View>
+      <Menu
+            visible={visible}
+            onDismiss={closeMenu}
+            anchorPosition='bottom'
+            anchor={
+              <>
+                <TouchableOpacity onPress={onClickFunction} style={styles.viewList} onLongPress={openMenu}>
+                  <View style={styles.viewTextList}>
+                    <Text style={styles.textList}>{item.title}</Text>
+                  </View>
+                  <View style={styles.viewIcon}>
+                    <IC_Down></IC_Down>
+                  </View>
+                </TouchableOpacity>
+                <View
+                  style={{
+                    height: layoutHeight,
+                    overflow: 'hidden',
+                  }}>
+                  {/*Content under the header of the Expandable List Item*/}
+                  {item.child.map((item, index) => (
+                    <Item item={item} index={index} deleteCategory={deleteCategory} key={item._id} navigation={navigation}/>
+                  ))}
+                </View>
+              </>}>
+            <Menu.Item onPress={() => navigation.navigate("EditCategory", {
+                  name: item.title,
+                  description: item.description,
+                  parentId: '',
+                  id: item._id,
+                  isChild: false,
+                })} title="Edit category" />
+            <Divider />
+            <Menu.Item onPress={() => deleteCategory(item._id, item.title, false)} title="Delete category" />
+        </Menu>
+      
     </View>
   );
 };
@@ -158,6 +189,7 @@ const ListOfCategoryScreen = (props) => {
           const obj = {};
           obj.title = item.name;
           obj._id = item._id;
+          obj.description = item.description;                                                                                                                                                                                                                  
           obj.child = [];
           obj.isExpanded = false
           newContent[index] = obj
@@ -178,30 +210,91 @@ const ListOfCategoryScreen = (props) => {
     handleCategory();
   }, [data])
 
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <HeaderMax 
-        navigation={props.navigation} 
-        textTitle={'List of categories'} 
-        textLabel={'Add category'} 
-        onPress={() => props.navigation.navigate('AddCategory')}
-        onPressBack={() => props.navigation.goBack()}
-      />
+  const deleteCategory = async (id, name, isChild) => {
+    setTitle('Delete category');
+    setMessage(`Do you want to delete ${name} category`)
+    setStatus('new')
+    setVisible(true)
+    const newClickYes = async () => {
+      try {
+        setStatus('loading');
+        const response = await axiosPrivate.delete(`/category/${id}`, {
+        });
+        console.log(response.data)
+        if (isChild) {
+          //let newChildDataCategory = listDataSource.child.filter(item => item._id !== id)
+          let items = listDataSource;
+          listDataSource.map((item, index) => {
+            if ( item.child.filter(e => e._id === id).length > 0) {
+              let newItem = item;
+              newItem.child = item.child.filter(e => e._id !== id);
+              items[index] = newItem;
+              setListDataSource(items);
+            }
+          })
+        } 
+        else {
+          let newDataCategory = listDataSource.filter(item => item._id !== id)
+          setListDataSource(newDataCategory);
+        }
+        
+        setTitle('Category deleted');
+        setMessage(`category ${name} has been deleted`)
+        setStatus('done');
+      } catch (err) {
+        console.log(err?.response?.data || err.message);
+        setTitle('Error');
+        setMessage(err?.response?.data || err.message)
+        setStatus('done');
+      }
+    }
+    setClickYes(() => newClickYes);
+    setVisible(true);
+  } 
+  const [status, setStatus] = useState('new')
+  const [visible, setVisible] = useState(false);
+  const [title, setTitle] = useState('');
+  const [message, setMessage] = useState('');
+  const [clickYes, setClickYes] = useState(() => async () => {setVisible(false)})
+  const [clickNo, setClickNo] = useState(() => () => {setVisible(false)})
 
-      <View style={styles.body}>
-        <ScrollView>
-          {listDataSource.map((item, key) => (
-            <ExpandableComponent
-              key={item._id}
-              onClickFunction={() => {
-                updateLayout(key);
-              }}
-              item={item}
-            />
-          ))}
-        </ScrollView>
-      </View>
-    </SafeAreaView>
+  return (
+    <Provider>
+      <SafeAreaView style={{ flex: 1 }}>
+        <MessageYN
+            visible={visible} 
+            title={title}
+            message={message}
+            clickYes={clickYes}
+            clickNo={clickNo}
+            status={status}
+            clickCancel={() => {setVisible(false)}}
+        />
+        <HeaderMax 
+          navigation={props.navigation} 
+          textTitle={'List of categories'} 
+          textLabel={'Add category'} 
+          onPress={() => props.navigation.navigate('AddCategory')}
+          onPressBack={() => props.navigation.goBack()}
+        />
+
+        <View style={styles.body}>
+          <ScrollView>
+            {listDataSource.map((item, key) => (
+              <ExpandableComponent
+                key={item._id}
+                onClickFunction={() => {
+                  updateLayout(key);
+                }}
+                item={item}
+                deleteCategory={deleteCategory}
+                navigation={props.navigation}
+              />
+            ))}
+          </ScrollView>
+        </View>
+      </SafeAreaView>
+    </Provider>
   );
 };
 

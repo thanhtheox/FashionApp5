@@ -154,7 +154,7 @@ useEffect(() => {
         </ScrollView>
           {/* Buttons */}
           <TouchableOpacity style={styles.buttonView} 
-          onPress={() => props.navigation.navigate('MyInfoScreen')}>
+          onPress={() => props.navigation.navigate('MyInfoStackScreen')}>
             <IC_Profile/>
             <Text style={styles.buttonText}>My Profile</Text>
           </TouchableOpacity>
