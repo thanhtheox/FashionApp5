@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
   icon1: {
     alignItems: 'center',
     width: '10%',
-    marginBottom: scale(10),
+    marginBottom: scale(8),
     marginLeft: scale(5),
   },
   button: {
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     width: scale(295),
     height: scale(51),
     borderColor: color.GraySolid,
-    borderWidth: 1,
+    borderBottomWidth: 1,
   },
   inputBox1: {
     flexDirection: 'row',
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     width: scale(295),
     // height: scale(51),
     borderColor: color.GraySolid,
-    borderWidth: 1,
+    borderBottomWidth: 1,
   },
   inputName1: {
     color: color.TitleActive,
