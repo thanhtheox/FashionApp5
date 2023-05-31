@@ -13,9 +13,9 @@ const AddToBasket = props => {
         <IC_Plus stroke={color.White} style={styles.IcPlus} />
         <Text style={styles.text}>ADD TO CART</Text>
       </View>
-      <TouchableOpacity onPress={() => setLiked(liked === true ? false : true)}>
+      {/* <TouchableOpacity onPress={() => setLiked(liked === true ? false : true)}>
         <IC_Heart stroke={color.White} style={styles.IcHeart} fill={liked ? color.White : 'none'} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </TouchableOpacity>
   );
 };
@@ -26,16 +26,16 @@ const styles = StyleSheet.create({
   container: {
     height: scale(56),
     flexDirection: 'row',
-    justifyContent:'space-between',
+    justifyContent: 'space-between',
     backgroundColor: color.TitleActive,
     alignItems: 'center',
-    paddingHorizontal:scale(14),
+    paddingHorizontal: scale(14),
   },
   text: {
-    marginLeft:scale(8),
+    marginLeft: scale(8),
     fontSize: scale(14),
     color: color.Background,
-    lineHeight:scale(24),
+    lineHeight: scale(24),
     fontFamily: FONT_FAMILY.Regular,
   },
   view: {

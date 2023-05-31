@@ -13,9 +13,9 @@ import CategoryGridViewAllScreen from '../screens/app/product/categoryGridView/C
 import CategoryGridViewByIdScreen from '../screens/app/product/categoryGridView/CategoryGridViewByIdScreen';
 import ProductDetailsScreen from '../screens/app/product/productDetailsScreen';
 import SearchDetailScreen from '../screens/app/search/searchDetailScreen/searchDetailScreen';
-import MyInfoScreen from '../screens/app/userInfo/myInfoScreen';
 import OTPScreen from '../screens/auth/otpScreen';
 import { useSelector } from 'react-redux';
+import { MyInfoStackScreen } from '../screens/app/userInfo/myInfoNavigation';
 
 const AppStackWithVerify = createNativeStackNavigator();
 
@@ -118,8 +118,8 @@ const AppStackWithVerifyScreen = () => {
         })}
       />
       <AppStackWithVerify.Screen
-        name="MyInfoScreen"
-        component={MyInfoScreen}
+        name="MyInfoStackScreen"
+        component={MyInfoStackScreen}
         options={() => ({
           headerShown:false
         })}

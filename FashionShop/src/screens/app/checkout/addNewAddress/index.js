@@ -19,7 +19,7 @@ const AddNewAddressScreen = props => {
     return (
         <SafeAreaView style = {styles.container}>
             <View style={styles.introTextBox}>
-                <Text style={styles.introText}>ADD SHIPPNG ADDRESS</Text>
+                <Text style={styles.introText}>ADD SHIPPING ADDRESS</Text>
                 <Image source={LineBottom} style={{alignSelf: 'center'}}/>
             </View>
             <View style={styles.body}>

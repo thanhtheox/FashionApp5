@@ -36,7 +36,7 @@ const Custom_Cart = props => {
         </View>
         <View style={styles.textContainer}>
             <Text style={styles.prodName}>{props.name}</Text>
-            <Text style={styles.prodDescription}>
+            <Text style={styles.prodDescription} numberOfLines={3}>
             {props.description}
             </Text>
             <View style={styles.viewValue}>
@@ -59,8 +59,8 @@ const Custom_Cart = props => {
             <Text style={styles.prodPrice}>${props.price*count}</Text>       
         </View>
         <TouchableOpacity onPress={() => props.removeHandler(props.id)} 
-        style={{alignSelf:'center',backgroundColor:'#DEDEDE',height:scale(150),width:scale(90),alignItems:'center'}}> 
-          <IC_CartDelete style={{marginTop:scale(60),marginLeft:scale(30)}}/>
+        style={{alignSelf:'flex-end',height:scale(50),width:scale(60),alignItems:'center'}}> 
+          <IC_CartDelete style={{marginTop:scale(15),marginLeft:scale(40)}}/>
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
