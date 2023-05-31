@@ -27,8 +27,10 @@ const addTagSchema = yup.object({
     .max(100, 'A name must have maximum of 100 character'),
 });
 
-const AddTagScreen = props => {
+const EditTagScreen = props => {
   const [text, onChangeText] = useState('');
+  const {tag} = props.route.params;
+  console.log({tag});
   const axiosPrivate = useAxiosPrivate();
   const [message, setMessage] = useState('');
   const [title, setTitle] = useState('');
@@ -43,7 +45,7 @@ const AddTagScreen = props => {
   } = useForm({
     mode: 'onChange',
     defaultValues: {
-      name: '',
+      name: tag.name,
     },
     resolver: yupResolver(addTagSchema),
   });
@@ -51,9 +53,9 @@ const AddTagScreen = props => {
   const handleSubmits = async name => {
     try {
       setLoading(true);
-      const response = await axiosPrivate.post(
-        '/post-create-tag',
-        JSON.stringify({name: name}),
+      const response = await axiosPrivate.put(
+        `/put-update-tag/${tag._id}`,
+        JSON.stringify({name: name, isDelete: tag.isDeleted}),
         {
           headers: {'Content-Type': 'application/json'},
           withCredentials: true,
@@ -61,7 +63,7 @@ const AddTagScreen = props => {
       );
       console.log('success', JSON.stringify(response.data));
       setTitle('Success');
-      setMessage(`New tag with name: ${name} has been created`);
+      setMessage(`Your tag has been update`);
       setLoading(false);
     } catch (err) {
       console.log('err', err.response.data);
@@ -80,7 +82,7 @@ const AddTagScreen = props => {
           <IC_Backward stroke={color.White}></IC_Backward>
         </TouchableOpacity>
         <View>
-          <Text style={styles.textHeader}>Add Tag</Text>
+          <Text style={styles.textHeader}>Edit Tag</Text>
         </View>
       </View>
 
@@ -103,7 +105,7 @@ const AddTagScreen = props => {
                   editable
                   numberOfLines={1}
                   maxLength={30}
-                  onChangeText={text => [onChange(text),onChangeText(text)]}
+                  onChangeText={text => [onChange(text), onChangeText(text)]}
                   keyboardType="ascii-capable"
                   value={value}
                 />
@@ -115,11 +117,9 @@ const AddTagScreen = props => {
           )}
         />
 
-        
-
         <View style={styles.button}>
           <SaveButton
-            text={'Add Tag'}
+            text={'Edit Tag'}
             loading={loading}
             onPress={handleSubmit(() => handleSubmits(text))}></SaveButton>
         </View>
@@ -140,7 +140,7 @@ const AddTagScreen = props => {
   );
 };
 
-export default AddTagScreen;
+export default EditTagScreen;
 
 const styles = StyleSheet.create({
   container: {

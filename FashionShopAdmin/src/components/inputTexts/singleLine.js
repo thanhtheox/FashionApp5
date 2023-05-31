@@ -15,6 +15,7 @@ const SingleLine = (props) => {
             keyboardAppearance='dark'
             keyboardType={props.keyboardType}
             defaultValue={props.defaultValue}
+            handleChange={props.handleChange}
         />
     )
 }

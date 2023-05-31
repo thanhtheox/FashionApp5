@@ -17,25 +17,30 @@ import scale from '../../constants/responsive';
 import SaveButton from '../../components/buttons/Save';
 import {launchImageLibrary} from 'react-native-image-picker';
 import ItemProductOfCollection from './components/ProductOfCollection';
-import {
-  IMG_AddImage,
-  IMG_Collection,
-  IMG_ModelFour,
-  IMG_ModelOne,
-  IMG_ModelThree,
-  IMG_ModelTwo,
-} from '../../assets/images';
+import {IMG_AddImage} from '../../assets/images';
 import {MultipleSelectList} from 'react-native-dropdown-select-list';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import Message from '../../components/alearts.js/messageOnly';
 import DropDownPicker from 'react-native-dropdown-picker';
+import * as yup from 'yup';
+import {Controller, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+
+const addCollectionSchema = yup.object({
+  name: yup
+    .string()
+    .required('Name cannot be blank')
+    .max(100, 'Name length must be less than 100 characters'),
+  product: yup.array().required('please select a product'),
+  image: yup.string().required('please select an image'),
+});
 
 const AddCollectionScreen = props => {
   const [data, setData] = useState([]);
   const [selected, setSelected] = useState([]);
 
   const [text, onChangeText] = useState('');
-  const [image, setImage] = useState('');
+  const [images, setImages] = useState(null);
 
   const axiosPrivate = useAxiosPrivate();
   const [loading, setLoading] = useState(false);
@@ -43,6 +48,19 @@ const AddCollectionScreen = props => {
   const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState('');
 
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      name: '',
+      product: [],
+      image: '',
+    },
+    resolver: yupResolver(addCollectionSchema),
+  });
   // const [product, setProduct] = useState([]);
 
   useEffect(() => {
@@ -55,12 +73,12 @@ const AddCollectionScreen = props => {
           signal: controller.signal,
         });
         console.log(response.data);
-        isMounted && setData(response.data);
-        let newArray = response.data.map(item => {
-          return {value: item.name, key: item._id};
+        const newArray = [];
+        response.data.map(item => {
+          newArray.push({value: item.name, key: item._id});
         });
         //Set Data Variable
-        setData(newArray);
+        isMounted && setData(newArray);
         console.log(data);
       } catch (err) {
         console.log(err.response.data);
@@ -75,72 +93,46 @@ const AddCollectionScreen = props => {
     };
   }, []);
 
-  //   const getProductById = async (id) => {
-  //     try {
-  //         const response = await axiosPrivate.get(`/get-product-by-id/${id}`);
-  //         setProduct(response.data);
-  //     }
-  //     catch (err) {
-  //         console.log(err.response.data);
-  //     }
-  // };
-
-  // useEffect(()=>{
-  //   const getProduct = async()=>{
-  //     const pro = await getProductById(JSON.stringify(selected[selected.length]));
-  //     setProduct(pro);
-  //   };
-  //   getProduct();
-  // },[selected]);
-
-  // useEffect(() => {
-  //   let isMounted = true;
-  //   const controller = new AbortController();
-
-  //   const getProduct = async (id) => {
-  //     try {
-  //       const response = await axiosPrivate.get(`/get-product-by-id/${id}`, {
-  //         signal: controller.signal
-  //       });
-  //       isMounted && setProduct(response.data);
-  //     }
-  //     catch (err) {
-  //       console.log(err.response.data);
-  //     }
-  //   }
-
-  //   selected.forEach(id => getProduct(id));
-
-  //   return () => {
-  //     isMounted = false;
-  //     controller.abort();
-  //   }
-  // }, [selected]);
-
-  const handleSelected = (id)=>{
-    console.log(id)
-    data.map((item)=>{
-      console.log(item._id)
-      if(item._id===id){
-        setSelected(...selected,item)
+  const handleSelected = id => {
+    console.log(id);
+    data.map(item => {
+      console.log(item._id);
+      if (item._id === id) {
+        setSelected(...selected, item);
       }
-    })
-  }
+    });
+  };
 
-  async function handleSubmit(name, image, product) {
+  async function handleSubmits(name, image, product) {
+    setLoading(true);
+    const formData = new FormData();
+    formData.append('imageCollection', {
+      name: new Date() + '_imageCollection',
+      uri: images,
+      type: 'image/jpg',
+    });
+    formData.append('name', name);
+    await Promise.all(
+      selected.map(item => {
+        formData.append('productId', item);
+      }),
+    );
     try {
-      setLoading(true);
       const response = await axiosPrivate.post(
         '/post-create-collection',
-        JSON.stringify({name: name, productId: product, image: image}),
+        formData,
         {
-          headers: {'Content-Type': 'application/json'},
-          withCredentials: true,
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+          },
+          withCredentials: true
         },
       );
       console.log('success', JSON.stringify(response.data));
       setTitle('Success');
       setMessage(`New collection with Name: ${name} has been created`);
+      console.log(message)
       setLoading(false);
     } catch (err) {
       console.log('err', err.response.data);
@@ -150,16 +142,18 @@ const AddCollectionScreen = props => {
     } finally {
       setVisible(true);
     }
-  }
+  };
 
   let options = {
     savePhotos: true,
     mediaType: 'photo',
   };
 
-  const openGallery = async () => {
+  const openGallery = async (onChange, value) => {
     const result = await launchImageLibrary(options);
-    setImage(result.assets[0].uri);
+    setImages(result.assets[0].uri);
+    onChange(result.assets[0].uri);
+    //value(images);
   };
 
   return (
@@ -175,78 +169,122 @@ const AddCollectionScreen = props => {
       </View>
 
       {/* body  */}
-
       <View style={styles.body}>
         <View style={styles.viewTextTitle}>
           <Text style={styles.textTitle}>Collection information</Text>
         </View>
-        <View style={styles.viewTextInput}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Name ..."
-            placeholderTextColor={color.GraySolid}
-            editable
-            numberOfLines={1}
-            maxLength={30}
-            onChangeText={text => onChangeText(text)}
-            keyboardType="ascii-capable"
-            value={text}
-          />
-        </View>
+
+        {/* name */}
+        <Controller
+          name="name"
+          control={control}
+          render={({field: {onChange, value}}) => (
+            <>
+              <View style={styles.viewTextInput}>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="Name ..."
+                  placeholderTextColor={color.GraySolid}
+                  editable
+                  numberOfLines={1}
+                  maxLength={100}
+                  onChangeText={text => [onChangeText(text), onChange(text)]}
+                  keyboardType="ascii-capable"
+                  value={value}
+                />
+              </View>
+
+              {errors?.name && (
+                <Text style={styles.textFailed}>{errors.name.message}</Text>
+              )}
+            </>
+          )}
+        />
 
         {/* poster image */}
         <View style={styles.viewAddImage}>
           <View style={styles.viewTextAdd}>
             <Text style={styles.textAdd}>Poster image</Text>
           </View>
-          <View style={styles.viewImageAdd}>
-            <TouchableOpacity style={styles.viewIconAdd} onPress={openGallery}>
-              <Image source={IMG_AddImage} style={styles.icon}></Image>
-            </TouchableOpacity>
-            <View style={styles.viewImage}>
-              <Image source={{uri: image}} style={styles.image}></Image>
-            </View>
-          </View>
-        </View>
 
-        <View style={styles.viewSelectProduct}>
-          <MultipleSelectList
-            setSelected={val => setSelected(val)}
-            data={data}
-            save={['value', 'key']}
-            // save='value'
-            onSelect={() => console.log(selected)}
-            label="product"
-            dropdownItemStyles={styles.textInput}
-            dropdownTextStyles={{color: color.TitleActive}}
+          <Controller
+            name="image"
+            control={control}
+            render={({field: {onChange, value}}) => (
+              <>
+                <View>
+                  <View style={styles.viewImageAdd}>
+                    <TouchableOpacity
+                      style={styles.viewIconAdd}
+                      onPress={() => openGallery(onChange, value)}>
+                      <Image source={IMG_AddImage} style={styles.icon}></Image>
+                    </TouchableOpacity>
+                    {images === null ? (
+                      <></>
+                    ) : (
+                      <View style={styles.viewImage}>
+                        <Image
+                          source={{uri: images}}
+                          style={styles.image}></Image>
+                      </View>
+                    )}
+                  </View>
+                  {errors?.image && (
+                    <Text style={styles.textFailed}>
+                      {errors.image.message}
+                    </Text>
+                  )}
+                </View>
+              </>
+            )}
           />
         </View>
-        {/* product  */}
-        <View style={styles.viewProduct}>
-          <ScrollView>
-            {selected.map((item, index) =>
-                  <ItemProductOfCollection
-                    key={id}
-                    number={index + 1}
-                    name={item.name}
-                    source={item.posterImage}
-                  />
-            )}
 
-            {/* { product.map((item, index) => (
-              <ItemProductOfCollection
-                key={index}
-                number={index + 1}
-                name={item.name}
-                source={item.posterImage}
-              />
-            ))} */}
-          </ScrollView>
-        </View>
+        {/* product  */}
+        <ScrollView style={{}}>
+          <Controller
+            name="product"
+            control={control}
+            render={({field: {onChange, value}}) => (
+              <>
+                <View style={styles.viewSelectProduct}>
+                  <MultipleSelectList
+                    setSelected={val => setSelected(val)}
+                    data={data}
+                    save={'key'}
+                    onSelect={() => [console.log(selected), onChange(selected)]}
+                    label="product"
+                    dropdownItemStyles={styles.textInput}
+                    dropdownTextStyles={{color: color.TitleActive}}
+                    dropdownStyles={{
+                      maxHeight: 300,
+                      borderRadius: 0,
+                      width: '80%',
+                      alignSelf: 'center',
+                    }}
+                    boxStyles={{
+                      borderRadius: 0,
+                      width: '80%',
+                      alignSelf: 'center',
+                    }}
+                    maxHeight={500}
+                  />
+                </View>
+                {errors?.product && (
+                  <Text style={styles.textFailed}>
+                    {errors.product.message}
+                  </Text>
+                )}
+              </>
+            )}
+          />
+        </ScrollView>
 
         {/* button */}
         <View style={styles.button}>
-          <SaveButton text={'Add collection'}></SaveButton>
+          <SaveButton
+            text={'Add collection'}
+            onPress={handleSubmit(()=>handleSubmits(text, images, selected))}></SaveButton>
         </View>
       </View>
 
@@ -318,7 +356,7 @@ const styles = StyleSheet.create({
   //add image
   viewAddImage: {
     marginTop: scale(10),
-    height: '15%',
+    height: '25%',
     width: '90%',
     alignSelf: 'center',
   },
@@ -357,7 +395,7 @@ const styles = StyleSheet.create({
   //select
 
   viewSelectProduct: {
-    // height: Dimensions.get('screen').height*0.1,
+    // height: Dimensions.get('screen').height*0.5,
     elevation: 1,
     backgroundColor: color.White,
   },
@@ -367,7 +405,7 @@ const styles = StyleSheet.create({
   // product
   viewProduct: {
     marginTop: scale(10),
-    height: '25%',
+    height: '30',
     elevation: 2,
   },
 
@@ -376,5 +414,16 @@ const styles = StyleSheet.create({
     // justifyContent: 'flex-end',
     marginTop: scale(20),
     alignItems: 'center',
+    marginBottom: scale(20),
+  },
+
+  //fail
+  textFailed: {
+    paddingLeft: scale(25),
+    // marginTop: scale(7),
+    justifyContent: 'center',
+    fontFamily: FONT_FAMILY.Italic,
+    fontSize: scale(12),
+    color: color.RedSolid,
   },
 });

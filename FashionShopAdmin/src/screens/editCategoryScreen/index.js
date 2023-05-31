@@ -13,28 +13,37 @@ import Message from '../../components/alearts.js/messageOnly';
 import * as yup from 'yup';
 import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
+import HeaderMin from '../../components/header/headerMin';
 
-const addCategorySchema = yup.object({
-  name: yup
-    .string()
-    .required('Name cannot be blank')
-    .max(100, 'Name length must be less than 100 characters'),
-  description: yup
-    .string()
-    .required('Description cannot be blank')
-    .min(5, 'A description must have minimum of 1 character')
-    .max(500, 'A description must have maximum of 500 character'),
-});
-
-const AddCategoryScreen = props => {
+const EditCategoryScreen = props => {
+  const {parentId, name, description, isChild, id} = props.route.params;
+  console.log('1', props.route.params);
+  console.log({parentId, name, description});
   const [newCategory, setNewCategory] = useState({
-    name: '',
-    description: '',
-    parentId: '',
+    name: name,
+    description: description,
+    parentId: parentId,
+    id: id,
+    isChild: isChild,
   });
   const [parentCategories, setParentCategories] = useState([]);
   const [data, setData] = useState([]);
   const axiosPrivate = useAxiosPrivate();
+
+  const addCategorySchema = yup.object({
+    name: yup
+      .string()
+      .required('Name cannot be blank')
+      .max(100, 'Name length must be less than 100 characters'),
+    description: yup
+      .string()
+      .required('Description cannot be blank')
+      .min(5, 'A description must have minimum of 1 character')
+      .max(500, 'A description must have maximum of 500 character'),
+    parent: newCategory.isChild
+      ? yup.string()
+      : null,
+  });
 
   // yup
   const {
@@ -44,8 +53,9 @@ const AddCategoryScreen = props => {
   } = useForm({
     mode: 'onChange',
     defaultValues: {
-      name: '',
-      description: '',
+      name: name,
+      description: description,
+      parent: parentId,
     },
     resolver: yupResolver(addCategorySchema),
   });
@@ -59,7 +69,6 @@ const AddCategoryScreen = props => {
         const response = await axiosPrivate.get('/all-categories', {
           signal: controller.signal,
         });
-        console.log(response.data);
         isMounted && setData(response.data);
       } catch (err) {
         console.log(err.response.data);
@@ -73,7 +82,6 @@ const AddCategoryScreen = props => {
     };
   }, []);
   useEffect(() => {
-    console.log({data});
     const handleCategory = async () => {
       let parentCat = [{}];
       parentCat = data.filter(item => !item.parentId);
@@ -81,7 +89,6 @@ const AddCategoryScreen = props => {
         label: item.name,
         value: item._id,
       }));
-      parentCat.push({label: 'No parent', value: ''});
 
       setParentCategories(parentCat);
     };
@@ -101,11 +108,11 @@ const AddCategoryScreen = props => {
   const handleSubmits = async () => {
     try {
       setLoading(true);
-      const response = await axiosPrivate.post(
-        '/category',
+      const response = await axiosPrivate.put(
+        `/category/${newCategory.id}`,
         JSON.stringify({
           name: newCategory.name,
-          parentId: newCategory.parentId,
+          parentId: isChild? newCategory.parentId: undefined,
           description: newCategory.description,
         }),
         {
@@ -115,9 +122,7 @@ const AddCategoryScreen = props => {
       );
       console.log('success', JSON.stringify(response.data));
       setTitle('Success');
-      setMessage(
-        `New category with Name: ${newCategory.name} and has been created`,
-      );
+      setMessage(`Update category with Name: ${newCategory.name} successfully`);
       setLoading(false);
     } catch (err) {
       console.log('err', err.response.data);
@@ -128,20 +133,17 @@ const AddCategoryScreen = props => {
       setVisible(true);
     }
   };
+
   return (
     <SafeAreaView style={styles.container}>
       {/* header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => props.navigation.goBack()}>
-          <IC_Backward stroke={color.White}></IC_Backward>
-        </TouchableOpacity>
-        <View>
-          <Text style={styles.textHeader}>Add category</Text>
-        </View>
-      </View>
+      <HeaderMin
+        text={'Edit category'}
+        onPress={() => props.navigation.goBack()}
+      />
       <View style={styles.body}>
         <View style={styles.viewTextTitle}>
-          <Text style={styles.textTitle}>Collection information</Text>
+          <Text style={styles.textTitle}>Category information</Text>
         </View>
 
         {/* name */}
@@ -159,7 +161,8 @@ const AddCategoryScreen = props => {
                 onChangeText={text =>
                   setNewCategory({...newCategory, name: text}, onChange(text))
                 } //test again
-                value={value}
+                //value={value}
+                defaultValue={`${newCategory.name}`}
               />
               {errors?.name && (
                 <Text style={styles.textFailed}>{errors.name.message}</Text>
@@ -169,26 +172,41 @@ const AddCategoryScreen = props => {
         />
 
         {/* parent */}
-        <View style={styles.categoryBox}>
-          <View>
-            <DropDownPicker
-              // listMode="MODAL"
-              listMode="FLATLIST"
-              open={tagOpen}
-              placeholder="Parent"
-              style={styles.categoryDropDown}
-              textStyle={styles.dropdownText}
-              items={parentCategories}
-              setOpen={setTagOpen}
-              value={newCategory.parentId}
-              onSelectItem={item =>
-                setNewCategory({...newCategory, parentId: item.value})
-              }
-              dropDownContainerStyle={{borderRadius: 0}}
-              listItemContainerStyle={{backgroundColor: color.White}}
-            />
+
+        {isChild ? (
+          <Controller
+          name="name"
+          control={control}
+          render={({field: {onChange, value}}) => (
+            <>
+            <View style={styles.categoryBox}>
+            <View>
+              <DropDownPicker
+                // listMode="MODAL"
+                listMode="FLATLIST"
+                open={tagOpen}
+                placeholder="Parent"
+                style={styles.categoryDropDown}
+                textStyle={styles.dropdownText}
+                items={parentCategories}
+                setOpen={setTagOpen}
+                value={newCategory.parentId}
+                onSelectItem={item =>
+                  setNewCategory({...newCategory, parentId: item.value})
+                }
+                dropDownContainerStyle={{borderRadius: 0}}
+                listItemContainerStyle={{backgroundColor: color.White}}
+              />
+            </View>
           </View>
-        </View>
+          {errors?.parent && (
+                <Text style={styles.textFailed}>{errors.parent.message}</Text>
+              )}
+          </>
+
+          )}/>
+          
+        ) : null}
 
         {/* description */}
         <Controller
@@ -204,8 +222,12 @@ const AddCategoryScreen = props => {
                 multiline={true}
                 maxLength={500}
                 onChangeText={text =>
-                  setNewCategory({...newCategory, description: text}, onChange(text))
+                  setNewCategory(
+                    {...newCategory, description: text},
+                    onChange(text),
+                  )
                 }
+                defaultValue={newCategory.description}
               />
               {errors?.description && (
                 <Text style={styles.textFailed}>
@@ -239,7 +261,7 @@ const AddCategoryScreen = props => {
   );
 };
 
-export default AddCategoryScreen;
+export default EditCategoryScreen;
 
 const styles = StyleSheet.create({
   container: {
