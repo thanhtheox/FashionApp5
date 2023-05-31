@@ -1,7 +1,6 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import scale from '../../constants/responsive';
-import {IMG_ModelOne} from '../../assets/images/index';
 import FONT_FAMILY from '../../constants/fonts';
 import Color from '../../constants/color';
 

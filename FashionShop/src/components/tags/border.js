@@ -9,7 +9,7 @@ import {useState} from 'react';
 const Custom_Tag2 = props => {
   const [shouldShow, setShouldShow] = useState(true);
   return (
-    <TouchableOpacity style={{marginLeft:props.marginLeft||scale(0)}}>
+    <TouchableOpacity style={{marginLeft:props.marginLeft||scale(0)}} onPress={props.onPress}>
       {shouldShow ? (
         <View style={styles.border}>
           <Text style={styles.text}>{props.value}</Text>
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: FONT_FAMILY.Regular,
     fontSize: scale(16),
-    color: color.Body,
+    color: color.TitleActive,
     alignSelf: 'center',
   },
   close: {

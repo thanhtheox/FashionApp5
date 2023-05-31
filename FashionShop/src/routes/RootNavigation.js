@@ -5,6 +5,7 @@ import { AuthStackScreen } from './AuthNavigation';
 import AppStackScreen from './AppNavigation';
 import useAuth from '../hooks/useAuth';
 import SplashScreen from '../screens/splashscreen/SplashScreen';
+import OTPScreen from '../screens/auth/otpScreen'
 
 const RootStack = createNativeStackNavigator();
 
@@ -21,7 +22,10 @@ const RootStackScreen = props => {
       initialRouteName="AuthStackScreen"
       screenOptions={{headerShown: false}}>
         {!auth?.accessToken ? (
+          <>
         <RootStack.Screen name="AuthStackScreen" component={AuthStackScreen} />
+        <RootStack.Screen name="AppStackScreen" component={AppStackScreen} />
+        </>
         ):(
         <RootStack.Screen name="AppStackScreen" component={AppStackScreen} />
         )}

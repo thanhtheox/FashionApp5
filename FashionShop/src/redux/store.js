@@ -10,7 +10,7 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-// import userReducer from '../features/auth/userSlice';
+import { userReducer } from './reducer/userReducer';
 import {persistStore} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
@@ -18,7 +18,7 @@ import { cartReducer } from './reducer/cartReducer';
 import useLogout from '../hooks/useLogout';
 
 const appReducer = combineReducers({
-//   user: userReducer,
+  user: userReducer,
   cart: cartReducer,
 });
 

@@ -17,6 +17,9 @@ import useAuth from '../../../hooks/useAuth';
 import * as yup from 'yup';
 import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
+import {useDispatch, useSelector} from 'react-redux';
+import { login } from '../../../features/auth/userSlice';
+import { initUser } from '../../../redux/actions/userActions';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
 
@@ -39,12 +42,12 @@ const signInPayLoadSchema = yup.object({
 });
 
 const SignInScreen = props => {
-  const {setAuth} = useAuth();
-  const [mail, setMail] = useState('');
+  const {auth,setAuth} = useAuth();
+  const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
+  const dispatch = useDispatch();
 
 
   const {
@@ -59,18 +62,19 @@ const SignInScreen = props => {
     },
     resolver: yupResolver(signInPayLoadSchema),
   });
-
-  const handleSubmits = async () => {
+  const handleSubmits = async (data) => {
     try {
       setLoading(true);
       const response = await axiosPrivate.post(
         '/login',
-        JSON.stringify({email: mail, password: pass}),
+        JSON.stringify({email: email, password: pass}),
       );
       console.log('success', JSON.stringify(response.data));
-
       const accessToken = response?.data?.accessToken;
-      setAuth({email: mail, accessToken});
+      const emailVerified = response?.data?.user.emailVerified;
+      const userId = response?.data?.user._id;
+      dispatch(initUser(response.data.user));
+      setAuth({email: email, accessToken: accessToken, emailVerified: emailVerified, userId: userId});
       setLoading(false);
       props.navigation.navigate('AppStackScreen');
     } catch (err) {
@@ -101,7 +105,7 @@ const SignInScreen = props => {
             <View style={styles.inputMailBox}>
               <View style={styles.viewInput}>
               <TextInput
-                onChangeText={email => [onChange(email), setMail(email)]}
+                onChangeText={email => [onChange(email), setEmail(email)]}
                 placeholder="Email"
                 value={value}
                 placeholderTextColor={color.GraySolid}

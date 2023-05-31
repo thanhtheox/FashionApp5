@@ -2,6 +2,7 @@ import { axiosPrivate } from "../apis/axios";
 import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const useAxiosPrivate = () => {
     const refresh = useRefreshToken();
@@ -26,6 +27,7 @@ const useAxiosPrivate = () => {
                 if(error?.response?.status === 403 && !prevRequest?.sent) {
                     prevRequest.sent = true;
                     const newAccessToken = await refresh();
+                    await AsyncStorage.setItem('@access-token', newAccessToken);
                     prevRequest.header['Authorization'] = `Bearer ${newAccessToken}`;
                     return axiosPrivate(prevRequest);
                 }

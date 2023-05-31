@@ -9,7 +9,6 @@ const SplashScreen = ({isLoading, setIsLoading}) => {
 
     const refresh = useRefreshToken();
     const { auth } = useAuth();
-
     useEffect(() => {
         const verifyRefreshToken = async () => {
             try {

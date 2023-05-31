@@ -1,10 +1,7 @@
 import * as actionTypes from '../constants/cartConstants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import foodApi from '../../services/foodApi';
 
 export const addToCart = (id, name,description, price,img, qty) => async (dispatch, getState) => {
-  //const {token} = store.getState().user;
-  //const {food} = await foodApi.get(id);
 
   dispatch({
     type: actionTypes.ADD_TO_CART,
