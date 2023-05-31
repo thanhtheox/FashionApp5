@@ -28,6 +28,9 @@ import {
   } from '../../../../redux/actions/cartActions';
 
   const CheckOut = (props) => { 
+    const user = useSelector(state => state.user);
+    const {userItems} = user;
+    const userInfo = userItems.user;
     const [method, setMethod] = useState([
         {label: 'Pickup at store - FREE', value: 0},
         {label: 'Ship COD - $5', value: 5},
@@ -95,9 +98,9 @@ import {
             <Text style={styles.bodyText1}>SHIPPING ADDRESS</Text>
             <TouchableOpacity style={styles.bodyTextBox}>
                     <IC_Forward style = {styles.ForwardPosition}/>
-                    <Text style={styles.name}>thanh.theox</Text>
+                    <Text style={styles.name}>{userInfo.firstName + ' ' + userInfo.lastName}</Text>
                     <Text numberOfLines={2} style={styles.bodyText}>ktx khu B, Tp.Thu Duc, Tp.Ho Chi Minh</Text>
-                    <Text style={styles.bodyText}>0912345678</Text>
+                    <Text style={styles.bodyText}>{userInfo.phoneNumber}</Text>
             </TouchableOpacity>                 
             <TouchableOpacity style={styles.addShipping} onPress={() => props.navigation.navigate('AddNewAddressScreen')}>
                 <Text style={styles.addShippingText}>Add shipping address</Text>

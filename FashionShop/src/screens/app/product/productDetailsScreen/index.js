@@ -25,8 +25,7 @@ const ProductDetailsScreen = (props) => {
   const [colorChoose, setChooseColor] = useState(0);
   const [sizeChoose, setChooseSize] = useState(0);
   const [productImages,setProductImages] = useState([]);
-  const [colors,setColors] = useState([]);
-  const [sizes,setSizes] = useState([]);
+  const [details,setDetails] = useState([]);
   const [suggestiveProduct, setSuggestiveProduct] = useState([]);
   const axiosPrivate = useAxiosPrivate();
  
@@ -56,26 +55,17 @@ const ProductDetailsScreen = (props) => {
   useEffect(() => {
     const controller = new AbortController();
 
-    const getColorsById = async (id) => {
+    const getDetailsById = async (id) => {
       try {
-        const response = await axiosPrivate.get(`/get-color-by-id/${id}`, {
+        const response = await axiosPrivate.get(`/get-detail-by-productId/${id}`, {
           signal: controller.signal, 
         });
-        setColors(response.data)
+        console.log('details: ' ,JSON.stringify(response.data))
+        setDetails(response.data)
       } catch (err) {
         console.log(err.response.data);
       }
   };
-  const getSizesById = async (id) => {
-    try {
-      const response = await axiosPrivate.get(`/get-size-by-id/${id}`, {
-        signal: controller.signal, 
-      });
-      setSizes(response.data)
-    } catch (err) {
-      console.log(err.response.data);
-    }
-};
     const getSuggestiveProduct = async (number) => {
       try {
         const response = await axiosPrivate.get(`/get-random-product/${number}`, {
@@ -86,9 +76,9 @@ const ProductDetailsScreen = (props) => {
         console.log(err.response.data);
       }
     };
+    console.log('data: ' ,JSON.stringify(data))
     getSuggestiveProduct(4);
-    getColorsById(data._id);
-    getSizesById(data._id);
+    getDetailsById(data._id);
     return () => {
       controller.abort();
     };
@@ -141,11 +131,11 @@ const ProductDetailsScreen = (props) => {
             <View style={{flexDirection:'row',justifyContent:'space-between',paddingHorizontal:scale(12),width:'40%'}}>
               <Text style={{color:color.Label, fontFamily:FONT_FAMILY.Regular,
                 fontSize:scale(16),lineHeight:scale(18)}}>Color</Text>
-              {colors.map((item,index) => 
+              {details.map((item,index) => 
                 <TouchableOpacity style={{borderRadius:360,borderColor:color.PlaceHolder, borderWidth:colorChoose===index?1:0, alignItems:'center',
                 justifyContent:'center',width:scale(22),height:scale(22)}} 
                   onPress={() => setChooseColor(index)} key={item._id}>
-                  <View style={{borderRadius:360, backgroundColor:item.name,justifyContent:'center',
+                  <View style={{borderRadius:360, backgroundColor:'Texas Rose',justifyContent:'center',
                   width:scale(16),height:scale(16)}}/> 
                 </TouchableOpacity>     
               )}
@@ -153,12 +143,12 @@ const ProductDetailsScreen = (props) => {
             <View style={{flexDirection:'row',justifyContent:'space-between',marginLeft:scale(35),paddingHorizontal:scale(12),width:'40%'}}>
               <Text style={{color:color.Label, fontFamily:FONT_FAMILY.Regular,
                 fontSize:scale(16),lineHeight:scale(18)}}>Size</Text>
-              {sizes.map((item,index) => 
+              {details.map((item,index) => 
                 <TouchableOpacity style={{borderRadius:360, borderWidth:1, borderColor:sizeChoose===index?color.Body:color.Border,
                   width:scale(16),height:scale(16), alignItems:'center',backgroundColor:sizeChoose===index?color.Body:color.OffWhite}}
                   onPress={() => setChooseSize(index)} key={item._id}>
                     <Text style={{color:sizeChoose===index?color.InputBackground:color.Label, fontFamily:FONT_FAMILY.Regular,
-                fontSize:scale(12),lineHeight:scale(14),textAlign:'center'}}>{item.name}</Text>
+                fontSize:scale(12),lineHeight:scale(14),textAlign:'center'}}>{item.sizeName}</Text>
                 </TouchableOpacity>           
               )}
             </View>
