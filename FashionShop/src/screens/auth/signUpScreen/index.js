@@ -15,21 +15,24 @@ import SaveButton from '../../../components/buttons/Save';
 import * as yup from 'yup';
 import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 import useAuth from '../../../hooks/useAuth';
 import { axiosPrivate } from '../../../apis/axios';
 import { initUser } from '../../../redux/actions/userActions';
 
-const passwordRegex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const signUpPayloadSchema = yup.object({
-  firstName: yup.string()
-  .max(30,'Invalid name')
-  .required('Name cannot be blank'),
-  lastName: yup.string()
-  .max(30,'Invalid name')
-  .required('Name cannot be blank'),
+  firstName: yup
+    .string()
+    .max(30, 'Invalid name')
+    .required('Name cannot be blank'),
+  lastName: yup
+    .string()
+    .max(30, 'Invalid name')
+    .required('Name cannot be blank'),
   email: yup
     .string()
     .email('Invalid email')
@@ -37,21 +40,24 @@ const signUpPayloadSchema = yup.object({
     .required('Email cannot be blank'),
   phoneNumber: yup
     .string()
-    .min(10,'Invalid phone number')
-    .max(11,'Invalid phone number')
+    .min(10, 'Invalid phone number')
+    .max(11, 'Invalid phone number')
     .matches(phoneRegExp, 'Invalid phone number'),
   password: yup
     .string()
-    .matches(passwordRegex,'Password must contain uppercase, lowercase and number characters')
+    .matches(
+      passwordRegex,
+      'Password must contain uppercase, lowercase and number characters',
+    )
     .min(8, 'Password length must be more than 8 characters')
     .max(16, 'Password length must be less than 16 characters')
     .required('Password can not be blank'),
   passConfirm: yup
-  .string()
-  .oneOf([yup.ref('password'), null], 'Passwords must match')
+    .string()
+    .oneOf([yup.ref('password'), null], 'Passwords must match'),
 });
 
-const SignUpScreen = (props) => {
+const SignUpScreen = props => {
   const {setAuth} = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -81,7 +87,7 @@ const SignUpScreen = (props) => {
     resolver: yupResolver(signUpPayloadSchema),
   });
 
-  const handleSignup = async (data) => {
+  const handleSignup = async data => {
     try {
       setLoading(true);
       const response = await axiosPrivate.post(
@@ -89,36 +95,43 @@ const SignUpScreen = (props) => {
         JSON.stringify({
           firstName: firstName,
           lastName: lastName,
-          email: email, 
+          email: email,
           phoneNumber: phoneNumber,
           password: password,
           passwordConfirm: passwordConfirm,
         }),
       );
       console.log('success', JSON.stringify(response.data));
-           
+
       const responseLogin = await axiosPrivate.post(
         '/login',
         JSON.stringify({email: email, password: password}),
       );
       const accessToken = responseLogin?.data?.accessToken;
       dispatch(initUser(responseLogin.data.user));
-      setAuth({email: email, accessToken, emailVerified: responseLogin.data.user.emailVerified, userId: responseLogin.data.user._id}); 
+      setAuth({
+        email: email,
+        accessToken,
+        emailVerified: responseLogin.data.user.emailVerified,
+        userId: responseLogin.data.user._id,
+      });
       console.log('success', JSON.stringify(response.data));
       setLoading(false);
-      props.navigation.navigate('AppStackScreen')
+      props.navigation.navigate('AppStackScreen');
     } catch (error) {
       setErrorMessage(error.message);
       setLoading(false);
-      console.log("🚀 ~ file: index.js:70 ~ handleSignup ~ error", error)
+      console.log('🚀 ~ file: index.js:70 ~ handleSignup ~ error', error);
       console.log(error.response.data);
+    }
   };
-}
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.viewIcon} onPress={() => props.navigation.goBack()}>
+        <TouchableOpacity
+          style={styles.viewIcon}
+          onPress={() => props.navigation.goBack()}>
           <IC_BackwardArrow stroke={color.White} />
         </TouchableOpacity>
 
@@ -136,17 +149,22 @@ const SignUpScreen = (props) => {
             render={({field: {onChange, value}}) => (
               <View style={styles.inputFirstName}>
                 <View style={styles.viewInput}>
-                <TextInput
-                  onChangeText={firstName => [onChange(firstName), setFirstName(firstName)]}
-                  placeholder="First name"
-                  value={value}
-                  placeholderTextColor={color.GraySolid}
-                  style={styles.inputText}
-                  keyboardType="default"
-                />
+                  <TextInput
+                    onChangeText={firstName => [
+                      onChange(firstName),
+                      setFirstName(firstName),
+                    ]}
+                    placeholder="First name"
+                    value={value}
+                    placeholderTextColor={color.GraySolid}
+                    style={styles.inputText}
+                    keyboardType="default"
+                  />
                 </View>
                 {errors?.firstName && (
-                  <Text style={styles.textFailed}>{errors.firstName.message}</Text>
+                  <Text style={styles.textFailed}>
+                    {errors.firstName.message}
+                  </Text>
                 )}
               </View>
             )}
@@ -158,17 +176,22 @@ const SignUpScreen = (props) => {
             render={({field: {onChange, value}}) => (
               <View style={styles.inputLastName}>
                 <View style={styles.viewInput}>
-                <TextInput
-                  onChangeText={lastName => [onChange(lastName), setLastName(lastName)]}
-                  placeholder="Last name"
-                  value={value}
-                  placeholderTextColor={color.GraySolid}
-                  style={styles.inputText}
-                  keyboardType="default"
-                />
+                  <TextInput
+                    onChangeText={lastName => [
+                      onChange(lastName),
+                      setLastName(lastName),
+                    ]}
+                    placeholder="Last name"
+                    value={value}
+                    placeholderTextColor={color.GraySolid}
+                    style={styles.inputText}
+                    keyboardType="default"
+                  />
                 </View>
                 {errors?.lastName && (
-                  <Text style={styles.textFailed}>{errors.lastName.message}</Text>
+                  <Text style={styles.textFailed}>
+                    {errors.lastName.message}
+                  </Text>
                 )}
               </View>
             )}
@@ -181,14 +204,14 @@ const SignUpScreen = (props) => {
           render={({field: {onChange, value}}) => (
             <View style={styles.inputMailBox}>
               <View style={styles.viewInput}>
-              <TextInput
-                onChangeText={email => [onChange(email), setEmail(email)]}
-                placeholder="Email"
-                value={value}
-                placeholderTextColor={color.GraySolid}
-                style={styles.inputText}
-                keyboardType="default"
-              />
+                <TextInput
+                  onChangeText={email => [onChange(email), setEmail(email)]}
+                  placeholder="Email"
+                  value={value}
+                  placeholderTextColor={color.GraySolid}
+                  style={styles.inputText}
+                  keyboardType="default"
+                />
               </View>
               {errors?.email && (
                 <Text style={styles.textFailed}>{errors.email.message}</Text>
@@ -203,17 +226,22 @@ const SignUpScreen = (props) => {
           render={({field: {onChange, value}}) => (
             <View style={styles.inputPhoneNumber}>
               <View style={styles.viewInput}>
-              <TextInput
-                onChangeText={phoneNumber => [onChange(phoneNumber), setPhoneNumber(phoneNumber)]}
-                placeholder="Phone number"
-                value={value}
-                placeholderTextColor={color.GraySolid}
-                style={styles.inputText}
-                keyboardType="default"
-              />
+                <TextInput
+                  onChangeText={phoneNumber => [
+                    onChange(phoneNumber),
+                    setPhoneNumber(phoneNumber),
+                  ]}
+                  placeholder="Phone number"
+                  value={value}
+                  placeholderTextColor={color.GraySolid}
+                  style={styles.inputText}
+                  keyboardType="default"
+                />
               </View>
               {errors?.phoneNumber && (
-                <Text style={styles.textFailed}>{errors.phoneNumber.message}</Text>
+                <Text style={styles.textFailed}>
+                  {errors.phoneNumber.message}
+                </Text>
               )}
             </View>
           )}
@@ -226,14 +254,17 @@ const SignUpScreen = (props) => {
           render={({field: {onChange, value}}) => (
             <View style={styles.inputPassword}>
               <View style={styles.viewInput}>
-              <TextInput
-                secureTextEntry={true}
-                onChangeText={password =>[onChange(password),setPassword(password)]}
-                value={value}
-                placeholder="Password"
-                placeholderTextColor={color.GraySolid}
-                style={styles.inputText}
-              />
+                <TextInput
+                  secureTextEntry={true}
+                  onChangeText={password => [
+                    onChange(password),
+                    setPassword(password),
+                  ]}
+                  value={value}
+                  placeholder="Password"
+                  placeholderTextColor={color.GraySolid}
+                  style={styles.inputText}
+                />
               </View>
               {errors?.password && (
                 <Text style={styles.textFailed}>{errors.password.message}</Text>
@@ -248,29 +279,35 @@ const SignUpScreen = (props) => {
           render={({field: {onChange, value}}) => (
             <View style={styles.inputPasswordConfirm}>
               <View style={styles.viewInput}>
-              <TextInput
-                secureTextEntry={true}
-                onChangeText={passwordConfirm =>[ onChange(passwordConfirm),setPasswordConfirm(password)]}
-                value={value}
-                placeholder="Password Confirm"
-                placeholderTextColor={color.GraySolid}
-                style={styles.inputText}
-              />
+                <TextInput
+                  secureTextEntry={true}
+                  onChangeText={passwordConfirm => [
+                    onChange(passwordConfirm),
+                    setPasswordConfirm(password),
+                  ]}
+                  value={value}
+                  placeholder="Confirm Password"
+                  placeholderTextColor={color.GraySolid}
+                  style={styles.inputText}
+                />
               </View>
               {errors?.passwordConfirm && (
-                <Text style={styles.textFailed}>{errors.passwordConfirm.message}</Text>
+                <Text style={styles.textFailed}>
+                  {errors.passwordConfirm.message}
+                </Text>
               )}
             </View>
           )}
         />
 
         <View style={styles.buttonSignIn}>
-          <SaveButton text={'Sign Up'} onPress={handleSubmit(handleSignup)}
-          loading={loading}
+          <SaveButton
+            text={'Sign Up'}
+            onPress={handleSubmit(handleSignup)}
+            loading={loading}
           />
         </View>
       </View>
-      
     </SafeAreaView>
   );
 };
@@ -342,7 +379,7 @@ const styles = StyleSheet.create({
     borderColor: color.GraySolid,
     borderBottomWidth: 1,
   },
-  inputPhoneNumber:{
+  inputPhoneNumber: {
     marginTop: scale(10),
     width: scale(295),
     height: scale(51),
@@ -366,7 +403,7 @@ const styles = StyleSheet.create({
   inputText: {
     color: color.TitleActive,
     fontSize: 16,
-    marginTop:scale(10),
+    marginTop: scale(10),
     marginLeft: scale(5),
   },
   buttonSignIn: {
