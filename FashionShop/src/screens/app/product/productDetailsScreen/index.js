@@ -171,47 +171,18 @@ const ProductDetailsScreen = props => {
             <Text style={[styles.prodDescription]}>{data.description}</Text>
           </View>
           <Text style={styles.prodPrice}>${data.price}</Text>
-          <View style={{flexDirection: 'row', marginTop: scale(18)}}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingHorizontal: scale(12),
-                width: '40%',
-              }}>
-              <Text
-                style={{
-                  color: color.Label,
-                  fontFamily: FONT_FAMILY.Regular,
-                  fontSize: scale(16),
-                  lineHeight: scale(18),
-                }}>
-                Color
-              </Text>
-              {details.map((item, index) => (
-                <TouchableOpacity
-                  style={{
-                    borderRadius: 360,
-                    borderColor: color.PlaceHolder,
-                    borderWidth: colorChoose === index ? 1 : 0,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: scale(22),
-                    height: scale(22),
-                  }}
-                  onPress={() => setChooseColor(index)}
-                  key={item._id}>
-                  <View
-                    style={{
-                      borderRadius: 360,
-                      backgroundColor: 'Texas Rose',
-                      justifyContent: 'center',
-                      width: scale(16),
-                      height: scale(16),
-                    }}
-                  />
-                </TouchableOpacity>
-              ))}
+          <View style={{flexDirection:'row', marginTop:scale(18)}}>
+            <View style={{flexDirection:'row',justifyContent:'space-between',paddingHorizontal:scale(12),width:'40%'}}>
+              <Text style={{color:color.Label, fontFamily:FONT_FAMILY.Regular,
+                fontSize:scale(16),lineHeight:scale(18)}}>Color</Text>
+              {details.map((item,index) => 
+                <TouchableOpacity style={{borderRadius:360,borderColor:color.PlaceHolder, borderWidth:colorChoose===index?1:0, alignItems:'center',
+                justifyContent:'center',width:scale(22),height:scale(22)}} 
+                  onPress={() => setChooseColor(index)} key={item._id}>
+                  <View style={{borderRadius:360, backgroundColor:item.colorCode,justifyContent:'center',
+                  width:scale(16),height:scale(16)}}/> 
+                </TouchableOpacity>     
+              )}
             </View>
             <View
               style={{

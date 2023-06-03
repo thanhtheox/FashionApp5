@@ -17,8 +17,8 @@ import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useDispatch} from 'react-redux';
 import useAuth from '../../../hooks/useAuth';
-import axiosClient, {axiosPrivate} from '../../../apis/axios';
-import {initUser} from '../../../redux/actions/userActions';
+import { axiosPrivate } from '../../../apis/axios';
+import { initUser } from '../../../redux/actions/userActions';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 const phoneRegExp =
