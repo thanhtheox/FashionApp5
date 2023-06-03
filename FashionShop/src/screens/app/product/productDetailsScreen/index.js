@@ -177,7 +177,7 @@ const ProductDetailsScreen = props => {
                 <TouchableOpacity style={{borderRadius:360,borderColor:color.PlaceHolder, borderWidth:colorChoose===index?1:0, alignItems:'center',
                 justifyContent:'center',width:scale(22),height:scale(22)}} 
                   onPress={() => setChooseColor(index)} key={item._id}>
-                  <View style={{borderRadius:360, backgroundColor:'Texas Rose',justifyContent:'center',
+                  <View style={{borderRadius:360, backgroundColor:item.colorCode,justifyContent:'center',
                   width:scale(16),height:scale(16)}}/> 
                 </TouchableOpacity>     
               )}

@@ -26,17 +26,20 @@ import {
   removeFromCart,
   resetCartWhenOrder,
 } from '../../../../redux/actions/cartActions';
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 
   const CheckOut = (props) => { 
     const user = useSelector(state => state.user);
     const {userItems} = user;
     const userInfo = userItems.user;
+    const axiosPrivate = useAxiosPrivate();
     const [method, setMethod] = useState([
         {label: 'Pickup at store - FREE', value: 0},
         {label: 'Ship COD - $5', value: 5},
     ]); 
     const [methodValue, setMethodValue] = useState(0)
     const [methodOpen, setMethodOpen] = useState(false);
+    const [address, setAddress] = useState([]);
     const { handleSubmit, control } = useForm();
 
   function handlePickMethod(val) {
@@ -63,6 +66,25 @@ import {
       setVisible(true);
     }
   }, [cartItems, totalAmount]);
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const getAddressById = async () => {
+      try {
+        const response = await axiosPrivate.get(`/get-address-by-user-id/${userInfo._id}`, {
+          signal: controller.signal, 
+        });
+        console.log('address: ' ,JSON.stringify(response.data))
+        setAddress(response.data)
+      } catch (err) {
+        console.log(err.response);
+      }
+  };
+  getAddressById();
+    return () => {
+      controller.abort();
+    };
+  }, []);
 
   const onCalculateAmount = () => {
     let total = 0;

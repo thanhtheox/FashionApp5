@@ -25,7 +25,6 @@ export const userReducer = (state = USER_INITIAL_STATE, action) => {
         },
       };
     case actionTypes.VERIFIED:
-      const emailVerify = action.payload;
       return {
         ...state,
         userItems: {...state.userItems, user: {...state.userItems.user, emailVerified: action.payload.emailVerified}}
