@@ -74,8 +74,8 @@ import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
         const response = await axiosPrivate.get(`/get-address-by-user-id/${userInfo._id}`, {
           signal: controller.signal, 
         });
-        console.log('address: ' ,JSON.stringify(response.data))
-        setAddress(response.data)
+        console.log('address: ' ,JSON.stringify(response?.data))
+        setAddress(response?.data?.address.addresses)
       } catch (err) {
         console.log(err.response);
       }
@@ -109,18 +109,29 @@ import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
   };
     return (
       <SafeAreaView style={styles.container}>
+        <ScrollView>
         <View style={styles.introTextBox}>
             <Text style={styles.introText}>CHECKOUT</Text>
             <Image source={LineBottom}/>
         </View>
         <View style={styles.address}>
             <Text style={styles.bodyText1}>SHIPPING ADDRESS</Text>
-            <TouchableOpacity style={styles.bodyTextBox}>
-                    <IC_Forward style = {styles.ForwardPosition}/>
+            <ScrollView style={{height:scale(200)}}>
+              {address.map(item => 
+                <TouchableOpacity style={styles.bodyTextBox} key={item._id} onPress={() => props.navigation.navigate('EditAddressScreen',{
+                  data:item,
+                })}>
+                  <View style={{flexDirection:'column', width:'80%'}}>
                     <Text style={styles.name}>{userInfo.firstName + ' ' + userInfo.lastName}</Text>
-                    <Text numberOfLines={2} style={styles.bodyText}>ktx khu B, Tp.Thu Duc, Tp.Ho Chi Minh</Text>
+                    <Text numberOfLines={2} style={styles.bodyText}>
+                      {item.streetAndNumber+ ', '+ item.ward+ ', '+ item.district+ ', '+ item.city}
+                    </Text>
                     <Text style={styles.bodyText}>{userInfo.phoneNumber}</Text>
-            </TouchableOpacity>                 
+                  </View>
+                  <IC_Forward style = {styles.ForwardPosition}/>
+                </TouchableOpacity>
+              )}            
+            </ScrollView>     
             <TouchableOpacity style={styles.addShipping} onPress={() => props.navigation.navigate('AddNewAddressScreen')}>
                 <Text style={styles.addShippingText}>Add shipping address</Text>
                 <IC_Plus style = {styles.PlusPosition}/>
@@ -180,6 +191,7 @@ import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
         onPress={() => resetCartHandler()}>
         <Text style={styles.button}>PLACE ORDER</Text>
       </TouchableOpacity>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -207,7 +219,12 @@ const styles = StyleSheet.create({
   },
   bodyTextBox: {
     alignSelf: 'center',
-    justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection:'row',
+    borderBottomWidth:1,
+    width:'100%',
+    paddingHorizontal:scale(10)
   },
   bodyText1: {
     //padding: scale(10),
@@ -218,18 +235,15 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.Regular,
   },
   bodyText: {
-    //padding: scale(10),
     marginTop: scale(10),
     color: color.TitleActive,
     fontSize: 16,
     fontWeight: 400,
     fontFamily: FONT_FAMILY.Regular,
-    marginLeft: scale(-60),
   },
   name: {
     //padding: scale(10),
     marginTop: scale(10),
-    marginLeft: scale(-60),
     color: color.TitleActive,
     fontSize: 18,
     fontWeight: 400,
@@ -237,11 +251,6 @@ const styles = StyleSheet.create({
   },
   details: {
     marginLeft: scale(20),
-    justifyContent: 'center',
-  },
-  ForwardPosition: {
-    position: 'absolute',
-    marginLeft: scale(280),
     justifyContent: 'center',
   },
   PlusPosition: {

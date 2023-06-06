@@ -52,9 +52,11 @@ const ProductDetailsScreen = props => {
   const axiosPrivate = useAxiosPrivate();
 
   const {data} = props.route.params;
+  const cart = useSelector(state => state.cart);
+  const {cartItems} = cart;
 
   const dispatch = useDispatch();
-  const addToCartHandler = () => {
+  const addToCartHandler = async () => {
     dispatch(
       addToCart(
         data._id,
@@ -65,6 +67,20 @@ const ProductDetailsScreen = props => {
         count,
       ),
     );
+    //console.log('CART: ', JSON.stringify(cartItems))
+    // try{
+    //   const response = await axiosPrivate.put(
+    //     `/edit-cart-item/${cartItems.id}`,
+    //     JSON.stringify({
+    //       productDetails: cartItems
+    //     }),
+    //   );
+    //   console.log('success', JSON.stringify(response.data));
+    // }catch (err) {
+    //   console.log(err.response);
+    // }
+    
+
   };
 
   useEffect(() => {
