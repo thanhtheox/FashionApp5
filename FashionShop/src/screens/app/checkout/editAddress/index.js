@@ -16,13 +16,13 @@ import axios from 'axios';
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
-const addNewAddressPayloadSchema = yup.object({
-  firstName: yup.string()
-  .max(30,'Invalid name')
-  .required('Name cannot be blank'),
-  lastName: yup.string()
-  .max(30,'Invalid name')
-  .required('Name cannot be blank'),
+const editAddressPayloadSchema = yup.object({
+  // firstName: yup.string()
+  // .max(30,'Invalid name')
+  // .required('Name cannot be blank'),
+  // lastName: yup.string()
+  // .max(30,'Invalid name')
+  // .required('Name cannot be blank'),
   city: yup.object()
   // .max(70,'Invalid city')
   .required('City cannot be blank'),
@@ -35,33 +35,35 @@ const addNewAddressPayloadSchema = yup.object({
   streetAndNumber: yup.string()
   .max(70,'Invalid street and number')
   .required('Street and number cannot be blank'),
-  phoneNumber: yup
-    .string()
-    .min(10,'Invalid phone number')
-    .max(11,'Invalid phone number')
-    .matches(phoneRegExp, 'Invalid phone number'),
+  // phoneNumber: yup
+  //   .string()
+  //   .min(10,'Invalid phone number')
+  //   .max(11,'Invalid phone number')
+  //   .matches(phoneRegExp, 'Invalid phone number'),
 });
 
 
-const AddNewAddressScreen = props => {
+const EditAddressScreen = props => {
+  const {data} = props.route.params;
   // const [firstName, setFirstName] = useState('');
   // const [lastName, setLastName] = useState('');
   const [address, setAddress] = useState([]);
-  const [streetAndNumber, setStreetAndNumber] = useState('');
+  const [streetAndNumber, setStreetAndNumber] = useState(data.streetAndNumber);
   //const [phoneNumber, setPhoneNumber] = useState('');
   const [cityList, setCityList] = useState([]);
-  const [city, setCity] = useState('');
+  const [city, setCity] = useState(data.city);
   const [cityOpen, setCityOpen] = useState(false);
-  const [district, setDistrict] = useState('');
+  const [district, setDistrict] = useState(data.district);
   const [districtList, setDistrictList] = useState([]);
   const [districtOpen, setDistrictOpen] = useState(false);
-  const [ward, setWard] = useState('');
+  const [ward, setWard] = useState(data.ward);
   const [wardList, setWardList] = useState([]);
   const [wardOpen, setWardOpen] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const user = useSelector(state => state.user);
   const {userItems} = user;
   const userInfo = userItems.user;
+
 
   const {
     control,
@@ -79,7 +81,7 @@ const AddNewAddressScreen = props => {
       streetAndNumber:'',
       address: ''
     },
-    resolver: yupResolver(addNewAddressPayloadSchema),
+    resolver: yupResolver(editAddressPayloadSchema),
   });
   useEffect(() => {
     const controller = new AbortController();
@@ -108,7 +110,7 @@ const AddNewAddressScreen = props => {
     };
   }, []);
   
-  const handleAddNewAddress = async (data) => {
+  const handleEditAddress = async () => {
     try {
       //setLoading(true);
       setAddress({
@@ -119,9 +121,9 @@ const AddNewAddressScreen = props => {
       } )
       console.log('address',JSON.stringify(address))
       const response = await axiosPrivate.put(
-        `/add-new-address/${userInfo._id}`,
+        `/edit-addresses/${data._id}`,
         JSON.stringify({
-          addressObject: {
+          addresses: {
             city: city,
             district: district,
             ward: ward,
@@ -180,8 +182,8 @@ const handleDistrictChange = async(district) => {
                 <Image source={LineBottom} style={{alignSelf: 'center'}}/>
             </View>
             <View style={styles.body}>
-              {/* <>
-                <View style={styles.inputName}>
+              <>
+                {/* <View style={styles.inputName}>
                   <Controller
                   name="firstName"
                   control={control}
@@ -248,8 +250,8 @@ const handleDistrictChange = async(district) => {
                       )}
                     </View>
                   )}
-                />
-                </> */}
+                /> */}
+                </>
                 <>
                 <Controller
                   name="city"
@@ -347,9 +349,14 @@ const handleDistrictChange = async(district) => {
                     </View>
                   )}
                 />
+                <View style={{marginTop:scale(40),marginHorizontal:scale(10)}}>
+                  <Text style={styles.inputText}>
+                    {'Address:\n'+ data.streetAndNumber+ ', '+ data.ward+ ', '+ data.district+ ', '+ data.city}
+                  </Text>
+                </View>
             </View>
             <View style={styles.totalBorder}>
-              <TouchableOpacity style={styles.placeOrder} onPress={handleAddNewAddress}>
+              <TouchableOpacity style={styles.placeOrder} onPress={handleEditAddress}>
                 <Text style={styles.button}>ADD NOW</Text>
               </TouchableOpacity>
             </View>  
@@ -357,7 +364,7 @@ const handleDistrictChange = async(district) => {
     );
 };
 
-export default AddNewAddressScreen;
+export default EditAddressScreen;
 
 const styles = StyleSheet.create({
     container:
