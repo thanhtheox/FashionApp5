@@ -20,7 +20,7 @@ import {
   IC_Password,
 } from '../../../../assets/icons';
 import {Avatar, Title, Caption} from 'react-native-paper';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import SaveButton from '../../../../components/buttons/Save';
 import {ScrollView} from 'react-native';
 import {useSelector} from 'react-redux';
@@ -46,12 +46,6 @@ const MyInfoScreen = props => {
           </TouchableOpacity>
 
           <View style={styles.avatar}>
-            {/* <Avatar.Image
-              source={{
-                uri: userInfo.avatarImage,
-              }}
-              size={150}
-            /> */}
             <Image
               source={{uri: userInfo.avatarImage}}
               style={{width: '100%', height: '100%'}}
@@ -76,14 +70,16 @@ const MyInfoScreen = props => {
             </View>
           </View>
           {/* password */}
-          <View style={styles.inputBox}>
+          {/* <View style={styles.inputBox}>
             <View style={styles.icon}>
               <TouchableOpacity onPress={handleShowPassword}>
                 <IC_Password />
               </TouchableOpacity>
-              {showPassword && <Text style={styles.inputText}>FS123456</Text>}
+              {showPassword && (
+                <Text style={styles.inputText}>{userInfo.passWord}</Text>
+              )}
             </View>
-          </View>
+          </View> */}
           {/* phone number */}
           <View style={styles.inputBox}>
             <View style={styles.icon1}>
