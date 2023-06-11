@@ -19,6 +19,8 @@ import {useDispatch} from 'react-redux';
 import useAuth from '../../../hooks/useAuth';
 import { axiosPrivate } from '../../../apis/axios';
 import { initUser } from '../../../redux/actions/userActions';
+import { initCartLogIn } from '../../../redux/actions/cartActions';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 const phoneRegExp =
@@ -65,7 +67,7 @@ const SignUpScreen = props => {
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-
+  const axiosPrivate = useAxiosPrivate();
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -109,12 +111,23 @@ const SignUpScreen = props => {
       );
       const accessToken = responseLogin?.data?.accessToken;
       dispatch(initUser(responseLogin.data.user));
+      const getUserInfoFirstTime = async (id) => {
+        try {
+            const responseCart = await axiosPrivate.get(
+              `/get-cart-by-user-id/${id}`
+            );
+          dispatch(initCartLogIn(responseCart.data));
+        } catch (err) {
+          console.log('err', err);
+        }
+      };
       setAuth({
         email: email,
         accessToken,
         emailVerified: responseLogin.data.user.emailVerified,
         userId: responseLogin.data.user._id,
       });
+      getUserInfoFirstTime(responseLogin.data.user._id);
       console.log('success', JSON.stringify(response.data));
       setLoading(false);
       props.navigation.navigate('AppStackScreen');

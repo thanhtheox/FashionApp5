@@ -1,5 +1,6 @@
 import * as actionTypes from "../constants/cartConstants"
 const CART_INITIAL_STATE = {
+  cartId: '',
   cartItems: [],
 };
 
@@ -7,14 +8,14 @@ export const cartReducer = (state = CART_INITIAL_STATE, action) => {
   switch (action.type) {
     case actionTypes.ADD_TO_CART:
       const item = action.payload;
-      console.log("reducer:" + JSON.stringify(item));
-      const existItem = state.cartItems.find((x) => x.id === item.id);
+      // console.log("reducer:" + JSON.stringify(item));
+      const existItem = state.cartItems.find((x) => x.detailId === item.detailId);
 
       if (existItem) {
         return {
           ...state,
           cartItems: state.cartItems.map((x) =>
-            x.id === existItem.id ? {...item, qty: item.qty + x.qty} : x
+            x.detailId === existItem.detailId ? {...x, qty: item.qty + x.qty} : x
           ),
         };
       } 
@@ -24,16 +25,24 @@ export const cartReducer = (state = CART_INITIAL_STATE, action) => {
           cartItems: [...state.cartItems, item],
         };
       }
+    case actionTypes.ORDER:
+      // console.log(action.payload)
+    return {
+      ...state,
+      cartItems: state.cartItems.map((x) =>
+        x.detailId === action.payload.detailId ? {...x, isOrder: action.payload.isOrder} : x
+      ),
+    };
     case actionTypes.REMOVE_FROM_CART:
       return {
         ...state,
-        cartItems: state.cartItems.filter((x) => x.id !== action.payload),
+        cartItems: state.cartItems.filter((x) => x.detailId !== action.payload),
       };
     case actionTypes.ADJUST_QTY:
       return {
         ...state,
         cartItems: state.cartItems.map((x) =>
-          x.id === action.payload.id ? {...x, qty: action.payload.qty} : x
+          x.detailId === action.payload.detailId ? {...x, qty: action.payload.qty} : x
         ),  
       };
     case actionTypes.CART_RESET:
@@ -42,9 +51,21 @@ export const cartReducer = (state = CART_INITIAL_STATE, action) => {
         cartItems: [] 
       };
     case actionTypes.INIT_CART:
+      // console.log("cartItems:" + JSON.stringify(action.payload.cart.cart.productDetails));
+      // console.log("cartId:" + JSON.stringify(action.payload.cart.cart._id));
+      const updatedCartItems = action.payload.cart.cart.productDetails.map((item) => ({
+        product: item.productDetailId.productId,
+        detailId: item.productDetailId._id,
+        colorCode: item.productDetailId.colorId.code,
+        sizeName: item.productDetailId.sizeId.name,
+        qty: item.quantity,
+        isOrder: false,
+      }));
+      // console.log('CART::::' ,JSON.stringify(updatedCartItems))
       return {
         ...state,
-        cartItems: action.payload.cart 
+        cartItems: [...updatedCartItems],
+        cartId: action.payload.cart.cart._id,
       };
     default:
       return state;

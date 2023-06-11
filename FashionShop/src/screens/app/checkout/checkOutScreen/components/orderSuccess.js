@@ -8,22 +8,15 @@ import {
   TextInput,
 } from 'react-native';
 import {React, useState} from 'react';
-import color from '../../../../constants/color';
-import FONT_FAMILY from '../../../../constants/fonts';
-import scale from '../../../../constants/responsive';
-import {IMG_Logo} from '../../../../assets/images';
-import SaveButton from '../../../../components/buttons/Save';
-import {LineBottom} from '../../../../components/footer/images';
-import {IC_Rating, IC_Success} from '../../../../assets/icons';
+import color from '../../../../../constants/color';
+import FONT_FAMILY from '../../../../../constants/fonts';
+import scale from '../../../../../constants/responsive';
+import {IMG_Logo} from '../../../../../assets/images';
+import SaveButton from '../../../../../components/buttons/Save';
+import {LineBottom} from '../../../../../components/footer/images';
+import {IC_Rating, IC_Success} from '../../../../../assets/icons';
 
 const OrderSuccess = props => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [address, setAddress] = useState('');
-  const [state, setState] = useState('');
-  const [code, setCode] = useState('');
-  const [city, setCity] = useState('');
-  const [phone, setPhone] = useState('');
 
   return (
     <SafeAreaView style={styles.container}>

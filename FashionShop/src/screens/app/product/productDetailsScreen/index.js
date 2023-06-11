@@ -40,47 +40,39 @@ import {useSelector} from 'react-redux';
 import {addToCart} from '../../../../redux/actions/cartActions';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 import Policy from './components/Policy';
+import OKMessageBox from '../../../../components/messageBox/OKMessageBox';
 
 const ProductDetailsScreen = props => {
   const [visible, setVisible] = useState(true);
   const [count, setCount] = useState(1);
   const [colorChoose, setChooseColor] = useState(0);
   const [sizeChoose, setChooseSize] = useState(0);
+  const [detailChoose,setDetailChoose] = useState({});
   const [productImages, setProductImages] = useState([]);
   const [details, setDetails] = useState([]);
   const [suggestiveProduct, setSuggestiveProduct] = useState([]);
   const axiosPrivate = useAxiosPrivate();
 
+  const [availableColor, setAvailableColor] = useState([]);
+  const [availableSize, setAvailableSize] = useState([]);
+  const [notExistSize, setNotExistSize] = useState(false);
   const {data} = props.route.params;
   const cart = useSelector(state => state.cart);
   const {cartItems} = cart;
 
   const dispatch = useDispatch();
-  const addToCartHandler = async () => {
+  const addToCartHandler = async (detailId,colorCode,sizeName) => {
     dispatch(
       addToCart(
-        data._id,
-        data.name,
-        data.description,
-        data.price,
-        data.posterImage.url,
+        data,
+        detailId,
+        colorCode,
+        sizeName,
         count,
+        // colorChoose,
+        // sizeChoose,
       ),
     );
-    //console.log('CART: ', JSON.stringify(cartItems))
-    // try{
-    //   const response = await axiosPrivate.put(
-    //     `/edit-cart-item/${cartItems.id}`,
-    //     JSON.stringify({
-    //       productDetails: cartItems
-    //     }),
-    //   );
-    //   console.log('success', JSON.stringify(response.data));
-    // }catch (err) {
-    //   console.log(err.response);
-    // }
-    
-
   };
 
   useEffect(() => {
@@ -109,6 +101,35 @@ const ProductDetailsScreen = props => {
         );
         console.log('details: ', JSON.stringify(response.data));
         setDetails(response.data);
+        response.data.map(detail => {
+          const isExistColor = availableColor.find(element => {
+            if (element.colorId === detail.colorId) {
+              return true;
+            }
+            return false;
+          });
+          console.log({isExistColor})
+          if (!isExistColor) {
+            let newColorArray = availableColor;
+            newColorArray.push({ colorId: detail.colorId, colorCode: detail.colorCode})
+            setAvailableColor([...newColorArray])
+          }
+          const isExistSize = availableSize.find(element => {
+            if (element.sizeId === detail.sizeId) {
+              return true;
+            }
+          
+            return false;
+          });
+          // console.log({isExistSize})
+          if (!isExistSize) {
+            let newSizeArray = availableSize;
+            newSizeArray.push({ sizeId: detail.sizeId, sizeName: detail.sizeName})
+            setAvailableSize([...newSizeArray])
+          }
+          console.log({availableColor})
+          console.log({availableSize})
+        })
       } catch (err) {
         console.log(err.response.data);
       }
@@ -126,17 +147,30 @@ const ProductDetailsScreen = props => {
         console.log(err.response.data);
       }
     };
-    console.log('data: ', JSON.stringify(data));
+    // console.log('data: ', JSON.stringify(data));
     getSuggestiveProduct(4);
     getDetailsById(data._id);
     return () => {
       controller.abort();
     };
   }, []);
+  const handleChooseSize = (sizeId) => {
+    setChooseSize(sizeId)
+    const selectedDetail = details.find((item) => {
+      if(item.sizeId === sizeId)
+      {return item}
+      // else {return null}
+    });
+    console.log(selectedDetail)
+    setDetailChoose(selectedDetail)
+  };
 
   return visible ? (
     <SafeAreaView style={styles.container}>
       <ScrollView>
+      <OKMessageBox visible={notExistSize} clickCancel={() => {setNotExistSize(false)}} 
+        title={"NO SIZE YET"} 
+        message={"You need to choose size!"}  />
         {/* Product Images */}
         <View style={styles.productContainer}>
           <SwiperFlatList
@@ -187,72 +221,74 @@ const ProductDetailsScreen = props => {
             <Text style={[styles.prodDescription]}>{data.description}</Text>
           </View>
           <Text style={styles.prodPrice}>${data.price}</Text>
-          <View style={{flexDirection:'row', marginTop:scale(18)}}>
-            <View style={{flexDirection:'row',justifyContent:'space-between',paddingHorizontal:scale(12),width:'40%'}}>
-              <Text style={{color:color.Label, fontFamily:FONT_FAMILY.Regular,
-                fontSize:scale(16),lineHeight:scale(18)}}>Color</Text>
-              {details.map((item,index) => 
-                <TouchableOpacity style={{borderRadius:360,borderColor:color.PlaceHolder, borderWidth:colorChoose===index?1:0, alignItems:'center',
-                justifyContent:'center',width:scale(22),height:scale(22)}} 
-                  onPress={() => setChooseColor(index)} key={item._id}>
-                  <View style={{borderRadius:360, backgroundColor:item.colorCode,justifyContent:'center',
-                  width:scale(16),height:scale(16)}}/> 
-                </TouchableOpacity>     
-              )}
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginLeft: scale(35),
-                paddingHorizontal: scale(12),
-                width: '40%',
-              }}>
-              <Text
+          <>
+            <View style={{flexDirection:'row', marginTop:scale(18)}}>
+              <View style={{flexDirection:'row',paddingHorizontal:scale(12),width:'40%', gap:scale(10)}}>
+                <Text style={{color:color.Label, fontFamily:FONT_FAMILY.Regular,
+                  fontSize:scale(16),lineHeight:scale(18)}}>Color</Text>
+                {availableColor.map((item,index) => 
+                  <TouchableOpacity style={{borderRadius:360,borderColor:colorChoose===item.colorId?color.Primary:color.TitleActive, borderWidth:1, alignItems:'center',
+                  justifyContent:'center',width:scale(22),height:scale(22)}} 
+                    onPress={() => setChooseColor(item.colorId)} key={index}>
+                    <View style={{borderRadius:360, backgroundColor:item.colorCode,
+                    width:scale(16),height:scale(16)}}/> 
+                  </TouchableOpacity>     
+                )}
+              </View>
+              <View
                 style={{
-                  color: color.Label,
-                  fontFamily: FONT_FAMILY.Regular,
-                  fontSize: scale(16),
-                  lineHeight: scale(18),
+                  flexDirection: 'row',
+                  marginLeft: scale(35),
+                  paddingHorizontal: scale(12),
+                  width: '40%',
+                  gap:scale(10)
                 }}>
-                Size
-              </Text>
-              {details.map((item, index) => (
-                <TouchableOpacity
+                <Text
                   style={{
-                    borderRadius: 360,
-                    borderWidth: 1,
-                    borderColor:
-                      sizeChoose === index ? color.Body : color.Border,
-                    width: scale(16),
-                    height: scale(16),
-                    alignItems: 'center',
-                    backgroundColor:
-                      sizeChoose === index ? color.Body : color.OffWhite,
-                  }}
-                  onPress={() => setChooseSize(index)}
-                  key={item._id}>
-                  <Text
+                    color: color.Label,
+                    fontFamily: FONT_FAMILY.Regular,
+                    fontSize: scale(16),
+                    lineHeight: scale(18),
+                  }}>
+                  Size
+                </Text>
+                {availableSize.map((item, index) => (
+                  <TouchableOpacity
                     style={{
-                      color:
-                        sizeChoose === index
-                          ? color.InputBackground
-                          : color.Label,
-                      fontFamily: FONT_FAMILY.Regular,
-                      fontSize: scale(12),
-                      lineHeight: scale(14),
-                      textAlign: 'center',
-                    }}>
-                    {item.sizeName}
-                  </Text>
-                </TouchableOpacity>
-              ))}
+                      borderRadius: 360,
+                      borderWidth: 1,
+                      borderColor:
+                        sizeChoose === item.sizeId ? color.Body : color.Border,
+                      width: scale(16),
+                      height: scale(16),
+                      alignItems: 'center',
+                      backgroundColor:
+                        sizeChoose === item.sizeId ? color.Body : color.OffWhite,
+                    }}
+                    onPress={() => handleChooseSize(item.sizeId)}
+                    key={index}>
+                    <Text
+                      style={{
+                        color:
+                          sizeChoose === item.sizeId
+                            ? color.OffWhite
+                            : color.TitleActive,
+                        fontFamily: FONT_FAMILY.Regular,
+                        fontSize: scale(12),
+                        lineHeight: scale(14),
+                        textAlign: 'center',
+                      }}>
+                      {item.sizeName}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
             </View>
-          </View>
+          </>
         </View>
         {/* Button Add To Basket */}
         <View style={{marginTop: scale(24.5)}}>
-          <AddToBasket onPress={addToCartHandler} />
+          <AddToBasket onPress={() => {detailChoose._id === undefined? setNotExistSize(true):addToCartHandler(detailChoose._id,detailChoose.colorCode,detailChoose.sizeName)} }/>
         </View>
         {/* Product Detail */}
         <View style={styles.detailView}>

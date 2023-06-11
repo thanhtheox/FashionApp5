@@ -11,22 +11,24 @@ import {
   removeFromCart,
   adjustQTY,
   resetCartWhenOrder,
+  order,
 } from '../../../redux/actions/cartActions';
+import OKMessageBox from '../../../components/messageBox/OKMessageBox'
 
 const CartScreen = (props) => {
   const dispatch = useDispatch();
   const [totalAmount, setTotalAmount] = useState(0);
   const [visible, setVisible] = useState(true);
+  const [notExistOrder, setNotExistOrder] = useState(false);
 
   const cart = useSelector(state => state.cart);
   const {cartItems} = cart;
+  // console.log({cartItems})
+  const checkOutCart = cartItems.filter((item) => item.isOrder === true)
   
   useEffect(() => {
-    console.log('render!')
-
-    console.log('Cart Screen cart: ' + JSON.stringify(cart));
-    console.log('Cart Screen: ' + JSON.stringify(cartItems));
     onCalculateAmount();
+    
     
     if(totalAmount === 0)
     {
@@ -36,13 +38,13 @@ const CartScreen = (props) => {
       setVisible(true);
     }
 
-  }, [cart,totalAmount]);
+  }, [checkOutCart,cartItems,totalAmount]);
 
   const onCalculateAmount = () => {
     let total = 0;
     if (Array.isArray(cartItems)) {
-      cartItems.map(food => {
-        total += food.price * food.qty;
+      cartItems.map(item => {
+        total += item.product.price * item.qty;
       });
     }
     setTotalAmount(total);
@@ -55,10 +57,16 @@ const CartScreen = (props) => {
   const removeFromCartHandler = id => {
     dispatch(removeFromCart(id));
   };
+  const orderHandler = (id,isOrder) => {
+    dispatch(order(id,isOrder))
+  };
 
 
   return (
     <SafeAreaView style={styles.container}>
+      <OKMessageBox visible={notExistOrder} clickCancel={() => {setNotExistOrder(false)}} 
+        title={"NO ORDERS YET"} 
+        message={"You need to click on the box to select the item to order!"}  />
         {/* Icon Close */}
         <TouchableOpacity style={{marginLeft: scale(16),marginTop:scale(5)}} onPress={() => props.navigation.goBack()}>
             <IC_Close/>
@@ -69,18 +77,22 @@ const CartScreen = (props) => {
           {/* Cart Items */}
           <View style={styles.viewScroll}>
             <ScrollView showsVerticalScrollIndicator={false}>
-              {cartItems.map((item,index) => (
-                <View key={index}>
+              {cartItems.map((item) => (
+                <View key={item.detailId}>
                 <Custom_Cart
                   onPress={() => props.navigation.navigate('ProductDetailsScreen', {
-                  data: item,
+                  data: item.product,
                   })}
-                  id={item.id}
+                  id={item.detailId}
+                  isOrder={item.isOrder}
                   qty={item.qty}
-                  name={item.name}
-                  description={item.description}
-                  price={item.price}
-                  img={item.img}
+                  name={item.product.name}
+                  colorCode={item.colorCode}
+                  sizeName={item.sizeName}
+                  description={item.product.description}
+                  price={item.product.price}
+                  img={item.product.posterImage.url}
+                  orderHandler={orderHandler}
                   qtyChangeHandler={qtyChangeHandler}
                   removeHandler={removeFromCartHandler}
                 />
@@ -115,13 +127,13 @@ const CartScreen = (props) => {
         )}
         {/* Button */}
         <Button 
-        text={visible? 'BUY NOW':'CONTINUE SHOPPING'}
-        onPress={() => visible? props.navigation.navigate('CheckOutStackScreen'):props.navigation.navigate('HomeScreen')}
+        text={checkOutCart.length!==0? 'BUY NOW':'CONTINUE SHOPPING'}
+        onPress={() => checkOutCart.length!==0? props.navigation.navigate('CheckOutStackScreen'):setNotExistOrder(true)}
         />
     </SafeAreaView>
   )
 }
-
+////Nhớ làm nếu hết hàng không thể thêm vào giỏ hoặc đặt mua
 export default CartScreen
 
 const styles = StyleSheet.create({

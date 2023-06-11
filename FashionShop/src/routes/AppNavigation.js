@@ -14,8 +14,11 @@ import CategoryGridViewByIdScreen from '../screens/app/product/categoryGridView/
 import ProductDetailsScreen from '../screens/app/product/productDetailsScreen';
 import SearchDetailScreen from '../screens/app/search/searchDetailScreen/searchDetailScreen';
 import OTPScreen from '../screens/auth/otpScreen';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { MyInfoStackScreen } from '../screens/app/userInfo/myInfoNavigation';
+import { initCartLogIn } from '../redux/actions/cartActions';
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import OrdersScreen from '../screens/app/orders';
 
 const AppStackWithVerify = createNativeStackNavigator();
 
@@ -118,6 +121,15 @@ const AppStackWithVerifyScreen = () => {
         })}
       />
       <AppStackWithVerify.Screen
+        name="OrdersScreen"
+        component={OrdersScreen}
+        options={({navigation}) => ({
+          headerTitle: () => (
+            <Custom_Header navigation={navigation}/>
+          ),
+        })}
+      />
+      <AppStackWithVerify.Screen
         name="MyInfoStackScreen"
         component={MyInfoStackScreen}
         options={() => ({
@@ -134,8 +146,40 @@ const AppStackScreen = () => {
   const user = useSelector(state => state.user);
   const {userItems} = user;
   const userInfo = userItems.user;
-  
+  const axiosPrivate = useAxiosPrivate();
+  const dispatch = useDispatch();
+  const cart = useSelector(state => state.cart);
+  const {cartItems} = cart;
+  const {cartId} = cart;
 
+  const editCartHandler = async () => {
+    try {
+      const editCart = [];
+      cartItems.map((item) => {
+        const editCartItem = {productDetailId: item.detailId, quantity:item.qty}
+        editCart.push(editCartItem)
+      })
+      const response = await axiosPrivate.put(
+        `/edit-cart-item/${cartId}`,
+        JSON.stringify({
+          productDetails: editCart,
+        }),
+      )
+      console.log('editCartSuccess', JSON.stringify(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  // setTimeout(() => {
+  //   editCartHandler();
+  // }, 50000);
+  var today = new Date()
+    var hour = today.getHours()
+    var minute = today.getMinutes()
+    var second = today.getSeconds()
+    
+    // console.log(hour,minute,second)
+    if ((hour === 10) && (minute === 10) (second === 10)) {editCartHandler();}
   return (
     <AppStack.Navigator
       initialRouteName="AppStackWithVerifyScreen"
