@@ -11,7 +11,6 @@ import {
 import React from 'react';
 import color from '../../../../constants/color';
 import FONT_FAMILY from '../../../../constants/fonts';
-import {IMG_Logo} from '../../../../assets/images';
 import scale from '../../../../constants/responsive';
 import {
   IC_BackwardArrow,
@@ -22,17 +21,20 @@ import {
   IC_Edit,
 } from '../../../../assets/icons';
 import {Avatar, Title, Caption} from 'react-native-paper';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import SaveButton from '../../../../components/buttons/Save';
 import {ScrollView} from 'react-native';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import {PermissionsAndroid} from 'react-native';
 import Popup from './component/popup';
 import Modal from 'react-native-modal';
-import {useSelector} from 'react-redux';
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Controller, useForm} from 'react-hook-form';
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
+import OKMessageBox from '../../../../components/messageBox/OKMessageBox';
+import {useDispatch, useSelector} from 'react-redux';
+import {initUser} from '../../../../redux/actions/userActions';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 const phoneRegExp =
@@ -53,8 +55,8 @@ const signUpPayloadSchema = yup.object({
   //   .required('Email cannot be blank'),
   phoneNumber: yup
     .string()
-    // .min(10, 'Invalid phone number')
-    // .max(11, 'Invalid phone number')
+    .min(10, 'Invalid phone number')
+    .max(11, 'Invalid phone number')
     .matches(phoneRegExp, 'Invalid phone number'),
   password: yup
     .string()
@@ -71,6 +73,7 @@ const signUpPayloadSchema = yup.object({
 });
 
 const EditMyInfoScreen = props => {
+  const axiosPrivate = useAxiosPrivate();
   const oldUserInfo = props.route.params.userInfo;
   console.log({oldUserInfo});
   const [errorMessage, setErrorMessage] = useState('');
@@ -84,6 +87,9 @@ const EditMyInfoScreen = props => {
   const [phone, setPhoneNumber] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [title, setTitle] = useState('');
+  const [message, setMessage] = useState('');
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -120,6 +126,7 @@ const EditMyInfoScreen = props => {
   const user = useSelector(state => state.user);
   const {userItems} = user;
   const userInfo = userItems.user;
+  const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
@@ -127,19 +134,55 @@ const EditMyInfoScreen = props => {
   } = useForm({
     mode: 'onChange',
     defaultValues: {
-      firstName: '',
-      lastName: '',
+      firstName: userInfo.firstName,
+      lastName: userInfo.lastName,
       // email: '',
-      phoneNumber: '',
+      phoneNumber: userInfo.phoneNumber,
       password: '',
       passwordConfirm: '',
     },
     resolver: yupResolver(signUpPayloadSchema),
   });
 
-  const editProfile = data => {
-    console.log(data);
-  };
+  async function handleSubmits() {
+    const id = oldUserInfo._id;
+    setLoading(true);
+    const formData = new FormData();
+    formData.append('avatarImage', {
+      name: new Date() + '_avatarImage',
+      uri: image,
+      type: 'image/jpg',
+    });
+    formData.append('firstName', firstName);
+    formData.append('lastName', lastName);
+    formData.append('phoneNumber', phone);
+    formData.append('password', pass);
+
+    console.log(formData);
+    try {
+      const response = await axiosPrivate.post(`/user/${id}`, formData, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
+      });
+      console.log('success', JSON.stringify(response.data));
+      setTitle('Success');
+      setMessage(`Update profile successful`);
+      console.log(message);
+      dispatch(initUser(response.data.user));
+      setLoading(false);
+    } catch (err) {
+      console.log('err', err.response.data);
+      setTitle('Error');
+      setMessage(err.response.data.error);
+      setLoading(false);
+    } finally {
+      setVisible(true);
+    }
+  }
+
   return (
     <ScrollView style={styles.container}>
       <SafeAreaView style={styles.container}>
@@ -152,7 +195,7 @@ const EditMyInfoScreen = props => {
           <TouchableOpacity
             style={styles.avatar}
             onPress={() => setVisible(true)}>
-            <Avatar.Image source={{uri: image}} size={150} />
+            <Avatar.Image source={{uri: oldUserInfo.avatarImage}} size={150} />
           </TouchableOpacity>
         </View>
         <View style={styles.body}>
@@ -165,11 +208,12 @@ const EditMyInfoScreen = props => {
                   <View style={styles.inputFirstName}>
                     <View style={styles.viewInput}>
                       <TextInput
+                        defaultValue={userInfo.firstName}
                         onChangeText={firstName => [
                           onChange(firstName),
                           setFirstName(firstName),
                         ]}
-                        placeholder={userInfo.firstName}
+                        // placeholder={userInfo.firstName}
                         value={value}
                         placeholderTextColor={color.GraySolid}
                         style={styles.inputText}
@@ -193,11 +237,12 @@ const EditMyInfoScreen = props => {
                   <View style={styles.inputLastName}>
                     <View style={styles.viewInput}>
                       <TextInput
+                        defaultValue={userInfo.lastName}
                         onChangeText={lastName => [
                           onChange(lastName),
                           setLastName(lastName),
                         ]}
-                        placeholder={userInfo.lastName}
+                        // placeholder={userInfo.lastName}
                         value={value}
                         placeholderTextColor={color.GraySolid}
                         style={styles.inputText}
@@ -214,33 +259,6 @@ const EditMyInfoScreen = props => {
               )}
             />
           </View>
-          {/* <Controller
-            name="email"
-            control={control}
-            render={({field: {onChange, value}}) => (
-              <View>
-                <View style={styles.inputBox}>
-                  <View style={styles.icon}>
-                    <IC_Email />
-                  </View>
-                  <View style={styles.viewInput}>
-                    <TextInput
-                      onChangeText={mail => [onChange(mail), setMail(mail)]}
-                      placeholder="Email"
-                      value={value}
-                      placeholderTextColor={color.GraySolid}
-                      style={styles.inputText}
-                      keyboardType="default"
-                    />
-                  </View>
-                </View>
-                {errors?.email && (
-                  <Text style={styles.textFailed}>{errors.email.message}</Text>
-                )}
-              </View>
-            )}
-          /> */}
-
           <Controller
             name="password"
             control={control}
@@ -318,11 +336,12 @@ const EditMyInfoScreen = props => {
                   </View>
                   <View style={styles.viewInput}>
                     <TextInput
+                      defaultValue={userInfo.phoneNumber}
                       onChangeText={phone => [
                         onChange(phone),
                         setPhoneNumber(phone),
                       ]}
-                      placeholder={userInfo.phoneNumber}
+                      // placeholder={userInfo.phoneNumber}
                       value={value}
                       placeholderTextColor={color.GraySolid}
                       style={styles.inputText}
@@ -345,6 +364,7 @@ const EditMyInfoScreen = props => {
               <IC_Address />
             </View>
             <TextInput
+              // defaultValue={userInfo.address}
               multiline={true}
               onChangeText={address => setAddress(address)}
               placeholder="kp6, đường Hàn Thuyên, TP.Thủ a aĐức ahhhhhhhhhh"
@@ -356,7 +376,7 @@ const EditMyInfoScreen = props => {
           <View style={styles.buttonSignIn}>
             <SaveButton
               text={'Save Edit'}
-              onPress={handleSubmit(editProfile)}
+              onPress={handleSubmit(handleSubmits)}
             />
           </View>
         </View>
@@ -368,6 +388,18 @@ const EditMyInfoScreen = props => {
           <Popup onPressUpload={openGallery} onPressCamera={openCamera}></Popup>
         </Modal>
       </SafeAreaView>
+      <OKMessageBox
+        visible={visible}
+        title={title}
+        clickCancel={() => {
+          if (title === 'Success') {
+            props.navigation.goBack();
+          } else {
+            setVisible(false);
+          }
+        }}
+        message={message}
+      />
     </ScrollView>
   );
 };

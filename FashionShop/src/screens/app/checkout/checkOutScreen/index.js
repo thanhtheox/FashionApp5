@@ -139,6 +139,7 @@ import { useIsFocused } from '@react-navigation/native';
       console.log('placeOrderSuccess', JSON.stringify(response.data));
       resetCartHandler(cartId);
       setNote('');
+      props.navigation.navigate('OrderSuccess')
     } catch (error) {
       console.log("error", error.response.data)
     };
@@ -242,11 +243,11 @@ import { useIsFocused } from '@react-navigation/native';
         </ScrollView>
       </View>
       <View />
+      </ScrollView>
       <View style={styles.totalBorder}>
         <Text style={styles.total}>TOTAL</Text>
         <Text style={styles.price}>${totalAmount + methodValue}</Text>
       </View>
-      </ScrollView>
       <TouchableOpacity
         style={styles.placeOrder}
         onPress={() => placeOrderHandler()}>

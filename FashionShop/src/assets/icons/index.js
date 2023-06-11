@@ -46,3 +46,5 @@ export {default as IC_Delivered} from './IC_Delivered'
 export {default as IC_Delivering} from './IC_Delivering'
 export {default as IC_Preparing} from './IC_Preparing'
 export {default as IC_New} from './IC_New'
+export {default as IC_Success} from './IC_Success';
+export {default as IC_Rating} from './IC_Rating';
