@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import DropDownPicker from 'react-native-dropdown-picker';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 import axios from 'axios';
+import OKMessageBox from '../../../../components/messageBox/OKMessageBox';
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
@@ -59,6 +60,7 @@ const EditAddressScreen = props => {
   const [ward, setWard] = useState(data.ward);
   const [wardList, setWardList] = useState([]);
   const [wardOpen, setWardOpen] = useState(false);
+  const [visible, setVisible] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const user = useSelector(state => state.user);
   const {userItems} = user;
@@ -132,6 +134,7 @@ const EditAddressScreen = props => {
         }),
       );
       console.log('success', JSON.stringify(response.data));
+      setVisible(true);
       //setLoading(false);
     } catch (error) {
       //setLoading(false);
@@ -177,8 +180,11 @@ const handleDistrictChange = async(district) => {
 };
     return (
         <SafeAreaView style = {styles.container}>
+          <OKMessageBox visible={visible} clickCancel={() => {setVisible(false)}} 
+          title={"ADD SUCCESSFULLY ADDRESS "} 
+          message={"You added successfully address!"}  />
             <View style={styles.introTextBox}>
-                <Text style={styles.introText}>ADD SHIPPING ADDRESS</Text>
+                <Text style={styles.introText}>EDIT SHIPPING ADDRESS</Text>
                 <Image source={LineBottom} style={{alignSelf: 'center'}}/>
             </View>
             <View style={styles.body}>
@@ -357,7 +363,7 @@ const handleDistrictChange = async(district) => {
             </View>
             <View style={styles.totalBorder}>
               <TouchableOpacity style={styles.placeOrder} onPress={handleEditAddress}>
-                <Text style={styles.button}>ADD NOW</Text>
+                <Text style={styles.button}>EDIT NOW</Text>
               </TouchableOpacity>
             </View>  
         </SafeAreaView>
@@ -379,7 +385,7 @@ const styles = StyleSheet.create({
     introText: {
         color: color.TitleActive,
         fontSize: 18,
-        fontWeight: 400,
+        fontWeight: '400',
         fontFamily: FONT_FAMILY.Regular,
         letterSpacing: 4,
     },

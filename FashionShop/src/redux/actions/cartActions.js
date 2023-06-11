@@ -1,51 +1,49 @@
 import * as actionTypes from '../constants/cartConstants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const addToCart = (id, name,description, price,img, qty) => async (dispatch, getState) => {
+export const addToCart = (product,detailId,colorCode,sizeName, qty) => async (dispatch, getState) => {
 
   dispatch({
     type: actionTypes.ADD_TO_CART,
     payload: {
-      id: id,
-      name: name,
-      description:description,
-      price: price,
-      img: img,
+      product:product,
+      detailId:detailId,
+      colorCode:colorCode,
+      sizeName:sizeName,
       qty: qty,
     },
   });
 
-  await AsyncStorage.setItem(
-    '@cart',
-    JSON.stringify(getState().cart.cartItems),
-  );
 };
-// console.log(JSON.stringify(cartItems))
-export const removeFromCart = id => async (dispatch, getState) => {
+export const order = (detailId,isOrder) => async (dispatch, getState) => {
+
   dispatch({
-    type: actionTypes.REMOVE_FROM_CART,
-    payload: id,
+    type: actionTypes.ORDER,
+    payload: {
+      detailId:detailId,
+      isOrder:isOrder,
+    },
   });
 
-  await AsyncStorage.setItem(
-    '@cart',
-    JSON.stringify(getState().cart.cartItems),
-  );
+};
+// console.log(JSON.stringify(cartItems))
+export const removeFromCart = detailId => async (dispatch, getState) => {
+  dispatch({
+    type: actionTypes.REMOVE_FROM_CART,
+    payload: detailId,
+  });
+
 };
 
-export const adjustQTY = (id, qty) => async (dispatch, getState) => {
+export const adjustQTY = (detailId, qty) => async (dispatch, getState) => {
   dispatch({
     type: actionTypes.ADJUST_QTY,
     payload: {
-      id,
+      detailId,
       qty,
     },
   });
 
-  await AsyncStorage.setItem(
-    '@cart',
-    JSON.stringify(getState().cart.cartItems),
-  );
 };
 
 export const resetCartWhenOrder = () => async (dispatch, getState) => {
@@ -54,10 +52,6 @@ export const resetCartWhenOrder = () => async (dispatch, getState) => {
     payload: {},
   });
 
-  await AsyncStorage.setItem(
-    '@cart',
-    JSON.stringify(getState().cart.cartItems),
-  );
 };
 
 export const resetCartWhenLogOut = () => async (dispatch, getState) => {
@@ -66,23 +60,14 @@ export const resetCartWhenLogOut = () => async (dispatch, getState) => {
     payload: {},
   });
 
-  await AsyncStorage.setItem(
-    '@cart',
-    JSON.stringify(getState().cart.cartItems),
-  );
 };
 
 export const initCartLogIn = (cart) => async (dispatch, getState) => {
-  console.log("cart ->>", cart);
+  console.log("cart ->>", cart.cart.productDetails);
 
 
   dispatch({
    type: actionTypes.INIT_CART,
     payload: {cart},
   });
-
-  await AsyncStorage.setItem(
-   '@cart',
-   JSON.stringify(getState().cart.cartItems),
-  );
 };

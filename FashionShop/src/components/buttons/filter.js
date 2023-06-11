@@ -48,7 +48,7 @@ const Filter = (props) => {
   const styles = StyleSheet.create({
     container: {
       width:scale(80),
-      marginLeft:scale(30)
+      // marginLeft:scale(30)
     },
     filterBorder:{
       marginLeft: scale(160),
@@ -68,7 +68,7 @@ const Filter = (props) => {
       alignItems: 'center',
       zIndex:2,
       position:'absolute',
-      borderRadius:scale(50)
+      borderRadius:scale(20)
     },
     text: {
       fontWeight: '400',

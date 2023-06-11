@@ -184,11 +184,11 @@ import Custom_Tag2 from '../../../../components/tags/border';
     },
     resultSum:{
       marginTop:scale(30),
-      alignItems: 'center',
       flexDirection: 'row',
       alignSelf: 'center',
       paddingHorizontal:scale(15),
-      width:'100%'
+      width:'100%',
+      justifyContent:'space-between'
     },
     sumText:{
       alignItems:'center',

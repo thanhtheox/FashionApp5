@@ -85,7 +85,7 @@ import {
       return (
         <SafeAreaView style={styles.container}>
           <View style={styles.resultSum}>
-            <View style={styles.sumText}>
+            <View style={{marginRight:scale(30)}}>
               <Text style={styles.sum}>{product.length + ' products\nof all'}</Text>
             </View>
             <Filter onSortChange={arrangeProducts}
@@ -143,13 +143,10 @@ import {
       },
       resultSum:{
         marginTop:scale(30),
-        alignItems: 'center',
         flexDirection: 'row',
         alignSelf: 'center',
         paddingHorizontal:scale(15),
-        width:'100%'
-      },
-      sumText:{
+        width:'100%',
       },
       sum: {
         fontWeight: '400',

@@ -1,13 +1,13 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View ,Alert, ScrollView, Linking} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import color from '../../../constants/color'
-import { IC_Call, IC_Close,IC_Profile, IC_ForwardArrow, IC_Location,IC_Forward } from '../../../assets/icons'
+import { IC_Call, IC_Close,IC_Profile, IC_ForwardArrow, IC_Location,IC_Forward, IC_Shipping } from '../../../assets/icons'
 import FONT_FAMILY from '../../../constants/fonts'
 import scale from '../../../constants/responsive'
 import Custom_MenuFooter from './components/Custom_MenuFooter'
 import OKMessageBox from '../../../components/messageBox/OKMessageBox'
 import useLogout from '../../../hooks/useLogout'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {  resetCartWhenLogOut } from '../../../redux/actions/cartActions'
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
 import Custom_UnderlineButtonMenu from './components/Custom_UnderlineButtonMenu'
@@ -18,6 +18,9 @@ const Menu = (props) => {
   const [category, setCategory] = useState([]);
   const [data, setData] = useState([]);
   const axiosPrivate = useAxiosPrivate();
+  const cart = useSelector(state => state.cart);
+  const {cartItems} = cart;
+  const {cartId} = cart;
   const locationUrl ='https://www.google.com/maps/search/UIT/@10.824217,106.7037515,13z/data=!3m1!4b1?hl=vi-VN'
   const openUrl = async (url) => {
     try{
@@ -87,6 +90,18 @@ useEffect(() => {
 
   const signOut = async () => {
       try {
+      const editCart = [];
+      cartItems.map((item) => {
+        const editCartItem = {productDetailId: item.detailId, quantity:item.qty}
+        editCart.push(editCartItem)
+      })
+      const response = await axiosPrivate.put(
+        `/edit-cart-item/${cartId}`,
+        JSON.stringify({
+          productDetails: editCart,
+        }),
+      )
+      console.log('editCartSuccess', JSON.stringify(response.data));
       logout();
       await dispatch(resetCartWhenLogOut());
       await dispatch(resetUserWhenLogOut());
@@ -157,6 +172,11 @@ useEffect(() => {
           onPress={() => props.navigation.navigate('MyInfoStackScreen')}>
             <IC_Profile/>
             <Text style={styles.buttonText}>My Profile</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonView} 
+          onPress={() => props.navigation.navigate('OrdersScreen')}>
+            <IC_Shipping/>
+            <Text style={styles.buttonText}>My Orders</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttonView} 
           onPress={() => signOut()}>

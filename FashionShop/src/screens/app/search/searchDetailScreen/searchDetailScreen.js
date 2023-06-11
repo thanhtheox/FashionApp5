@@ -7,7 +7,7 @@ import {
   View,
   FlatList,
   ScrollView, 
-  Button
+  Button,TextInput
   } from 'react-native';
   import React, { useState,useEffect } from 'react';
   import color from '../../../../constants/color';
@@ -17,13 +17,16 @@ import {
   import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
   import Custom_GridViewProd from '../../../../components/products/CustomGridViewProd';  
   import Filter from '../../../../components/buttons/filter';
-import Custom_Footer from '../../../../components/footer/Custom_Footer';
+  import { IC_Delete, IC_Search } from '../../../../assets/icons';
+  import Custom_Footer from '../../../../components/footer/Custom_Footer';
 
   const SearchDetailScreen = (props) => {
     const [searchResult, setSearchResult] = useState([]);
     const [page, setPage] = useState(1);
     const [data, setData] = useState([]);
     const [filterValue, setFilterValue] = useState(null);
+    const [searchContent, setSearchContent] = useState('');
+    const [allProducts, setAllProducts] = useState([]);
   const axiosPrivate = useAxiosPrivate();
   useEffect(() => {
     const controller = new AbortController();
@@ -34,6 +37,7 @@ import Custom_Footer from '../../../../components/footer/Custom_Footer';
           signal: controller.signal,
         });
         setSearchResult(response.data);
+        setAllProducts(response.data);
       } catch (err) {
         console.log(err.response.data);
       }
@@ -54,7 +58,24 @@ import Custom_Footer from '../../../../components/footer/Custom_Footer';
       const newData = searchResult.slice(data, 8 * page);
       setData(newData);
     };
-
+    const searchFilterFunction = (text) => {
+      if (text) {
+        const newData = allProducts.filter(
+          function (item) {
+            const itemData = item.name
+              ? item.name.toUpperCase()
+              : ''.toUpperCase();
+            const textData = text.toUpperCase();
+            return itemData.indexOf(textData) > -1;
+        });
+        setSearchResult(newData);
+        console.log(searchResult)
+        setSearchContent(text);
+      } else {
+        setSearchResult(allProducts);
+        setSearchContent(text);
+      }
+    };
     
 
     const arrangeProducts = (value) => {
@@ -83,7 +104,30 @@ import Custom_Footer from '../../../../components/footer/Custom_Footer';
     );
     return (
       <SafeAreaView style={styles.container}>
-        <SearchResultBar />
+        <View style={styles.searchBar}>
+          <TextInput
+            ref={input => {
+              this.textInput = input;
+            }}
+            onChangeText={text => searchFilterFunction(text)}
+            selectionColor={color.GraySolid}
+            placeholder="Search"
+            placeholderTextColor={color.GraySolid}
+            style={{
+              height: scale(42),
+              color: color.TitleActive,
+              top: scale(2),
+              width: scale(280),
+            }}
+          />
+          <TouchableOpacity
+            onPress={() => searchFilterFunction('') & this.textInput.clear()}>
+            <IC_Delete marginRight={scale(10)} />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <IC_Search marginRight={scale(20)} />
+          </TouchableOpacity>
+        </View>
         <View style={styles.resultSum}>
           <Text style={styles.sum}>{searchResult.length + ' SEARCH RESULTS'}</Text>
           <Filter onSortChange={arrangeProducts}
@@ -132,6 +176,15 @@ import Custom_Footer from '../../../../components/footer/Custom_Footer';
       alignItems: 'center',
       backgroundColor: color.TitleActive,
     },
+    searchBar:{
+      marginTop: scale(10),
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexDirection: 'row',
+      alignSelf: 'center',
+      borderBottomColor: color.GraySolid,
+      borderBottomWidth: 1,
+    },
     text: {
       fontWeight: '700',
       fontSize: scale(24),
@@ -141,9 +194,10 @@ import Custom_Footer from '../../../../components/footer/Custom_Footer';
     },
     resultSum:{
       marginTop: scale(20),
-      alignItems: 'center',
       flexDirection: 'row',
       alignSelf: 'center',
+      width:'100%',
+      paddingHorizontal:scale(10),
     },
     sum: {
       fontWeight: '400',

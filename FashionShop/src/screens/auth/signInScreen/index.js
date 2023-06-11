@@ -20,6 +20,9 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {useDispatch, useSelector} from 'react-redux';
 import { login } from '../../../features/auth/userSlice';
 import { initUser } from '../../../redux/actions/userActions';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { initCartLogIn } from '../../../redux/actions/cartActions';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
 
@@ -48,7 +51,9 @@ const SignInScreen = props => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useDispatch();
-
+  const axiosPrivate = useAxiosPrivate();
+  const cart = useSelector(state => state.cart);
+  const {cartItems} = cart;
 
   const {
     control,
@@ -73,12 +78,25 @@ const SignInScreen = props => {
       const accessToken = response?.data?.accessToken;
       const emailVerified = response?.data?.user.emailVerified;
       const userId = response?.data?.user._id;
-      dispatch(initUser(response.data.user));
+      dispatch(initUser(response.data.user)); 
+      
+      const getUserInfoFirstTime = async (id) => {
+        try {
+          console.log('userId', id)
+            const responseCart = await axiosPrivate.get(
+              `/get-cart-by-user-id/${id}`
+            );
+          dispatch(initCartLogIn(responseCart.data));
+        } catch (err) {
+          console.log('err', err);
+        }
+      };
       setAuth({email: email, accessToken: accessToken, emailVerified: emailVerified, userId: userId});
+      getUserInfoFirstTime(userId);
       setLoading(false);
       props.navigation.navigate('AppStackScreen');
     } catch (err) {
-      console.log('err', err.response.data);
+      console.log('err', err);
       setErrorMessage(err.message);
       setLoading(false);
     }

@@ -1,41 +1,14 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity,LogBox} from 'react-native';
 import React, {useState,useEffect} from 'react';
-import scale from '../../constants/responsive';
-import FONT_FAMILY from '../../constants/fonts';
-import Color from '../../constants/color';
-import { IC_CartDelete } from '../../assets/icons';
+import scale from '../../../../../constants/responsive';
+import FONT_FAMILY from '../../../../../constants/fonts';
+import Color from '../../../../../constants/color';
 
 
-const Custom_Cart = props => {
-    const [count, setCount] = useState(props.qty);
-    const [isOrder, setIsOrder] = useState(props.isOrder);
-    const inCount = () => {
-        setCount(count + 1);
-      };
-    const decCount = () => {
-      if(count > 1)
-        setCount(count - 1);
-        else{
-          props.removeHandler(props.id)
-        }
-    };
-    useEffect(() => {
-      props.qtyChangeHandler(props.id, count),
-      props.orderHandler(props.id,isOrder)}
-      , [count,isOrder])
-    
+const Custom_CheckOutCart = props => {
   return (
-    <TouchableOpacity onPress={props.onPress} key={props.id}>
+    <View key={props.id}>
       <View style={styles.container}>
-        <TouchableOpacity 
-        style={{borderWidth:1,borderRadius:scale(5),marginRight:scale(7),
-          width:scale(20),height:scale(20),
-          backgroundColor:isOrder?Color.Secondary:'transparent',alignSelf:'center',
-        borderColor:Color.TitleActive}}
-        onPress={() => setIsOrder(!isOrder)}>
-          <Text style={{fontFamily:FONT_FAMILY.Regular,textAlign:'center',
-          justifyContent:'center',color:isOrder?Color.OffWhite:'transparent',fontSize: scale(12),}}>✓</Text>
-        </TouchableOpacity>
         <View style={styles.imgContainer}>
           <Image
             source={{uri:`${props.img}`}}
@@ -49,24 +22,10 @@ const Custom_Cart = props => {
             {props.description}
             </Text>
             <View style={styles.viewValue}>
-                <View style={styles.Sub}>
-                    <TouchableOpacity 
-                        onPress={decCount}
-                        hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}>
-                        <Text style={styles.textTouch}>-</Text>
-                    </TouchableOpacity>
-                </View>
-                  <Text onChange style={styles.styleTextNumber}>{count}</Text>
-                  <View style={styles.Sub}>
-                      <TouchableOpacity
-                          onPress={inCount}
-                          hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}>
-                          <Text style={styles.textTouch}>+</Text>
-                      </TouchableOpacity>
-                  </View>
+                <Text onChange style={styles.styleTextNumber}>{'Quantity: ' + props.qty}</Text>
             </View>
             <View style={{flexDirection:'row'}}>
-              <Text style={styles.prodPrice}>${props.price*count}</Text> 
+              <Text style={styles.prodPrice}>${props.price*props.qty}</Text> 
               <View style={{borderRadius:360,borderColor:Color.PlaceHolder, borderWidth:1, alignItems:'center',
               justifyContent:'center',width:scale(22),height:scale(22),marginLeft:scale(10)}} >
                 <View style={{borderRadius:360, backgroundColor:props.colorCode,justifyContent:'center',
@@ -75,22 +34,18 @@ const Custom_Cart = props => {
               <View style={{borderRadius:360,borderColor:Color.PlaceHolder, borderWidth:1, alignItems:'center',
               justifyContent:'center',width:scale(22),height:scale(22),marginLeft:scale(10)}} >
                 <Text style={{ color: Color.TitleActive, fontFamily: FONT_FAMILY.Regular,fontSize: scale(12),
-                      lineHeight: scale(14),textAlign: 'center'}}>
+                      lineHeight: scale(14),textAlign: 'center', }}>
                     {props.sizeName}
                   </Text>
               </View>     
             </View>
         </View>
-        <TouchableOpacity onPress={() => props.removeHandler(props.id)} 
-        style={{alignSelf:'flex-end',height:scale(50),width:scale(60),alignItems:'center'}}> 
-          <IC_CartDelete style={{marginTop:scale(15),marginLeft:scale(40)}}/>
-        </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 
-export default Custom_Cart;
+export default Custom_CheckOutCart;
 
 const styles = StyleSheet.create({
   container: {
@@ -98,13 +53,12 @@ const styles = StyleSheet.create({
     height: scale(160),
     flexDirection: 'row',
     alignSelf:'center',
-    justifyContent:'space-between',
     borderBottomWidth:1,
     borderTopWidth:1,
   },
   imgContainer: {
     alignSelf:'center',
-    width: scale(100),
+    width: scale(150),
     height: scale(150),
   },
   img: {
@@ -112,9 +66,9 @@ const styles = StyleSheet.create({
     height: scale(150),
   },
   textContainer: {
-    width:scale(160),
+    width:scale(180),
     height:scale(150),
-    flexDirection:'column',
+    flexDirection:'column',     
     alignSelf:'center',
     justifyContent:'space-between',
   },
@@ -133,7 +87,7 @@ const styles = StyleSheet.create({
   viewValue: {
     flexDirection: 'row',
     width: scale(70),
-    marginLeft:scale(20),
+    marginLeft:scale(10),
     alignItems: 'center',
     justifyContent:'space-between',
   },
@@ -157,7 +111,7 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.Regular,
     fontSize: scale(16),
     color: Color.Secondary,
-    marginLeft:scale(20),
+    marginLeft:scale(10),
   },
   
 });
