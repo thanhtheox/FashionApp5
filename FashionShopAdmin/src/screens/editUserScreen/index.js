@@ -49,13 +49,13 @@ const EditUserScreen = (props) => {
                 <IC_Backward stroke={color.White}></IC_Backward>
             </TouchableOpacity>
             <View >
-                <Text style={styles.textHeader}>Edit users</Text>
+                <Text style={styles.textHeader}>User information</Text>
             </View>
         </View>
 
         <ScrollView style={styles.body}>
             <View style={styles.viewImage}>
-                <Image style={styles.image} resizeMode='center' source={{uri:data.profileImage}}/>
+                <Image style={styles.image} resizeMode='center' source={{uri:data.avatarImage}}/>
             </View>
 
 {/* name */}
@@ -87,14 +87,14 @@ const EditUserScreen = (props) => {
                     </View>
                 </View>
 {/* address */}
-                <View style={styles.viewInfo}>
+                {/* <View style={styles.viewInfo}>
                     <View style={styles.viewLabel}>
                         <Text style={styles.textLabel}>Address: </Text>
                     </View>
                     <View style={styles.viewText}>
                         <Text style={styles.text}>{address.address}</Text>
                     </View>
-                </View>
+                </View> */}
 {/* button           */}
                 <View style={styles.button}>
                     <SaveButton text={'Delete user'} onPress={()=>props.navigation.navigate("ListUser")}></SaveButton>
@@ -157,16 +157,14 @@ const styles = StyleSheet.create({
         justifyContent:'center'
     },
     textLabel:{
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Bold,
         fontSize: 20,
         color: color.Secondary,
-        fontWeight: '700'
     },
     text:{
         fontFamily: FONT_FAMILY.Regular,
         fontSize: 18,
         color: color.TitleActive,
-        fontWeight: '700'
     },
     //button
     button:{

@@ -17,6 +17,8 @@ import useAuth from '../../hooks/useAuth';
 import * as yup from 'yup';
 import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
+import Message from '../../components/alearts.js/messageOnly';
+import { capitalizeFirstLetter } from '../../config/uppercaseFirstLetter';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
@@ -80,12 +82,31 @@ const SignInScreen = props => {
     } catch (err) {
       console.log('err', err.response.data);
       setErrorMessage(err.message);
+      setTitle("Error");
+      setMessage(capitalizeFirstLetter(err.response.data.error));
+      setVisible(true);
       setLoading(false);
     }
   };
 
+  const [visible, setVisible] = useState(false);
+  const [message, setMessage] = useState('');
+  const [title, setTitle] = useState('');
+
   return (
     <SafeAreaView style={styles.container}>
+      <Message
+        visible={visible}
+        title={title}
+        clickCancel={() => {
+          if (title === 'Success') {
+            props.navigation.goBack();
+          } else {
+            setVisible(false);
+          }
+        }}
+        message={message}
+      />
       <View style={styles.header}>
         <View style={styles.ViewTitleText}>
           <Text style={styles.textTile}>Welcome Admin!</Text>
