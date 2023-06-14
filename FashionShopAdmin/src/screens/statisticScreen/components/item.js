@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View,SafeAreaView,Image,TouchableOpacity } from 'react-native'
-import React, { useState, memo } from 'react'
+import React, { useState } from 'react'
 import { IC_Edit,IC_Delete,IC_See } from '../../../assets/icons'
 import scale from '../../../constants/responsive'
 import FONT_FAMILY from '../../../constants/fonts'
@@ -22,21 +22,14 @@ const Item = (props) => {
                     <Text style={styles.description} numberOfLines={1}>{props.description}</Text>
                     <Text style={styles.price} numberOfLines={1}>{props.price}$</Text>
                     <Text style={styles.sale} numberOfLines={1}>Sale: {props.sale}</Text>
+
                 </View>
-                <View style={styles.viewFunction}>
-                    <TouchableOpacity style={styles.viewIcon} onPress={props.delete}>
-                    <IC_Delete></IC_Delete>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.viewIcon} onPress={props.onPressEdit}>
-                    <IC_Edit></IC_Edit>
-                    </TouchableOpacity>
-                    
-                </View>
+                
     </TouchableOpacity>
   )
 }
 
-export default memo(Item);
+export default Item;
 
 const styles = StyleSheet.create({
     viewItem:{

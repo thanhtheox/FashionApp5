@@ -12,3 +12,22 @@ export function displayDateTime (dateTime) {
     console.log(formattedDate);
     return formattedDate;
 }
+
+export function getMonth (dateTime) {
+    // The given string
+    const dateString = dateTime;
+
+    // Create a new Date object with the given string
+    const date = new Date(dateString);
+
+    return date.getMonth();
+}
+
+export function getYear (dateTime) {
+    // The given string
+    const dateString = dateTime;
+
+    // Create a new Date object with the given string
+    const date = new Date(dateString);
+    return date.getFullYear();
+}

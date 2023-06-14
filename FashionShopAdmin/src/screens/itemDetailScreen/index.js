@@ -22,7 +22,9 @@ import {capitalizeFirstLetter} from '../../config/uppercaseFirstLetter';
 import Carousel from 'react-native-reanimated-carousel';
 
 const ItemDetailScreen = props => {
-  console.log("==========================ITEM DETAIL SCREEN=========================")
+  console.log(
+    '==========================ITEM DETAIL SCREEN=========================',
+  );
   const [loading, setLoading] = useState(false);
   const {data, size, productDetail} = props.route.params;
   //   console.log(data);
@@ -67,8 +69,6 @@ const ItemDetailScreen = props => {
         console.log(err.response.data);
       }
     };
-
-    
 
     getCategory();
     getTags();
@@ -143,12 +143,17 @@ const ItemDetailScreen = props => {
                     </Text>
                   </View>
                   <View style={{flexDirection: 'row', width: scale(140)}}>
-                    <Text style={styles.propTextTitle}>Cost Price:</Text>
-                    <Text style={styles.propText}>$5</Text>
+                    <Text style={styles.propTextTitle}>Profit:</Text>
+                    <Text style={styles.propText}>
+                      {Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                      }).format(0.7 * data.price)}
+                    </Text>
                   </View>
                   <View style={{flexDirection: 'row', width: scale(140)}}>
-                    <Text style={styles.propTextTitle}>Profit:</Text>
-                    <Text style={styles.propText}>$5</Text>
+                    <Text style={styles.propTextTitle}>Sale:</Text>
+                    <Text style={styles.propText}>{data.sale}</Text>
                   </View>
                   <View style={{flexDirection: 'row', width: scale(140)}}>
                     <Text style={styles.propTextTitle}>Category: </Text>
@@ -232,30 +237,34 @@ const ItemDetailScreen = props => {
               <Text style={styles.text}>
                 {capitalizeFirstLetter(data.care)}
               </Text>
-{/* quantity */}
+              {/* quantity */}
               <View style={styles.quantityView}>
                 <View style={[styles.row]}>
                   <Text style={styles.bodyText}>Quantities</Text>
                   <TouchableOpacity
                     style={[styles.row, {borderWidth: 0.5, padding: 5}]}
-                    onPress={() => props.navigation.navigate('AddDetailItem',{data})}>
+                    onPress={() =>
+                      props.navigation.navigate('AddDetailItem', {data})
+                    }>
                     <IC_Add />
                     <Text style={styles.text}>Add more</Text>
                   </TouchableOpacity>
                 </View>
 
-                {productDetail.length === 0 && 
-                  <Text style={[styles.text, { color: color.RedSolid}]}>There is no product detail yet, please add one</Text>
-                }
+                {productDetail.length === 0 && (
+                  <Text style={[styles.text, {color: color.RedSolid}]}>
+                    There is no product detail yet, please add one
+                  </Text>
+                )}
                 <ScrollView horizontal>
                   <View style={{alignSelf: 'center'}}>
-                    
                     <View style={[styles.tableRow, {borderTopWidth: 0.5}]}>
-                      {productDetail.length > 0 && 
-                      <View style={styles.cell}>
-                        <Text style={styles.text}>Color</Text>
-                      </View>}
-                      
+                      {productDetail.length > 0 && (
+                        <View style={styles.cell}>
+                          <Text style={styles.text}>Color</Text>
+                        </View>
+                      )}
+
                       {size.map((item, index) => (
                         <View style={styles.cell} key={item}>
                           <Text style={styles.text}>{item}</Text>
@@ -267,7 +276,7 @@ const ItemDetailScreen = props => {
                         <View style={styles.cell}>
                           <Text style={styles.text}>{item.color}</Text>
                         </View>
-                        <Quantity size={size} item={item}/>
+                        <Quantity size={size} item={item} />
                       </View>
                     ))}
                   </View>
@@ -278,6 +287,7 @@ const ItemDetailScreen = props => {
                   text={'Edit item'}
                   onPress={() => pressEdit(data)}></SaveButton>
               </View>
+              <View style={{height: scale(10)}}/>
             </View>
           </ScrollView>
         </View>
@@ -288,20 +298,16 @@ const ItemDetailScreen = props => {
 
 export default ItemDetailScreen;
 
-const Quantity = (props) => {
-  const size=props.size;
-  const item=props.item;
-  console.log({size}, {item})
-  return(
-    size.map(sizeItem => (
-      <View 
-        style={styles.cell}
-        key={sizeItem}>
-        <Text style={styles.text}>{item[sizeItem]}</Text>
-      </View>
-    ))
-  )
-}
+const Quantity = props => {
+  const size = props.size;
+  const item = props.item;
+  console.log({size}, {item});
+  return size.map(sizeItem => (
+    <View style={styles.cell} key={sizeItem}>
+      <Text style={styles.text}>{item[sizeItem]}</Text>
+    </View>
+  ));
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -330,7 +336,7 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     backgroundColor: color.White,
-    padding: scale(10),
+    paddingHorizontal: scale(10),
   },
   bodyText: {
     color: color.Body,
@@ -341,7 +347,9 @@ const styles = StyleSheet.create({
   },
 
   // information
-  informationPart: {},
+  informationPart: {
+    marginTop: scale(10)
+  },
   propTextTitle: {
     color: color.Secondary,
     fontFamily: FONT_FAMILY.Regular,
@@ -405,6 +413,7 @@ const styles = StyleSheet.create({
 
   // save button
   button: {
+    // marginVertical: scale(40),
     marginTop: scale(40),
     alignItems: 'center',
   },
@@ -414,10 +423,10 @@ const styles = StyleSheet.create({
     height: scale(45),
     paddingTop: scale(5),
     borderLeftWidth: 0.5,
-    borderRightWidth: 0.5
+    borderRightWidth: 0.5,
   },
   tableRow: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-  }
+  },
 });
