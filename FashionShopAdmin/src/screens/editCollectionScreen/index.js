@@ -13,7 +13,7 @@ import {
 import React, {useState, useEffect} from 'react';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
-import {IC_Backward} from '../../assets/icons';
+import {IC_AddImage, IC_Backward} from '../../assets/icons';
 import scale from '../../constants/responsive';
 import SaveButton from '../../components/buttons/Save';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -250,7 +250,9 @@ const EditCollectionScreen = props => {
                         <TouchableOpacity
                         style={styles.viewIconAdd}
                         onPress={() => openGallery(onChange, value)}>
-                        <Image source={IMG_AddImage} style={styles.icon}></Image>
+                        <View style={styles.imageView}>
+                            <IC_AddImage />
+                        </View>
                         </TouchableOpacity>
                         {images === null ? (
                         <></>
@@ -407,6 +409,12 @@ const styles = StyleSheet.create({
     },
 
     //add image
+    imageView: {
+        width: scale(50), 
+        height: scale(67), 
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     viewAddImage: {
         marginTop: scale(10),
         height: '25%',

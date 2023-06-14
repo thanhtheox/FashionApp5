@@ -5,7 +5,7 @@ import FONT_FAMILY from '../../constants/fonts';
 import scale from '../../constants/responsive';
 
 const UnderLine = (props) => {
-  const {onPress, style, textStyle, text, name, chosen} = props;
+  const {onPress, style, textStyle, text, name, chosen, lineColor} = props;
   isChoosing = (name === chosen);
   return (
     <Pressable
@@ -15,12 +15,14 @@ const UnderLine = (props) => {
         <Text style={[styles.text, textStyle]}>{text}</Text>
         <View style={{flexDirection: 'row', width: '100%', justifyContent: 'center'}}>
           <View style={{flex: 1, justifyContent: 'center'}}>
-            <View style={{height: 1, borderBottomWidth: 0.3, marginTop: scale(4), borderColor: isChoosing ? color.Primary : color.GraySolid}}/>
+            <View style={[{height: 1, borderBottomWidth: 0.3, marginTop: scale(4), borderColor: isChoosing ? color.Primary : color.GraySolid}, lineColor]}/>
           </View>
-          {isChoosing?<Text style={[styles.background(isChoosing), style, {letterSpacing: -3, }]}>◆</Text>:<Text style={[styles.background(isChoosing), style, {letterSpacing: -3, }]}></Text>}
+          {isChoosing?
+            <Text style={[styles.background(isChoosing), style, {letterSpacing: -3, }]}>◆</Text>
+            :<Text style={[styles.background(isChoosing), style, {letterSpacing: -3, }]}></Text>}
           
           <View style={{flex: 1,justifyContent: 'center'}}>
-            <View style={{height: 1, borderBottomWidth: 0.3, marginTop: scale(4), borderColor: isChoosing ? color.Primary : color.GraySolid}}/>
+            <View style={[{height: 1, borderBottomWidth: 0.3, marginTop: scale(4), borderColor: isChoosing ? color.Primary : color.GraySolid}, lineColor]}/>
           </View>
         </View>
     </Pressable>

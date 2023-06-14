@@ -72,7 +72,7 @@ const ListOfUserScreen = (props) => {
                      phone={item.phoneNumber} 
                      date={item.date} 
                      key={item._id}
-                     source={item.profileImage}
+                     source={item.avatarImage}
                      onPress={()=>props.navigation.navigate("EditUser",{data: item})}
                      />
                 ))}
