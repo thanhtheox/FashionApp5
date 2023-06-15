@@ -8,7 +8,7 @@ import Custom_MenuFooter from './components/Custom_MenuFooter'
 import OKMessageBox from '../../../components/messageBox/OKMessageBox'
 import useLogout from '../../../hooks/useLogout'
 import { useDispatch, useSelector } from 'react-redux'
-import {  resetCart } from '../../../redux/actions/cartActions'
+import {  resetCartWhenLogIn } from '../../../redux/actions/cartActions'
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
 import Custom_UnderlineButtonMenu from './components/Custom_UnderlineButtonMenu'
 import Clipboard from '@react-native-clipboard/clipboard'
@@ -105,7 +105,7 @@ useEffect(() => {
       )
       console.log('editCartSuccess', JSON.stringify(response.data));
       logout();
-      await dispatch(resetCart());
+      await dispatch(resetCartWhenLogIn());
       await dispatch(resetUserWhenLogOut());
       await dispatch(resetAddressWhenLogOut());
       props.navigation.replace('AuthStackScreen');

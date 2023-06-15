@@ -24,7 +24,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import {useForm, Controller} from 'react-hook-form';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  resetCart,
+  resetCart, resetCartOrder,
 } from '../../../../redux/actions/cartActions';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 import Custom_CheckOutCart from './components/Custom_CheckOutCart';
@@ -112,13 +112,13 @@ import { initAddress } from '../../../../redux/actions/addressActions';
   };
 
   const resetCartHandler = async (id) => {
-    console.log({id})
+
   try {
     const response = await axiosPrivate.put(
       `/reset-cart-item/${id}`
     )
     console.log('resetCartSuccess', JSON.stringify(response.data));
-    dispatch(resetCart());
+    dispatch(resetCartOrder());
   } catch (error) {
     console.log("error", error.response.data)
   };
@@ -134,6 +134,7 @@ import { initAddress } from '../../../../redux/actions/addressActions';
       console.log({cartId})
       console.log({addressDefault})
       console.log({note})
+      console.log({methodValue})
       if(methodValue===5){
         setTypeOrder("Delivery")
       }

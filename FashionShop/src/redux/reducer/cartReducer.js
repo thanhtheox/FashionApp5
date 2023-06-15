@@ -44,12 +44,18 @@ export const cartReducer = (state = CART_INITIAL_STATE, action) => {
           x.detailId === action.payload.detailId ? {...x, qty: action.payload.qty} : x
         ),  
       };
-    case actionTypes.CART_RESET:
+    case actionTypes.CART_RESET_LOGIN:
       return {
         ...state,
         cartItems: [],
         // cartId:'', 
       };
+    case actionTypes.CART_RESET_ORDER:
+    return {
+      ...state,
+      cartItems: state.cartItems.filter((x) => x.isOrder !== true),
+      // cartId:'', 
+    };
     case actionTypes.INIT_CART:
       // console.log("cartItems:" + JSON.stringify(action.payload.cart.cart.productDetails));
       // console.log("cartId:" + JSON.stringify(action.payload.cart.cart._id));
