@@ -159,28 +159,29 @@ const EditMyInfoScreen = props => {
     formData.append('password', pass);
 
     console.log(formData);
-    try {
-      const response = await axiosPrivate.post(`/user/${id}`, formData, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'multipart/form-data',
-        },
-        withCredentials: true,
-      });
-      console.log('success', JSON.stringify(response.data));
-      setTitle('Success');
-      setMessage(`Update profile successful`);
-      console.log(message);
-      dispatch(initUser(response.data.user));
-      setLoading(false);
-    } catch (err) {
-      console.log('err', err.response.data);
-      setTitle('Error');
-      setMessage(err.response.data.error);
-      setLoading(false);
-    } finally {
-      setVisible(true);
-    }
+    console.log({userInfo})
+    // try {
+    //   const response = await axiosPrivate.post(`/user/${id}`, formData, {
+    //     headers: {
+    //       Accept: 'application/json',
+    //       'Content-Type': 'multipart/form-data',
+    //     },
+    //     withCredentials: true,
+    //   });
+    //   console.log('success', JSON.stringify(response.data));
+    //   setTitle('Success');
+    //   setMessage(`Update profile successful`);
+    //   console.log(message);
+    //   dispatch(initUser(response.data.user));
+    //   setLoading(false);
+    // } catch (err) {
+    //   console.log('err', err.response.data);
+    //   setTitle('Error');
+    //   setMessage(err.response.data.error);
+    //   setLoading(false);
+    // } finally {
+    //   setVisible(true);
+    // }
   }
 
   return (

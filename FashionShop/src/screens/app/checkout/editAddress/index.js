@@ -14,57 +14,43 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 import axios from 'axios';
 import OKMessageBox from '../../../../components/messageBox/OKMessageBox';
+import YesNoMessageBox from '../../../../components/messageBox/YesNoMessageBox';
+import { editAddress } from '../../../../redux/actions/addressActions';
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
 const editAddressPayloadSchema = yup.object({
-  // firstName: yup.string()
-  // .max(30,'Invalid name')
-  // .required('Name cannot be blank'),
-  // lastName: yup.string()
-  // .max(30,'Invalid name')
-  // .required('Name cannot be blank'),
-  city: yup.object()
-  // .max(70,'Invalid city')
+  city: yup.string()
   .required('City cannot be blank'),
-  district: yup.object()
-  //.max(70,'Invalid district')
+  district: yup.string()
   .required('District cannot be blank'),
-  ward: yup.object()
-  // .max(70,'Invalid ward')
+  ward: yup.string()
   .required('Ward cannot be blank'),
   streetAndNumber: yup.string()
   .max(70,'Invalid street and number')
   .required('Street and number cannot be blank'),
-  // phoneNumber: yup
-  //   .string()
-  //   .min(10,'Invalid phone number')
-  //   .max(11,'Invalid phone number')
-  //   .matches(phoneRegExp, 'Invalid phone number'),
 });
 
 
 const EditAddressScreen = props => {
   const {data} = props.route.params;
-  // const [firstName, setFirstName] = useState('');
-  // const [lastName, setLastName] = useState('');
-  const [address, setAddress] = useState([]);
-  const [streetAndNumber, setStreetAndNumber] = useState(data.streetAndNumber);
-  //const [phoneNumber, setPhoneNumber] = useState('');
+  const [streetAndNumber, setStreetAndNumber] = useState();
   const [cityList, setCityList] = useState([]);
-  const [city, setCity] = useState(data.city);
+  const [city, setCity] = useState();
   const [cityOpen, setCityOpen] = useState(false);
-  const [district, setDistrict] = useState(data.district);
+  const [district, setDistrict] = useState();
   const [districtList, setDistrictList] = useState([]);
   const [districtOpen, setDistrictOpen] = useState(false);
-  const [ward, setWard] = useState(data.ward);
+  const [ward, setWard] = useState();
   const [wardList, setWardList] = useState([]);
   const [wardOpen, setWardOpen] = useState(false);
-  const [visible, setVisible] = useState(false);
+  const [visibleChanged, setVisibleChanged] = useState(false);
+  const [visibleNotChanged, setVisibleNotChanged] = useState(false);
   const axiosPrivate = useAxiosPrivate();
-  const user = useSelector(state => state.user);
-  const {userItems} = user;
-  const userInfo = userItems.user;
+  const address = useSelector(state => state.address);
+  const [addresses, setAddresses] = useState(address.addresses);
+  const {addressesId} = address;
+  const dispatch = useDispatch();
 
 
   const {
@@ -74,14 +60,10 @@ const EditAddressScreen = props => {
   } = useForm({
     mode: 'onChange',
     defaultValues: {
-      // firstName:'',
-      // lastName:'',
-      // phoneNumber:'',
       city:'',
       district:'',
       ward:'',
       streetAndNumber:'',
-      address: ''
     },
     resolver: yupResolver(editAddressPayloadSchema),
   });
@@ -114,37 +96,31 @@ const EditAddressScreen = props => {
   
   const handleEditAddress = async () => {
     try {
-      //setLoading(true);
-      setAddress({
-        city: city,
-        district: district,
-        ward: ward,
-        streetAndNumber: streetAndNumber,
-      } )
-      console.log('address',JSON.stringify(address))
-      const response = await axiosPrivate.put(
-        `/edit-addresses/${data._id}`,
-        JSON.stringify({
-          addresses: {
-            city: city,
-            district: district,
-            ward: ward,
-            streetAndNumber: streetAndNumber,
-          }
-        }),
-      );
+      const addressEdit = addresses.filter(item => item._id === data._id)
+      addressEdit[0] = {...addressEdit[0], city: city,district: district,ward: ward,streetAndNumber: streetAndNumber}
+      const afterEditAddresses = addresses.map(item => item._id===data._id ? addressEdit[0]:item)
+      dispatch(editAddress(afterEditAddresses));
+      console.log({addresses})
+      const response = await axiosPrivate.put(`/edit-addresses/${addressesId}`,
+          JSON.stringify({
+            addresses: afterEditAddresses,
+          }),
+        );
       console.log('success', JSON.stringify(response.data));
-      setVisible(true);
+      setVisibleChanged(true);
       //setLoading(false);
     } catch (error) {
       //setLoading(false);
-      console.log("error", error.response.data)
+      console.log("error", error)
   };
 }
 const handleCityChange = async(city) => {
   try{
     setDistrict('');
     setWard('');
+    data.district='Choose a district';
+    data.ward='Choose a ward';
+    data.streetAndNumber='Ex: 12 To Hieu street,...';
     const responseDistrict = await axios.get(`https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=${city.code}&limit=-1`);
         //console.log('districts: ' ,JSON.stringify(responseDistrict.data.data.data))
         responseDistrict.data.data.data.map((item,index) => {
@@ -180,9 +156,13 @@ const handleDistrictChange = async(district) => {
 };
     return (
         <SafeAreaView style = {styles.container}>
-          <OKMessageBox visible={visible} clickCancel={() => {setVisible(false)}} 
-          title={"ADD SUCCESSFULLY ADDRESS "} 
-          message={"You added successfully address!"}  />
+          <OKMessageBox visible={visibleChanged} clickCancel={() => {props.navigation.navigate('CheckOutScreen')}} 
+          title={"EDIT SUCCESSFULLY ADDRESS "} 
+          message={"You edited successfully address!"}  />
+          <YesNoMessageBox visible={visibleNotChanged} onPressYes={() => {props.navigation.navigate('CheckOutScreen')}} 
+          onPressNo={() => setVisibleNotChanged(false)}
+          title={"DO YOU WANT TO EXIT?"} 
+          message={"Do you want to exit without changing your address?"}/>
             <View style={styles.introTextBox}>
                 <Text style={styles.introText}>EDIT SHIPPING ADDRESS</Text>
                 <Image source={LineBottom} style={{alignSelf: 'center'}}/>
@@ -275,8 +255,8 @@ const handleDistrictChange = async(district) => {
                         setItems={setCityList}
                         setOpen={setCityOpen}
                         setValue={setCity}
-                        onSelectItem={(item) => [handleCityChange(item),onChange(item)]}
-                        placeholder='Choose a city'
+                        onSelectItem={(item) => [handleCityChange(item),onChange(item.value)]}
+                        placeholder={data.city}
                       />
                       {errors?.city && (
                       <Text style={styles.textFailed}>{errors.city.message}</Text>
@@ -300,8 +280,8 @@ const handleDistrictChange = async(district) => {
                           setOpen={setDistrictOpen}
                           setValue={setDistrict}
                           listParentContainerStyle={{height:scale(60)}}
-                          onSelectItem={item => [handleDistrictChange(item),onChange(item)]}
-                          placeholder='Choose a district'
+                          onSelectItem={item => [handleDistrictChange(item),onChange(item.value)]}
+                          placeholder={data.district}
                         />
                         {errors?.district && (
                       <Text style={styles.textFailed}>{errors.district.message}</Text>
@@ -324,8 +304,8 @@ const handleDistrictChange = async(district) => {
                           setItems={setWardList}  
                           setOpen={setWardOpen}
                           setValue={setWard}
-                          onSelectItem={item => onChange(item)}
-                          placeholder='Choose a ward'
+                          onSelectItem={item => onChange(item.value)}
+                          placeholder={data.ward}
                         />
                         {errors?.ward && (
                       <Text style={styles.textFailed}>{errors.ward.message}</Text>
@@ -342,7 +322,7 @@ const handleDistrictChange = async(district) => {
                       <View style={styles.viewInput}>
                       <TextInput
                         onChangeText={streetAndNumber => [onChange(streetAndNumber), setStreetAndNumber(streetAndNumber)]}
-                        placeholder='Ex: 12 To Hieu street,...'
+                        placeholder={data.streetAndNumber}
                         value={value}
                         placeholderTextColor={color.GraySolid}
                         style={styles.inputText}
@@ -355,16 +335,17 @@ const handleDistrictChange = async(district) => {
                     </View>
                   )}
                 />
-                <View style={{marginTop:scale(40),marginHorizontal:scale(10)}}>
-                  <Text style={styles.inputText}>
-                    {'Address:\n'+ data.streetAndNumber+ ', '+ data.ward+ ', '+ data.district+ ', '+ data.city}
-                  </Text>
-                </View>
             </View>
             <View style={styles.totalBorder}>
-              <TouchableOpacity style={styles.placeOrder} onPress={handleEditAddress}>
-                <Text style={styles.button}>EDIT NOW</Text>
+              {((city===undefined)||(district===undefined)||(ward===undefined)||(streetAndNumber===undefined))?(
+              <TouchableOpacity style={styles.placeOrderDisable} onPress={() => setVisibleNotChanged(true)}>
+                <Text style={styles.buttonDisableText}>EDIT NOW</Text>
               </TouchableOpacity>
+              ):(
+              <TouchableOpacity style={styles.placeOrder} onPress={handleEditAddress}>
+                <Text style={styles.buttonText}>EDIT NOW</Text>
+              </TouchableOpacity>
+            )}
             </View>  
         </SafeAreaView>
     );
@@ -483,11 +464,26 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
     },
-    button: {
-        color: color.White,
-        fontSize: 16,
-        fontWeight: 400,
-        fontFamily: FONT_FAMILY.Regular,
-        alignSelf: 'center',
-    },
+    buttonText: {
+      color: color.White,
+      fontSize: 16,
+      fontWeight: 400,
+      fontFamily: FONT_FAMILY.Regular,
+      alignSelf: 'center',
+  },
+  placeOrderDisable:{
+    marginTop: scale(20),
+    width: scale(375),
+    height: scale(56),
+    backgroundColor: color.GraySolid,
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+  buttonDisableText: {
+      color: color.TitleActive,
+      fontSize: 16,
+      fontWeight: 400,
+      fontFamily: FONT_FAMILY.Regular,
+      alignSelf: 'center',
+  },
 });

@@ -10,7 +10,6 @@ import { useDispatch,useSelector } from 'react-redux'
 import {
   removeFromCart,
   adjustQTY,
-  resetCartWhenOrder,
   order,
 } from '../../../redux/actions/cartActions';
 import OKMessageBox from '../../../components/messageBox/OKMessageBox'

@@ -72,8 +72,7 @@ const Custom_Cart = props => {
                 <View style={{borderRadius:360, backgroundColor:props.colorCode,justifyContent:'center',
                 width:scale(16),height:scale(16)}}/> 
               </View>   
-              <View style={{borderRadius:360,borderColor:Color.PlaceHolder, borderWidth:1, alignItems:'center',
-              justifyContent:'center',width:scale(22),height:scale(22),marginLeft:scale(10)}} >
+              <View style={{ alignItems:'center',justifyContent:'center',marginLeft:scale(10)}} >
                 <Text style={{ color: Color.TitleActive, fontFamily: FONT_FAMILY.Regular,fontSize: scale(12),
                       lineHeight: scale(14),textAlign: 'center'}}>
                     {props.sizeName}

@@ -94,18 +94,18 @@ const MyInfoScreen = props => {
               <Text style={styles.inputText2}>ktx khu B</Text>
             </View>
           </View>
-          <View style={styles.buttonSignIn}>
-            <SaveButton
-              text={'Edit Profile'}
-              onPress={() =>
-                props.navigation.navigate('EditMyInfoScreen', {
-                  userInfo: userInfo,
-                })
-              }
-            />
-          </View>
         </View>
       </ScrollView>
+      <View style={styles.buttonSignIn}>
+        <SaveButton
+          text={'Edit Profile'}
+          onPress={() =>
+            props.navigation.navigate('EditMyInfoScreen', {
+              userInfo: userInfo,
+            })
+          }
+        />
+      </View>
     </SafeAreaView>
   );
 };
@@ -195,6 +195,7 @@ const styles = StyleSheet.create({
   },
 
   buttonSignIn: {
-    marginTop: scale(61),
+    marginBottom: scale(0),
+    alignSelf:'center',
   },
 });

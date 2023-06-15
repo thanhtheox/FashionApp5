@@ -108,27 +108,24 @@ const ProductDetailsScreen = props => {
             }
             return false;
           });
-          console.log({isExistColor})
           if (!isExistColor) {
             let newColorArray = availableColor;
             newColorArray.push({ colorId: detail.colorId, colorCode: detail.colorCode})
             setAvailableColor([...newColorArray])
           }
-          const isExistSize = availableSize.find(element => {
-            if (element.sizeId === detail.sizeId) {
-              return true;
-            }
+          // const isExistSize = availableSize.find(element => {
+          //   if (element.sizeId === detail.sizeId) {
+          //     return true;
+          //   }
           
-            return false;
-          });
-          // console.log({isExistSize})
-          if (!isExistSize) {
-            let newSizeArray = availableSize;
-            newSizeArray.push({ sizeId: detail.sizeId, sizeName: detail.sizeName})
-            setAvailableSize([...newSizeArray])
-          }
+          //   return false;
+          // });
+          // if (!isExistSize) {
+          //   let newSizeArray = availableSize;
+          //   newSizeArray.push({ sizeId: detail.sizeId, sizeName: detail.sizeName})
+          //   setAvailableSize([...newSizeArray])
+          // }
           console.log({availableColor})
-          console.log({availableSize})
         })
       } catch (err) {
         console.log(err.response.data);
@@ -147,17 +144,26 @@ const ProductDetailsScreen = props => {
         console.log(err.response.data);
       }
     };
-    // console.log('data: ', JSON.stringify(data));
     getSuggestiveProduct(4);
     getDetailsById(data._id);
     return () => {
       controller.abort();
     };
   }, []);
+  const handleChooseColor = (colorId) => {
+    setChooseColor(colorId)
+    const selectedDetails = details.filter(item => item.colorId === colorId);
+    let newSizeArray = [];
+    selectedDetails.map(detail => {
+      newSizeArray.push({sizeId: detail.sizeId, sizeName: detail.sizeName})
+    })
+    setAvailableSize(newSizeArray)
+    setChooseSize(0);
+  };
   const handleChooseSize = (sizeId) => {
     setChooseSize(sizeId)
     const selectedDetail = details.find((item) => {
-      if(item.sizeId === sizeId)
+      if(item.sizeId === sizeId && item.colorId === colorChoose)
       {return item}
       // else {return null}
     });
@@ -227,9 +233,9 @@ const ProductDetailsScreen = props => {
                 <Text style={{color:color.Label, fontFamily:FONT_FAMILY.Regular,
                   fontSize:scale(16),lineHeight:scale(18)}}>Color</Text>
                 {availableColor.map((item,index) => 
-                  <TouchableOpacity style={{borderRadius:360,borderColor:colorChoose===item.colorId?color.Primary:color.TitleActive, borderWidth:1, alignItems:'center',
+                  <TouchableOpacity style={{borderRadius:360,borderColor:colorChoose===item.colorId?color.TitleActive:color.OffWhite, borderWidth:1, alignItems:'center',
                   justifyContent:'center',width:scale(22),height:scale(22)}} 
-                    onPress={() => setChooseColor(item.colorId)} key={index}>
+                    onPress={() => handleChooseColor(item.colorId)} key={index}>
                     <View style={{borderRadius:360, backgroundColor:item.colorCode,
                     width:scale(16),height:scale(16)}}/> 
                   </TouchableOpacity>     

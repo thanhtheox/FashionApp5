@@ -32,11 +32,11 @@ const OrderSuccess = props => {
       <View style={styles.body}>
         <Text style={styles.successText}>Rate your experience!</Text>
         <IC_Rating style={styles.icon} />
-        <SaveButton></SaveButton>
+        {/* <SaveButton></SaveButton> */}
       </View>
       <View style={styles.totalBorder}>
-        <TouchableOpacity style={styles.placeOrder}>
-          <Text style={styles.button}>ADD NOW</Text>
+        <TouchableOpacity style={styles.placeOrder} onPress={() => props.navigation.navigate('HomeScreen')}>
+          <Text style={styles.button}>BACK TO HOME</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
