@@ -42,3 +42,6 @@ export {default as IC_Hide} from './IC_Hide';
 export {default as IC_Edit} from './IC_Edit';
 export {default as IC_Success} from './IC_Success';
 export {default as IC_Rating} from './IC_Rating';
+export {default as IC_Satisfy} from './IC_Satisfy';
+export {default as IC_Normal} from './IC_Normal';
+export {default as IC_Unsatisfy} from './IC_Unsatisfy';
