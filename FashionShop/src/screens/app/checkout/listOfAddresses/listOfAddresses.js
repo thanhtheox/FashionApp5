@@ -1,17 +1,61 @@
 import { ScrollView, StyleSheet, Text, View,SafeAreaView ,TouchableOpacity,Image} from 'react-native'
-import React from 'react'
-import { IC_Forward, IC_Plus,IC_Edit } from '../../../../assets/icons';
+import React, { useState } from 'react'
+import { IC_Plus,IC_Edit,IC_CartDelete } from '../../../../assets/icons';
 import color from '../../../../constants/color';
 import FONT_FAMILY from '../../../../constants/fonts';
 import scale from '../../../../constants/responsive';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { LineBottom } from '../../../../components/footer/images';
+import { editAddress, removeAddress } from '../../../../redux/actions/addressActions';
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 
 const ListOfAddressesScreen = (props) => {
-    const {data} = props.route.params;
     const user = useSelector(state => state.user);
     const {userItems} = user;
     const userInfo = userItems.user;
+    const address = useSelector(state => state.address);
+    const [addresses, setAddresses] = useState(address.addresses);
+    const {addressesId} = address;
+    const dispatch = useDispatch();
+    const axiosPrivate = useAxiosPrivate();
+    const removeAddressHandler = async (_id) => {
+      try {
+        const afterDeleteAddresses = addresses.filter(item => item._id !== _id)
+        dispatch(removeAddress(_id));
+        setAddresses(afterDeleteAddresses);
+        const response = await axiosPrivate.put(`/edit-addresses/${addressesId}`,
+          JSON.stringify({
+            addresses: afterDeleteAddresses,
+          }),
+        );
+        console.log('success: ' ,JSON.stringify(response?.data))
+      } catch (err) {
+        console.log(err);
+      }
+  };
+  const handleEditAddressDefault = async (_id) => {
+    try {
+      const addressEdit = addresses.filter(item => item._id === _id)
+      addressEdit[0] = {...addressEdit[0], isDefault: true}
+      const defaultAddress = addresses.filter(item => item.isDefault === true)
+      defaultAddress[0] = {...defaultAddress[0], isDefault: false}
+      const afterEditAddresses = addresses.map(item => item._id===_id ? addressEdit[0]:item)
+      const afterEditAddressesDefault = afterEditAddresses.map(item => item._id===defaultAddress[0]._id ? defaultAddress[0]:item)
+      dispatch(editAddress(afterEditAddresses));
+      console.log({addresses})
+      const response = await axiosPrivate.put(`/edit-addresses/${addressesId}`,
+          JSON.stringify({
+            addresses: afterEditAddressesDefault,
+          }),
+        );
+      console.log('success', JSON.stringify(response.data));
+      props.navigation.navigate('CheckOutScreen');
+      //setLoading(false);
+    } catch (error) {
+      //setLoading(false);
+      console.log("error", error)
+  };
+}
   return (
     <SafeAreaView style={styles.container}>
         <View style={{alignSelf:'center',alignItems:'center',paddingHorizontal:scale(10)}}>
@@ -24,11 +68,9 @@ const ListOfAddressesScreen = (props) => {
             <Image source={LineBottom} style={{alignSelf: 'center',marginBottom:scale(20)}}/>
         </View>
       <ScrollView horizontal={false}>
-      {data.map(item => 
+      {addresses.map(item => 
         <TouchableOpacity style={styles.bodyTextBox} key={item._id} 
-      //   onPress={() => props.navigation.navigate('CheckOutScreen',{
-      //     data:item,
-      // })}
+        onPress={() => handleEditAddressDefault(item._id)}
       >
             <View style={{flexDirection:'column', width:'80%'}}>
                 <Text style={styles.name}>{userInfo.firstName + ' ' + userInfo.lastName}</Text>
@@ -37,11 +79,16 @@ const ListOfAddressesScreen = (props) => {
                 </Text>
                 <Text style={styles.bodyText}>{userInfo.phoneNumber}</Text>
             </View>
-            <TouchableOpacity onPress={() => props.navigation.navigate('EditAddressScreen',{
-                data:item,
-            })}>
-              <IC_Edit />
-            </TouchableOpacity>
+            <View style={{flexDirection:'column',height:scale(90),justifyContent:'space-between',marginTop:scale(20),marginLeft:scale(30)}}>
+              <TouchableOpacity onPress={() => props.navigation.navigate('EditAddressScreen',{
+                  data:item,
+              })}>
+                <IC_Edit />
+              </TouchableOpacity>
+              <TouchableOpacity style={{height:scale(30)}} onPress={() => removeAddressHandler(item._id)}>
+                <IC_CartDelete stroke={color.TitleActive}/>
+              </TouchableOpacity>
+            </View>
         </TouchableOpacity>
         )}    
       </ScrollView>
@@ -65,7 +112,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         flexDirection:'row',
-        borderBottomWidth:1,
+        borderBottomWidth:0.3,
         width:'100%',
         paddingHorizontal:scale(10)
     },

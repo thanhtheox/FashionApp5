@@ -33,8 +33,6 @@ import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 const HomeScreen = props => {
   const [banners, setBanners] = useState([]);
   const [tags, setTags] = useState([]);
-  const [suggestiveCollectionOne, setSuggestiveCollectionOne] = useState([]);
-  const [suggestiveCollectionTwo, setSuggestiveCollectionTwo] = useState([]);
   const [suggestiveProduct, setSuggestiveProduct] = useState([]);
 
   const axiosPrivate = useAxiosPrivate();
@@ -64,26 +62,7 @@ const HomeScreen = props => {
         console.log(err.response.data);
       }
     };
-    // const getSuggestiveCollectionOne = async (number) => {
-    //   try {
-    //     const response = await axiosPrivate.get(`/get-random-product/${number}`, {
-    //       signal: controller.signal,
-    //     });
-    //     setSuggestiveCollectionOne(response.data);
-    //   } catch (err) {
-    //     console.log(err.response.data);
-    //   }
-    // };
-    // const getSuggestiveCollectionTwo = async (number) => {
-    //   try {
-    //     const response = await axiosPrivate.get(`/get-random-product/${number}`, {
-    //       signal: controller.signal,
-    //     });
-    //     setSuggestiveCollectionOne(response.data);
-    //   } catch (err) {
-    //     console.log(err.response.data);
-    //   }
-    // };
+    
     const getSuggestiveProduct = async number => {
       try {
         const response = await axiosPrivate.get(
@@ -100,8 +79,6 @@ const HomeScreen = props => {
 
     getBanners(4);
     getTags();
-    // getSuggestiveCollectionOne(1);
-    // getSuggestiveCollectionTwo(1);
     getSuggestiveProduct(4);
     return () => {
       controller.abort();
@@ -191,18 +168,6 @@ const HomeScreen = props => {
             <Text style={styles.exploreText}>Explore More ⇒</Text>
           </TouchableOpacity>
         </View>
-        {/* Collection */}
-        {/* <View style={styles.collectionContainer}>
-            <Text style={styles.collectionText}>COLLECTIONS</Text>
-            <TouchableOpacity style={{alignItems:'center', width:'100%'}} 
-            onPress={() => props.navigation.navigate('CollectionStackScreen', { screen: 'CollectionDetailScreen' })}>
-              <Image source={{uri:suggestiveCollectionOne.posterImage.url}} resizeMode='stretch' style={{width:'100%', marginTop:scale(15)}}/>
-            </TouchableOpacity>
-            <TouchableOpacity 
-            onPress={() => props.navigation.navigate('CollectionStackScreen', { screen: 'CollectionDetailScreen' })}>
-              <Image source={{uri:suggestiveCollectionTwo.posterImage.url}} resizeMode='stretch' style={{marginTop:scale(35)}}/>
-            </TouchableOpacity>
-          </View>         */}
         {/* Product */}
         <View style={styles.productContainer}>
           <Text style={styles.productText}>JUST FOR YOU</Text>

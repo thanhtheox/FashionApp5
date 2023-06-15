@@ -24,11 +24,12 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import {useForm, Controller} from 'react-hook-form';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  resetCartWhenOrder,
+  resetCart, resetCartOrder,
 } from '../../../../redux/actions/cartActions';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 import Custom_CheckOutCart from './components/Custom_CheckOutCart';
 import { useIsFocused } from '@react-navigation/native';
+import { initAddress } from '../../../../redux/actions/addressActions';
 
   const CheckOut = (props) => { 
     const user = useSelector(state => state.user);
@@ -36,24 +37,27 @@ import { useIsFocused } from '@react-navigation/native';
     const userInfo = userItems.user;
     const axiosPrivate = useAxiosPrivate();
     const [method, setMethod] = useState([
-        {label: 'Pickup at store - FREE', value: 0},
-        {label: 'Ship COD - $5', value: 5},
+      {label: 'Ship COD - $5', value: 5},  
+      {label: 'Pickup at store - FREE', value: 0},
     ]); 
-    const [methodValue, setMethodValue] = useState(0)
+    const [methodValue, setMethodValue] = useState(5)
     const [methodOpen, setMethodOpen] = useState(false);
-    const [address, setAddress] = useState([]);
+    // const [address, setAddress] = useState([]);
     const { handleSubmit, control } = useForm();
 
   const dispatch = useDispatch();
   const [totalAmount, setTotalAmount] = useState(0);
   const [visible, setVisible] = useState(true);
+  const [typeOrder,setTypeOrder] = useState("Delivery");
   const cart = useSelector(state => state.cart);
   const {cartItems} = cart;
   const {cartId} = cart;
   const [note,setNote] = useState('');
-  const [refreshing, setRefreshing] = useState(false);
   const checkOutCart = cartItems.filter((item) => item.isOrder === true)
   const [addressDefault, setAddressDefault] = useState([]);
+  const address = useSelector(state => state.address);
+  const {addresses} = address;
+  const {addressesId} = address;
   const locationUrl ='https://www.google.com/maps/search/UIT/@10.824217,106.7037515,13z/data=!3m1!4b1?hl=vi-VN'
   const openUrl = async (url) => {
     try{
@@ -83,8 +87,10 @@ import { useIsFocused } from '@react-navigation/native';
           signal: controller.signal, 
         });
         console.log('address: ' ,JSON.stringify(response?.data))
-        setAddress(response?.data?.address.addresses)
+        dispatch(initAddress(response?.data?.address))
+        console.log(addresses)
         setAddressDefault(response?.data?.address.addresses.filter(item => (item.isDefault === true)))
+        console.log({addressDefault})
       } catch (err) {
         console.log(err.response);
       }
@@ -106,12 +112,13 @@ import { useIsFocused } from '@react-navigation/native';
   };
 
   const resetCartHandler = async (id) => {
+
   try {
     const response = await axiosPrivate.put(
       `/reset-cart-item/${id}`
     )
     console.log('resetCartSuccess', JSON.stringify(response.data));
-    dispatch(resetCartWhenOrder());
+    dispatch(resetCartOrder());
   } catch (error) {
     console.log("error", error.response.data)
   };
@@ -127,16 +134,31 @@ import { useIsFocused } from '@react-navigation/native';
       console.log({cartId})
       console.log({addressDefault})
       console.log({note})
+      console.log({methodValue})
+      if(methodValue===5){
+        setTypeOrder("Delivery")
+      }
+      else{
+        setTypeOrder("PickUp at store")
+      }
+      console.log({typeOrder})
       const response = await axiosPrivate.post(
         `/create-order`,
-        JSON.stringify({
+        methodValue===5?JSON.stringify({
           userId: userInfo._id, 
           productDetails: orderCart,
           note:note,
-          address:addressDefault[0]
+          address:addressDefault[0],
+          orderMethod: typeOrder,
+        }):JSON.stringify({
+          userId: userInfo._id, 
+          productDetails: orderCart,
+          note:note,
+          orderMethod: typeOrder,
         }),
       )
       console.log('placeOrderSuccess', JSON.stringify(response.data));
+      console.log({cartId})
       resetCartHandler(cartId);
       setNote('');
       props.navigation.navigate('OrderSuccess')
@@ -158,9 +180,7 @@ import { useIsFocused } from '@react-navigation/native';
             {methodValue === 5 ?(
             <View style={{height:scale(110)}}>
               {addressDefault.map(item => 
-                <TouchableOpacity style={styles.bodyTextBox} key={item._id} onPress={() => props.navigation.navigate('ListOfAddressesScreen',{
-                  data:address,
-                })}>
+                <TouchableOpacity style={styles.bodyTextBox} key={item._id} onPress={() => props.navigation.navigate('ListOfAddressesScreen')}>
                   <View style={{flexDirection:'column', width:'80%'}}>
                     <Text style={styles.name}>{userInfo.firstName + ' ' + userInfo.lastName}</Text>
                     <Text numberOfLines={2} style={styles.bodyText}>
@@ -172,7 +192,7 @@ import { useIsFocused } from '@react-navigation/native';
                 </TouchableOpacity>
               )}
             </View> 
-            ):(
+              ):(
               <View style={{flexDirection:'row', width:'100%',marginLeft:scale(20)}}>
                 <View style={{flexDirection:'column',marginRight:scale(50)}}>
                   <Text style={{fontFamily:FONT_FAMILY.Regular,fontSize:scale(15),color:color.TitleActive}}>Shop's location:</Text>
@@ -185,7 +205,15 @@ import { useIsFocused } from '@react-navigation/native';
                   <IC_Location  />
                 </TouchableOpacity>
               </View>
-            )}    
+            )}  
+            <View > 
+              {addressDefault[0]===undefined ? (
+              <TouchableOpacity style={styles.addShipping} onPress={() => props.navigation.navigate('AddNewAddressScreen')}>
+                <Text style={styles.addShippingText}>ADD SHIPPING ADDRESS</Text>
+                <IC_Plus style = {styles.PlusPosition} stroke= {color.TitleActive}/>
+              </TouchableOpacity>
+            ):(null)}
+            </View> 
             {/* NOTE */}
             <Text style={styles.bodyText1}>NOTE</Text>
             <View style={styles.viewInput}>
@@ -200,14 +228,14 @@ import { useIsFocused } from '@react-navigation/native';
           <Text style={styles.bodyText1}>SHIPPING METHOD</Text>
           <Controller
             name="SHIPPING METHOD"
-            defaultValue=""
+            defaultValue={5}
             control={control}
             render={({field: {onChange, value}}) => (
               <View style={styles.dropdown}>
                 <DropDownPicker
-                  style={styles.addShipping}
+                  style={styles.methodShipping}
                   listMode='SCROLLVIEW'
-                  textStyle={styles.addShippingText}
+                  textStyle={styles.methodShippingText}
                   open={methodOpen}
                   value={methodValue}
                   items={method}
@@ -386,5 +414,28 @@ const styles = StyleSheet.create({
     height: scale(180),
     marginTop: scale(7),
     zIndex: -1,
+  },
+  PlusPosition: {
+    position: 'absolute',
+    marginLeft: scale(300),
+    justifyContent: 'center',
+  },
+  addShipping: {
+    borderColor: color.TitleActive,
+    width: scale(342),
+    height: scale(48),
+    borderWidth:1,
+    backgroundColor: color.OffWhite,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    borderRadius: scale(30),
+    marginVertical: scale(20),
+  },
+  addShippingText: {
+    color: color.TitleActive,
+    fontFamily: FONT_FAMILY.Regular,
+    fontSize: scale(16),
+    fontWeight: 400,
+    marginLeft: scale(20),
   },
 });

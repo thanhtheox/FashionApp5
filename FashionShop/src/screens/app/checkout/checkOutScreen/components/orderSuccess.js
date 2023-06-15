@@ -11,13 +11,35 @@ import {React, useState} from 'react';
 import color from '../../../../../constants/color';
 import FONT_FAMILY from '../../../../../constants/fonts';
 import scale from '../../../../../constants/responsive';
-import {IMG_Logo} from '../../../../../assets/images';
-import SaveButton from '../../../../../components/buttons/Save';
 import {LineBottom} from '../../../../../components/footer/images';
-import {IC_Rating, IC_Success} from '../../../../../assets/icons';
+import {
+  IC_Rating,
+  IC_Success,
+  IC_Normal,
+  IC_Satisfy,
+  IC_Unsatisfy,
+} from '../../../../../assets/icons';
+import {Controller, useForm} from 'react-hook-form';
+import MultiLine from '../../../../../components/textFormat/mutiLine';
 
 const OrderSuccess = props => {
 
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    // mode: 'onChange',
+    // defaultValues: {
+    //   firstName: userInfo.firstName,
+    //   lastName: userInfo.lastName,
+    //   // email: '',
+    //   phoneNumber: userInfo.phoneNumber,
+    //   password: '',
+    //   passwordConfirm: '',
+    // },
+    // resolver: yupResolver(signUpPayloadSchema),
+  });
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.introTextBox}>
@@ -31,13 +53,52 @@ const OrderSuccess = props => {
       </View>
       <View style={styles.body}>
         <Text style={styles.successText}>Rate your experience!</Text>
-        <IC_Rating style={styles.icon} />
-        <SaveButton></SaveButton>
       </View>
       <View style={styles.totalBorder}>
-        <TouchableOpacity style={styles.placeOrder}>
-          <Text style={styles.button}>ADD NOW</Text>
-        </TouchableOpacity>
+
+        <View style={styles.icon}>
+          <TouchableOpacity>
+            <IC_Unsatisfy />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <IC_Normal />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <IC_Satisfy />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.commentBox}>
+          <Controller
+            name="detail"
+            control={control}
+            render={({field: {onChange, value}}) => (
+              <>
+                <MultiLine
+                  name="detail"
+                  keyboardType="default"
+                  onChangeText={detail => onChange(detail)}
+                  style={styles.comment}
+                />
+              </>
+            )}
+          />
+        </View>
+        <View
+          style={{
+            marginTop: scale(30),
+            //marginLeft: scale(15),
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            alignSelf: 'center',
+            width: scale(320),
+          }}>
+          <View style={styles.submit}>
+            <Text style={styles.submitText}>SUBMIT</Text>
+          </View>
+          <View style={styles.backHome}>
+            <Text style={styles.backText}>BACK TO HOME</Text>
+          </View>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -164,10 +225,14 @@ const styles = StyleSheet.create({
     fontWeight: 400,
     fontFamily: FONT_FAMILY.Regular,
     alignSelf: 'center',
+    justifyContent: 'space-between',
   },
   icon: {
     alignSelf: 'center',
     marginTop: scale(20),
+    width: scale(150),
+    justifyContent: 'space-between',
+    flexDirection: 'row',
   },
   successText: {
     color: color.TitleActive,
@@ -176,5 +241,45 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.Regular,
     alignSelf: 'center',
     marginTop: scale(10),
+  },
+  submit: {
+    //marginLeft: scale(-55),
+    width: scale(150),
+    height: scale(48),
+    backgroundColor: color.TitleActive,
+    justifyContent: 'center',
+  },
+  submitText: {
+    color: color.White,
+    fontSize: 16,
+    fontWeight: 400,
+    fontFamily: FONT_FAMILY.Regular,
+
+    alignSelf: 'center',
+  },
+  backHome: {
+    width: scale(150),
+    height: scale(48),
+    backgroundColor: color.White,
+    justifyContent: 'center',
+    borderWidth: 1,
+  },
+  backText: {
+    color: color.TitleActive,
+    fontSize: 16,
+    fontWeight: 400,
+    fontFamily: FONT_FAMILY.Regular,
+    alignSelf: 'center',
+  },
+  comment: {
+    width: scale(300),
+    height: scale(200),
+    alignSelf: 'center',
+  },
+  commentBox: {
+    marginTop: scale(10),
+    width: scale(380),
+    height: scale(200),
+    alignItems: 'center',
   },
 });

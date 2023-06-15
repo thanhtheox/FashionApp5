@@ -7,6 +7,13 @@ export const initUser = (user) => async (dispatch) => {
     payload: {user},
   });
 };
+export const updateUser = (user) => async (dispatch) => {
+
+  dispatch({
+    type: actionTypes.UPDATE_USER,
+    payload: {user},
+  });
+};
 export const resetUserWhenLogOut = () => async (dispatch) => {
   dispatch({
     type: actionTypes.USER_RESET,

@@ -14,6 +14,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 import axios from 'axios';
 import OKMessageBox from '../../../../components/messageBox/OKMessageBox';
+import { addAddress } from '../../../../redux/actions/addressActions';
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
@@ -24,13 +25,13 @@ const addNewAddressPayloadSchema = yup.object({
   lastName: yup.string()
   .max(30,'Invalid name')
   .required('Name cannot be blank'),
-  city: yup.object()
+  city: yup.string()
   // .max(70,'Invalid city')
   .required('City cannot be blank'),
-  district: yup.object()
+  district: yup.string()
   //.max(70,'Invalid district')
   .required('District cannot be blank'),
-  ward: yup.object()
+  ward: yup.string()
   // .max(70,'Invalid ward')
   .required('Ward cannot be blank'),
   streetAndNumber: yup.string()
@@ -45,11 +46,8 @@ const addNewAddressPayloadSchema = yup.object({
 
 
 const AddNewAddressScreen = props => {
-  // const [firstName, setFirstName] = useState('');
-  // const [lastName, setLastName] = useState('');
   const [address, setAddress] = useState([]);
   const [streetAndNumber, setStreetAndNumber] = useState('');
-  //const [phoneNumber, setPhoneNumber] = useState('');
   const [cityList, setCityList] = useState([]);
   const [city, setCity] = useState('');
   const [cityOpen, setCityOpen] = useState(false);
@@ -61,6 +59,7 @@ const AddNewAddressScreen = props => {
   const [wardOpen, setWardOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const axiosPrivate = useAxiosPrivate();
+  const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const {userItems} = user;
   const userInfo = userItems.user;
@@ -101,7 +100,7 @@ const AddNewAddressScreen = props => {
           cityList[index] = obj;
         })
       } catch (err) {
-        console.log(err.response.data);
+        console.log(err);
       }
   };
   getCities();
@@ -112,14 +111,12 @@ const AddNewAddressScreen = props => {
   
   const handleAddNewAddress = async (data) => {
     try {
-      //setLoading(true);
       setAddress({
         city: city,
         district: district,
         ward: ward,
         streetAndNumber: streetAndNumber,
       } )
-      console.log('address',JSON.stringify(address))
       const response = await axiosPrivate.put(
         `/add-new-address/${userInfo._id}`,
         JSON.stringify({
@@ -128,15 +125,15 @@ const AddNewAddressScreen = props => {
             district: district,
             ward: ward,
             streetAndNumber: streetAndNumber,
+            isDefault: true,
           }
         }),
       );
-      console.log('success', JSON.stringify(response.data));
+      dispatch(addAddress(response.data.address.addresses))
+      console.log('success', JSON.stringify(response.data.address.addresses));
       setVisible(true)
-      //setLoading(false);
     } catch (error) {
-      //setLoading(false);
-      console.log("error", error.response.data)
+      console.log("error", error)
   };
 }
 const handleCityChange = async(city) => {
@@ -144,7 +141,6 @@ const handleCityChange = async(city) => {
     setDistrict('');
     setWard('');
     const responseDistrict = await axios.get(`https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=${city.code}&limit=-1`);
-        //console.log('districts: ' ,JSON.stringify(responseDistrict.data.data.data))
         responseDistrict.data.data.data.map((item,index) => {
           const obj = {
             label: item.name_with_type,
@@ -178,7 +174,7 @@ const handleDistrictChange = async(district) => {
 };
     return (
         <SafeAreaView style = {styles.container}>
-          <OKMessageBox visible={visible} clickCancel={() => {setVisible(false)}} 
+          <OKMessageBox visible={visible} clickCancel={() => {props.navigation.navigate('CheckOutScreen')}} 
           title={"ADD SUCCESSFULLY ADDRESS "} 
           message={"You added successfully address!"}  />
             <View style={styles.introTextBox}>
@@ -186,76 +182,6 @@ const handleDistrictChange = async(district) => {
                 <Image source={LineBottom} style={{alignSelf: 'center'}}/>
             </View>
             <View style={styles.body}>
-              {/* <>
-                <View style={styles.inputName}>
-                  <Controller
-                  name="firstName"
-                  control={control}
-                  render={({field: {onChange, value}}) => (
-                    <View style={styles.inputFirstName}>
-                      <View style={styles.viewInput}>
-                        <TextInput
-                          onChangeText={firstName => [onChange(firstName), setFirstName(firstName)]}
-                          placeholder={userInfo.firstName}
-                          value={value}
-                          defaultValue={userInfo.firstName}
-                          placeholderTextColor={color.GraySolid}
-                          style={styles.inputText}
-                          keyboardType="default"
-                        />
-                      </View>
-                      {errors?.firstName && (
-                        <Text style={styles.textFailed}>{errors.firstName.message}</Text>
-                      )}
-                    </View>
-                    )}
-                  />
-                  <Controller
-                  name="lastName"
-                  control={control}
-                  render={({field: {onChange, value}}) => (
-                    <View style={styles.inputLastName}>
-                      <View style={styles.viewInput}>
-                        <TextInput
-                          onChangeText={lastName => [onChange(lastName), setLastName(lastName)]}
-                          placeholder={userInfo.lastName}
-                          value={value}
-                          defaultValue={userInfo.lastName}
-                          placeholderTextColor={color.GraySolid}
-                          style={styles.inputText}
-                          keyboardType="default"
-                        />
-                      </View>
-                      {errors?.lastName && (
-                        <Text style={styles.textFailed}>{errors.lastName.message}</Text>
-                      )}
-                    </View>
-                    )}
-                  />
-                </View>
-                <Controller
-                  name="phoneNumber"
-                  control={control}
-                  render={({field: {onChange, value}}) => (
-                    <View style={styles.inputPhoneNumber}>
-                      <View style={styles.viewInput}>
-                      <TextInput
-                        onChangeText={phoneNumber => [onChange(phoneNumber), setPhoneNumber(phoneNumber)]}
-                        placeholder={userInfo.phoneNumber}
-                        value={value}
-                        defaultValue={userInfo.phoneNumber}
-                        placeholderTextColor={color.GraySolid}
-                        style={styles.inputText}
-                        keyboardType="default"
-                      />
-                      </View>
-                      {errors?.phoneNumber && (
-                        <Text style={styles.textFailed}>{errors.phoneNumber.message}</Text>
-                      )}
-                    </View>
-                  )}
-                />
-                </> */}
                 <>
                 <Controller
                   name="city"
@@ -273,7 +199,7 @@ const handleDistrictChange = async(district) => {
                         setItems={setCityList}
                         setOpen={setCityOpen}
                         setValue={setCity}
-                        onSelectItem={(item) => [handleCityChange(item),onChange(item)]}
+                        onSelectItem={(item) => [handleCityChange(item),onChange(item.value)]}
                         placeholder='Choose a city'
                       />
                       {errors?.city && (
@@ -298,7 +224,7 @@ const handleDistrictChange = async(district) => {
                           setOpen={setDistrictOpen}
                           setValue={setDistrict}
                           listParentContainerStyle={{height:scale(60)}}
-                          onSelectItem={item => [handleDistrictChange(item),onChange(item)]}
+                          onSelectItem={item => [handleDistrictChange(item),onChange(item.value)]}
                           placeholder='Choose a district'
                         />
                         {errors?.district && (
@@ -322,7 +248,7 @@ const handleDistrictChange = async(district) => {
                           setItems={setWardList}  
                           setOpen={setWardOpen}
                           setValue={setWard}
-                          onSelectItem={item => onChange(item)}
+                          onSelectItem={item => onChange(item.value)}
                           placeholder='Choose a ward'
                         />
                         {errors?.ward && (
@@ -355,9 +281,15 @@ const handleDistrictChange = async(district) => {
                 />
             </View>
             <View style={styles.totalBorder}>
-              <TouchableOpacity style={styles.placeOrder} onPress={handleAddNewAddress}>
-                <Text style={styles.button}>ADD NOW</Text>
+              {((city==='')||(district==='')||(ward==='')||(streetAndNumber===''))?(
+              <TouchableOpacity style={styles.placeOrderDisable} onPress={handleSubmit()}>
+                <Text style={styles.buttonDisableText}>ADD NOW</Text>
               </TouchableOpacity>
+              ):(
+              <TouchableOpacity style={styles.placeOrder} onPress={handleAddNewAddress}>
+                <Text style={styles.buttonText}>ADD NOW</Text>
+              </TouchableOpacity>
+            )}
             </View>  
         </SafeAreaView>
     );
@@ -476,8 +408,23 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
     },
-    button: {
+    buttonText: {
         color: color.White,
+        fontSize: 16,
+        fontWeight: 400,
+        fontFamily: FONT_FAMILY.Regular,
+        alignSelf: 'center',
+    },
+    placeOrderDisable:{
+      marginTop: scale(20),
+      width: scale(375),
+      height: scale(56),
+      backgroundColor: color.GraySolid,
+      alignSelf: 'center',
+      justifyContent: 'center',
+    },
+    buttonDisableText: {
+        color: color.TitleActive,
         fontSize: 16,
         fontWeight: 400,
         fontFamily: FONT_FAMILY.Regular,
