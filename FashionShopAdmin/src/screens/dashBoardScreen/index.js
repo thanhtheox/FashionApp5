@@ -154,13 +154,24 @@ const DashBoardScreen = (props) => {
                 <IC_Forward></IC_Forward>
               </View>
             </TouchableOpacity>
-        </ScrollView>
+            <TouchableOpacity style={styles.viewList} onPress={()=>props.navigation.navigate("Statistics")}>
+              <View style={styles.viewTextList}>
+              <Text style={styles.textList}>Statistics</Text>
+              </View>
+              <View style={styles.viewIcon}>
+                <IC_Forward></IC_Forward>
+              </View>
+            </TouchableOpacity>
+            <View style={{height: scale(10)}}/>
 
-      </View>
 
       <View style={styles.buttonSignOut}>
         <SaveButton text={'Sign Out'} onPress={() => signOut()}></SaveButton>
       </View>
+      </ScrollView>
+      </View>
+
+
     </SafeAreaView>
   )
 }
@@ -200,11 +211,12 @@ const styles = StyleSheet.create({
         fontWeight: '600',
       },
       body: {
-        flex: 0.6,
+        flex: 0.8,
         backgroundColor: color.White,
       },
       buttonSignOut:{
-        marginTop: scale(10),
+        // marginTop: scale(10),
+        marginVertical: scale(10),
         flex: 0.15,
         alignItems: 'center'
         

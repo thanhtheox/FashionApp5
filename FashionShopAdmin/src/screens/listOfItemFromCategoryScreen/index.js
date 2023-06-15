@@ -173,6 +173,7 @@ const ListOfItemFromCategoryScreen = (props) => {
                     name={item.name}
                     description={item.description}
                     price={item.price}
+                    sale={item.sale}
                     source = {item.posterImage.url}
                     onPress={() => moveItemDetail(item)}
                     delete={()=>deleteItem(item._id,item.name)}

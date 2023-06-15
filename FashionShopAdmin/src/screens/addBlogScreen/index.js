@@ -422,6 +422,7 @@ const AddBlogScreen = props => {
                 )}
               />
             </View>
+            <View style={{height: scale(10)}} />
           </ScrollView>
 
           <View style={styles.button}>
