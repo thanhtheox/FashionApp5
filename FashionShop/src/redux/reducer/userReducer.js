@@ -15,6 +15,11 @@ export const userReducer = (state = USER_INITIAL_STATE, action) => {
         ...state,
         userItems: action.payload 
       };
+    case actionTypes.UPDATE_USER:
+    return {
+      ...state,
+      userItems: action.payload 
+    };
     case actionTypes.USER_RESET:
       return {
         ...state,

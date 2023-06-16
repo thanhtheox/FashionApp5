@@ -9,7 +9,6 @@ import {
     ScrollView
   } from 'react-native';
   import React from 'react';
-  import Custom_Header from '../../../../components/header/Custom_Header';
   import Custom_Footer from '../../../../components/footer/Custom_Footer';
   import color from '../../../../constants/color';
   import FONT_FAMILY from '../../../../constants/fonts';
