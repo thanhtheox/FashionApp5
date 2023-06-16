@@ -154,13 +154,24 @@ const DashBoardScreen = (props) => {
                 <IC_Forward></IC_Forward>
               </View>
             </TouchableOpacity>
-        </ScrollView>
+            <TouchableOpacity style={styles.viewList} onPress={()=>props.navigation.navigate("Statistics")}>
+              <View style={styles.viewTextList}>
+              <Text style={styles.textList}>Statistics</Text>
+              </View>
+              <View style={styles.viewIcon}>
+                <IC_Forward></IC_Forward>
+              </View>
+            </TouchableOpacity>
+            <View style={{height: scale(10)}}/>
 
-      </View>
 
       <View style={styles.buttonSignOut}>
         <SaveButton text={'Sign Out'} onPress={() => signOut()}></SaveButton>
       </View>
+      </ScrollView>
+      </View>
+
+
     </SafeAreaView>
   )
 }
@@ -188,7 +199,6 @@ const styles = StyleSheet.create({
         color: color.White,
         fontSize: 36,
         fontFamily: FONT_FAMILY.Bold,
-        fontWeight: '600',
       },
       viewTextLabel:{
         marginTop: scale(10),
@@ -197,14 +207,13 @@ const styles = StyleSheet.create({
         color: color.White,
         fontSize: 24,
         fontFamily: FONT_FAMILY.Bold,
-        fontWeight: '600',
       },
       body: {
-        flex: 0.6,
+        flex: 0.8,
         backgroundColor: color.White,
       },
       buttonSignOut:{
-        marginTop: scale(10),
+        marginVertical: scale(10),
         flex: 0.15,
         alignItems: 'center'
         
@@ -225,11 +234,9 @@ const styles = StyleSheet.create({
       textList:{
         fontFamily: FONT_FAMILY.Regular,
         fontSize: 24,
-        fontWeight: '400',
         color: color.TitleActive,
       },
       viewIcon:{
-        // backgroundColor: color.Alto,
         alignSelf: 'center',
       },
       hidden: {
@@ -249,7 +256,6 @@ const styles = StyleSheet.create({
       textListBody:{
         fontFamily: FONT_FAMILY.Regular,
         fontSize: 22,
-        fontWeight: '400',
         color: color.TitleActive,
         marginLeft: scale(20),
         opacity: 1

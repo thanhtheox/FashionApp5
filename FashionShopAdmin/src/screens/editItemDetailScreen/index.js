@@ -184,9 +184,8 @@ const styles = StyleSheet.create({
     },
     textHeader:{
         color: color.White,
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Bold,
         fontSize: 24,
-        fontWeight: '700',
         marginTop: scale(10),
     },
     backwardButton: {
@@ -203,9 +202,8 @@ const styles = StyleSheet.create({
     },
     bodyText: {
         color: color.Body,
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Bold,
         fontSize: 23,
-        fontWeight: '600',
         marginLeft: scale(3),
     },
 
@@ -214,9 +212,8 @@ const styles = StyleSheet.create({
     },
     propText: {
         color: color.TitleActive,
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Bold,
         fontSize: scale(16),
-        fontWeight: '600',
         marginLeft: scale(3),
     },
 
@@ -254,9 +251,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     text: {
-        fontWeight: '600', 
         fontSize: 18, 
-        fontFamily: FONT_FAMILY.Regular, 
+        fontFamily: FONT_FAMILY.Bold,
         textDecorationLine: "none", 
         color: color.TitleActive
     },

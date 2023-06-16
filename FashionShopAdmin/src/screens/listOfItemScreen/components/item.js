@@ -21,6 +21,8 @@ const Item = (props) => {
                     <Text style={styles.name} numberOfLines={1}>{props.name}</Text>
                     <Text style={styles.description} numberOfLines={1}>{props.description}</Text>
                     <Text style={styles.price} numberOfLines={1}>{props.price}$</Text>
+                    <Text style={styles.sale} numberOfLines={1}>Sale: {props.sale}</Text>
+
                 </View>
                 <View style={styles.viewFunction}>
                     <TouchableOpacity style={styles.viewIcon} onPress={props.delete}>
@@ -85,6 +87,12 @@ const styles = StyleSheet.create({
         color: color.GraySolid,
       },
       price:{
+        fontSize: 14,
+        fontWeight: 400,
+        fontFamily: FONT_FAMILY.Regular,
+        color: color.Primary,
+      },
+      sale:{
         fontSize: 14,
         fontWeight: 400,
         fontFamily: FONT_FAMILY.Regular,

@@ -337,11 +337,9 @@ const styles = StyleSheet.create({
     height: scale(68),
     width: '100%',
     borderBottomWidth: 1,
-    // borderWidth:1,
     flexDirection: 'row',
   },
   viewTextList: {
-    // backgroundColor: color.Alto,
     justifyContent: 'center',
     width: scale(300),
     marginLeft: scale(20),
@@ -349,7 +347,6 @@ const styles = StyleSheet.create({
   textList: {
     fontFamily: FONT_FAMILY.Regular,
     fontSize: 24,
-    fontWeight: '400',
     color: color.TitleActive,
   },
   viewIcon:{
@@ -372,7 +369,6 @@ const styles = StyleSheet.create({
   textListBody: {
     fontFamily: FONT_FAMILY.Regular,
     fontSize: 12,
-    fontWeight: '400',
     color: color.TitleActive,
     marginLeft: scale(30),
   },

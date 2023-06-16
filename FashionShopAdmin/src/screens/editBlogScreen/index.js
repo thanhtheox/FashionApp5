@@ -486,6 +486,7 @@ import {
                   )}
                 />
               </View>
+              <View style={{height: scale(10)}}/>
             </ScrollView>
   
             <View style={styles.button}>
@@ -516,9 +517,8 @@ import {
     },
     textHeader: {
       color: color.White,
-      fontFamily: FONT_FAMILY.Regular,
+      fontFamily: FONT_FAMILY.Bold,
       fontSize: 24,
-      fontWeight: '700',
       marginTop: scale(10),
     },
     backwardButton: {
@@ -534,9 +534,8 @@ import {
     },
     bodyText: {
       color: color.Body,
-      fontFamily: FONT_FAMILY.Regular,
+      fontFamily: FONT_FAMILY.Bold,
       fontSize: 23,
-      fontWeight: '600',
       marginLeft: scale(3),
     },
   
@@ -558,9 +557,8 @@ import {
     },
     propText: {
       color: color.PlaceHolder,
-      fontFamily: FONT_FAMILY.Regular,
+      fontFamily: FONT_FAMILY.Bold,
       fontSize: scale(16),
-      fontWeight: '600',
       marginLeft: scale(3),
       marginTop: scale(20),
     },
@@ -585,7 +583,6 @@ import {
     },
     // detail button
     button: {
-      // marginTop: scale(0),
       height: Dimensions.get('screen').height * 0.1,
       alignItems: 'center',
     },
@@ -593,7 +590,6 @@ import {
     //fail
     textFailed: {
       paddingLeft: scale(25),
-      // marginTop: scale(7),
       justifyContent: 'center',
       fontFamily: FONT_FAMILY.Italic,
       fontSize: scale(12),

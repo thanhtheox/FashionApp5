@@ -240,7 +240,7 @@ const EditCategoryScreen = props => {
 
         <View style={styles.buttonView}>
           <SaveButton
-            text={'Add category'}
+            text={'Edit category'}
             onPress={handleSubmit(handleSubmits)}
           />
         </View>
@@ -291,7 +291,6 @@ const styles = StyleSheet.create({
     color: color.TitleActive,
     fontFamily: FONT_FAMILY.Bold,
     fontSize: 22,
-    fontWeight: '600',
   },
   inputText: {
     color: color.TitleActive,
@@ -338,9 +337,8 @@ const styles = StyleSheet.create({
   },
   propText: {
     color: color.PlaceHolder,
-    fontFamily: FONT_FAMILY.Regular,
+    fontFamily: FONT_FAMILY.Bold,
     fontSize: scale(16),
-    fontWeight: '600',
     marginLeft: scale(3),
     marginTop: scale(20),
   },
@@ -351,7 +349,6 @@ const styles = StyleSheet.create({
   //fail
   textFailed: {
     paddingLeft: scale(25),
-    // marginTop: scale(7),
     justifyContent: 'center',
     fontFamily: FONT_FAMILY.Italic,
     fontSize: scale(12),

@@ -50,8 +50,7 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         fontSize: 14,
-        fontWeight: '700',
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Bold,
         color: color.TitleActive,
         textTransform:'uppercase',
     },

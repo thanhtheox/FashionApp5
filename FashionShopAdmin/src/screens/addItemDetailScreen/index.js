@@ -85,13 +85,7 @@ const AddItemDetailScreen = props => {
             signal: controller.signal,
           },
         );
-        // const handledColor = [];
-        // await Promise.all(
-        //     response.data.map((item) => {
-        //         handledColor.push({label: item.name, value: item._id});
-        //     })
-        // )
-        // isMounted && setColors(handledColor);
+        
         console.log('detail: ', response.data);
       } catch (err) {
         console.log(err.response.data);
@@ -325,38 +319,6 @@ const AddItemDetailScreen = props => {
                 )}
               />
 
-              {/* <DataTable style={{flex: 1}}>
-                <DataTable.Header>
-                  <DataTable.Title textStyle={styles.text}>
-                    Color
-                  </DataTable.Title>
-                  <DataTable.Title textStyle={styles.text}>S</DataTable.Title>
-                  <DataTable.Title textStyle={styles.text}>M</DataTable.Title>
-                  <DataTable.Title textStyle={styles.text}>L</DataTable.Title>
-                </DataTable.Header>
-                <ScrollView
-                  showsVerticalScrollIndicator={false}
-                  contentContainerStyle={{flexGrow: 1}}>
-                  {qty.map(row => (
-                    <TouchableOpacity key={row.color}>
-                      <DataTable.Row style={{height: scale(70)}}>
-                        <DataTable.Cell textStyle={styles.text}>
-                          {row.color}
-                        </DataTable.Cell>
-                        <DataTable.Cell textStyle={styles.text}>
-                          {row.S}
-                        </DataTable.Cell>
-                        <DataTable.Cell textStyle={styles.text}>
-                          {row.M}
-                        </DataTable.Cell>
-                        <DataTable.Cell textStyle={styles.text}>
-                          {row.L}
-                        </DataTable.Cell>
-                      </DataTable.Row>
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
-              </DataTable> */}
             </View>
             <View style={styles.button}>
               <SaveButton
@@ -385,9 +347,8 @@ const styles = StyleSheet.create({
   },
   textHeader: {
     color: color.White,
-    fontFamily: FONT_FAMILY.Regular,
+    fontFamily: FONT_FAMILY.Bold,
     fontSize: 24,
-    fontWeight: '700',
     marginTop: scale(10),
   },
   backwardButton: {
@@ -403,9 +364,8 @@ const styles = StyleSheet.create({
   },
   bodyText: {
     color: color.Body,
-    fontFamily: FONT_FAMILY.Regular,
+    fontFamily: FONT_FAMILY.Bold,
     fontSize: 23,
-    fontWeight: '600',
     marginLeft: scale(3),
   },
 
@@ -413,9 +373,8 @@ const styles = StyleSheet.create({
   informationPart: {},
   propText: {
     color: color.TitleActive,
-    fontFamily: FONT_FAMILY.Regular,
+    fontFamily: FONT_FAMILY.Bold,
     fontSize: scale(16),
-    fontWeight: '600',
     marginLeft: scale(3),
   },
 
@@ -455,9 +414,8 @@ const styles = StyleSheet.create({
     fontSize: scale(13),
   },
   text: {
-    fontWeight: '600',
     fontSize: 18,
-    fontFamily: FONT_FAMILY.Regular,
+    fontFamily: FONT_FAMILY.Bold,
     textDecorationLine: 'none',
     color: color.TitleActive,
   },
@@ -471,7 +429,6 @@ const styles = StyleSheet.create({
   //fail
   textFailed: {
     paddingLeft: scale(25),
-    // marginTop: scale(7),
     justifyContent: 'center',
     fontFamily: FONT_FAMILY.Italic,
     fontSize: scale(12),

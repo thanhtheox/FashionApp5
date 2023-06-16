@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         fontSize: 14,
-        fontWeight: '400',
         fontFamily: FONT_FAMILY.Regular,
         color: color.TitleActive,
         textTransform:'uppercase',

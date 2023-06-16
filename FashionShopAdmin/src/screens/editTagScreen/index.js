@@ -154,9 +154,8 @@ const styles = StyleSheet.create({
   },
   textHeader: {
     color: color.White,
-    fontFamily: FONT_FAMILY.Regular,
+    fontFamily: FONT_FAMILY.Bold,
     fontSize: 24,
-    fontWeight: '700',
   },
   body: {
     height: Dimensions.get('screen').height * 0.9,
@@ -182,7 +181,6 @@ const styles = StyleSheet.create({
     color: color.TitleActive,
     fontFamily: FONT_FAMILY.Regular,
     fontSize: 16,
-    fontWeight: '400',
     marginLeft: scale(10),
   },
   viewTextLabel: {
@@ -193,7 +191,6 @@ const styles = StyleSheet.create({
     color: color.TitleActive,
     fontFamily: FONT_FAMILY.Regular,
     fontSize: 14,
-    fontWeight: '400',
   },
   viewAdd: {
     flexDirection: 'row',
@@ -208,7 +205,6 @@ const styles = StyleSheet.create({
     color: color.TitleActive,
     fontFamily: FONT_FAMILY.Regular,
     fontSize: 16,
-    fontWeight: '400',
   },
   viewInputAdd: {
     borderWidth: 1,
@@ -224,7 +220,6 @@ const styles = StyleSheet.create({
   //fail
   textFailed: {
     paddingLeft: scale(25),
-    // marginTop: scale(7),
     justifyContent: 'center',
     fontFamily: FONT_FAMILY.Italic,
     fontSize: scale(12),

@@ -333,11 +333,7 @@ const styles = StyleSheet.create({
     height: scale(40),
     justifyContent: 'center',
   },
-  // color:{
-  //     borderWidth: 1,
-  //     width:  scale(90),
-  //     height: scale(30)
-  // },
+
   colorView: {
     height: Dimensions.get('screen').height * 0.3,
     padding: scale(15),
@@ -351,7 +347,6 @@ const styles = StyleSheet.create({
   //fail
   textFailed: {
     paddingLeft: scale(25),
-    // marginTop: scale(7),
     justifyContent: 'center',
     fontFamily: FONT_FAMILY.Italic,
     fontSize: scale(12),

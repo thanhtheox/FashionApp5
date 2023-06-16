@@ -374,9 +374,8 @@ const styles = StyleSheet.create({
     },
     textHeader: {
         color: color.White,
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Bold,
         fontSize: 24,
-        fontWeight: '700',
     },
     //body
     body: {
@@ -389,9 +388,8 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         color: color.TitleActive,
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Bold,
         fontSize: 22,
-        fontWeight: '600',
     },
     viewTextInput: {
         borderBottomWidth: 1,
@@ -404,7 +402,6 @@ const styles = StyleSheet.create({
         color: color.TitleActive,
         fontFamily: FONT_FAMILY.Regular,
         fontSize: 16,
-        fontWeight: '400',
         marginLeft: scale(10),
     },
 
@@ -427,9 +424,8 @@ const styles = StyleSheet.create({
     },
     textAdd: {
         color: color.TitleActive,
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Bold,
         fontSize: 16,
-        fontWeight: '500',
     },
     viewImageAdd: {
         height: '70%',
