@@ -15,13 +15,15 @@ import React, {useEffect, useState, useRef} from 'react';
 import scale from '../../../constants/responsive';
 import color from '../../../constants/color';
 import PriceAttribute from './components/priceAttribute';
-import ButtonReOrder from './components/buttonReOrder';
+import ButtonReOrder from './components/buttonOrder';
 import FONT_FAMILY from '../../../constants/fonts';
 import { IC_Cancel,IC_New,IC_Delivered,IC_Delivering,IC_Preparing } from '../../../assets/icons';
 import { useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import UnderLine from './components/underLineSwitch';
+import ButtonOrder from './components/buttonOrder';
+import { reOrder } from '../../../redux/actions/cartActions';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -36,6 +38,7 @@ const OrdersScreen = props => {
   const {userItems} = user;
   const userInfo = userItems.user;
   const axiosPrivate = useAxiosPrivate();
+  const dispatch = useDispatch();
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -62,11 +65,27 @@ const OrdersScreen = props => {
   return unsubscribe;
 }, [props.navigation]);
 
+const ReOrder = (cart) => {
+  dispatch(reOrder(cart));
+  props.navigation.navigate('CartScreen');
+}
+
+const cancelHandler = async (id) => {
+  try {
+    const response = await axiosPrivate.put(
+      `/cancel-order/${id}`)
+    console.log('cancelOrder', JSON.stringify(response.data));
+    setChosen("cancel")
+  } catch (error) {
+    console.log(error.response?.data);
+  }
+}
+
   const filters =(orders)=>{
     const newData=orders.filter((x) =>  x.orderStatus===chosen)
-    setFilteredOrders(newData);
-    console.log(filteredOrders)
-    return newData;
+    setFilteredOrders(newData.reverse());
+    // console.log(filteredOrders)
+    return filteredOrders;
   }
 
   useEffect(() => {
@@ -83,12 +102,6 @@ const OrdersScreen = props => {
       </SafeAreaView>
   ):(
     <SafeAreaView style={styles.container}>
-      {chosen==='cancel'?(
-          <View style={{flexDirection: 'row'}}>
-            <UnderLine text={'Return'} name={'return'} onPress={() => setSubChosen('return')} chosen={subChosen}/>
-            <UnderLine text={'Canceled'} name={'cancel'} onPress={() => setSubChosen('cancel')} chosen={subChosen}/>
-          </View>
-      ):(null)}
       <ScrollView 
         horizontal="false" 
         style={styles.scrollView}
@@ -107,26 +120,42 @@ const OrdersScreen = props => {
                 {/* <View style={{flex}}> */}
                 <View style={{alignSelf: 'center', marginLeft: scale(15), width:'70%' }}>
                   <Text style={styles.info} numberOfLines={1}>Receiver: {userInfo.firstName+ ' '+userInfo.lastName}</Text>
+                  <Text style={styles.info} numberOfLines={1}>Phone Number: {userInfo.phoneNumber}</Text>
+                  {data.note === '' ? null:<Text style={styles.info} numberOfLines={1}>Note: {data.note}</Text>}
+                  {data.address===undefined?(
+                  <View style={{flexDirection:'column'}}>
+                    <Text style={styles.info} numberOfLines={1}>
+                    Shop's location:  University Of Information Technology 
+                    </Text>
+                    <Text style={styles.info} numberOfLines={1}>
+                    Contact number: (786) 713-8616 
+                    </Text>
+                  </View>   
+                  ):(
                   <Text style={styles.info} numberOfLines={2}>
                     Location: {data.address.streetAndNumber+', '+data.address.ward+', '+data.address.district+', '+data.address.city}
                   </Text>
-                  <Text style={styles.info} numberOfLines={1}>Phone Number: {userInfo.phoneNumber}</Text>
-                  {data.note === '' ? null:<Text style={styles.info} numberOfLines={1}>Note: {data.note}</Text>}
+                  )}
                 </View>
                 </View>
-                {/* </View> */}
-                {data.productDetails.map(item =>            
-                    <PriceAttribute
-                      {...props}  
-                      key={item._id}
-                      product={item.productDetailId.productId}
-                      qty={item.quantity}
-                      name={item.productDetailId.productId.name}
-                      price={item.productDetailId.productId.price}
-                      sizeName={item.productDetailId.sizeId.name}
-                      colorCode={item.productDetailId.colorId.code}
-                    />
-                )}
+                <View style={{marginTop:scale(10)}}>
+                  {data.productDetails.map(item =>            
+                      <PriceAttribute
+                        onPress={() => {
+                          props.navigation.navigate('ProductDetailsScreen', {
+                            data:item.productDetailId.productId,
+                          });
+                        }}  
+                        key={item._id}
+                        image={item.productDetailId.productId.posterImage.url}
+                        qty={item.quantity}
+                        name={item.productDetailId.productId.name}
+                        price={item.productDetailId.productId.price}
+                        sizeName={item.productDetailId.sizeId.name}
+                        colorCode={item.productDetailId.colorId.code}
+                      />
+                  )}
+                </View>
 
                 <View
                   style={{
@@ -141,7 +170,20 @@ const OrdersScreen = props => {
                       Total: ${data.orderTotalPrice}
                     </Text>
                   </View>
-                  {/* <ButtonReOrder {...props} action={data.method}/> */}
+                  {chosen==="new"||chosen==="in progress"?
+                  (<ButtonOrder onPress={() => cancelHandler(data._id)} title={'CANCEL'}/>
+                  ):(
+                  chosen==="complete"?
+                    (
+                      <View style={{flexDirection:'row', paddingHorizontal:scale(7)}}>
+                        <ButtonOrder onPress={() => ReOrder(data.productDetails)} title={'RE_ORDER'}/>
+                        <ButtonOrder onPress={null} title={'RATE'}/>
+                      </View>
+                    ):(chosen==="cancel"?
+                    (
+                        <ButtonOrder onPress={() => ReOrder(data.productDetails)} title={'RE_ORDER'}/>
+                    ):(null))
+                  )}
                 </View>
                 <View style={{height: scale(50)}} />
               </View>
@@ -184,7 +226,7 @@ const OrdersScreen = props => {
             <View style={{width:scale(24), height: scale(24), justifyContent: 'center', alignItems: 'center'}}>
               <IC_Cancel fill={chosen=="cancel"?color.TitleActive:color.OffWhite} stroke={chosen=="cancel"?color.OffWhite:color.TitleActive}/>
             </View>
-            <Text style={chosen=="cancel"?styles.textTabChosen:styles.textTab}>Return/Canceled</Text>
+            <Text style={chosen=="cancel"?styles.textTabChosen:styles.textTab}>Canceled</Text>
           </TouchableOpacity>
         </View>
       </>

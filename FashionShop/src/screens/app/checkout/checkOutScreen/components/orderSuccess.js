@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
   Image,
-  TextInput,
+  ScrollView
 } from 'react-native';
 import {React, useState} from 'react';
 import color from '../../../../../constants/color';
@@ -13,35 +13,40 @@ import FONT_FAMILY from '../../../../../constants/fonts';
 import scale from '../../../../../constants/responsive';
 import {LineBottom} from '../../../../../components/footer/images';
 import {
-  IC_Rating,
   IC_Success,
-  IC_Normal,
-  IC_Satisfy,
-  IC_Unsatisfy,
 } from '../../../../../assets/icons';
-import {Controller, useForm} from 'react-hook-form';
-import MultiLine from '../../../../../components/textFormat/mutiLine';
+import PriceAttribute from '../../../orders/components/priceAttribute';
+import useAxiosPrivate from '../../../../../hooks/useAxiosPrivate';
+import YesNoMessageBox from '../../../../../components/messageBox/YesNoMessageBox';
+import OKMessageBox from '../../../../../components/messageBox/OKMessageBox';
 
 const OrderSuccess = props => {
-
-  const {
-    control,
-    handleSubmit,
-    formState: {errors},
-  } = useForm({
-    // mode: 'onChange',
-    // defaultValues: {
-    //   firstName: userInfo.firstName,
-    //   lastName: userInfo.lastName,
-    //   // email: '',
-    //   phoneNumber: userInfo.phoneNumber,
-    //   password: '',
-    //   passwordConfirm: '',
-    // },
-    // resolver: yupResolver(signUpPayloadSchema),
-  });
+  const {data} = props.route.params;
+  const axiosPrivate = useAxiosPrivate();
+  const [visible,setVisible] = useState(false);
+  const [cancelSuccess,setCancelSuccess] = useState(false);
+  // console.log('------------',JSON.stringify(data))
+  const cancelHandler = async (id) => {
+    try {
+      const response = await axiosPrivate.put(
+        `/cancel-order/${id}`)
+      console.log('cancelOrder', JSON.stringify(response.data));
+      setCancelSuccess(true)
+    } catch (error) {
+      console.log(error.response?.data);
+    }
+  }
+  
   return (
     <SafeAreaView style={styles.container}>
+      <OKMessageBox visible={cancelSuccess} clickCancel={() => props.navigation.navigate('HomeScreen')} 
+        title={"CANCELED"} 
+        message={"Your order was canceled!"}  />
+      <YesNoMessageBox visible={visible} onPressYes={() => cancelHandler(data.orderId)} 
+          onPressNo={() => props.navigation.navigate('HomeScreen')}
+          title={"DO YOU WANT TO CANCEL ORDER?"} 
+          message={"Do you want to cancel your order?"}/>
+      <ScrollView>
       <View style={styles.introTextBox}>
         <Text style={styles.introText}>ORDER RECEIVED</Text>
         <IC_Success style={styles.icon} />
@@ -52,54 +57,51 @@ const OrderSuccess = props => {
         />
       </View>
       <View style={styles.body}>
-        <Text style={styles.successText}>Rate your experience!</Text>
+        <View style={{flexDirection:'column',marginBottom:scale(20)}}>
+          <Text style={styles.userInformationText}>User Information:</Text>
+          <Text style={styles.userText}>Name: {data.user.firstName+' '+data.user.lastName}</Text>
+          <Text style={styles.userText}>Phone number: {data.user.phoneNumber}</Text>
+          <Text style={styles.userText}>Order method: {data.methodValue===5?'Delivery':'PickUp at store'}</Text>
+          {data.methodValue===5?(<Text style={styles.userText}>Address: {data.address.streetAndNumber+', '+data.address.ward+', '+data.address.district+', '+data.address.city}</Text>)
+          :(
+          <View style={{flexDirection:'column'}}>
+            <Text style={styles.userText} numberOfLines={1}>
+            Shop's location:  University Of Information Technology 
+            </Text>
+            <Text style={styles.userText} numberOfLines={1}>
+            Contact number: (786) 713-8616 
+            </Text>
+          </View>)}
+          {data.note===''?(null)
+        :(<Text style={styles.userText}>Note: {data.note}</Text>)}
+        </View>
+        <Image
+          source={LineBottom}
+          style={{alignSelf: 'center'}}
+        />
+        <Text style={styles.userInformationText}>Products:</Text>
+        <ScrollView style={{flexDirection:'column',height:scale(140),marginBottom:scale(15),borderBottomWidth:1}}>
+          {data.productDetails.map(item => 
+            <View key={item.detailId} style={{marginBottom:scale(10)}}>         
+              <PriceAttribute
+                key={item.detailId}
+                image={item.product.posterImage.url}
+                qty={item.qty}
+                name={item.product.name}
+                price={item.product.price}
+                sizeName={item.sizeName}
+                colorCode={item.colorCode}
+              />
+            </View>  
+          )}
+        </ScrollView>
       </View>
-      <View style={styles.totalBorder}>
-
-        <View style={styles.icon}>
-          <TouchableOpacity>
-            <IC_Unsatisfy />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <IC_Normal />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <IC_Satisfy />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.commentBox}>
-          <Controller
-            name="detail"
-            control={control}
-            render={({field: {onChange, value}}) => (
-              <>
-                <MultiLine
-                  name="detail"
-                  keyboardType="default"
-                  onChangeText={detail => onChange(detail)}
-                  style={styles.comment}
-                />
-              </>
-            )}
-          />
-        </View>
-        <View
-          style={{
-            marginTop: scale(30),
-            //marginLeft: scale(15),
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            alignSelf: 'center',
-            width: scale(320),
-          }}>
-          <View style={styles.submit}>
-            <Text style={styles.submitText}>SUBMIT</Text>
-          </View>
-          <View style={styles.backHome}>
-            <Text style={styles.backText}>BACK TO HOME</Text>
-          </View>
-        </View>
-      </View>
+      <TouchableOpacity
+        style={styles.placeOrder}
+        onPress={() => setVisible(true)}>
+        <Text style={styles.button}>CANCEL</Text>
+      </TouchableOpacity>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -110,6 +112,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: color.White,
+    flexDirection:'column'
   },
   introTextBox: {
     alignSelf: 'center',
@@ -118,118 +121,35 @@ const styles = StyleSheet.create({
   introText: {
     color: color.TitleActive,
     fontSize: 18,
-    fontWeight: 400,
+    fontWeight: '400',
     fontFamily: FONT_FAMILY.Regular,
     letterSpacing: 4,
     alignSelf: 'center',
   },
   body: {
-    marginTop: scale(30),
-    backgroundColor: color.White,
-    alignItems: 'center',
-  },
-  viewInput: {
-    marginTop: scale(10),
-    width: scale(295),
-    height: scale(51),
-    borderColor: color.GraySolid,
-  },
-  inputName: {
-    flexDirection: 'row',
-    marginTop: scale(10),
-    width: scale(339),
-    height: scale(51),
-    justifyContent: 'space-between',
-  },
-  inputFirstName: {
-    borderBottomWidth: 1,
-    width: scale(130),
-    height: scale(51),
-    borderColor: color.GraySolid,
-  },
-  inputLastName: {
-    borderBottomWidth: 1,
-    width: scale(190),
-    height: scale(51),
-    borderColor: color.GraySolid,
-  },
-  inputCode: {
-    flexDirection: 'row',
-    marginTop: scale(10),
-    width: scale(339),
-    height: scale(51),
-    justifyContent: 'space-between',
-  },
-  inputState: {
-    borderBottomWidth: 1,
-    width: scale(130),
-    height: scale(51),
-    borderColor: color.GraySolid,
-  },
-  inputZipCode: {
-    borderBottomWidth: 1,
-    width: scale(190),
-    height: scale(51),
-    borderColor: color.GraySolid,
-  },
-  inputMailBox: {
-    marginTop: scale(10),
-    width: scale(339),
-    height: scale(51),
-    borderColor: color.GraySolid,
-    borderBottomWidth: 1,
-  },
-  inputText: {
-    color: color.TitleActive,
-    fontSize: scale(16),
-    marginLeft: scale(5),
-    marginTop: scale(10),
-  },
-  textFailed: {
-    alignSelf: 'flex-start',
-    fontFamily: FONT_FAMILY.Regular,
-    fontSize: scale(12),
-    color: color.RedSolid,
-    marginTop: scale(5),
-  },
-  totalBorder: {
-    position: 'absolute',
-    justifyContent: 'flex-end',
-    bottom: 0,
-  },
-  total: {
-    color: color.TitleActive,
-    fontSize: 16,
-    fontWeight: 400,
-    fontFamily: FONT_FAMILY.Regular,
-  },
-  price: {
-    marginTop: scale(-13),
-    alignSelf: 'flex-end',
-    color: color.Primary,
-    fontSize: 16,
-    fontWeight: 400,
-    fontFamily: FONT_FAMILY.Regular,
-  },
-  placeOrder: {
     marginTop: scale(20),
-    width: scale(375),
+    marginLeft:scale(20),
+    backgroundColor: color.White,
+  },
+  placeOrder: { 
+    marginBottom: scale(0),
+    width: '100%',
     height: scale(56),
     backgroundColor: color.TitleActive,
-    alignSelf: 'center',
+    alignSelf: 'flex-end',
     justifyContent: 'center',
   },
   button: {
     color: color.White,
     fontSize: 16,
-    fontWeight: 400,
+    fontWeight: '400',
     fontFamily: FONT_FAMILY.Regular,
     alignSelf: 'center',
     justifyContent: 'space-between',
   },
   icon: {
     alignSelf: 'center',
-    marginTop: scale(20),
+    marginTop: scale(10),
     width: scale(150),
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -237,49 +157,23 @@ const styles = StyleSheet.create({
   successText: {
     color: color.TitleActive,
     fontSize: 18,
-    fontWeight: 400,
+    fontWeight: '400',
     fontFamily: FONT_FAMILY.Regular,
-    alignSelf: 'center',
     marginTop: scale(10),
+    alignSelf:'center',
   },
-  submit: {
-    //marginLeft: scale(-55),
-    width: scale(150),
-    height: scale(48),
-    backgroundColor: color.TitleActive,
-    justifyContent: 'center',
-  },
-  submitText: {
-    color: color.White,
-    fontSize: 16,
-    fontWeight: 400,
-    fontFamily: FONT_FAMILY.Regular,
-
-    alignSelf: 'center',
-  },
-  backHome: {
-    width: scale(150),
-    height: scale(48),
-    backgroundColor: color.White,
-    justifyContent: 'center',
-    borderWidth: 1,
-  },
-  backText: {
+  userInformationText: {
     color: color.TitleActive,
-    fontSize: 16,
-    fontWeight: 400,
+    fontSize: 18,
+    fontWeight: '500',
+    fontFamily: FONT_FAMILY.Bold,
+  },
+  userText: {
+    color: color.TitleActive,
+    fontSize: 18,
+    fontWeight: '400',
     fontFamily: FONT_FAMILY.Regular,
-    alignSelf: 'center',
-  },
-  comment: {
-    width: scale(300),
-    height: scale(200),
-    alignSelf: 'center',
-  },
-  commentBox: {
-    marginTop: scale(10),
-    width: scale(380),
-    height: scale(200),
-    alignItems: 'center',
+    marginTop: scale(5),
+    marginLeft:scale(10),
   },
 });

@@ -1,27 +1,25 @@
-import {StyleSheet, Text, View, Dimensions, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Dimensions, TouchableOpacity,Image} from 'react-native';
 import React from 'react';
 import scale from '../../../../constants/responsive';
 import FONT_FAMILY from '../../../../constants/fonts';
 import color from '../../../../constants/color';
-import { useNavigation } from '@react-navigation/native';
 
 const {width: screenWidth} = Dimensions.get('window');
 
 const PriceAttribute = props => {
   return (
     <TouchableOpacity style={[props.style, styles.view1]} 
-      onPress={() => {
-        props.navigation.navigate('ProductDetailsScreen', {
-          data:props.product,
-        });
-      }}>
+      onPress={props.onPress}>
       <View style={styles.viewValue}>
         <Text style={styles.styleTextNumber} >x{props.qty}</Text>
+      </View>
+      <View style={{width:scale(40),height:scale(50)}}>
+        <Image source={{uri: props.image}} style={{width:'100%',height:'100%'}} resizeMode='cover'/>
       </View>
       <View style={styles.viewTextName}>
         <Text style={styles.styleTextName} numberOfLines={1}>{props.name}</Text>
         <View style={{flexDirection:'row'}}>
-          <View style={{backgroundColor:props.colorCode,width:scale(15),height:scale(15),borderRadius:360,marginRight:scale(10)}}/>
+          <View style={{backgroundColor:props.colorCode,width:scale(15),height:scale(15),borderRadius:360,marginRight:scale(10),borderWidth:1}}/>
           <Text style={styles.styleSizeName} numberOfLines={1}>{props.sizeName}</Text>
         </View>
       </View>
@@ -54,7 +52,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.47,
   },
   viewTextName: {
-    width: scale(170),
+    width: scale(200),
     // height: scale(27),
     marginLeft: scale(20),
     justifyContent: 'center',
@@ -78,13 +76,13 @@ const styles = StyleSheet.create({
     width: scale(120),
     height: scale(35),
     justifyContent: 'center',
-   // borderWidth: 1,
+    marginLeft:scale(20),
   },
   styleTextPrice: {
     color: color.TitleActive,
     fontFamily: FONT_FAMILY.Regular,
     fontSize: 16,
-    textAlign: 'right',
+    textAlign: 'left',
     letterSpacing: -0.39,
   },
 });
