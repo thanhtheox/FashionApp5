@@ -1,18 +1,20 @@
 import {StyleSheet, Text, View, SafeAreaView, TextInput} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import color from '../../constants/color';
-import FONT_FAMILY from '../../constants/fonts';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {IC_Backward} from '../../assets/icons';
-import scale from '../../constants/responsive';
-import SingleLine from '../../components/inputTexts/singleLine';
 import DropDownPicker from 'react-native-dropdown-picker';
-import SaveButton from '../../components/buttons/Save';
-import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import Message from '../../components/alearts.js/messageOnly';
 import * as yup from 'yup';
 import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
+
+//component
+import color from '../../constants/color';
+import FONT_FAMILY from '../../constants/fonts';
+import {IC_Backward} from '../../assets/icons';
+import scale from '../../constants/responsive';
+import SingleLine from '../../components/inputTexts/singleLine';
+import SaveButton from '../../components/buttons/Save';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import Message from '../../components/alearts.js/messageOnly';
 import HeaderMin from '../../components/header/headerMin';
 
 const EditCategoryScreen = props => {

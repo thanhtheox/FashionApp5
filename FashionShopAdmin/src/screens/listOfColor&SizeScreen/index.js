@@ -1,5 +1,8 @@
 import { SafeAreaView, StyleSheet, Text, View, ScrollView, TouchableOpacity,Dimensions } from 'react-native'
 import React,{useState,useEffect} from 'react'
+import { useIsFocused } from '@react-navigation/native'
+
+//component
 import color from '../../constants/color'
 import scale from '../../constants/responsive'
 import FONT_FAMILY from '../../constants/fonts'
@@ -7,7 +10,6 @@ import ItemColor from './components/itemColor'
 import ItemSize from './components/itemSize'
 import { IC_Backward, IC_BackwardArrow } from '../../assets/icons'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import { useIsFocused } from '@react-navigation/native'
 import MessageYN from '../../components/alearts.js/messageYN'
 
 const ListOfColor_SizeScreen = (props) => {
@@ -42,7 +44,6 @@ const ListOfColor_SizeScreen = (props) => {
       }
     };
 
-    // const {data,error} = {data:{dafa},error,...}
 
     isFocused && getSizes();
     isFocused && getColors();
@@ -214,8 +215,7 @@ const styles = StyleSheet.create({
       textTile: {
         color: color.White,
         fontSize: 36,
-        fontFamily: FONT_FAMILY.JoseFinSans,
-        fontWeight: 700,
+        fontFamily: FONT_FAMILY.Bold,
       },
       viewLabel:{
         marginLeft: scale(30),
@@ -233,15 +233,13 @@ const styles = StyleSheet.create({
       textLabel: {
         color: color.TitleActive,
         fontSize: 24,
-        fontFamily: FONT_FAMILY.JoseFinSans,
-        fontWeight: 700,
+        fontFamily: FONT_FAMILY.Bold,
       },
       body:{
         flex: 1,
         backgroundColor: color.White,
       },
       viewColor:{
-        // borderWidth: 1,
         flex: 0.45,
         backgroundColor: color.White,
       },
@@ -253,8 +251,7 @@ const styles = StyleSheet.create({
       textColor:{
         color: color.TitleActive,
         fontSize: 24,
-        fontFamily: FONT_FAMILY.Regular,
-        fontWeight: '700'
+        fontFamily: FONT_FAMILY.Bold,
       },
       viewSize:{
         flex: 0.5,
@@ -272,8 +269,7 @@ const styles = StyleSheet.create({
       },
       textSize:{
         fontSize: 18,
-        fontFamily: FONT_FAMILY.Regular,
-        fontWeight: '500',
+        fontFamily: FONT_FAMILY.Bold,
         color: color.TitleActive
       }, 
       viewTextSize:{

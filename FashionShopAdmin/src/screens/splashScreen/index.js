@@ -1,5 +1,7 @@
 import { StyleSheet, View, Image } from 'react-native'
 import React, { useEffect } from 'react'
+
+//component
 import color from '../../constants/color'
 import useRefreshToken from '../../hooks/useRefreshToken';
 import useAuth from '../../hooks/useAuth';

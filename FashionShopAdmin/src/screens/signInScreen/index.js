@@ -7,6 +7,11 @@ import {
   View,
 } from 'react-native';
 import React, {useState, useContext, useRef} from 'react';
+import * as yup from 'yup';
+import {Controller, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+
+//component
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import {IC_BackwardArrow} from '../../assets/icons';
@@ -14,9 +19,6 @@ import scale from '../../constants/responsive';
 import SaveButton from '../../components/buttons/Save';
 import axios from '../../apis/axios';
 import useAuth from '../../hooks/useAuth';
-import * as yup from 'yup';
-import {Controller, useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
 import Message from '../../components/alearts.js/messageOnly';
 import { capitalizeFirstLetter } from '../../config/uppercaseFirstLetter';
 
@@ -202,17 +204,12 @@ const styles = StyleSheet.create({
   textTile: {
     color: color.White,
     fontSize: 36,
-    // fontFamily: FONT_FAMILY.JoseFinSans,
-    fontFamily: FONT_FAMILY.Regular,
-    fontWeight: 700,
+    fontFamily: FONT_FAMILY.Bold,
   },
   textLabel: {
     color: color.White,
     fontSize: 18,
-    // fontFamily: FONT_FAMILY.JoseFinSans,
     fontFamily: FONT_FAMILY.Regular,
-
-    fontWeight: 500,
   },
   body: {
     flex: 0.7,
@@ -249,8 +246,7 @@ const styles = StyleSheet.create({
   textForgot: {
     color: color.RedSolid,
     fontSize: 16,
-    fontWeight: 400,
-    fontFamily: FONT_FAMILY.JoseFinSans,
+    fontFamily: FONT_FAMILY.Regular,
   },
   textFailed: {
     paddingLeft: scale(25),

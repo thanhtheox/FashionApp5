@@ -1,5 +1,6 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View ,Image} from 'react-native'
 import React from 'react'
+//component
 import { IMG_ModelOne } from '../../../assets/images'
 import scale from '../../../constants/responsive'
 import color from '../../../constants/color'
@@ -63,8 +64,7 @@ const styles = StyleSheet.create({
     textDate:{
         fontSize: 14,
         color: color.TitleActive,
-        fontWeight: '500',
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Bold,
         opacity: 0.5,
     },
 

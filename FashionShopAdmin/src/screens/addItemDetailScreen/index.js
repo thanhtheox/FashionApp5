@@ -10,22 +10,25 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
+import * as yup from 'yup';
+import {Controller, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import {DataTable} from 'react-native-paper';
+import DropDownPicker from 'react-native-dropdown-picker';
+
+//component
 import {IC_Backward} from '../../assets/icons';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import scale from '../../constants/responsive';
 import SingleLine from '../../components/inputTexts/singleLine';
 import MultiLine from '../../components/inputTexts/multiLine';
-import DropDownPicker from 'react-native-dropdown-picker';
 import TagWithoutDelete from '../../components/tags/tagWithoutDelete';
 import Message from '../../components/alearts.js/messageOnly';
-import {DataTable} from 'react-native-paper';
 import SaveButton from '../../components/buttons/Save';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import LoadingModal from '../../components/loadingModal/loadingModal';
-import * as yup from 'yup';
-import {Controller, useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
+
 
 const addDetailSchema = yup.object({
   color: yup.string().required('please select a color'),

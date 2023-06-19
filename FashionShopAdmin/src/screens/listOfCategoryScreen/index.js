@@ -12,14 +12,16 @@ import {
   Platform,
   Dimensions,
 } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
+import { Button, Menu, Divider, Provider, DefaultTheme } from 'react-native-paper';
+
+//component
 import scale from '../../constants/responsive';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import { IC_Forward , IC_Down, IC_BackwardArrow} from '../../assets/icons';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import HeaderMax from '../../components/header/headerMax';
-import { useIsFocused } from '@react-navigation/native';
-import { Button, Menu, Divider, Provider, DefaultTheme } from 'react-native-paper';
 import MessageYN from '../../components/alearts.js/messageYN';
 
 const ExpandableComponent = ({item, onClickFunction, onPress, deleteCategory, navigation }) => {
@@ -135,17 +137,7 @@ const ListOfCategoryScreen = (props) => {
   const updateLayout = index => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     const array = [...listDataSource];
-    // if (multiSelect) {
-    //   // If multiple select is enabled
     array[index]['isExpanded'] = !array[index]['isExpanded'];
-    // } else {
-    // If single select is enabled
-    // array.map((value, placeindex) =>
-    //   placeindex === index
-    //     ? (array[placeindex]['isExpanded'] = !array[placeindex]['isExpanded'])
-    //     : (array[placeindex]['isExpanded'] = false)
-    // );
-    // }
     setListDataSource(array);
   };
 
@@ -161,7 +153,6 @@ const ListOfCategoryScreen = (props) => {
             const response = await axiosPrivate.get('/all-categories', {
                 signal: controller.signal
             });
-            //console.log(response.data);
             isMounted && setData(response.data);
         } 
         catch (err) {
@@ -183,9 +174,7 @@ const ListOfCategoryScreen = (props) => {
         let parentCat = [{}];
         let newContent = [];
         parentCat = data.filter(item => !item.parentId);
-        //console.log({parentCat})
         parentCat.map((item, index) => {
-          //console.log(item.name)
           const obj = {};
           obj.title = item.name;
           obj._id = item._id;
@@ -199,7 +188,6 @@ const ListOfCategoryScreen = (props) => {
             }
           )
         })
-        //console.log(newContent[1].child);
         setListDataSource(newContent);
       }
       catch (err) {
@@ -222,7 +210,6 @@ const ListOfCategoryScreen = (props) => {
         });
         console.log(response.data)
         if (isChild) {
-          //let newChildDataCategory = listDataSource.child.filter(item => item._id !== id)
           let items = listDataSource;
           listDataSource.map((item, index) => {
             if ( item.child.filter(e => e._id === id).length > 0) {

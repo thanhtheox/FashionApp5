@@ -1,5 +1,7 @@
 import { Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Platform, UIManager,LayoutAnimation, ScrollView, Alert } from 'react-native'
 import React, { useState } from 'react'
+
+//component
 import scale from '../../constants/responsive'
 import color from '../../constants/color'
 import FONT_FAMILY from '../../constants/fonts'

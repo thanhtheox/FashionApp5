@@ -13,13 +13,15 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
+import {useIsFocused} from '@react-navigation/native';
+
+//component
 import color from '../../constants/color';
 import BlogItem from './components/blogItem';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import HeaderMax from '../../components/header/headerMax';
 import MessageYN from '../../components/alearts.js/messageYN';
 import scale from '../../constants/responsive';
-import {useIsFocused} from '@react-navigation/native';
 
 const ListOfBlogScreen = props => {
   const axiosPrivate = useAxiosPrivate();

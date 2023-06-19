@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React, { useState} from 'react'
+//component
 import scale from '../../../constants/responsive'
 import FONT_FAMILY from '../../../constants/fonts'
 import color from '../../../constants/color'

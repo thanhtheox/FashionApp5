@@ -11,6 +11,16 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
+import DropDownPicker from 'react-native-dropdown-picker';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import {PERMISSIONS, check, RESULTS, request} from 'react-native-permissions';
+import ImageCropPicker from 'react-native-image-crop-picker';
+import * as yup from 'yup';
+import {Controller, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+
+//component
+
 import {IC_AddImage, IC_Backward} from '../../assets/icons';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
@@ -18,16 +28,10 @@ import scale from '../../constants/responsive';
 import {IMG_AddImage} from '../../assets/images';
 import SingleLine from '../../components/inputTexts/singleLine';
 import MultiLine from '../../components/inputTexts/multiLine';
-import DropDownPicker from 'react-native-dropdown-picker';
 import TagWithoutDelete from '../../components/tags/tagWithoutDelete';
-import ImageCropPicker from 'react-native-image-crop-picker';
-import {PERMISSIONS, check, RESULTS, request} from 'react-native-permissions';
 import Message from '../../components/alearts.js/messageOnly';
 import SaveButton from '../../components/buttons/Save';
-import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import * as yup from 'yup';
-import {Controller, useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
+
 
 const AddBlogScreen = props => {
   const axiosPrivate = useAxiosPrivate();

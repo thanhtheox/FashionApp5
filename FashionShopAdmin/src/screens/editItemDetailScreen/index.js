@@ -11,6 +11,12 @@ import {
     KeyboardAvoidingView,
 } from 'react-native';
 import React, { useState, useRef } from 'react';
+import ImageCropPicker from 'react-native-image-crop-picker';
+import { PERMISSIONS, check, RESULTS, request } from 'react-native-permissions';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { DataTable } from 'react-native-paper';
+
+//component
 import { IC_Backward } from '../../assets/icons';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
@@ -18,12 +24,8 @@ import scale from '../../constants/responsive';
 import { IMG_AddImage } from '../../assets/images';
 import SingleLine from '../../components/inputTexts/singleLine';
 import MultiLine from '../../components/inputTexts/multiLine';
-import DropDownPicker from 'react-native-dropdown-picker';
 import TagWithoutDelete from '../../components/tags/tagWithoutDelete';
-import ImageCropPicker from 'react-native-image-crop-picker';
-import { PERMISSIONS, check, RESULTS, request } from 'react-native-permissions';
 import Message from '../../components/alearts.js/messageOnly';
-import { DataTable } from 'react-native-paper';
 import SaveButton from '../../components/buttons/Save';
 
 const EditItemDetailScreen = (props) => {

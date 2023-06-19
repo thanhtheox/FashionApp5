@@ -10,16 +10,18 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React, {useState, useRef, useEffect, memo} from 'react';
+import Carousel from 'react-native-reanimated-carousel';
+import {DataTable} from 'react-native-paper';
+
+//component
 import {IC_Add, IC_Backward} from '../../assets/icons';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import scale from '../../constants/responsive';
 import TagWithoutDelete from '../../components/tags/tagWithoutDelete';
-import {DataTable} from 'react-native-paper';
 import SaveButton from '../../components/buttons/Save';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {capitalizeFirstLetter} from '../../config/uppercaseFirstLetter';
-import Carousel from 'react-native-reanimated-carousel';
 
 const ItemDetailScreen = props => {
   console.log(
@@ -27,14 +29,11 @@ const ItemDetailScreen = props => {
   );
   const [loading, setLoading] = useState(false);
   const {data, size, productDetail} = props.route.params;
-  //   console.log(data);
   const [tags, setTags] = useState([]);
   const [images, setImages] = useState([]);
   const [category, setCategory] = useState({});
-  //const [productDetail, setProductDetail] = useState([]);
   const axiosPrivate = useAxiosPrivate();
-  //   const [color, setColor] = useState([]);
-  //const [size, setSize] = useState([]);
+
   useEffect(() => {
     const imagesArr = data.image.map(item => item.url);
     console.log({imagesArr});
@@ -187,7 +186,6 @@ const ItemDetailScreen = props => {
                   autoPlay={true}
                   data={[...images]}
                   scrollAnimationDuration={1000}
-                  // onSnapToItem={(index) => console.log('current index:', index)}
                   renderItem={({item}) => (
                     <View
                       style={{

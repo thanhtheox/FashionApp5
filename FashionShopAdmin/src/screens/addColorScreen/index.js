@@ -8,19 +8,22 @@ import {
   TextInput,
 } from 'react-native';
 import React, {useState} from 'react';
+import * as yup from 'yup';
+import {Controller, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import {TriangleColorPicker} from 'react-native-color-picker';
+import {validateHTMLColorHex} from 'validate-color';
+
+//component
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import {IC_Backward} from '../../assets/icons';
 import scale from '../../constants/responsive';
 import SaveButton from '../../components/buttons/Save';
-import {TriangleColorPicker} from 'react-native-color-picker';
 import UnderLine from '../../components/underLineSwitch/underLineSwitch';
-import {validateHTMLColorHex} from 'validate-color';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import Message from '../../components/alearts.js/messageOnly';
-import * as yup from 'yup';
-import {Controller, useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
+
 
 const addColorSchema = yup.object({
   name: yup

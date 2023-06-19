@@ -10,23 +10,26 @@ import {
     KeyboardAvoidingView,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import * as yup from 'yup';
+import {Controller, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import DropDownPicker from 'react-native-dropdown-picker';
+import ImageCropPicker from 'react-native-image-crop-picker';
+import { PERMISSIONS, check, RESULTS, request } from 'react-native-permissions';
+
+//component
 import { IC_AddImage, IC_Close } from '../../assets/icons';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import scale from '../../constants/responsive';
 import SingleLine from '../../components/inputTexts/singleLine';
 import MultiLine from '../../components/inputTexts/multiLine';
-import DropDownPicker from 'react-native-dropdown-picker';
 import TagWithoutDelete from '../../components/tags/tagWithoutDelete';
-import ImageCropPicker from 'react-native-image-crop-picker';
-import { PERMISSIONS, check, RESULTS, request } from 'react-native-permissions';
 import Message from '../../components/alearts.js/messageOnly';
 import HeaderMin from '../../components/header/headerMin';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import SaveButton from '../../components/buttons/Save';
-import * as yup from 'yup';
-import {Controller, useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
+
 
 const EditItemScreen = (props) => {
     //console.log("===================Edit item screen=====================");
@@ -587,15 +590,6 @@ const EditItemScreen = (props) => {
                                     </>
                                 )}
                             />
-                            {/* <View style={{borderTopWidth: 1, borderTopColor: color.PlaceHolder, marginTop: scale(20),}}></View> */}
-                            {/* <TouchableOpacity onPress={()=>props.navigation.navigate("EditDetailItem")}>
-                                <View style={styles.itemDetailButton}> 
-                                    <Text style={styles.propText}>Item detail</Text>
-                                    <View style={{marginTop: scale(20), transform: [{ rotate: '180deg'}]}}>
-                                        <IC_Backward stroke={color.TitleActive}></IC_Backward>               
-                                    </View>
-                                </View>                            
-                            </TouchableOpacity> */}
                             <View style={styles.button}>
                                 <SaveButton
                                     text={'Save'}
