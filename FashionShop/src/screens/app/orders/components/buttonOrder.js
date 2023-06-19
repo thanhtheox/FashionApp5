@@ -4,19 +4,19 @@ import color from '../../../../constants/color';
 import scale from '../../../../constants/responsive';
 import FONT_FAMILY from '../../../../constants/fonts';
 
-const ButtonReOrder = (props) => {
+const ButtonOrder = (props) => {
   return (
-    <TouchableOpacity style={styles.button} disabled={true} onPress={() => {props.navigation.navigate("CartScreen")}}>
-      <Text style={styles.text}>Thanh toán trực tiếp</Text>
+    <TouchableOpacity style={styles.button}  onPress={props.onPress}>
+      <Text style={styles.text}>{props.title}</Text>
     </TouchableOpacity>
   );
 };
 
-export default ButtonReOrder;
+export default ButtonOrder;
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: color.Primary,
+    backgroundColor: color.TitleActive,
     borderRadius: 4,
     width: scale(112),
     height: scale(31),

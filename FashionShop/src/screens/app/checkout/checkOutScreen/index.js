@@ -48,7 +48,6 @@ import { initAddress } from '../../../../redux/actions/addressActions';
   const dispatch = useDispatch();
   const [totalAmount, setTotalAmount] = useState(0);
   const [visible, setVisible] = useState(true);
-  const [typeOrder,setTypeOrder] = useState("Delivery");
   const cart = useSelector(state => state.cart);
   const {cartItems} = cart;
   const {cartId} = cart;
@@ -135,13 +134,6 @@ import { initAddress } from '../../../../redux/actions/addressActions';
       console.log({addressDefault})
       console.log({note})
       console.log({methodValue})
-      if(methodValue===5){
-        setTypeOrder("Delivery")
-      }
-      else{
-        setTypeOrder("PickUp at store")
-      }
-      console.log({typeOrder})
       const response = await axiosPrivate.post(
         `/create-order`,
         methodValue===5?JSON.stringify({
@@ -149,19 +141,29 @@ import { initAddress } from '../../../../redux/actions/addressActions';
           productDetails: orderCart,
           note:note,
           address:addressDefault[0],
-          orderMethod: typeOrder,
+          orderMethod: "Delivery",
         }):JSON.stringify({
           userId: userInfo._id, 
           productDetails: orderCart,
           note:note,
-          orderMethod: typeOrder,
+          orderMethod: "PickUp at store",
         }),
       )
       console.log('placeOrderSuccess', JSON.stringify(response.data));
       console.log({cartId})
       resetCartHandler(cartId);
       setNote('');
-      props.navigation.navigate('OrderSuccess')
+      props.navigation.navigate('OrderSuccess',{
+        data:{
+          orderId: response.data.order._id,
+          user: userInfo, 
+          productDetails: checkOutCart,
+          note:note,
+          address:addressDefault[0],
+          methodValue:methodValue,
+          orderTotalPrice:totalAmount + methodValue,
+        }
+      })
     } catch (error) {
       console.log("error", error.response.data)
     };

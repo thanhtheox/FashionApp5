@@ -113,19 +113,15 @@ const ProductDetailsScreen = props => {
             newColorArray.push({ colorId: detail.colorId, colorCode: detail.colorCode})
             setAvailableColor([...newColorArray])
           }
-          // const isExistSize = availableSize.find(element => {
-          //   if (element.sizeId === detail.sizeId) {
-          //     return true;
-          //   }
-          
-          //   return false;
-          // });
-          // if (!isExistSize) {
-          //   let newSizeArray = availableSize;
-          //   newSizeArray.push({ sizeId: detail.sizeId, sizeName: detail.sizeName})
-          //   setAvailableSize([...newSizeArray])
-          // }
+          // const selectedDetails = details.filter(item => item.colorId === details[0].colorId);
+          // console.log({selectedDetails})
+          // let newSizeArray = [];
+          // selectedDetails.map(detail => {
+          //   newSizeArray.push({sizeId: detail.sizeId, sizeName: detail.sizeName})
+          // })
+          // setAvailableSize(newSizeArray)
           console.log({availableColor})
+          // console.log({availableSize})
         })
       } catch (err) {
         console.log(err.response.data);
@@ -233,7 +229,7 @@ const ProductDetailsScreen = props => {
                 <Text style={{color:color.Label, fontFamily:FONT_FAMILY.Regular,
                   fontSize:scale(16),lineHeight:scale(18)}}>Color</Text>
                 {availableColor.map((item,index) => 
-                  <TouchableOpacity style={{borderRadius:360,borderColor:colorChoose===item.colorId?color.TitleActive:color.OffWhite, borderWidth:1, alignItems:'center',
+                  <TouchableOpacity style={{borderRadius:360,borderColor:colorChoose===item.colorId?color.Primary:color.TitleActive, borderWidth:1, alignItems:'center',
                   justifyContent:'center',width:scale(22),height:scale(22)}} 
                     onPress={() => handleChooseColor(item.colorId)} key={index}>
                     <View style={{borderRadius:360, backgroundColor:item.colorCode,
