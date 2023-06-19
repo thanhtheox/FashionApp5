@@ -8,7 +8,7 @@ import Custom_MenuFooter from './components/Custom_MenuFooter'
 import OKMessageBox from '../../../components/messageBox/OKMessageBox'
 import useLogout from '../../../hooks/useLogout'
 import { useDispatch, useSelector } from 'react-redux'
-import {  resetCartWhenLogIn } from '../../../redux/actions/cartActions'
+import { resetCartWhenLogOut } from '../../../redux/actions/cartActions'
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
 import Custom_UnderlineButtonMenu from './components/Custom_UnderlineButtonMenu'
 import Clipboard from '@react-native-clipboard/clipboard'
@@ -92,20 +92,20 @@ useEffect(() => {
   const signOut = async () => {
     console.log(JSON.stringify(cart))
       try {
-      const editCart = [];
-      cartItems.map((item) => {
-        const editCartItem = {productDetailId: item.detailId, quantity:item.qty}
-        editCart.push(editCartItem)
-      })
-      const response = await axiosPrivate.put(
-        `/edit-cart-item/${cartId}`,
-        JSON.stringify({
-          productDetails: editCart,
-        }),
-      )
-      console.log('editCartSuccess', JSON.stringify(response.data));
+      // const editCart = [];
+      // cartItems.map((item) => {
+      //   const editCartItem = {productDetailId: item.detailId, quantity:item.qty}
+      //   editCart.push(editCartItem)
+      // })
+      // const response = await axiosPrivate.put(
+      //   `/edit-cart-item/${cartId}`,
+      //   JSON.stringify({
+      //     productDetails: editCart,
+      //   }),
+      // )
+      // console.log('editCartSuccess', JSON.stringify(response.data));
       logout();
-      await dispatch(resetCartWhenLogIn());
+      await dispatch(resetCartWhenLogOut());
       await dispatch(resetUserWhenLogOut());
       await dispatch(resetAddressWhenLogOut());
       props.navigation.replace('AuthStackScreen');

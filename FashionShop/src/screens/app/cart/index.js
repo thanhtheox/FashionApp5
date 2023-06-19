@@ -22,7 +22,7 @@ const CartScreen = (props) => {
 
   const cart = useSelector(state => state.cart);
   const {cartItems} = cart;
-  // console.log({cartItems})
+  console.log({cartItems})
   const checkOutCart = cartItems.filter((item) => item.isOrder === true)
   
   useEffect(() => {
