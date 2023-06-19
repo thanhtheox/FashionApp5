@@ -20,7 +20,7 @@ import useLogout from '../../../hooks/useLogout';
 import { useDispatch, useSelector } from 'react-redux';
 import useAuth from '../../../hooks/useAuth';
 import { axiosPrivate } from '../../../apis/axios';
-import {  resetCartWhenLogIn } from '../../../redux/actions/cartActions';
+import { resetCartWhenLogOut } from '../../../redux/actions/cartActions';
 import {Controller, useForm} from 'react-hook-form';
 import { resetUserWhenLogOut, userVerified } from '../../../redux/actions/userActions';
 
@@ -41,7 +41,7 @@ import { resetUserWhenLogOut, userVerified } from '../../../redux/actions/userAc
     const signOut = async () => {
         try {
         logout();
-         dispatch(resetCartWhenLogIn());
+         dispatch(resetCartWhenLogOut());
          dispatch(resetUserWhenLogOut());
         props.navigation.replace('AuthStackScreen');
       } catch (error) {

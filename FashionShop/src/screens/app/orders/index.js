@@ -19,10 +19,11 @@ import ButtonReOrder from './components/buttonOrder';
 import FONT_FAMILY from '../../../constants/fonts';
 import { IC_Cancel,IC_New,IC_Delivered,IC_Delivering,IC_Preparing } from '../../../assets/icons';
 import { useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import UnderLine from './components/underLineSwitch';
 import ButtonOrder from './components/buttonOrder';
+import { reOrder } from '../../../redux/actions/cartActions';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -37,6 +38,7 @@ const OrdersScreen = props => {
   const {userItems} = user;
   const userInfo = userItems.user;
   const axiosPrivate = useAxiosPrivate();
+  const dispatch = useDispatch();
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -62,6 +64,11 @@ const OrdersScreen = props => {
   });
   return unsubscribe;
 }, [props.navigation]);
+
+const ReOrder = (cart) => {
+  dispatch(reOrder(cart));
+  props.navigation.navigate('CartScreen');
+}
 
 const cancelHandler = async (id) => {
   try {
@@ -166,7 +173,16 @@ const cancelHandler = async (id) => {
                   {chosen==="new"||chosen==="in progress"?
                   (<ButtonOrder onPress={() => cancelHandler(data._id)} title={'CANCEL'}/>
                   ):(
-                  chosen==="complete"?(<ButtonOrder onPress={null} title={'RATE'}/>):(null)
+                  chosen==="complete"?
+                    (
+                      <View style={{flexDirection:'row', paddingHorizontal:scale(7)}}>
+                        <ButtonOrder onPress={() => ReOrder(data.productDetails)} title={'RE_ORDER'}/>
+                        <ButtonOrder onPress={null} title={'RATE'}/>
+                      </View>
+                    ):(chosen==="cancel"?
+                    (
+                        <ButtonOrder onPress={() => ReOrder(data.productDetails)} title={'RE_ORDER'}/>
+                    ):(null))
                   )}
                 </View>
                 <View style={{height: scale(50)}} />

@@ -46,9 +46,9 @@ export const adjustQTY = (detailId, qty) => async (dispatch, getState) => {
 
 };
 
-export const resetCartWhenLogIn = () => async (dispatch, getState) => {
+export const resetCartWhenLogOut = () => async (dispatch, getState) => {
   dispatch({
-    type: actionTypes.CART_RESET_LOGIN,
+    type: actionTypes.CART_RESET_LOGOUT,
     payload: {},
   });
 
@@ -60,7 +60,15 @@ export const resetCartOrder = () => async (dispatch, getState) => {
   });
 
 };
+export const reOrder = (cart) => async (dispatch, getState) => {
+  console.log("cart ->>", cart);
 
+
+  dispatch({
+   type: actionTypes.RE_ORDER,
+    payload: {cart},
+  });
+};
 
 
 export const initCartLogIn = (cart) => async (dispatch, getState) => {
