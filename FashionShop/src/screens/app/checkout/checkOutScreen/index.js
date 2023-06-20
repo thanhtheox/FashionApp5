@@ -179,7 +179,13 @@ import { initAddress } from '../../../../redux/actions/addressActions';
         </View>
         <View style={styles.address}>
             <Text style={styles.bodyText1}>SHIPPING ADDRESS</Text>
-            {methodValue === 5 ?(
+            {addressDefault[0]===undefined ? (
+              <View style={{flexDirection:'row', width:'100%',marginLeft:scale(20),marginTop:scale(20)}}>
+                  <Text numberOfLines={2} style={{fontFamily:FONT_FAMILY.Regular,fontSize:scale(16),color:color.RedSolid}}>
+                    {'You need add address for your order!'}
+                  </Text>
+              </View>
+            ):(methodValue === 5 ?(
             <View style={{height:scale(110)}}>
               {addressDefault.map(item => 
                 <TouchableOpacity style={styles.bodyTextBox} key={item._id} onPress={() => props.navigation.navigate('ListOfAddressesScreen')}>
@@ -207,7 +213,7 @@ import { initAddress } from '../../../../redux/actions/addressActions';
                   <IC_Location  />
                 </TouchableOpacity>
               </View>
-            )}  
+            ))}  
             <View > 
               {addressDefault[0]===undefined ? (
               <TouchableOpacity style={styles.addShipping} onPress={() => props.navigation.navigate('AddNewAddressScreen')}>
@@ -278,11 +284,18 @@ import { initAddress } from '../../../../redux/actions/addressActions';
         <Text style={styles.total}>TOTAL</Text>
         <Text style={styles.price}>${totalAmount + methodValue}</Text>
       </View>
+      {addressDefault[0]===undefined ?(
       <TouchableOpacity
         style={styles.placeOrder}
         onPress={() => placeOrderHandler()}>
         <Text style={styles.button}>PLACE ORDER</Text>
       </TouchableOpacity>
+      ):(
+      <TouchableOpacity
+        style={styles.placeOrderDisable}
+        onPress={null}>
+        <Text style={styles.buttonDisable}>PLACE ORDER</Text>
+      </TouchableOpacity>)}
     </SafeAreaView>
   );
 };
@@ -405,6 +418,21 @@ const styles = StyleSheet.create({
   },
   button: {
     color: color.White,
+    fontSize: 16,
+    fontWeight: 400,
+    fontFamily: FONT_FAMILY.Regular,
+    alignSelf: 'center',
+  },
+  placeOrderDisable: {
+    marginTop: scale(15),
+    width: '100%',
+    height: scale(56),
+    backgroundColor: color.GraySolid,
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+  buttonDisable: {
+    color: color.TitleActive,
     fontSize: 16,
     fontWeight: 400,
     fontFamily: FONT_FAMILY.Regular,
