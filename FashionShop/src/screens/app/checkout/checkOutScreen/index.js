@@ -286,16 +286,17 @@ import { initAddress } from '../../../../redux/actions/addressActions';
       </View>
       {addressDefault[0]===undefined ?(
       <TouchableOpacity
+        style={styles.placeOrderDisable}
+        onPress={null}>
+        <Text style={styles.buttonDisable}>PLACE ORDER</Text>
+      </TouchableOpacity>
+      ):(
+      <TouchableOpacity
         style={styles.placeOrder}
         onPress={() => placeOrderHandler()}>
         <Text style={styles.button}>PLACE ORDER</Text>
       </TouchableOpacity>
-      ):(
-      <TouchableOpacity
-        style={styles.placeOrderDisable}
-        onPress={null}>
-        <Text style={styles.buttonDisable}>PLACE ORDER</Text>
-      </TouchableOpacity>)}
+      )}
     </SafeAreaView>
   );
 };
