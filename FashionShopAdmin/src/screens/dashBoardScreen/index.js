@@ -1,5 +1,7 @@
 import { Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Platform, UIManager,LayoutAnimation, ScrollView, Alert } from 'react-native'
 import React, { useState } from 'react'
+
+//component
 import scale from '../../constants/responsive'
 import color from '../../constants/color'
 import FONT_FAMILY from '../../constants/fonts'
@@ -199,7 +201,6 @@ const styles = StyleSheet.create({
         color: color.White,
         fontSize: 36,
         fontFamily: FONT_FAMILY.Bold,
-        fontWeight: '600',
       },
       viewTextLabel:{
         marginTop: scale(10),
@@ -208,14 +209,12 @@ const styles = StyleSheet.create({
         color: color.White,
         fontSize: 24,
         fontFamily: FONT_FAMILY.Bold,
-        fontWeight: '600',
       },
       body: {
         flex: 0.8,
         backgroundColor: color.White,
       },
       buttonSignOut:{
-        // marginTop: scale(10),
         marginVertical: scale(10),
         flex: 0.15,
         alignItems: 'center'
@@ -237,11 +236,9 @@ const styles = StyleSheet.create({
       textList:{
         fontFamily: FONT_FAMILY.Regular,
         fontSize: 24,
-        fontWeight: '400',
         color: color.TitleActive,
       },
       viewIcon:{
-        // backgroundColor: color.Alto,
         alignSelf: 'center',
       },
       hidden: {
@@ -261,7 +258,6 @@ const styles = StyleSheet.create({
       textListBody:{
         fontFamily: FONT_FAMILY.Regular,
         fontSize: 22,
-        fontWeight: '400',
         color: color.TitleActive,
         marginLeft: scale(20),
         opacity: 1

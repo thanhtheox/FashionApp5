@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View,SafeAreaView,Image,TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
+//component
 import { IC_Edit,IC_Delete,IC_See } from '../../../assets/icons'
 import scale from '../../../constants/responsive'
 import FONT_FAMILY from '../../../constants/fonts'

@@ -1,10 +1,11 @@
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image,ScrollView } from 'react-native'
 import React,{useState, useEffect} from 'react'
+
+//component
 import color from '../../constants/color'
 import FONT_FAMILY from '../../constants/fonts'
 import scale from '../../constants/responsive'
 import { IC_Backward } from '../../assets/icons'
-import { ScrollView } from 'react-native-gesture-handler'
 import { IMG_Collection, IMG_Logo, IMG_ModelFour, IMG_ModelOne, IMG_ModelThree, IMG_ModelTwo } from '../../assets/images'
 import SaveButton from '../../components/buttons/Save'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
@@ -86,19 +87,6 @@ const EditUserScreen = (props) => {
                         <Text style={styles.text}>{data.phoneNumber}</Text>
                     </View>
                 </View>
-{/* address */}
-                {/* <View style={styles.viewInfo}>
-                    <View style={styles.viewLabel}>
-                        <Text style={styles.textLabel}>Address: </Text>
-                    </View>
-                    <View style={styles.viewText}>
-                        <Text style={styles.text}>{address.address}</Text>
-                    </View>
-                </View> */}
-{/* button           */}
-                <View style={styles.button}>
-                    <SaveButton text={'Delete user'} onPress={()=>props.navigation.navigate("ListUser")}></SaveButton>
-                </View>
             </ScrollView>
     </SafeAreaView>
   )
@@ -119,9 +107,8 @@ const styles = StyleSheet.create({
     },
     textHeader:{
         color: color.White,
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Bold,
         fontSize: 24,
-        fontWeight: '700',
     },
 // BODY
     body:{
@@ -147,12 +134,10 @@ const styles = StyleSheet.create({
     },
     viewLabel:{
         height: scale(30),
-        // borderWidth: 1,
         width: '25%',
         justifyContent:'center'
     },
     viewText:{
-        // borderWidth: 1,
         width: '60%',
         justifyContent:'center'
     },
@@ -165,11 +150,6 @@ const styles = StyleSheet.create({
         fontFamily: FONT_FAMILY.Regular,
         fontSize: 18,
         color: color.TitleActive,
-    },
-    //button
-    button:{
-        marginTop: scale(20),
-        alignItems: 'center'
     },
 
 })

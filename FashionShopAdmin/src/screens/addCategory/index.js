@@ -1,18 +1,20 @@
 import {StyleSheet, Text, View, SafeAreaView, TextInput} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import color from '../../constants/color';
-import FONT_FAMILY from '../../constants/fonts';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {IC_Backward} from '../../assets/icons';
-import scale from '../../constants/responsive';
-import SingleLine from '../../components/inputTexts/singleLine';
 import DropDownPicker from 'react-native-dropdown-picker';
-import SaveButton from '../../components/buttons/Save';
-import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import Message from '../../components/alearts.js/messageOnly';
 import * as yup from 'yup';
 import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
+import React, {useEffect, useState} from 'react';
+
+//component
+import color from '../../constants/color';
+import FONT_FAMILY from '../../constants/fonts';
+import {IC_Backward} from '../../assets/icons';
+import scale from '../../constants/responsive';
+import SingleLine from '../../components/inputTexts/singleLine';
+import SaveButton from '../../components/buttons/Save';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import Message from '../../components/alearts.js/messageOnly';
 
 const addCategorySchema = yup.object({
   name: yup
@@ -269,7 +271,6 @@ const styles = StyleSheet.create({
     color: color.TitleActive,
     fontFamily: FONT_FAMILY.Bold,
     fontSize: 22,
-    fontWeight: '600',
   },
   inputText: {
     color: color.TitleActive,
@@ -316,9 +317,8 @@ const styles = StyleSheet.create({
   },
   propText: {
     color: color.PlaceHolder,
-    fontFamily: FONT_FAMILY.Regular,
+    fontFamily: FONT_FAMILY.Bold,
     fontSize: scale(16),
-    fontWeight: '600',
     marginLeft: scale(3),
     marginTop: scale(20),
   },
@@ -329,7 +329,6 @@ const styles = StyleSheet.create({
   //fail
   textFailed: {
     paddingLeft: scale(25),
-    // marginTop: scale(7),
     justifyContent: 'center',
     fontFamily: FONT_FAMILY.Italic,
     fontSize: scale(12),

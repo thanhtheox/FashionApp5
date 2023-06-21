@@ -1,5 +1,7 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View,Image, ImageBackground } from 'react-native'
 import React from 'react'
+
+//component
 import { IMG_Collection } from '../../../assets/images'
 import scale from '../../../constants/responsive'
 import FONT_FAMILY from '../../../constants/fonts'
@@ -48,7 +50,6 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         fontSize: 14,
-        fontWeight: '400',
         fontFamily: FONT_FAMILY.Regular,
         color: color.TitleActive,
         textTransform:'uppercase',

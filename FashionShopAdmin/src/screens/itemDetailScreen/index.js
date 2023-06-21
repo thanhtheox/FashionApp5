@@ -10,16 +10,18 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React, {useState, useRef, useEffect, memo} from 'react';
+import Carousel from 'react-native-reanimated-carousel';
+import {DataTable} from 'react-native-paper';
+
+//component
 import {IC_Add, IC_Backward} from '../../assets/icons';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import scale from '../../constants/responsive';
 import TagWithoutDelete from '../../components/tags/tagWithoutDelete';
-import {DataTable} from 'react-native-paper';
 import SaveButton from '../../components/buttons/Save';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {capitalizeFirstLetter} from '../../config/uppercaseFirstLetter';
-import Carousel from 'react-native-reanimated-carousel';
 
 const ItemDetailScreen = props => {
   console.log(
@@ -27,14 +29,11 @@ const ItemDetailScreen = props => {
   );
   const [loading, setLoading] = useState(false);
   const {data, size, productDetail} = props.route.params;
-  //   console.log(data);
   const [tags, setTags] = useState([]);
   const [images, setImages] = useState([]);
   const [category, setCategory] = useState({});
-  //const [productDetail, setProductDetail] = useState([]);
   const axiosPrivate = useAxiosPrivate();
-  //   const [color, setColor] = useState([]);
-  //const [size, setSize] = useState([]);
+
   useEffect(() => {
     const imagesArr = data.image.map(item => item.url);
     console.log({imagesArr});
@@ -187,7 +186,6 @@ const ItemDetailScreen = props => {
                   autoPlay={true}
                   data={[...images]}
                   scrollAnimationDuration={1000}
-                  // onSnapToItem={(index) => console.log('current index:', index)}
                   renderItem={({item}) => (
                     <View
                       style={{
@@ -324,7 +322,6 @@ const styles = StyleSheet.create({
     color: color.White,
     fontFamily: FONT_FAMILY.Bold,
     fontSize: 27,
-    fontWeight: '600',
     marginTop: scale(10),
   },
   backwardButton: {
@@ -342,7 +339,6 @@ const styles = StyleSheet.create({
     color: color.Body,
     fontFamily: FONT_FAMILY.Bold,
     fontSize: 23,
-    fontWeight: '600',
     marginLeft: scale(3),
   },
 
@@ -354,14 +350,12 @@ const styles = StyleSheet.create({
     color: color.Secondary,
     fontFamily: FONT_FAMILY.Regular,
     fontSize: scale(16),
-    fontWeight: '400',
     marginLeft: scale(3),
   },
   propText: {
     color: color.TitleActive,
     fontFamily: FONT_FAMILY.Regular,
     fontSize: scale(16),
-    fontWeight: '400',
     marginLeft: scale(3),
   },
 
@@ -403,7 +397,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   text: {
-    fontWeight: '300',
     fontSize: 15,
     fontFamily: FONT_FAMILY.Regular,
     textDecorationLine: 'none',
@@ -413,7 +406,6 @@ const styles = StyleSheet.create({
 
   // save button
   button: {
-    // marginVertical: scale(40),
     marginTop: scale(40),
     alignItems: 'center',
   },
