@@ -2,16 +2,68 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "src/assets/fonts/DFVN Skylar.otf",
+      "sha1": "0b46075cd90e10b49ab9c7fd5225c4bd890dab94"
+    },
+    {
+      "path": "src/assets/fonts/JosefinSans-Bold.ttf",
+      "sha1": "db56b62fee977a738b111e277f354ada736d6c0a"
+    },
+    {
+      "path": "src/assets/fonts/JosefinSans-BoldItalic.ttf",
+      "sha1": "93aca12035ee51f4bfee72c119e0bf655a6378a6"
+    },
+    {
       "path": "src/assets/fonts/JosefinSans-Italic.ttf",
       "sha1": "6e939d4808dffc2245b3e361464d46b7bcea2ed5"
+    },
+    {
+      "path": "src/assets/fonts/JosefinSans-Light.ttf",
+      "sha1": "06f6ebc48a005a0cbeced575728bf5d97a6f51bd"
+    },
+    {
+      "path": "src/assets/fonts/JosefinSans-LightItalic.ttf",
+      "sha1": "1ffe8c6974e58534b2f7c6265246e3641315a334"
     },
     {
       "path": "src/assets/fonts/JosefinSans-Regular.ttf",
       "sha1": "08e37b80e567de8c597bab83a4d4085c6ec9a458"
     },
     {
-      "path": "src/assets/fonts/TenorSans-Regular.ttf",
-      "sha1": "3fcfd077a01cf370af03a9bff99f33ad0543fec5"
+      "path": "src/assets/fonts/JosefinSans-SemiBold.ttf",
+      "sha1": "2841a895821be61eaeaa039ec29f00ca396d9293"
+    },
+    {
+      "path": "src/assets/fonts/JosefinSans-SemiBoldItalic.ttf",
+      "sha1": "d73fe18721e6968b1be0f99e7573287203dadd29"
+    },
+    {
+      "path": "src/assets/fonts/JosefinSans-Thin.ttf",
+      "sha1": "ab36829f2b35acdb4f918aca040ef306b93efc65"
+    },
+    {
+      "path": "src/assets/fonts/JosefinSans-ThinItalic.ttf",
+      "sha1": "a534752af2c4b790b925decb882968e1f7456437"
+    },
+    {
+      "path": "src/assets/fonts/Nunito-Bold.ttf",
+      "sha1": "5aec430ff329bbe0e7c1137aac390f2e1d4260a3"
+    },
+    {
+      "path": "src/assets/fonts/Nunito-Light.ttf",
+      "sha1": "d6fcfd33bb8cef2884bd84bfbc8299b6c91b2315"
+    },
+    {
+      "path": "src/assets/fonts/Nunito-Regular.ttf",
+      "sha1": "4c54e16115bd3d375447600da62e8f6b5b660f9a"
+    },
+    {
+      "path": "src/assets/fonts/Nunito-SemiBold.ttf",
+      "sha1": "e4c8ca24890c5eee855c70963e429a54f86c51f6"
+    },
+    {
+      "path": "src/assets/fonts/ValkyRegular.ttf",
+      "sha1": "dbba41b99b9be01042fb3b1af60ad40a31c6a8e0"
     }
   ]
 }

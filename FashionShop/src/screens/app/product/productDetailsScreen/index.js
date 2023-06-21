@@ -47,7 +47,7 @@ const ProductDetailsScreen = props => {
   const [count, setCount] = useState(1);
   const [colorChoose, setChooseColor] = useState(0);
   const [sizeChoose, setChooseSize] = useState(0);
-  const [detailChoose,setDetailChoose] = useState({});
+  const [detailChoose, setDetailChoose] = useState({});
   const [productImages, setProductImages] = useState([]);
   const [details, setDetails] = useState([]);
   const [suggestiveProduct, setSuggestiveProduct] = useState([]);
@@ -61,13 +61,20 @@ const ProductDetailsScreen = props => {
   const {cartItems} = cart;
 
   const dispatch = useDispatch();
-  const addToCartHandler = async (detailId,colorCode,sizeName) => {
+  const addToCartHandler = async () => {
+    const selectedDetail = details.find(item => {
+      if (item.sizeId === sizeChoose && item.colorId === colorChoose) {
+        return item;
+      }
+    });
+    console.log(selectedDetail);
+    setDetailChoose(selectedDetail);
     dispatch(
       addToCart(
         data,
-        detailId,
-        colorCode,
-        sizeName,
+        selectedDetail._id,
+        selectedDetail.colorCode,
+        selectedDetail.sizeName,
         count,
         // colorChoose,
         // sizeChoose,
@@ -110,8 +117,11 @@ const ProductDetailsScreen = props => {
           });
           if (!isExistColor) {
             let newColorArray = availableColor;
-            newColorArray.push({ colorId: detail.colorId, colorCode: detail.colorCode})
-            setAvailableColor([...newColorArray])
+            newColorArray.push({
+              colorId: detail.colorId,
+              colorCode: detail.colorCode,
+            });
+            setAvailableColor([...newColorArray]);
           }
           // const selectedDetails = details.filter(item => item.colorId === details[0].colorId);
           // console.log({selectedDetails})
@@ -120,9 +130,9 @@ const ProductDetailsScreen = props => {
           //   newSizeArray.push({sizeId: detail.sizeId, sizeName: detail.sizeName})
           // })
           // setAvailableSize(newSizeArray)
-          console.log({availableColor})
+          console.log({availableColor});
           // console.log({availableSize})
-        })
+        });
       } catch (err) {
         console.log(err.response.data);
       }
@@ -146,33 +156,31 @@ const ProductDetailsScreen = props => {
       controller.abort();
     };
   }, []);
-  const handleChooseColor = (colorId) => {
-    setChooseColor(colorId)
+  const handleChooseColor = colorId => {
+    setChooseColor(colorId);
     const selectedDetails = details.filter(item => item.colorId === colorId);
     let newSizeArray = [];
     selectedDetails.map(detail => {
-      newSizeArray.push({sizeId: detail.sizeId, sizeName: detail.sizeName})
-    })
-    setAvailableSize(newSizeArray)
+      newSizeArray.push({sizeId: detail.sizeId, sizeName: detail.sizeName});
+    });
+    setAvailableSize(newSizeArray);
     setChooseSize(0);
   };
-  const handleChooseSize = (sizeId) => {
-    setChooseSize(sizeId)
-    const selectedDetail = details.find((item) => {
-      if(item.sizeId === sizeId && item.colorId === colorChoose)
-      {return item}
-      // else {return null}
-    });
-    console.log(selectedDetail)
-    setDetailChoose(selectedDetail)
+  const handleChooseSize = sizeId => {
+    setChooseSize(sizeId);
   };
 
   return visible ? (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-      <OKMessageBox visible={notExistSize} clickCancel={() => {setNotExistSize(false)}} 
-        title={"NO SIZE YET"} 
-        message={"You need to choose size!"}  />
+        <OKMessageBox
+          visible={notExistSize}
+          clickCancel={() => {
+            setNotExistSize(false);
+          }}
+          title={'NO SIZE YET'}
+          message={'You need to choose size!'}
+        />
         {/* Product Images */}
         <View style={styles.productContainer}>
           <SwiperFlatList
@@ -224,18 +232,49 @@ const ProductDetailsScreen = props => {
           </View>
           <Text style={styles.prodPrice}>${data.price}</Text>
           <>
-            <View style={{flexDirection:'row', marginTop:scale(18)}}>
-              <View style={{flexDirection:'row',paddingHorizontal:scale(12),width:'40%', gap:scale(10)}}>
-                <Text style={{color:color.Label, fontFamily:FONT_FAMILY.Regular,
-                  fontSize:scale(16),lineHeight:scale(18)}}>Color</Text>
-                {availableColor.map((item,index) => 
-                  <TouchableOpacity style={{borderRadius:360,borderColor:colorChoose===item.colorId?color.Primary:color.TitleActive, borderWidth:1, alignItems:'center',
-                  justifyContent:'center',width:scale(22),height:scale(22)}} 
-                    onPress={() => handleChooseColor(item.colorId)} key={index}>
-                    <View style={{borderRadius:360, backgroundColor:item.colorCode,
-                    width:scale(16),height:scale(16)}}/> 
-                  </TouchableOpacity>     
-                )}
+            <View style={{flexDirection: 'row', marginTop: scale(18)}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  paddingHorizontal: scale(12),
+                  width: '40%',
+                  gap: scale(10),
+                }}>
+                <Text
+                  style={{
+                    color: color.Label,
+                    fontFamily: FONT_FAMILY.Regular,
+                    fontSize: scale(16),
+                    lineHeight: scale(18),
+                  }}>
+                  Color
+                </Text>
+                {availableColor.map((item, index) => (
+                  <TouchableOpacity
+                    style={{
+                      borderRadius: 360,
+                      borderColor:
+                        colorChoose === item.colorId
+                          ? color.Primary
+                          : color.TitleActive,
+                      borderWidth: 1,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: scale(22),
+                      height: scale(22),
+                    }}
+                    onPress={() => handleChooseColor(item.colorId)}
+                    key={index}>
+                    <View
+                      style={{
+                        borderRadius: 360,
+                        backgroundColor: item.colorCode,
+                        width: scale(16),
+                        height: scale(16),
+                      }}
+                    />
+                  </TouchableOpacity>
+                ))}
               </View>
               <View
                 style={{
@@ -243,7 +282,7 @@ const ProductDetailsScreen = props => {
                   marginLeft: scale(35),
                   paddingHorizontal: scale(12),
                   width: '40%',
-                  gap:scale(10)
+                  gap: scale(10),
                 }}>
                 <Text
                   style={{
@@ -265,7 +304,9 @@ const ProductDetailsScreen = props => {
                       height: scale(16),
                       alignItems: 'center',
                       backgroundColor:
-                        sizeChoose === item.sizeId ? color.Body : color.OffWhite,
+                        sizeChoose === item.sizeId
+                          ? color.Body
+                          : color.OffWhite,
                     }}
                     onPress={() => handleChooseSize(item.sizeId)}
                     key={index}>
@@ -290,7 +331,11 @@ const ProductDetailsScreen = props => {
         </View>
         {/* Button Add To Basket */}
         <View style={{marginTop: scale(24.5)}}>
-          <AddToBasket onPress={() => {detailChoose._id === undefined? setNotExistSize(true):addToCartHandler(detailChoose._id,detailChoose.colorCode,detailChoose.sizeName)} }/>
+          <AddToBasket
+            onPress={() => {
+              addToCartHandler();
+            }}
+          />
         </View>
         {/* Product Detail */}
         <View style={styles.detailView}>

@@ -66,7 +66,7 @@ import {
       color: color.TitleActive,
       fontSize: 16,
       fontWeight: 400,
-      fontFamily: FONT_FAMILY.Regular,
+      fontFamily: FONT_FAMILY.RegularForAddress,
     },
     ImageBox: {
       marginTop: scale(20),
