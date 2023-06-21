@@ -1,5 +1,6 @@
 import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
+//component
 import HeaderMin from '../../components/header/headerMin'
 import color from '../../constants/color'
 import scale from '../../constants/responsive'
@@ -197,8 +198,6 @@ const styles = StyleSheet.create({
         flex: 0.9,
         paddingLeft: scale(10),
         paddingRight: scale(10),
-        //paddingVertical: scale(20),
-        //marginVertical: scale(20)
     },
     row: {
         width: '80%',

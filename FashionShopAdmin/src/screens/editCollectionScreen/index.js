@@ -11,20 +11,22 @@ import {
     ScrollView,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
+import * as yup from 'yup';
+import {Controller, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import {MultipleSelectList} from 'react-native-dropdown-select-list';
+import {launchImageLibrary} from 'react-native-image-picker';
+import DropDownPicker from 'react-native-dropdown-picker';
+
+//component
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import {IC_AddImage, IC_Backward} from '../../assets/icons';
 import scale from '../../constants/responsive';
 import SaveButton from '../../components/buttons/Save';
-import {launchImageLibrary} from 'react-native-image-picker';
 import {IMG_AddImage} from '../../assets/images';
-import {MultipleSelectList} from 'react-native-dropdown-select-list';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import Message from '../../components/alearts.js/messageOnly';
-import DropDownPicker from 'react-native-dropdown-picker';
-import * as yup from 'yup';
-import {Controller, useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
 import Item from './components/item';
 
 
@@ -374,9 +376,8 @@ const styles = StyleSheet.create({
     },
     textHeader: {
         color: color.White,
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Bold,
         fontSize: 24,
-        fontWeight: '700',
     },
     //body
     body: {
@@ -389,9 +390,8 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         color: color.TitleActive,
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Bold,
         fontSize: 22,
-        fontWeight: '600',
     },
     viewTextInput: {
         borderBottomWidth: 1,
@@ -404,7 +404,6 @@ const styles = StyleSheet.create({
         color: color.TitleActive,
         fontFamily: FONT_FAMILY.Regular,
         fontSize: 16,
-        fontWeight: '400',
         marginLeft: scale(10),
     },
 
@@ -427,9 +426,8 @@ const styles = StyleSheet.create({
     },
     textAdd: {
         color: color.TitleActive,
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Bold,
         fontSize: 16,
-        fontWeight: '500',
     },
     viewImageAdd: {
         height: '70%',

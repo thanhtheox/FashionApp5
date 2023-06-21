@@ -7,15 +7,16 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
+import {DataTable} from 'react-native-paper';
+import { useIsFocused } from '@react-navigation/native';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
+//component
 import color from '../../constants/color';
 import scale from '../../constants/responsive';
 import FONT_FAMILY from '../../constants/fonts';
-import {DataTable} from 'react-native-paper';
-import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import HeaderMax from '../../components/header/headerMax';
 import { IC_Delete } from '../../assets/icons';
-import { useIsFocused } from '@react-navigation/native';
 import MessageYN from '../../components/alearts.js/messageYN';
 
 const ListOfTagScreen = props => {
@@ -143,9 +144,8 @@ const styles = StyleSheet.create({
     backgroundColor: color.InputBackground,
   },
   text: {
-    fontWeight: '600',
     fontSize: 18,
-    fontFamily: FONT_FAMILY.Regular,
+    fontFamily: FONT_FAMILY.Bold,
     textDecorationLine: 'none',
     color: color.TitleActive,
   },

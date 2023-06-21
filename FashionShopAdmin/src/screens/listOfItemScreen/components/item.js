@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View,SafeAreaView,Image,TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
+//component
 import { IC_Edit,IC_Delete,IC_See } from '../../../assets/icons'
 import scale from '../../../constants/responsive'
 import FONT_FAMILY from '../../../constants/fonts'
@@ -54,7 +55,6 @@ const styles = StyleSheet.create({
       number:{
         alignSelf: 'center',
         fontSize: 16,
-        fontWeight: '400',
         fontFamily: FONT_FAMILY.Regular,
         color: color.TitleActive,
 
@@ -76,25 +76,21 @@ const styles = StyleSheet.create({
       },
       name:{
         fontSize: 14,
-        fontWeight: '400',
         fontFamily: FONT_FAMILY.Regular,
         color: color.TitleActive,
       },
       description:{
         fontSize: 14,
-        fontWeight: 400,
         fontFamily: FONT_FAMILY.Regular,
         color: color.GraySolid,
       },
       price:{
         fontSize: 14,
-        fontWeight: 400,
         fontFamily: FONT_FAMILY.Regular,
         color: color.Primary,
       },
       sale:{
         fontSize: 14,
-        fontWeight: 400,
         fontFamily: FONT_FAMILY.Regular,
         color: color.TitleActive,
       },

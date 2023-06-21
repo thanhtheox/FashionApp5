@@ -8,6 +8,11 @@ import {
   TextInput,
 } from 'react-native';
 import React, {useState} from 'react';
+import * as yup from 'yup';
+import {Controller, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+
+//component
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import {IC_Backward} from '../../assets/icons';
@@ -15,9 +20,7 @@ import scale from '../../constants/responsive';
 import SaveButton from '../../components/buttons/Save';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import Message from '../../components/alearts.js/messageOnly';
-import * as yup from 'yup';
-import {Controller, useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
+
 
 const addSizeSchema = yup.object({
   name: yup
@@ -227,9 +230,8 @@ const styles = StyleSheet.create({
   },
   textHeader: {
     color: color.White,
-    fontFamily: FONT_FAMILY.Regular,
+    fontFamily: FONT_FAMILY.Bold,
     fontSize: 24,
-    fontWeight: '700',
   },
   body: {
     flex: 1,
@@ -241,9 +243,8 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     color: color.TitleActive,
-    fontFamily: FONT_FAMILY.Regular,
+    fontFamily: FONT_FAMILY.Bold,
     fontSize: 22,
-    fontWeight: '600',
   },
   viewTextInput: {
     borderBottomWidth: 1,
@@ -256,7 +257,6 @@ const styles = StyleSheet.create({
     color: color.TitleActive,
     fontFamily: FONT_FAMILY.Regular,
     fontSize: 16,
-    fontWeight: '400',
     marginLeft: scale(10),
   },
   viewTextLabel: {
@@ -267,7 +267,6 @@ const styles = StyleSheet.create({
     color: color.TitleActive,
     fontFamily: FONT_FAMILY.Regular,
     fontSize: 14,
-    fontWeight: '400',
   },
   viewAdd: {
     flexDirection: 'row',
@@ -282,7 +281,6 @@ const styles = StyleSheet.create({
     color: color.TitleActive,
     fontFamily: FONT_FAMILY.Regular,
     fontSize: 16,
-    fontWeight: '400',
   },
   viewInputAdd: {
     borderWidth: 1,
@@ -297,7 +295,6 @@ const styles = StyleSheet.create({
   //fail
   textFailed: {
     paddingLeft: scale(25),
-    // marginTop: scale(7),
     justifyContent: 'center',
     fontFamily: FONT_FAMILY.Italic,
     fontSize: scale(12),

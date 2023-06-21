@@ -349,9 +349,8 @@ const ProductDetailsScreen = props => {
           <Text style={[fontStyles.bodyMediumFont, styles.subTitle]}>
             {data.care}
           </Text>
-          <Text style={[fontStyles.subTitle16pxFont, styles.title]}>
-            Policy
-          </Text>
+          <Text style={[fontStyles.subTitle16pxFont, styles.title]}>CARE</Text>
+          
           <Policy />
         </View>
         {/* You May Also Like */}

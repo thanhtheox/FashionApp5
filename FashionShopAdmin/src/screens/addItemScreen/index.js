@@ -11,22 +11,25 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
+import * as yup from 'yup';
+import {Controller, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import DropDownPicker from 'react-native-dropdown-picker';
+import ImageCropPicker from 'react-native-image-crop-picker';
+import {PERMISSIONS, check, RESULTS, request} from 'react-native-permissions';
+
+//component
 import {IC_AddImage, IC_Backward, IC_Close} from '../../assets/icons';
 import color from '../../constants/color';
 import FONT_FAMILY from '../../constants/fonts';
 import scale from '../../constants/responsive';
 import SingleLine from '../../components/inputTexts/singleLine';
 import MultiLine from '../../components/inputTexts/multiLine';
-import DropDownPicker from 'react-native-dropdown-picker';
 import TagWithoutDelete from '../../components/tags/tagWithoutDelete';
-import ImageCropPicker from 'react-native-image-crop-picker';
-import {PERMISSIONS, check, RESULTS, request} from 'react-native-permissions';
 import Message from '../../components/alearts.js/messageOnly';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import LoadingModal from '../../components/loadingModal/loadingModal';
-import * as yup from 'yup';
-import {Controller, useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
+
 
 const addItemSchema = yup.object({
   name: yup
@@ -395,7 +398,7 @@ const AddItemScreen = props => {
               />
 
               <Text style={styles.propText}>
-                Material Description: (max 300 characters)
+                Material Description: 
               </Text>
 
               {/* material */}
@@ -421,7 +424,7 @@ const AddItemScreen = props => {
               />
 
               <Text style={styles.propText}>
-                Care Description: (max 300 characters)
+                Care Description: 
               </Text>
 
               {/* care */}
@@ -447,7 +450,7 @@ const AddItemScreen = props => {
               />
 
               <Text style={styles.propText}>
-                Description: (max 300 characters)
+                Description:
               </Text>
 
               {/* description */}
@@ -632,9 +635,8 @@ const styles = StyleSheet.create({
   },
   textHeader: {
     color: color.White,
-    fontFamily: FONT_FAMILY.Regular,
+    fontFamily: FONT_FAMILY.Bold,
     fontSize: 24,
-    fontWeight: '700',
     marginTop: scale(10),
   },
   backwardButton: {
@@ -650,9 +652,8 @@ const styles = StyleSheet.create({
   },
   bodyText: {
     color: color.Body,
-    fontFamily: FONT_FAMILY.Regular,
+    fontFamily: FONT_FAMILY.Bold,
     fontSize: 23,
-    fontWeight: '600',
     marginLeft: scale(3),
   },
 
@@ -692,9 +693,8 @@ const styles = StyleSheet.create({
   },
   propText: {
     color: color.PlaceHolder,
-    fontFamily: FONT_FAMILY.Regular,
+    fontFamily: FONT_FAMILY.Bold,
     fontSize: scale(16),
-    fontWeight: '600',
     marginLeft: scale(3),
     marginTop: scale(20),
   },
@@ -736,7 +736,6 @@ const styles = StyleSheet.create({
   //fail
   textFailed: {
     paddingLeft: scale(25),
-    // marginTop: scale(7),
     justifyContent: 'center',
     fontFamily: FONT_FAMILY.Italic,
     fontSize: scale(12),
