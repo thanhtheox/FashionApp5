@@ -1,17 +1,18 @@
 import { StyleSheet, Text, View,SafeAreaView, ScrollView, Image, TouchableOpacity, TextInput,Platform, KeyboardAvoidingView, Dimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
+import { useIsFocused } from '@react-navigation/native'
+
+//component
 import color from '../../constants/color'
 import scale from '../../constants/responsive'
 import FONT_FAMILY from '../../constants/fonts'
 import { IC_Delete, IC_Edit, IC_Search, IC_See, IC_BackwardArrow, IC_Backward, IC_Up } from '../../assets/icons'
 import Item from './components/item'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
-import { useIsFocused } from '@react-navigation/native'
 import MessageYN from '../../components/alearts.js/messageYN'
 import HeaderMin from '../../components/header/headerMin'
 import { capitalizeFirstLetter } from '../../config/uppercaseFirstLetter'
 import { FlatList } from 'react-native-gesture-handler'
-
 
 const ListOfItemFromCategoryScreen = (props) => {
   const {categoryId, categoryName} = props.route.params;
@@ -19,7 +20,6 @@ const ListOfItemFromCategoryScreen = (props) => {
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState([]);
 
-  // const [dataProduct, setDataProduct] = useState([]);
   const [message, setMessage] = useState('');
   const [title, setTitle] = useState('');
   const [status, setStatus] = useState('new')
@@ -35,7 +35,6 @@ const ListOfItemFromCategoryScreen = (props) => {
             const response = await axiosPrivate.get(`/get-product-by-category-id/${categoryId}`, {
                 signal: controller.signal
             });
-            //console.log(response.data);
             isMounted && setData(response.data);
         } 
         catch (err) {
@@ -89,13 +88,10 @@ const ListOfItemFromCategoryScreen = (props) => {
             signal: controller.signal,
           },
         );
-        // console.log(productDetail);
 
 
         response.data.map(item => {
           let sizeObj = size.find(size => size === item.sizeName);
-          // console.log({dataArray, })
-          // console.log(sizeObj);
           if (!sizeObj) {
             size.push(item.sizeName);
           }
@@ -207,8 +203,7 @@ const styles = StyleSheet.create({
       textTile: {
         color: color.White,
         fontSize: 36,
-        fontFamily: FONT_FAMILY.JoseFinSans,
-        fontWeight: 700,
+        fontFamily: FONT_FAMILY.Bold,
       },
       viewTextAndSearch:{
         flexDirection: 'row',
@@ -228,8 +223,7 @@ const styles = StyleSheet.create({
       textLabel: {
         color: color.TitleActive,
         fontSize: 24,
-        fontFamily: FONT_FAMILY.JoseFinSans,
-        fontWeight: 700,
+        fontFamily: FONT_FAMILY.Bold,
       },
       viewSearch:{
         flexDirection: 'row',

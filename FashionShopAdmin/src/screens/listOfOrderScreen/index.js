@@ -1,14 +1,15 @@
 import { StyleSheet, Text, View , SafeAreaView, TouchableOpacity} from 'react-native'
 import React, { useState, useEffect } from 'react'
+import { ScrollView } from 'react-native-gesture-handler'
+import { useIsFocused } from '@react-navigation/native';
+//component
 import color from '../../constants/color'
 import FONT_FAMILY from '../../constants/fonts'
-import { ScrollView } from 'react-native-gesture-handler'
 import HeaderMin from '../../components/header/headerMin'
 import NavBar from './components/navBar'
 import Order from './components/order'
 import UnderLine from '../../components/underLineSwitch/underLineSwitch'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
-import { useIsFocused } from '@react-navigation/native';
 import { displayDateTime } from '../../config/displayDateTime'
 
 

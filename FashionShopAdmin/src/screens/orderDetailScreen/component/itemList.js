@@ -1,6 +1,6 @@
 import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
-
+//component
 import color from '../../../constants/color'
 import scale from '../../../constants/responsive'
 import FONT_FAMILY from '../../../constants/fonts'
@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
         flexDirection: 'row',
-        // borderWidth:1
     },
     textTitle: {
         color: color.TitleActive,

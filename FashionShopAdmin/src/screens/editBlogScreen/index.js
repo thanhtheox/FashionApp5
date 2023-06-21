@@ -11,22 +11,25 @@ import {
     KeyboardAvoidingView,
   } from 'react-native';
   import React, {useState, useRef, useEffect} from 'react';
+  import * as yup from 'yup';
+  import {Controller, useForm} from 'react-hook-form';
+  import {yupResolver} from '@hookform/resolvers/yup';
+  import ImageCropPicker from 'react-native-image-crop-picker';
+  import {PERMISSIONS, check, RESULTS, request} from 'react-native-permissions';
+  import DropDownPicker from 'react-native-dropdown-picker';
+
+  //component
   import {IC_AddImage, IC_Backward, IC_Close} from '../../assets/icons';
   import color from '../../constants/color';
   import FONT_FAMILY from '../../constants/fonts';
   import scale from '../../constants/responsive';
   import SingleLine from '../../components/inputTexts/singleLine';
   import MultiLine from '../../components/inputTexts/multiLine';
-  import DropDownPicker from 'react-native-dropdown-picker';
   import TagWithoutDelete from '../../components/tags/tagWithoutDelete';
-  import ImageCropPicker from 'react-native-image-crop-picker';
-  import {PERMISSIONS, check, RESULTS, request} from 'react-native-permissions';
   import Message from '../../components/alearts.js/messageOnly';
   import SaveButton from '../../components/buttons/Save';
   import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-  import * as yup from 'yup';
-  import {Controller, useForm} from 'react-hook-form';
-  import {yupResolver} from '@hookform/resolvers/yup';
+ 
   
   const EditBlogScreen = props => {
   const blog=props.route.params.item;
@@ -517,9 +520,8 @@ import {
     },
     textHeader: {
       color: color.White,
-      fontFamily: FONT_FAMILY.Regular,
+      fontFamily: FONT_FAMILY.Bold,
       fontSize: 24,
-      fontWeight: '700',
       marginTop: scale(10),
     },
     backwardButton: {
@@ -535,9 +537,8 @@ import {
     },
     bodyText: {
       color: color.Body,
-      fontFamily: FONT_FAMILY.Regular,
+      fontFamily: FONT_FAMILY.Bold,
       fontSize: 23,
-      fontWeight: '600',
       marginLeft: scale(3),
     },
   
@@ -559,9 +560,8 @@ import {
     },
     propText: {
       color: color.PlaceHolder,
-      fontFamily: FONT_FAMILY.Regular,
+      fontFamily: FONT_FAMILY.Bold,
       fontSize: scale(16),
-      fontWeight: '600',
       marginLeft: scale(3),
       marginTop: scale(20),
     },
@@ -586,7 +586,6 @@ import {
     },
     // detail button
     button: {
-      // marginTop: scale(0),
       height: Dimensions.get('screen').height * 0.1,
       alignItems: 'center',
     },
@@ -594,7 +593,6 @@ import {
     //fail
     textFailed: {
       paddingLeft: scale(25),
-      // marginTop: scale(7),
       justifyContent: 'center',
       fontFamily: FONT_FAMILY.Italic,
       fontSize: scale(12),

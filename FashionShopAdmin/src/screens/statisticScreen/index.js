@@ -8,12 +8,14 @@ import {
   FlatList
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
+import {LineChart} from 'react-native-chart-kit';
+
+//component
 import HeaderMin from '../../components/header/headerMin';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import color from '../../constants/color';
 import scale from '../../constants/responsive';
 import FONT_FAMILY from '../../constants/fonts';
-import { LineChart } from 'react-native-chart-kit';
 import {getMonth, getYear} from '../../config/displayDateTime';
 import {IC_Dollar, IC_Order, IC_Product} from '../../assets/icons';
 import {dollarType} from '../../config/currency';
@@ -96,13 +98,8 @@ const Statistics = props => {
             signal: controller.signal,
           },
         );
-        // console.log(productDetail);
-
-
         response.data.map(item => {
           let sizeObj = size.find(size => size === item.sizeName);
-          // console.log({dataArray, })
-          // console.log(sizeObj);
           if (!sizeObj) {
             size.push(item.sizeName);
           }
@@ -201,7 +198,6 @@ const Statistics = props => {
         },
       ]);
     }
-    //console.log(month);
   }, []);
 
   const axiosPrivate = useAxiosPrivate();
@@ -413,14 +409,12 @@ const styles = StyleSheet.create({
     color: color.Body,
     fontFamily: FONT_FAMILY.Bold,
     fontSize: 23,
-    fontWeight: '600',
     marginLeft: scale(13),
   },
   numText: {
     color: color.Body,
     fontFamily: FONT_FAMILY.Bold,
     fontSize: 16,
-    fontWeight: '600',
     marginLeft: scale(13),
   },
   boxText: {

@@ -1,9 +1,11 @@
 import { StyleSheet, Text, View,SafeAreaView,TouchableOpacity, Dimensions } from 'react-native'
 import React from 'react'
+
+//component
 import color from '../../../constants/color'
 import scale from '../../../constants/responsive'
 import FONT_FAMILY from '../../../constants/fonts'
-import { IC_Delete, IC_Edit, IC_See } from '../../../assets/icons'
+import { IC_Delete } from '../../../assets/icons'
 
 
 const ItemColor = (props) => {
