@@ -13,7 +13,7 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import color from '../../constants/color';
 import scale from '../../constants/responsive';
 import FONT_FAMILY from '../../constants/fonts';
-import {LineChart} from 'react-native-chart-kit';
+import { LineChart } from 'react-native-chart-kit';
 import {getMonth, getYear} from '../../config/displayDateTime';
 import {IC_Dollar, IC_Order, IC_Product} from '../../assets/icons';
 import {dollarType} from '../../config/currency';

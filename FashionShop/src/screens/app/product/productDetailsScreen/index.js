@@ -305,6 +305,7 @@ const ProductDetailsScreen = props => {
             {data.care}
           </Text>
           <Text style={[fontStyles.subTitle16pxFont, styles.title]}>CARE</Text>
+          
           <Policy />
         </View>
         {/* You May Also Like */}
