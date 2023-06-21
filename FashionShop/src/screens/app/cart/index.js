@@ -35,7 +35,7 @@ const CartScreen = props => {
   useEffect(() => {
     onCalculateAmount();
 
-    if (totalAmount === 0) {
+    if (cartItems.length === 0) {
       setVisible(false);
     } else {
       setVisible(true);
@@ -44,8 +44,8 @@ const CartScreen = props => {
 
   const onCalculateAmount = () => {
     let total = 0;
-    if (Array.isArray(cartItems)) {
-      cartItems.map(item => {
+    if (Array.isArray(cartItems) && Array.isArray(checkOutCart)) {
+      checkOutCart.map(item => {
         total += item.product.price * item.qty;
       });
     }

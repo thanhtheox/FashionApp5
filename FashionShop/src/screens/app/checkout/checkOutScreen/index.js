@@ -190,7 +190,13 @@ const CheckOut = props => {
         </View>
         <View style={styles.address}>
           <Text style={styles.bodyText1}>SHIPPING ADDRESS</Text>
-          {methodValue === 5 ? (
+          {addressDefault[0]===undefined ? (
+            <View style={{flexDirection:'row', width:'100%',marginLeft:scale(20),marginTop:scale(20)}}>
+                <Text numberOfLines={2} style={{fontFamily:FONT_FAMILY.Regular,fontSize:scale(16),color:color.RedSolid}}>
+                  {'You need add address for your order!'}
+                </Text>
+            </View>
+          ):(methodValue === 5 ? (
             <View style={{height: scale(110)}}>
               {addressDefault.map(item => (
                 <TouchableOpacity
@@ -262,7 +268,7 @@ const CheckOut = props => {
                 <IC_Location />
               </TouchableOpacity>
             </View>
-          )}
+          ))}
           <View>
             {addressDefault[0] === undefined ? (
               <TouchableOpacity

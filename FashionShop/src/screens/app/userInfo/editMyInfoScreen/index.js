@@ -94,6 +94,7 @@ const EditMyInfoScreen = props => {
     setShowPassword(!showPassword);
   };
   const [visible, setVisible] = useState(false);
+  const [visibleAvatar, setVisibleAvatar] = useState(false);
   const [image, setImage] = useState(oldUserInfo.avatarImage);
   const handleEditingPassword = () => {
     setEditingPassword(!editingPassword);
@@ -108,7 +109,7 @@ const EditMyInfoScreen = props => {
   const openGallery = async () => {
     const result = await launchImageLibrary(options);
     setImage(result.assets[0].uri);
-    setVisible(false);
+    setVisibleAvatar(false);
   };
   const openCamera = async () => {
     const granted = await PermissionsAndroid.request(
@@ -117,7 +118,7 @@ const EditMyInfoScreen = props => {
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       const result = await launchCamera(options);
       setImage(result.assets[0].uri);
-      setVisible(false);
+      setVisibleAvatar(false);
     }
   };
 
@@ -192,7 +193,7 @@ const EditMyInfoScreen = props => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.avatar}
-            onPress={() => setVisible(true)}>
+            onPress={() => setVisibleAvatar(true)}>
             <Avatar.Image source={{uri: oldUserInfo.avatarImage}} size={150} />
           </TouchableOpacity>
         </View>
@@ -365,9 +366,9 @@ const EditMyInfoScreen = props => {
         </View>
         <Modal
           style={styles.viewModal}
-          onBackdropPress={() => setVisible(false)}
-          onBackButtonPress={() => setVisible(false)}
-          isVisible={visible}>
+          onBackdropPress={() => setVisibleAvatar(false)}
+          onBackButtonPress={() => setVisibleAvatar(false)}
+          isVisible={visibleAvatar}>
           <Popup onPressUpload={openGallery} onPressCamera={openCamera}></Popup>
         </Modal>
       </SafeAreaView>
