@@ -34,7 +34,6 @@ const SearchDetailScreen = props => {
         const response = await axiosPrivate.get('/get-all-product ', {
           signal: controller.signal,
         });
-        setSearchResult(response.data);
         setAllProducts(response.data);
       } catch (err) {
         console.log(err.response.data);
@@ -67,7 +66,8 @@ const SearchDetailScreen = props => {
       console.log(searchResult);
       setSearchContent(text);
     } else {
-      setSearchResult(allProducts);
+      setSearchResult([]);
+      setData([]);
       setSearchContent(text);
     }
   };
@@ -119,33 +119,41 @@ const SearchDetailScreen = props => {
           <IC_Search marginRight={scale(20)} />
         </TouchableOpacity>
       </View>
-      <View style={styles.resultSum}>
-        <Text style={styles.sum}>
-          {searchResult.length + ' SEARCH RESULTS'}
-        </Text>
-        <Filter onSortChange={arrangeProducts} selectedValue={filterValue} />
-      </View>
       <ScrollView style={styles.list}>
-        <View style={styles.likeProductContainer}>
-          <FlatList
-            contentContainerStyle={{
-              alignContent: 'space-around',
-              marginTop: scale(20),
-            }}
-            horizontal={false}
-            data={data}
-            keyExtractor={item => `${item._id}`}
-            numColumns={2}
-            scrollEnabled={false}
-            columnWrapperStyle={styles.wrapperLikeProducts}
-            renderItem={renderItem}
-          />
-          {searchResult.length > data.length && (
-            <TouchableOpacity style={styles.button} onPress={handleLoadMore}>
-              <Text style={styles.text}>Load more</Text>
-            </TouchableOpacity>
-          )}
-        </View>
+        {searchResult.length === 0 ? (
+          <View style={{justifyContent: 'center', marginVertical: scale(60)}}>
+            <Text
+              style={{
+                fontFamily: FONT_FAMILY.Bold,
+                fontSize: scale(24),
+                color: color.TitleActive,
+                textAlign: 'center',
+              }}>
+              LET'S SEARCH!
+            </Text>
+          </View>
+        ) : (
+          <View style={styles.likeProductContainer}>
+            <FlatList
+              contentContainerStyle={{
+                alignContent: 'space-around',
+                marginTop: scale(20),
+              }}
+              horizontal={false}
+              data={data}
+              keyExtractor={item => `${item._id}`}
+              numColumns={2}
+              scrollEnabled={false}
+              columnWrapperStyle={styles.wrapperLikeProducts}
+              renderItem={renderItem}
+            />
+            {searchResult.length > data.length && (
+              <TouchableOpacity style={styles.button} onPress={handleLoadMore}>
+                <Text style={styles.text}>Load more</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
         <Custom_Footer
           onAboutPress={() =>
             props.navigation.navigate('HomeStackScreen', {
@@ -174,6 +182,93 @@ const styles = StyleSheet.create({
     backgroundColor: color.OffWhite,
     flexDirection: 'column',
     flex: 1,
+  },
+  button: {
+    width: scale(295),
+    height: scale(61),
+    marginTop: scale(20),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: color.TitleActive,
+  },
+  searchBar: {
+    marginTop: scale(10),
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    alignSelf: 'center',
+    borderBottomColor: color.GraySolid,
+    borderBottomWidth: 1,
+  },
+  text: {
+    fontWeight: '700',
+    fontSize: scale(24),
+    textAlign: 'center',
+    color: color.White,
+    fontFamily: FONT_FAMILY.JoseFinSansRegular,
+  },
+  resultSum: {
+    marginTop: scale(20),
+    flexDirection: 'row',
+    alignSelf: 'center',
+    width: '100%',
+    paddingHorizontal: scale(10),
+  },
+  sum: {
+    fontWeight: '400',
+    fontSize: scale(16),
+    color: color.TitleActive,
+    fontFamily: FONT_FAMILY.JoseFinSansRegular,
+  },
+  newTag: {
+    backgroundColor: color.AthensGray,
+    borderRadius: scale(33),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  new: {
+    fontWeight: '400',
+    marginLeft: scale(-10),
+    fontSize: scale(13),
+    color: color.TitleActive,
+    fontFamily: FONT_FAMILY.JoseFinSansRegular,
+  },
+  iconDown: {
+    marginLeft: scale(40),
+    justifyContent: 'center',
+    marginTop: scale(-15),
+  },
+  filterBorder: {
+    marginLeft: scale(180),
+    width: scale(36),
+    height: scale(36),
+    backgroundColor: color.AthensGray,
+    borderRadius: scale(180),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  list: {
+    marginTop: scale(10),
+    zIndex: -1,
+  },
+  likeProductContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  likeProductText: {
+    fontSize: scale(18),
+    lineHeight: scale(40),
+    textAlign: 'center',
+    fontFamily: FONT_FAMILY.Regular,
+    color: color.TitleActive,
+  },
+  productWrap: {
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  wrapperLikeProducts: {
+    marginBottom: scale(5),
   },
   button: {
     width: scale(295),

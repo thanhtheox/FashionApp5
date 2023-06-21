@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     height: scale(31),
     justifyContent: 'center',
     alignSelf: 'flex-end',
-   
+    marginRight:scale(7)
   },
   text: {
     paddingHorizontal: scale(3),

@@ -45,16 +45,16 @@ const signInPayLoadSchema = yup.object({
 });
 
 const SignInScreen = props => {
-  const {auth, setAuth} = useAuth();
+  const {setAuth} = useAuth();
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [title, setTitle] = useState('');
+  const [forgetPasswordVisible, setForgetPasswordVisible] = useState(false);
+  const [forgetPasswordMessage, setForgetPasswordMessage] = useState('');
   const dispatch = useDispatch();
   const axiosPrivate = useAxiosPrivate();
-  const cart = useSelector(state => state.cart);
-  const {cartItems} = cart;
 
   const [visible, setVisible] = useState(false);
 
@@ -70,7 +70,29 @@ const SignInScreen = props => {
     },
     resolver: yupResolver(signInPayLoadSchema),
   });
-  const handleSubmits = async data => {
+  const forgetPassword = async () => {
+    if (email) {
+      try {
+        const response = await axiosPrivate.post(
+          '/forget-password',
+          JSON.stringify({email: email}),
+        );
+        console.log('success', JSON.stringify(response.data));
+        setForgetPasswordVisible(true);
+        setForgetPasswordMessage(
+          `Password reset link is sent to your email ${email}!`,
+        );
+      } catch (err) {
+        setForgetPasswordVisible(true);
+        setForgetPasswordMessage(err.response?.data.error);
+        console.log('err', err.response?.data);
+      }
+    } else {
+      setForgetPasswordVisible(true);
+      setForgetPasswordMessage(`You need type your email!`);
+    }
+  };
+  const handleSubmits = async () => {
     try {
       setLoading(true);
       const response = await axiosPrivate.post(
@@ -139,6 +161,14 @@ const SignInScreen = props => {
         visible={visible}
         clickCancel={() => setVisible(false)}
         title={title}
+      />
+      <OKMessageBox
+        visible={forgetPasswordVisible}
+        clickCancel={() => {
+          setForgetPasswordVisible(false);
+        }}
+        title={'FORGET PASSWORD'}
+        message={forgetPasswordMessage}
       />
       <View style={styles.header}>
         <TouchableOpacity
@@ -210,7 +240,9 @@ const SignInScreen = props => {
           />
         </View>
 
-        <TouchableOpacity style={styles.ViewForgotText}>
+        <TouchableOpacity
+          style={styles.ViewForgotText}
+          onPress={forgetPassword}>
           <Text style={styles.textForgot}>Forgot your password?</Text>
         </TouchableOpacity>
       </View>

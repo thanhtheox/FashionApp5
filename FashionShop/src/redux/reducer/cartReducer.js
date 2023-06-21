@@ -50,7 +50,7 @@ export const cartReducer = (state = CART_INITIAL_STATE, action) => {
             : x,
         ),
       };
-    case actionTypes.CART_RESET_LOGIN:
+    case actionTypes.CART_RESET_LOGOUT:
       return {
         ...state,
         cartItems: [],
@@ -81,6 +81,36 @@ export const cartReducer = (state = CART_INITIAL_STATE, action) => {
         cartItems: [...updatedCartItems],
         cartId: action.payload.cart.cart._id,
       };
+      case actionTypes.RE_ORDER:
+      // console.log("cartItems:" + JSON.stringify(action.payload.cart.cart.productDetails));
+      // console.log("cartId:" + JSON.stringify(action.payload.cart.cart._id));
+        const orderCartItems = action.payload.cart.map((item) => ({
+          product: item.productDetailId.productId,
+          detailId: item.productDetailId._id,
+          colorCode: item.productDetailId.colorId.code,
+          sizeName: item.productDetailId.sizeId.name,
+          qty: item.quantity,
+          isOrder: true,
+        }));
+        let updatedOrderCartItems = state.cartItems.slice();
+
+  orderCartItems.forEach((item) => {
+    const existOrderItemIndex = updatedOrderCartItems.findIndex(x => x.detailId === item.detailId);
+
+    if (existOrderItemIndex !== -1) 
+    { 
+      const updatedQty = updatedOrderCartItems[existOrderItemIndex].qty + item.qty;
+      updatedOrderCartItems = [
+        ...updatedOrderCartItems.slice(0, existOrderItemIndex),
+        { ...updatedOrderCartItems[existOrderItemIndex], qty: updatedQty, isOrder: true },
+        ...updatedOrderCartItems.slice(existOrderItemIndex + 1),
+      ];
+    } else {
+      updatedOrderCartItems.push(item);
+    }
+  });
+
+  return { ...state, cartItems: updatedOrderCartItems };
     default:
       return state;
   }

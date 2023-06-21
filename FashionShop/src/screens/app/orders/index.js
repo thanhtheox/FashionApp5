@@ -25,9 +25,10 @@ import {
   IC_Preparing,
 } from '../../../assets/icons';
 import {useCallback} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import ButtonOrder from './components/buttonOrder';
+import {reOrder} from '../../../redux/actions/cartActions';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -41,6 +42,7 @@ const OrdersScreen = props => {
   const {userItems} = user;
   const userInfo = userItems.user;
   const axiosPrivate = useAxiosPrivate();
+  const dispatch = useDispatch();
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -67,6 +69,11 @@ const OrdersScreen = props => {
     });
     return unsubscribe;
   }, [props.navigation]);
+
+  const ReOrder = cart => {
+    dispatch(reOrder(cart));
+    props.navigation.navigate('CartScreen');
+  };
 
   const cancelHandler = async id => {
     try {
@@ -192,7 +199,22 @@ const OrdersScreen = props => {
                       title={'CANCEL'}
                     />
                   ) : chosen === 'complete' ? (
-                    <ButtonOrder onPress={null} title={'RATE'} />
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        paddingHorizontal: scale(7),
+                      }}>
+                      <ButtonOrder
+                        onPress={() => ReOrder(data.productDetails)}
+                        title={'RE_ORDER'}
+                      />
+                      <ButtonOrder onPress={null} title={'RATE'} />
+                    </View>
+                  ) : chosen === 'cancel' ? (
+                    <ButtonOrder
+                      onPress={() => ReOrder(data.productDetails)}
+                      title={'RE_ORDER'}
+                    />
                   ) : null}
                 </View>
                 <View style={{height: scale(50)}} />

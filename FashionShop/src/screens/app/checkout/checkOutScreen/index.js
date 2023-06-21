@@ -340,11 +340,17 @@ const CheckOut = props => {
         <Text style={styles.total}>TOTAL</Text>
         <Text style={styles.price}>${totalAmount + methodValue}</Text>
       </View>
-      <TouchableOpacity
-        style={styles.placeOrder}
-        onPress={() => placeOrderHandler()}>
-        <Text style={styles.button}>PLACE ORDER</Text>
-      </TouchableOpacity>
+      {addressDefault[0] === undefined ? (
+        <TouchableOpacity style={styles.placeOrderDisable} onPress={null}>
+          <Text style={styles.buttonDisable}>PLACE ORDER</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          style={styles.placeOrder}
+          onPress={() => placeOrderHandler()}>
+          <Text style={styles.button}>PLACE ORDER</Text>
+        </TouchableOpacity>
+      )}
     </SafeAreaView>
   );
 };
@@ -462,6 +468,21 @@ const styles = StyleSheet.create({
   button: {
     color: color.White,
     fontSize: 16,
+    fontFamily: FONT_FAMILY.Regular,
+    alignSelf: 'center',
+  },
+  placeOrderDisable: {
+    marginTop: scale(15),
+    width: '100%',
+    height: scale(56),
+    backgroundColor: color.GraySolid,
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+  buttonDisable: {
+    color: color.TitleActive,
+    fontSize: 16,
+    fontWeight: 400,
     fontFamily: FONT_FAMILY.Regular,
     alignSelf: 'center',
   },
