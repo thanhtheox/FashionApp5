@@ -3,7 +3,6 @@ import React, {useState} from 'react';
 import scale from '../../../../constants/responsive';
 import FONT_FAMILY from '../../../../constants/fonts';
 import color from '../../../../constants/color';
-import { IC_Heart } from '../../../../assets/icons';
 
 const CollectionProduct = props => {
   const [Liked, setLike] = useState(false);
@@ -11,17 +10,9 @@ const CollectionProduct = props => {
     <TouchableOpacity style={styles.container} onPress={props.onPress} >
       <View style={styles.imgContainer}>
         <Image source={{uri:`${props.image}`}} style={styles.img} resizeMode='cover'/>
-        <TouchableOpacity
-          onPress={() => setLike(Liked === true ? false : true)}>
-          <IC_Heart
-            style={{top: scale(190), left: scale(135)}}
-            stroke={color.Secondary}
-            fill={Liked ? color.Secondary : 'none'}
-          />
-        </TouchableOpacity>
       </View>
       <View style={styles.textContainer}>
-        <Text style={styles.prodName}>
+        <Text numberOfLines={2} style={styles.prodName}>
           {props.prodName}
         </Text>
         <Text style={styles.prodPrice}>${props.prodPrice}</Text>

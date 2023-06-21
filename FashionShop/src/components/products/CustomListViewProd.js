@@ -5,7 +5,6 @@ import {IMG_ModelTwo} from '../../assets/images/index';
 import FONT_FAMILY from '../../constants/fonts';
 import Color from '../../constants/color';
 import {IC_Star} from './index';
-import {IC_Heart} from '../../assets/icons';
 
 const Custom_ListViewProd = props => {
   const [Liked, setLike] = useState(false);
@@ -37,14 +36,6 @@ const Custom_ListViewProd = props => {
           <View style={styles.L}>
             <Text style={styles.prodType}>L</Text>
           </View>
-          <TouchableOpacity
-            style={styles.heart}
-            onPress={() => setLike(Liked === true ? false : true)}>
-            <IC_Heart
-              stroke={Color.Secondary}
-              fill={Liked ? Color.Secondary : 'none'}
-            />
-          </TouchableOpacity>
         </View>
       </View>
     </TouchableOpacity>

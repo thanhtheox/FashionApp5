@@ -13,7 +13,7 @@ const CollectionItems = props => {
       <View style={styles.textContainer}>
         <Text style={styles.prodNumber}>0{props.prodNumber}</Text>
         <View style={styles.line}/>
-        <Text style={styles.prodName}>
+        <Text numberOfLines={2} style={styles.prodName}>
           {props.prodName}
         </Text>
       </View>
