@@ -1,7 +1,7 @@
-import * as actionTypes from "../constants/addressConstants"
+import * as actionTypes from '../constants/addressConstants';
 const ADDRESS_INITIAL_STATE = {
-    addresses: [],
-    addressesId: '',
+  addresses: [],
+  addressesId: '',
 };
 
 export const addressReducer = (state = ADDRESS_INITIAL_STATE, action) => {
@@ -9,17 +9,17 @@ export const addressReducer = (state = ADDRESS_INITIAL_STATE, action) => {
     case actionTypes.INIT_ADDRESS:
       return {
         ...state,
-        addresses: action.payload.addresses.addresses, 
+        addresses: action.payload.addresses.addresses,
         addressesId: action.payload.addresses._id,
       };
     case actionTypes.EDIT_ADDRESS:
-      console.log('reducer',action.payload.addresses)
+      console.log('reducer', action.payload.addresses);
       return {
         ...state,
         addresses: action.payload.addresses,
       };
-      case actionTypes.ADD_ADDRESS:
-        console.log('reducer',action.payload.addresses)
+    case actionTypes.ADD_ADDRESS:
+      console.log('reducer', action.payload.addresses);
       return {
         ...state,
         addresses: action.payload.addresses,
@@ -27,14 +27,14 @@ export const addressReducer = (state = ADDRESS_INITIAL_STATE, action) => {
     case actionTypes.ADDRESS_RESET:
       return {
         ...state,
-        addresses: {},
+        addresses: [],
         addressId: '',
-    };
+      };
     case actionTypes.REMOVE_ADDRESS:
-        return {
+      return {
         ...state,
-        addresses: state.addresses.filter((x) => x._id !== action.payload),
-    };
+        addresses: state.addresses.filter(x => x._id !== action.payload),
+      };
     default:
       return state;
   }

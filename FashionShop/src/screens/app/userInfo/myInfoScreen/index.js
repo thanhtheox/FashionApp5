@@ -5,35 +5,54 @@ import {
   TouchableOpacity,
   View,
   Image,
-  TextInput,
+  ScrollView,
 } from 'react-native';
 import React from 'react';
+
+// constants
 import color from '../../../../constants/color';
-import FONT_FAMILY from '../../../../constants/fonts';
-import {IMG_Logo} from '../../../../assets/images';
 import scale from '../../../../constants/responsive';
+import FONT_FAMILY from '../../../../constants/fonts';
 import {
   IC_BackwardArrow,
   IC_Address,
   IC_Phone,
   IC_Email,
-  IC_Password,
 } from '../../../../assets/icons';
-import {Avatar, Title, Caption} from 'react-native-paper';
+
 import {useState, useEffect} from 'react';
 import SaveButton from '../../../../components/buttons/Save';
-import {ScrollView} from 'react-native';
 import {useSelector} from 'react-redux';
+import {useIsFocused} from '@react-navigation/native';
 
 const MyInfoScreen = props => {
   const [showPassword, setShowPassword] = useState(false);
+  const [addressDefault, setAddressDefault] = useState([]);
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-
+  const isFocus = useIsFocused();
+  useEffect(() => {
+    // if (typeof addresses !== 'object' && addresses !== null)
+    addresses !== null &&
+      setAddressDefault(addresses?.filter(item => item.isDefault === true));
+  }, [isFocus]);
   const user = useSelector(state => state.user);
   const {userItems} = user;
   const userInfo = userItems.user;
+
+  const {addresses} = useSelector(state => state.address);
+  // const [addresses, setAddresses] = useState(address.addresses);
+  console.log({addresses});
+
+  const navigateAddAddress = () => {
+    props.navigation.navigate('CheckOutStackScreen', {
+      screen: 'ListOfAddressesScreen',
+      params: {
+        prevScreen: 'infoScreen',
+      },
+    });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -69,31 +88,32 @@ const MyInfoScreen = props => {
               <Text style={styles.inputText}>{userInfo.email}</Text>
             </View>
           </View>
-          {/* password */}
-          {/* <View style={styles.inputBox}>
-            <View style={styles.icon}>
-              <TouchableOpacity onPress={handleShowPassword}>
-                <IC_Password />
-              </TouchableOpacity>
-              {showPassword && (
-                <Text style={styles.inputText}>{userInfo.passWord}</Text>
-              )}
-            </View>
-          </View> */}
           {/* phone number */}
           <View style={styles.inputBox}>
-            <View style={styles.icon1}>
-              <IC_Phone style={styles.iconPhone} />
-              <Text style={styles.inputText2}>{userInfo.phoneNumber}</Text>
+            <View style={styles.icon}>
+              <IC_Phone />
+              <Text style={styles.inputText}>{userInfo.phoneNumber}</Text>
             </View>
           </View>
           {/* address */}
-          <View style={styles.inputBox}>
-            <View style={styles.icon1}>
+          <TouchableOpacity
+            style={styles.inputBox}
+            onPress={navigateAddAddress}>
+            <View style={styles.icon}>
               <IC_Address />
-              <Text style={styles.inputText2}>ktx khu B</Text>
+              <Text style={styles.inputText}>
+                {addressDefault[0]
+                  ? addressDefault[0].streetAndNumber +
+                    ',' +
+                    addressDefault[0].ward +
+                    ',' +
+                    addressDefault[0].district +
+                    ',' +
+                    addressDefault[0].city
+                  : 'No address yet, please add one'}
+              </Text>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
       </ScrollView>
       <View style={styles.buttonSignIn}>
@@ -143,8 +163,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    marginTop: scale(33),
-    marginLeft: scale(5),
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: scale(7),
+    width: scale(280),
   },
   icon1: {
     marginTop: scale(30),
@@ -155,47 +177,40 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: scale(30),
     width: scale(295),
-    height: scale(51),
     justifyContent: 'space-between',
   },
   inputFirstName: {
     borderBottomWidth: 1,
-    width: scale(107),
-    height: scale(51),
+    width: '35%',
   },
   inputLastName: {
     borderBottomWidth: 1,
-    width: scale(180),
-    height: scale(51),
+    width: '60%',
   },
   inputBox: {
-    marginTop: scale(10),
+    marginTop: scale(40),
     width: scale(295),
-    height: scale(51),
     borderColor: color.GraySolid,
     borderBottomWidth: 1,
   },
   inputName1: {
     color: color.TitleActive,
     fontSize: 16,
-    marginTop: scale(27),
-    marginLeft: scale(5),
+    fontFamily: FONT_FAMILY.RegularForAddress,
   },
   inputText: {
     color: color.TitleActive,
     fontSize: 16,
-    marginTop: scale(-17),
-    marginLeft: scale(25),
+    fontFamily: FONT_FAMILY.RegularForAddress,
   },
   inputText2: {
     color: color.TitleActive,
     fontSize: 16,
-    marginTop: scale(-19),
-    marginLeft: scale(25),
+    fontFamily: FONT_FAMILY.RegularForAddress,
   },
 
   buttonSignIn: {
     marginBottom: scale(0),
-    alignSelf:'center',
+    alignSelf: 'center',
   },
 });

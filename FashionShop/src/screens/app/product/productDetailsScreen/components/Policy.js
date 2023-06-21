@@ -112,7 +112,11 @@ const Policy = props => {
         {/* COD Policy */}
         <Accordion title={title}>{body}</Accordion>
         <View
-          style={{borderWidth: 1, height: 0, borderColor: color.Border}}></View>
+          style={{
+            borderBottomWidth: 1,
+            height: 0,
+            borderColor: color.Border,
+          }}></View>
         <Accordion title={title2}>{body2}</Accordion>
         {/* </ScrollView> */}
       </View>
@@ -124,26 +128,22 @@ export default Policy;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: color.White,
+    backgroundColor: color.OffWhite,
     flex: 1,
   },
   body: {
     flex: 0.6,
-    backgroundColor: color.White,
+    backgroundColor: color.OffWhite,
   },
   viewList: {
     height: scale(68),
     width: '100%',
-    //borderBottomWidth: 1,
     flexDirection: 'row',
-    //borderTopWidth: 1,
   },
   viewList2: {
     height: scale(68),
     width: '100%',
-    //borderBottomWidth: 1,
     flexDirection: 'row',
-    //borderTopWidth: 1,
   },
   viewTextList: {
     justifyContent: 'center',
@@ -154,8 +154,7 @@ const styles = StyleSheet.create({
   },
   viewTextList2: {
     justifyContent: 'center',
-    width: scale(350),
-    //marginLeft: scale(10),
+    // width: scale(350),
   },
   textList: {
     fontFamily: FONT_FAMILY.Regular,
@@ -164,9 +163,8 @@ const styles = StyleSheet.create({
     color: color.TitleActive,
   },
   textList2: {
-    fontFamily: FONT_FAMILY.Regular,
-    fontSize: 14,
-    fontWeight: '700',
+    fontFamily: FONT_FAMILY.BoldSecond,
+    fontSize: scale(18),
     color: color.TitleActive,
   },
   viewIcon: {
@@ -179,16 +177,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     flexDirection: 'row',
     backgroundColor: color.White,
-    //borderTopWidth: 1,
     opacity: 0.5,
   },
   textListBody: {
+    marginTop: scale(5),
     fontFamily: FONT_FAMILY.Regular,
     fontSize: 14,
-    fontWeight: '400',
     color: color.TitleActive,
     marginLeft: scale(20),
-    opacity: 1,
   },
   hidden: {
     height: 0,

@@ -58,18 +58,18 @@ const signUpPayloadSchema = yup.object({
     .min(10, 'Invalid phone number')
     .max(11, 'Invalid phone number')
     .matches(phoneRegExp, 'Invalid phone number'),
-  password: yup
-    .string()
-    .matches(
-      passwordRegex,
-      'Password must contain uppercase, lowercase and number characters',
-    )
-    .min(8, 'Password length must be more than 8 characters')
-    .max(16, 'Password length must be less than 16 characters')
-    .required('Password can not be blank'),
-  passwordConfirm: yup
-    .string()
-    .oneOf([yup.ref('password'), null], 'Passwords must match'),
+  // password: yup
+  //   .string()
+  //   .matches(
+  //     passwordRegex,
+  //     'Password must contain uppercase, lowercase and number characters',
+  //   )
+  //   .min(8, 'Password length must be more than 8 characters')
+  //   .max(16, 'Password length must be less than 16 characters')
+  //   .required('Password can not be blank'),
+  // passwordConfirm: yup
+  //   .string()
+  //   .oneOf([yup.ref('password'), null], 'Passwords must match'),
 });
 
 const EditMyInfoScreen = props => {
@@ -84,9 +84,9 @@ const EditMyInfoScreen = props => {
   const [mail, setMail] = useState('');
   const [pass, setPass] = useState('');
   const [address, setAddress] = useState('');
-  const [phone, setPhoneNumber] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [phone, setPhoneNumber] = useState(oldUserInfo.phoneNumber);
+  const [firstName, setFirstName] = useState(oldUserInfo.firstName);
+  const [lastName, setLastName] = useState(oldUserInfo.lastName);
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
@@ -94,9 +94,7 @@ const EditMyInfoScreen = props => {
     setShowPassword(!showPassword);
   };
   const [visible, setVisible] = useState(false);
-  const [image, setImage] = useState(
-    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAMFBMVEXU1NT////R0dHz8/Pg4ODc3Nz8/PzV1dXw8PDt7e35+fnj4+P29vbv7+/n5+fd3d10rjpNAAAEeUlEQVR4nO2d2ZqqMBCEoQFZxfd/20OGYeQoqGB6SVL/pVfUl6S7s3SZZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHASWtD+EAaI6qof26ZwNO3YV3VEQimrxqLLH+mKscoiEElZ2Vye1C1cmjJwkVS1+/J+RbZVwBrL4Y28maHU/tBzUPm89vboyvDGkarPxu9vHEObq/X1kD7Htdb+6ANQ+S6+bHEJZ6pSe0Kfow1DItXHVuCaoQ5BY3Vmhi5cKu3PfwuVX+hzWF+M1H8pMM970xI9CLQt8espOmN4olZeBOa52XBTfxNF11ysljfn8+Ajg7aUTU5XMluYrG78RJkFg1tGb4twxt5SpOPbpddcrc1TX4nijrGUQf7i6MJgaxD9hpkZU8GGPj90+pzO0iByDKGpQWRYhQ5DK9F/IJ0xE06958IFO7Wb33LmjpnChifOOIzEGmrYFDZGpinXJJ2mqba0Ga5I6rARTUdGhaO2OAcVjAoLCwuRpSZdMFGb1owC89xCRuQMNDZCjY+D/H16bXnTMuQMpVMw1V+IXo9JnzFQfDPWbA4DdRtrOjSREBNQyHOCsWDgJCMBhfHP0vhjafz5MPqaJv66NLuxKrxpy8tS2B/Gv8dP4JyG9azNgsIEzkvjP/NO4N4i+rsnxvtDbWELbHfAdt5FRX+Pn8BbjPjf0yTwJir+d20JvE2M/32p/wMpA0dQj3h+560tZ4Po3+on0G8Rf89MCn1P8feuJdB/6EeiZYEJ9AEn0MvtLD++68c3L3DiK08F7Y//kNO+GNof/in1aW+TUIYwi9+fZoJuBz2GbiGEmDX1YZ+owIbwB/rY6yu08bsTvV9b9uO5d92frd01dM+9H5xvYrPhm9jE4Zv4i/O+LBfvy2s7ls77Uvuj/EMUs4EpAAAAALI5ydcLf79EwbTzu41tMXTrXcalG4p2vNXBF6Y7ZuWr8jto23Kq+xdm5avxbPogjFkfmOQdeR1dBCaSqDpx1laFE3uoP3fqPVi/lPmF+vNPwLoANB45Q9zUaPzc7ajX/Ba2/ef9PDgxe0FDla83mJ3NYYz9xdA3XvNbmPOfp5vvjoSLrcsolu4uG11dM0zdznYWI1vjk5W2p4yvxdJEgyWnwEmitrgsAdcIZtMI/bXI7Bnh0I2oXv6x4x2qe0Zer7YFxSfDnr3099B79s0cRu9oBVRm35Y1SiWqzCKcUVmKzBZY/6PRqieSKO4opAxeW5pnxOMpWw/+HuK9+ZJhZkY42IilwjvCSVF+CIUHUWEIhQdRYwhFB1E8kM5IhlMVgXkuJ1Cu5P4fMZd9Vg+6V4h5gejEGYdQrBHcFz4itE9Um6Ri01R6V7FGZoehN0mFoqlKxbYgU7kpCpRJ+nq5wiGRLzSXochCVKq6FwSqb9FDxGckjhVl7ir2EPCP0sz3Dv6cz2tQ/h5+C3PZo+5n+G3odZOFwPZC4OL+NezX+uxvL97B/jZDte52sNfeUAiFUAiFAgrjzxa620OBDWL8NY1+XXr0g/8BrMpHSulajwYAAAAASUVORK5CYII=',
-  );
+  const [image, setImage] = useState(oldUserInfo.avatarImage);
   const handleEditingPassword = () => {
     setEditingPassword(!editingPassword);
     setPassConfirm('');
@@ -136,10 +134,9 @@ const EditMyInfoScreen = props => {
     defaultValues: {
       firstName: userInfo.firstName,
       lastName: userInfo.lastName,
-      // email: '',
       phoneNumber: userInfo.phoneNumber,
-      password: '',
-      passwordConfirm: '',
+      // password: '',
+      // passwordConfirm: '',
     },
     resolver: yupResolver(signUpPayloadSchema),
   });
@@ -156,32 +153,32 @@ const EditMyInfoScreen = props => {
     formData.append('firstName', firstName);
     formData.append('lastName', lastName);
     formData.append('phoneNumber', phone);
-    formData.append('password', pass);
+    // formData.append('password', pass);
 
     console.log(formData);
-    console.log({userInfo})
-    // try {
-    //   const response = await axiosPrivate.post(`/user/${id}`, formData, {
-    //     headers: {
-    //       Accept: 'application/json',
-    //       'Content-Type': 'multipart/form-data',
-    //     },
-    //     withCredentials: true,
-    //   });
-    //   console.log('success', JSON.stringify(response.data));
-    //   setTitle('Success');
-    //   setMessage(`Update profile successful`);
-    //   console.log(message);
-    //   dispatch(initUser(response.data.user));
-    //   setLoading(false);
-    // } catch (err) {
-    //   console.log('err', err.response.data);
-    //   setTitle('Error');
-    //   setMessage(err.response.data.error);
-    //   setLoading(false);
-    // } finally {
-    //   setVisible(true);
-    // }
+    console.log({userInfo});
+    try {
+      const response = await axiosPrivate.post(`/user/${id}`, formData, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
+      });
+      console.log('success', JSON.stringify(response.data));
+      setTitle('Success');
+      setMessage(`Update profile successful`);
+      console.log(message);
+      dispatch(initUser(response.data.user));
+      setLoading(false);
+    } catch (err) {
+      console.log('err', err.response.data);
+      setTitle('Error');
+      setMessage(err.response.data.error);
+      setLoading(false);
+    } finally {
+      setVisible(true);
+    }
   }
 
   return (
@@ -260,7 +257,7 @@ const EditMyInfoScreen = props => {
               )}
             />
           </View>
-          <Controller
+          {/* <Controller
             name="password"
             control={control}
             render={({field: {onChange, value}}) => (
@@ -293,7 +290,7 @@ const EditMyInfoScreen = props => {
                 )}
               </View>
             )}
-          />
+          /> */}
           {editingPassword ? (
             <Controller
               name="passwordConfirm"
@@ -358,26 +355,11 @@ const EditMyInfoScreen = props => {
               </View>
             )}
           />
-
-          {/* address */}
-          <View style={styles.inputBox1}>
-            <View style={styles.icon1}>
-              <IC_Address />
-            </View>
-            <TextInput
-              // defaultValue={userInfo.address}
-              multiline={true}
-              onChangeText={address => setAddress(address)}
-              placeholder="kp6, đường Hàn Thuyên, TP.Thủ a aĐức ahhhhhhhhhh"
-              placeholderTextColor={color.PlaceHolder}
-              style={styles.inputText}
-              keyboardType="default"
-            />
-          </View>
           <View style={styles.buttonSignIn}>
             <SaveButton
               text={'Save Edit'}
               onPress={handleSubmit(handleSubmits)}
+              loading={loading}
             />
           </View>
         </View>
@@ -490,7 +472,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: scale(10),
     width: scale(295),
-    // height: scale(51),
     borderColor: color.GraySolid,
     borderBottomWidth: 1,
   },
@@ -507,6 +488,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(10),
     fontSize: scale(16),
     paddingBottom: scale(5),
+    fontFamily: FONT_FAMILY.RegularForAddress,
   },
   inputPass: {
     color: color.TitleActive,
@@ -528,7 +510,7 @@ const styles = StyleSheet.create({
   },
   textFailedPass: {
     alignSelf: 'flex-start',
-    fontFamily: FONT_FAMILY.JoseFinSans,
+    fontFamily: FONT_FAMILY.Regular,
     fontSize: scale(10),
     color: color.RedSolid,
     marginTop: scale(5),
@@ -536,7 +518,7 @@ const styles = StyleSheet.create({
   },
   textFailed: {
     alignSelf: 'flex-start',
-    fontFamily: FONT_FAMILY.JoseFinSans,
+    fontFamily: FONT_FAMILY.Regular,
     fontSize: scale(10),
     color: color.RedSolid,
     marginTop: scale(5),
