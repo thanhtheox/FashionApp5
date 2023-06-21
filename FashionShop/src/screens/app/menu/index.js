@@ -92,18 +92,18 @@ useEffect(() => {
   const signOut = async () => {
     console.log(JSON.stringify(cart))
       try {
-      // const editCart = [];
-      // cartItems.map((item) => {
-      //   const editCartItem = {productDetailId: item.detailId, quantity:item.qty}
-      //   editCart.push(editCartItem)
-      // })
-      // const response = await axiosPrivate.put(
-      //   `/edit-cart-item/${cartId}`,
-      //   JSON.stringify({
-      //     productDetails: editCart,
-      //   }),
-      // )
-      // console.log('editCartSuccess', JSON.stringify(response.data));
+      const editCart = [];
+      cartItems.map((item) => {
+        const editCartItem = {productDetailId: item.detailId, quantity:item.qty}
+        editCart.push(editCartItem)
+      })
+      const response = await axiosPrivate.put(
+        `/edit-cart-item/${cartId}`,
+        JSON.stringify({
+          productDetails: editCart,
+        }),
+      )
+      console.log('editCartSuccess', JSON.stringify(response.data));
       logout();
       await dispatch(resetCartWhenLogOut());
       await dispatch(resetUserWhenLogOut());
