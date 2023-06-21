@@ -36,7 +36,6 @@ import {
         const response = await axiosPrivate.get('/get-all-product ', {
           signal: controller.signal,
         });
-        setSearchResult(response.data);
         setAllProducts(response.data);
       } catch (err) {
         console.log(err.response.data);
@@ -72,7 +71,8 @@ import {
         console.log(searchResult)
         setSearchContent(text);
       } else {
-        setSearchResult(allProducts);
+        setSearchResult([]);
+        setData([]);
         setSearchContent(text);
       }
     };
@@ -135,6 +135,13 @@ import {
           />
         </View>
         <ScrollView style={styles.list}>
+          {searchResult.length === 0 ? (
+          <View style={{justifyContent:'center',marginVertical:scale(60)}}>
+            <Text style={{fontFamily:FONT_FAMILY.Bold,fontSize:scale(24),color:color.TitleActive,textAlign:'center'}}>
+              LET'S SEARCH!
+            </Text>
+          </View>
+          ):(
           <View style={styles.likeProductContainer}>
             <FlatList
               contentContainerStyle={{alignContent: 'space-around', marginTop:scale(20)}}
@@ -151,7 +158,7 @@ import {
                   <Text style={styles.text}>Load more</Text>
                 </TouchableOpacity>
               )}
-          </View>
+          </View>)}
           <Custom_Footer 
           onAboutPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'OurStoryScreen' })}
           onContactPress={() => props.navigation.navigate('HomeStackScreen', { screen: 'ContactUsScreen' })}
