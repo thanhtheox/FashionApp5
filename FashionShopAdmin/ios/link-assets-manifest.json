@@ -14,6 +14,10 @@
       "sha1": "08e37b80e567de8c597bab83a4d4085c6ec9a458"
     },
     {
+      "path": "src/assets/fonts/Nunito-Light.ttf",
+      "sha1": "d6fcfd33bb8cef2884bd84bfbc8299b6c91b2315"
+    },
+    {
       "path": "src/assets/fonts/TenorSans-Regular.ttf",
       "sha1": "3fcfd077a01cf370af03a9bff99f33ad0543fec5"
     }

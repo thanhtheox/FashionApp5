@@ -7,8 +7,10 @@ import scale from '../../constants/responsive'
 import FONT_FAMILY from '../../constants/fonts'
 import { IC_Delete, IC_Edit, IC_Search, IC_See, IC_BackwardArrow, IC_Backward, IC_Up } from '../../assets/icons'
 import Item from './components/item'
-import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 import MessageYN from '../../components/alearts.js/messageYN'
+//lib
+import * as Progress from 'react-native-progress';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
 
 const ListOfItemScreen = (props) => {
@@ -21,12 +23,14 @@ const ListOfItemScreen = (props) => {
   const [visible, setVisible] = useState(false);
   const [clickYes, setClickYes] = useState(() => async () => {setVisible(false)})
   const [clickNo, setClickNo] = useState(() => () => {setVisible(false)})
+  const [loading, setLoading] = useState(false);
   const isFocus = useIsFocused();
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
     const getProducts = async () => {
         try {
+            setLoading(true);
             const response = await axiosPrivate.get('/get-all-product', {
                 signal: controller.signal
             });
@@ -34,6 +38,9 @@ const ListOfItemScreen = (props) => {
         } 
         catch (err) {
             console.log(err.response.data);
+        } 
+        finally {
+          setLoading(false);
         }
     }
 
@@ -135,7 +142,7 @@ const ListOfItemScreen = (props) => {
     await getDetailByProductId();
     props.navigation.navigate("ItemDetail",{data: item, size, productDetail: dataArray})
   }
-
+  const windowWidth = Dimensions.get('window').width;
   return (
     <SafeAreaView style={styles.container}>
        <MessageYN 
@@ -181,7 +188,13 @@ const ListOfItemScreen = (props) => {
               </View>
           </View>
         </View>
-        
+        {loading && <Progress.Bar
+                indeterminate={true} 
+                width={windowWidth} 
+                borderRadius={0} 
+                color={color.Secondary} 
+                borderWidth={0} 
+                height={3}/>}
         <View style={styles.body}>
             <FlatList
               data={data}
