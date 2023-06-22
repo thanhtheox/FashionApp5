@@ -149,9 +149,10 @@ const SignInScreen = props => {
       props.navigation.navigate('AppStackScreen');
     } catch (err) {
       console.log('err', err);
-      setErrorMessage(err.message);
-      setTitle('Error');
       setLoading(false);
+      setVisible(true);
+      setErrorMessage(err.response?.data.error);
+      setTitle('Error');
     }
   };
 
@@ -159,6 +160,7 @@ const SignInScreen = props => {
     <SafeAreaView style={styles.container}>
       <OKMessageBox
         visible={visible}
+        message={errorMessage}
         clickCancel={() => setVisible(false)}
         title={title}
       />

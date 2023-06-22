@@ -26,6 +26,15 @@ export const order = (detailId,isOrder) => async (dispatch, getState) => {
   });
 
 };
+export const orderAll = () => async (dispatch, getState) => {
+
+  dispatch({
+    type: actionTypes.ORDER_ALL,
+    payload: {
+    },
+  });
+
+};
 // console.log(JSON.stringify(cartItems))
 export const removeFromCart = detailId => async (dispatch, getState) => {
   dispatch({

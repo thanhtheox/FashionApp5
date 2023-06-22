@@ -22,6 +22,8 @@ const OrderSuccess = props => {
   const {data} = props.route.params;
   const axiosPrivate = useAxiosPrivate();
   const [visible, setVisible] = useState(false);
+  const [title, setTitle] = useState('');
+  const [message, setMessage] = useState('');
   const [cancelSuccess, setCancelSuccess] = useState(false);
   // console.log('------------',JSON.stringify(data))
   const cancelHandler = async id => {
@@ -29,8 +31,13 @@ const OrderSuccess = props => {
       const response = await axiosPrivate.put(`/cancel-order/${id}`);
       console.log('cancelOrder', JSON.stringify(response.data));
       setCancelSuccess(true);
+      setTitle('CANCELED')
+      setMessage('Your order was canceled!')
     } catch (error) {
       console.log(error.response?.data);
+      setVisible(true)
+      setTitle('Error')
+      setMessage(err.response.data.error)
     }
   };
 
@@ -38,14 +45,15 @@ const OrderSuccess = props => {
     <SafeAreaView style={styles.container}>
       <OKMessageBox
         visible={cancelSuccess}
-        clickCancel={() => props.navigation.navigate('HomeScreen')}
-        title={'CANCELED'}
-        message={'Your order was canceled!'}
+        clickCancel={() => title === 'Error' ? setCancelSuccess(false):props.navigation.navigate('HomeScreen')}
+        title={title}
+        message={message}
       />
       <YesNoMessageBox
         visible={visible}
-        onPressYes={() => cancelHandler(data.orderId)}
-        onPressNo={() => props.navigation.navigate('HomeScreen')}
+        status={'new'}
+        clickYes={() => cancelHandler(data.orderId)}
+        clickNo={() => props.navigation.navigate('HomeScreen')}
         title={'CANCEL CONFIRMATION?'}
         message={'Do you want to cancel your order?'}
       />

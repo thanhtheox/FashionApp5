@@ -18,6 +18,7 @@ import {
   removeFromCart,
   adjustQTY,
   order,
+  orderAll,
 } from '../../../redux/actions/cartActions';
 import OKMessageBox from '../../../components/messageBox/OKMessageBox';
 
@@ -26,6 +27,8 @@ const CartScreen = props => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [visible, setVisible] = useState(true);
   const [notExistOrder, setNotExistOrder] = useState(false);
+  const [notExistCart, setNotExistCart] = useState(false);
+  const [isOrder, setIsOrder] = useState(false);
 
   const cart = useSelector(state => state.cart);
   const {cartItems} = cart;
@@ -62,6 +65,10 @@ const CartScreen = props => {
   const orderHandler = (id, isOrder) => {
     dispatch(order(id, isOrder));
   };
+  const orderAllHandler = () => {
+    dispatch(orderAll());
+    setIsOrder(!isOrder);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -73,13 +80,48 @@ const CartScreen = props => {
         title={'NO ORDERS YET'}
         message={'You need to click on the box to select the item to order!'}
       />
+      <OKMessageBox
+        visible={notExistCart}
+        clickCancel={() => {
+          setNotExistCart(false);
+          props.navigation.goBack();
+        }}
+        title={'NO CART ITEMS YET'}
+        message={'You need add items to cart!'}
+      />
       {/* Icon Close */}
       <TouchableOpacity
         style={{marginLeft: scale(16), marginTop: scale(5)}}
         onPress={() => props.navigation.goBack()}>
         <IC_Close />
       </TouchableOpacity>
-      <Text style={styles.cartText}>CART</Text>
+      <View style={{marginLeft: scale(16),marginTop: scale(7),flexDirection:'row'}}>
+        <Text style={styles.cartText}>CART</Text>
+        {/* SELECT ALL */}
+        {/* <TouchableOpacity
+          style={{
+            borderWidth: 1,
+            borderRadius: scale(5),
+            width: scale(20),
+            height: scale(20),
+            backgroundColor: isOrder ? color.Secondary : 'transparent',
+            alignSelf: 'center',
+            borderColor: color.TitleActive,
+          }}
+          onPress={() => orderAllHandler()}>
+          <Text
+            style={{
+              fontFamily: FONT_FAMILY.Regular,
+              textAlign: 'center',
+              justifyContent: 'center',
+              color: isOrder ? color.OffWhite : 'transparent',
+              fontSize: scale(12),
+            }}>
+            ✓
+          </Text>
+        </TouchableOpacity>
+        <Text style={styles.selectAllText}>Select All</Text> */}
+      </View>
       {visible ? (
         <View style={{flexDirection: 'column', height: '84%'}}>
           {/* Cart Items */}
@@ -180,13 +222,13 @@ const CartScreen = props => {
           }}>
           <Text
             style={{
-              fontFamily: FONT_FAMILY.Regular,
+              fontFamily: FONT_FAMILY.BoldSecond,
               color: color.Label,
-              fontSize: scale(14),
-              lineHeight: scale(16),
+              fontSize: scale(16),
+              lineHeight: scale(18),
               letterSpacing: scale(1),
             }}>
-            {'You have no items in your Shopping Bag.'}
+            {'You have no items in your Shopping Bag!'}
           </Text>
         </View>
       )}
@@ -194,15 +236,15 @@ const CartScreen = props => {
       <Button
         text={checkOutCart.length !== 0 ? 'BUY NOW' : 'CONTINUE SHOPPING'}
         onPress={() =>
-          checkOutCart.length !== 0
+          cartItems.length === 0 ? setNotExistCart(true) 
+          : (checkOutCart.length !== 0
             ? props.navigation.navigate('CheckOutStackScreen')
-            : setNotExistOrder(true)
+            : setNotExistOrder(true))
         }
       />
     </SafeAreaView>
   );
 };
-////Nhớ làm nếu hết hàng không thể thêm vào giỏ hoặc đặt mua
 export default CartScreen;
 
 const styles = StyleSheet.create({
@@ -218,8 +260,15 @@ const styles = StyleSheet.create({
     color: color.TitleActive,
     lineHeight: scale(22),
     letterSpacing: scale(2),
-    marginLeft: scale(16),
-    marginTop: scale(7),
+    marginRight:scale(160),
+  },
+  selectAllText: {
+    fontFamily: FONT_FAMILY.BoldSecond,
+    fontSize: scale(18),
+    color: color.TitleActive,
+    lineHeight: scale(22),
+    letterSpacing: scale(2),
+    marginLeft:scale(10),
   },
   viewScroll: {
     alignSelf: 'center',

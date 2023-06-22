@@ -68,6 +68,10 @@ const ProductDetailsScreen = props => {
       }
     });
     console.log(selectedDetail);
+    if(selectedDetail===undefined)
+    {
+      setNotExistSize(true)
+    }
     setDetailChoose(selectedDetail);
     dispatch(
       addToCart(
@@ -76,8 +80,6 @@ const ProductDetailsScreen = props => {
         selectedDetail.colorCode,
         selectedDetail.sizeName,
         count,
-        // colorChoose,
-        // sizeChoose,
       ),
     );
   };
@@ -185,8 +187,8 @@ const ProductDetailsScreen = props => {
           clickCancel={() => {
             setNotExistSize(false);
           }}
-          title={'NO SIZE YET'}
-          message={'You need to choose size!'}
+          title={'NO SELECTED DETAIL YET'}
+          message={'You need to choose detail!'}
         />
         {/* Product Images */}
         <View style={styles.productContainer}>
