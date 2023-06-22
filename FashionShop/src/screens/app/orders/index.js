@@ -79,7 +79,7 @@ const OrdersScreen = props => {
     try {
       const response = await axiosPrivate.put(`/cancel-order/${id}`);
       console.log('cancelOrder', JSON.stringify(response.data));
-      setChosen('cancel');
+      handleGetOrder();
     } catch (error) {
       console.log(error.response?.data);
     }

@@ -46,10 +46,10 @@ const OrderSuccess = props => {
         visible={visible}
         onPressYes={() => cancelHandler(data.orderId)}
         onPressNo={() => props.navigation.navigate('HomeScreen')}
-        title={'DO YOU WANT TO CANCEL ORDER?'}
+        title={'CANCEL CONFIRMATION?'}
         message={'Do you want to cancel your order?'}
       />
-      <ScrollView>
+      <View>
         <View style={styles.introTextBox}>
           <Text style={styles.introText}>ORDER RECEIVED</Text>
           <IC_Success style={styles.icon} />
@@ -102,9 +102,8 @@ const OrderSuccess = props => {
           <ScrollView
             style={{
               flexDirection: 'column',
-              height: scale(140),
-              marginBottom: scale(15),
-              borderBottomWidth: 1,
+              height: scale(200),
+              marginVertical: scale(33),
             }}>
             {data.productDetails.map(item => (
               <View key={item.detailId} style={{marginBottom: scale(10)}}>
@@ -126,7 +125,7 @@ const OrderSuccess = props => {
           onPress={() => setVisible(true)}>
           <Text style={styles.button}>CANCEL</Text>
         </TouchableOpacity>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };

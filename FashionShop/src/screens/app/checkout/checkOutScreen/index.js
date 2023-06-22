@@ -183,20 +183,32 @@ const CheckOut = props => {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView horizontal="false">
+      <View>
         <View style={styles.introTextBox}>
           <Text style={styles.introText}>CHECKOUT</Text>
           <Image source={LineBottom} />
         </View>
         <View style={styles.address}>
           <Text style={styles.bodyText1}>SHIPPING ADDRESS</Text>
-          {addressDefault[0]===undefined ? (
-            <View style={{flexDirection:'row', width:'100%',marginLeft:scale(20),marginTop:scale(20)}}>
-                <Text numberOfLines={2} style={{fontFamily:FONT_FAMILY.Regular,fontSize:scale(16),color:color.RedSolid}}>
-                  {'You need add address for your order!'}
-                </Text>
+          {addressDefault[0] === undefined ? (
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                marginLeft: scale(20),
+                marginTop: scale(20),
+              }}>
+              <Text
+                numberOfLines={2}
+                style={{
+                  fontFamily: FONT_FAMILY.Regular,
+                  fontSize: scale(16),
+                  color: color.RedSolid,
+                }}>
+                {'You need add address for your order!'}
+              </Text>
             </View>
-          ):(methodValue === 5 ? (
+          ) : methodValue === 5 ? (
             <View style={{height: scale(110)}}>
               {addressDefault.map(item => (
                 <TouchableOpacity
@@ -268,7 +280,7 @@ const CheckOut = props => {
                 <IC_Location />
               </TouchableOpacity>
             </View>
-          ))}
+          )}
           <View>
             {addressDefault[0] === undefined ? (
               <TouchableOpacity
@@ -341,7 +353,7 @@ const CheckOut = props => {
           </ScrollView>
         </View>
         <View />
-      </ScrollView>
+      </View>
       <View style={styles.totalBorder}>
         <Text style={styles.total}>TOTAL</Text>
         <Text style={styles.price}>${totalAmount + methodValue}</Text>
@@ -423,7 +435,7 @@ const styles = StyleSheet.create({
     color: color.TitleActive,
     fontSize: 18,
     fontWeight: 400,
-    fontFamily: FONT_FAMILY.Regular,
+    fontFamily: FONT_FAMILY.RegularForAddress,
   },
   details: {
     marginLeft: scale(20),
@@ -495,7 +507,7 @@ const styles = StyleSheet.create({
   viewScroll: {
     alignSelf: 'center',
     // marginLeft: scale(7),
-    height: scale(170),
+    height: scale(250),
     marginTop: scale(10),
     zIndex: -1,
     // borderTopWidth: 1,

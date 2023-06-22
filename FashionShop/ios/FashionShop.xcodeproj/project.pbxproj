@@ -30,6 +30,7 @@
 		A8AC37F8F81F47D2B7A043C1 /* Nunito-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A37F6FF47DA482AB854E287 /* Nunito-SemiBold.ttf */; };
 		C9518F20F432404180842833 /* DFVN Skylar.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4D52238B93CD4F7F95A7607D /* DFVN Skylar.otf */; };
 		D76C94E8A2A448149FA4FD6D /* ValkyRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1D0CEEB443F043DBB9A4DA57 /* ValkyRegular.ttf */; };
+		1606E0B661094C8F85D2082A /* MTD Valky Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 98CF92932D7C4B3AB5469669 /* MTD Valky Bold.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,7 @@
 		1A37F6FF47DA482AB854E287 /* Nunito-SemiBold.ttf */ = {isa = PBXFileReference; name = "Nunito-SemiBold.ttf"; path = "../src/assets/fonts/Nunito-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		4D52238B93CD4F7F95A7607D /* DFVN Skylar.otf */ = {isa = PBXFileReference; name = "DFVN Skylar.otf"; path = "../src/assets/fonts/DFVN Skylar.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		1D0CEEB443F043DBB9A4DA57 /* ValkyRegular.ttf */ = {isa = PBXFileReference; name = "ValkyRegular.ttf"; path = "../src/assets/fonts/ValkyRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		98CF92932D7C4B3AB5469669 /* MTD Valky Bold.otf */ = {isa = PBXFileReference; name = "MTD Valky Bold.otf"; path = "../src/assets/fonts/MTD Valky Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +202,7 @@
 				1A37F6FF47DA482AB854E287 /* Nunito-SemiBold.ttf */,
 				4D52238B93CD4F7F95A7607D /* DFVN Skylar.otf */,
 				1D0CEEB443F043DBB9A4DA57 /* ValkyRegular.ttf */,
+				98CF92932D7C4B3AB5469669 /* MTD Valky Bold.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -317,6 +320,7 @@
 				A8AC37F8F81F47D2B7A043C1 /* Nunito-SemiBold.ttf in Resources */,
 				C9518F20F432404180842833 /* DFVN Skylar.otf in Resources */,
 				D76C94E8A2A448149FA4FD6D /* ValkyRegular.ttf in Resources */,
+				1606E0B661094C8F85D2082A /* MTD Valky Bold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

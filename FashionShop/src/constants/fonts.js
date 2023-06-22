@@ -1,5 +1,4 @@
 const FONT_FAMILY = {
-  Bold: 'ValkyRegular',
   BoldSecond: 'JosefinSans-Bold',
   BoldItalic: 'JosefinSans-BoldItalic',
   Light: 'Nunito-Light',
@@ -11,6 +10,7 @@ const FONT_FAMILY = {
   SemiBoldItalic: 'JosefinSans-SemiBoldItalic',
   Thin: 'JosefinSans-Thin',
   ThinItalic: 'JosefinSans-ThinItalic',
+  yesnoMess: 'MTD Valky Bold',
 };
 
 export default FONT_FAMILY;

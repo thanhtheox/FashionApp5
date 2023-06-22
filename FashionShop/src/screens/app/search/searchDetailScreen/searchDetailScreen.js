@@ -121,7 +121,12 @@ const SearchDetailScreen = props => {
       </View>
       <ScrollView style={styles.list}>
         {searchResult.length === 0 ? (
-          <View style={{justifyContent: 'center', marginVertical: scale(60)}}>
+          <View
+            style={{
+              justifyContent: 'center',
+              marginTop: scale(140),
+              marginBottom: scale(187),
+            }}>
             <Text
               style={{
                 fontFamily: FONT_FAMILY.Bold,

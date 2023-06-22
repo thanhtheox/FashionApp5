@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     color: color.TitleActive,
     fontSize: 18,
     fontWeight: 400,
-    fontFamily: FONT_FAMILY.Regular,
+    fontFamily: FONT_FAMILY.RegularForAddress,
   },
   bodyText: {
     marginTop: scale(10),

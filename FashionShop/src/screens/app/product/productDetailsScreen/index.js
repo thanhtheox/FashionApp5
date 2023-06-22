@@ -123,15 +123,22 @@ const ProductDetailsScreen = props => {
             });
             setAvailableColor([...newColorArray]);
           }
-          // const selectedDetails = details.filter(item => item.colorId === details[0].colorId);
-          // console.log({selectedDetails})
+          // setChooseColor(availableColor[0].colorId);
+          // console.log(colorChoose);
+          // const selectedDetails = details.filter(
+          //   item => item.colorId === colorChoose,
+          // );
           // let newSizeArray = [];
           // selectedDetails.map(detail => {
-          //   newSizeArray.push({sizeId: detail.sizeId, sizeName: detail.sizeName})
-          // })
-          // setAvailableSize(newSizeArray)
-          console.log({availableColor});
-          // console.log({availableSize})
+          //   newSizeArray.push({
+          //     sizeId: detail.sizeId,
+          //     sizeName: detail.sizeName,
+          //   });
+          // });
+          // setAvailableSize([...newSizeArray]);
+          // setChooseSize(availableSize[0].sizeId);
+          // console.log({availableColor});
+          // console.log({availableSize});
         });
       } catch (err) {
         console.log(err.response.data);
@@ -350,7 +357,7 @@ const ProductDetailsScreen = props => {
             {data.care}
           </Text>
           <Text style={[fontStyles.subTitle16pxFont, styles.title]}>CARE</Text>
-          
+
           <Policy />
         </View>
         {/* You May Also Like */}
