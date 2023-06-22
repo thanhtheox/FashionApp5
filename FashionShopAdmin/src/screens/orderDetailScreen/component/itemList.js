@@ -6,6 +6,7 @@ import scale from '../../../constants/responsive'
 import FONT_FAMILY from '../../../constants/fonts'
 import { IMG_ModelOne } from '../../../assets/images'
 import { capitalizeFirstLetter } from '../../../config/uppercaseFirstLetter'
+import { dollarType } from '../../../config/currency'
 
 const ItemList = (props) => {
     const item = props.item;
@@ -21,7 +22,7 @@ const ItemList = (props) => {
           SL: {item.quantity}, {item.size}, {item.color}
         </Text>
       </View>
-      <Text style={styles.textOrange}>${item.price}</Text>
+      <Text style={styles.textOrange}>{dollarType(item.price)}</Text>
       <View style={styles.imageView}>
         <Image style={{width: '100%', height: '100%'}} source={{uri: item.image.url}} />
       </View>

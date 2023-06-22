@@ -1,15 +1,18 @@
-import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
+
+//lib
+import * as Progress from 'react-native-progress';
 //component
 import HeaderMin from '../../components/header/headerMin'
 import color from '../../constants/color'
 import scale from '../../constants/responsive'
 import FONT_FAMILY from '../../constants/fonts'
-import { IMG_ModelOne } from '../../assets/images'
 import ItemList from './component/itemList'
 import { displayDateTime } from '../../config/displayDateTime'
 import Message from '../../components/alearts.js/messageOnly'
 import { axiosPrivate } from '../../apis/axios'
+import { dollarType } from '../../config/currency'
 
 const OrderDetailScreen = (props) => {
     const { order } = props.route.params;
@@ -101,6 +104,8 @@ const OrderDetailScreen = (props) => {
                 break;
         }
     }
+
+    const windowWidth = Dimensions.get('window').width;
     return (
         <SafeAreaView style={styles.container}>
             <Message
@@ -116,6 +121,13 @@ const OrderDetailScreen = (props) => {
                 message={message}
             />
             <HeaderMin text={"Orders details"} onPress={()=>props.navigation.goBack()}/>
+            {loading && <Progress.Bar 
+                indeterminate={true} 
+                width={windowWidth} 
+                borderRadius={0} 
+                color={color.Secondary} 
+                borderWidth={0} 
+                height={3}/>}
             <View style={styles.body}>
 {/* generalInfo */}
             <ScrollView style={{paddingVertical: scale(20)}}>
@@ -158,9 +170,9 @@ const OrderDetailScreen = (props) => {
                     </View>
                     <View style={styles.row}>
                         <Text style={styles.footerText}>Total Price: </Text>
-                        <Text style={styles.textOrange}>${order.orderTotalPrice}</Text>
+                        <Text style={styles.textOrange}>{dollarType(order.orderTotalPrice)}</Text>
                     </View>
-                    <View style={[styles.row, {justifyContent: 'space-evenly'}]}>
+                    <View style={styles.buttonRow}>
                         {(order.orderStatus === "new" || order.orderStatus === "in progress" || order.orderStatus === "shipping")?(
                             <>
                             <TouchableOpacity style={styles.buttonBlack} onPress={handleBlackButton}>
@@ -202,17 +214,23 @@ const styles = StyleSheet.create({
     row: {
         width: '80%',
         flexDirection: 'row',
-        marginBottom: scale(7)
+        marginBottom: scale(7),
+    },
+    buttonRow: {
+        // width: '80%',
+        flexDirection: 'row',
+        marginBottom: scale(7),
+        justifyContent: 'space-around'
     },
     text: {
         color: color.TitleActive,
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Address,
         fontSize: 16,
     },
     textOrange: {
         color: color.Secondary,
-        fontFamily: FONT_FAMILY.Regular,
-        fontSize: 18,
+        fontFamily: FONT_FAMILY.Address,
+        fontSize: 16,
     },
     bodyText: {
         color: color.Body,
@@ -223,7 +241,7 @@ const styles = StyleSheet.create({
     footerText: {
         color: color.Body,
         fontFamily: FONT_FAMILY.Bold,
-        fontSize: scale(16),
+        fontSize: scale(20),
         marginLeft: scale(3),
     },
     imageView: {

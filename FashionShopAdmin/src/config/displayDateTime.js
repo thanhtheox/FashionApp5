@@ -20,7 +20,7 @@ export function getMonth (dateTime) {
     // Create a new Date object with the given string
     const date = new Date(dateString);
 
-    return date.getMonth();
+    return date.getMonth() + 1;
 }
 
 export function getYear (dateTime) {

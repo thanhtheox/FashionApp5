@@ -141,13 +141,16 @@ const Statistics = props => {
       let total = 0;
       order.map(item => {
         if (getYear(item.orderDate) === currentYear) {
-          if (getMonth(item.orderDate) === i)
+          if (getMonth(item.orderDate) === i) {
+            console.log(getMonth(item.orderDate));
             total += item.orderTotalPrice * 0.7;
+          }
         }
       });
       newRevenue.push(total);
     }
     setRevenue(newRevenue);
+    console.log(newRevenue);
 
     // sale
     let totalSale = 0;

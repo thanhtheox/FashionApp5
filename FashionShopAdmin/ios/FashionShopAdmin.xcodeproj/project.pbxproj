@@ -18,6 +18,7 @@
 		A1CDEEA5A71844F5928A0571 /* JosefinSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CFA47FE4A5042D1A8E14E6A /* JosefinSans-Regular.ttf */; };
 		84D65722697C49E4A6832596 /* TenorSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF0DAF18A3024BD4B711F4DC /* TenorSans-Regular.ttf */; };
 		E3F92BDC9FED413A8F0EF032 /* JosefinSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB11ACF1AC834C8B9F0F97E7 /* JosefinSans-Bold.ttf */; };
+		2DFEDB4BD5AA4819A1374335 /* Nunito-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5EE81DA95E44C36856FD125 /* Nunito-Light.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,7 @@
 		4CFA47FE4A5042D1A8E14E6A /* JosefinSans-Regular.ttf */ = {isa = PBXFileReference; name = "JosefinSans-Regular.ttf"; path = "../src/assets/fonts/JosefinSans-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		AF0DAF18A3024BD4B711F4DC /* TenorSans-Regular.ttf */ = {isa = PBXFileReference; name = "TenorSans-Regular.ttf"; path = "../src/assets/fonts/TenorSans-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		CB11ACF1AC834C8B9F0F97E7 /* JosefinSans-Bold.ttf */ = {isa = PBXFileReference; name = "JosefinSans-Bold.ttf"; path = "../src/assets/fonts/JosefinSans-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D5EE81DA95E44C36856FD125 /* Nunito-Light.ttf */ = {isa = PBXFileReference; name = "Nunito-Light.ttf"; path = "../src/assets/fonts/Nunito-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +166,7 @@
 				4CFA47FE4A5042D1A8E14E6A /* JosefinSans-Regular.ttf */,
 				AF0DAF18A3024BD4B711F4DC /* TenorSans-Regular.ttf */,
 				CB11ACF1AC834C8B9F0F97E7 /* JosefinSans-Bold.ttf */,
+				D5EE81DA95E44C36856FD125 /* Nunito-Light.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 				A1CDEEA5A71844F5928A0571 /* JosefinSans-Regular.ttf in Resources */,
 				84D65722697C49E4A6832596 /* TenorSans-Regular.ttf in Resources */,
 				E3F92BDC9FED413A8F0EF032 /* JosefinSans-Bold.ttf in Resources */,
+				2DFEDB4BD5AA4819A1374335 /* Nunito-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
