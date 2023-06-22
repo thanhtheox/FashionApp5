@@ -1,22 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import color from '../constants/color';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Custom_Header from '../components/header/Custom_Header';
 
-import { BlogStackScreen } from '../screens/app/blog/blogNavigation';
-import { CheckOutStackScreen } from '../screens/app/checkout/checkOutNavigation';
+import {BlogStackScreen} from '../screens/app/blog/blogNavigation';
+import {CheckOutStackScreen} from '../screens/app/checkout/checkOutNavigation';
 import CartScreen from '../screens/app/cart';
-import { CollectionStackScreen } from '../screens/app/collection/collectionNavigation';
-import { HomeStackScreen } from '../screens/app/home/HomeNavigation';
+import {CollectionStackScreen} from '../screens/app/collection/collectionNavigation';
+import {HomeStackScreen} from '../screens/app/home/HomeNavigation';
 import Menu from '../screens/app/menu';
 import CategoryGridViewAllScreen from '../screens/app/product/categoryGridView/CategoryGridViewAllScreen';
 import CategoryGridViewByIdScreen from '../screens/app/product/categoryGridView/CategoryGridViewByIdScreen';
 import ProductDetailsScreen from '../screens/app/product/productDetailsScreen';
 import SearchDetailScreen from '../screens/app/search/searchDetailScreen/searchDetailScreen';
 import OTPScreen from '../screens/auth/otpScreen';
-import { useDispatch, useSelector } from 'react-redux';
-import { MyInfoStackScreen } from '../screens/app/userInfo/myInfoNavigation';
-import { initCartLogIn } from '../redux/actions/cartActions';
+import {useDispatch, useSelector} from 'react-redux';
+import {MyInfoStackScreen} from '../screens/app/userInfo/myInfoNavigation';
+import {initCartLogIn} from '../redux/actions/cartActions';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import OrdersScreen from '../screens/app/orders';
 
@@ -34,59 +34,49 @@ const AppStackWithVerifyScreen = () => {
         name="HomeStackScreen"
         component={HomeStackScreen}
         options={({navigation}) => ({
-          headerTitle: () => (
-            <Custom_Header navigation={navigation}/>
-          ),
+          headerTitle: () => <Custom_Header navigation={navigation} />,
         })}
       />
       <AppStackWithVerify.Screen
         name="BlogStackScreen"
         component={BlogStackScreen}
         options={({navigation}) => ({
-          headerTitle: () => (
-            <Custom_Header navigation={navigation}/>
-          ),
+          headerTitle: () => <Custom_Header navigation={navigation} />,
         })}
       />
       <AppStackWithVerify.Screen
         name="CheckOutStackScreen"
         component={CheckOutStackScreen}
         options={({navigation}) => ({
-          headerTitle: () => (
-            <Custom_Header navigation={navigation}/>
-          ),
+          headerTitle: () => <Custom_Header navigation={navigation} />,
         })}
       />
       <AppStackWithVerify.Screen
         name="CategoryGridViewByIdScreen"
         component={CategoryGridViewByIdScreen}
         options={({navigation}) => ({
-          headerTitle: () => (
-            <Custom_Header navigation={navigation}/>
-          ),
+          headerTitle: () => <Custom_Header navigation={navigation} />,
         })}
       />
       <AppStackWithVerify.Screen
         name="CategoryGridViewAllScreen"
         component={CategoryGridViewAllScreen}
         options={({navigation}) => ({
-          headerTitle: () => (
-            <Custom_Header navigation={navigation}/>
-          ),
+          headerTitle: () => <Custom_Header navigation={navigation} />,
         })}
       />
       <AppStackWithVerify.Screen
         name="CartScreen"
         component={CartScreen}
         options={() => ({
-          headerShown:false
+          headerShown: false,
         })}
       />
       <AppStackWithVerify.Screen
         name="MenuScreen"
         component={Menu}
         options={() => ({
-          headerShown:false
+          headerShown: false,
         })}
       />
       <AppStackWithVerify.Screen
@@ -94,11 +84,16 @@ const AppStackWithVerifyScreen = () => {
         component={CollectionStackScreen}
         options={({navigation}) => ({
           headerStyle: {
-            backgroundColor:color.TitleActive,
+            backgroundColor: color.TitleActive,
           },
           headerTitle: () => (
-            <Custom_Header logoColor={color.OffWhite} menuColor={color.OffWhite} 
-            searchColor={color.OffWhite} cartColor={color.OffWhite} navigation={navigation}/>
+            <Custom_Header
+              logoColor={color.OffWhite}
+              menuColor={color.OffWhite}
+              searchColor={color.OffWhite}
+              cartColor={color.OffWhite}
+              navigation={navigation}
+            />
           ),
         })}
       />
@@ -106,34 +101,28 @@ const AppStackWithVerifyScreen = () => {
         name="ProductDetailsScreen"
         component={ProductDetailsScreen}
         options={({navigation}) => ({
-          headerTitle: () => (
-            <Custom_Header navigation={navigation}/>
-          ),
+          headerTitle: () => <Custom_Header navigation={navigation} />,
         })}
       />
       <AppStackWithVerify.Screen
         name="SearchDetailScreen"
         component={SearchDetailScreen}
         options={({navigation}) => ({
-          headerTitle: () => (
-            <Custom_Header navigation={navigation}/>
-          ),
+          headerTitle: () => <Custom_Header navigation={navigation} />,
         })}
       />
       <AppStackWithVerify.Screen
         name="OrdersScreen"
         component={OrdersScreen}
         options={({navigation}) => ({
-          headerTitle: () => (
-            <Custom_Header navigation={navigation}/>
-          ),
+          headerTitle: () => <Custom_Header navigation={navigation} />,
         })}
       />
       <AppStackWithVerify.Screen
         name="MyInfoStackScreen"
         component={MyInfoStackScreen}
         options={() => ({
-          headerShown:false
+          headerShown: false,
         })}
       />
     </AppStackWithVerify.Navigator>
@@ -155,45 +144,50 @@ const AppStackScreen = () => {
   const editCartHandler = async () => {
     try {
       const editCart = [];
-      cartItems.map((item) => {
-        const editCartItem = {productDetailId: item.detailId, quantity:item.qty}
-        editCart.push(editCartItem)
-      })
+      cartItems.map(item => {
+        const editCartItem = {
+          productDetailId: item.detailId,
+          quantity: item.qty,
+        };
+        editCart.push(editCartItem);
+      });
       const response = await axiosPrivate.put(
         `/edit-cart-item/${cartId}`,
         JSON.stringify({
           productDetails: editCart,
         }),
-      )
+      );
       console.log('editCartSuccess', JSON.stringify(response.data));
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   // setTimeout(() => {
   //   editCartHandler();
   // }, 50000);
-  var today = new Date()
-    var hour = today.getHours()
-    var minute = today.getMinutes()
-    var second = today.getSeconds()
-    
-    // console.log(hour,minute,second)
-    if ((hour === 10) && (minute === 10) (second === 10)) {editCartHandler();}
+  var today = new Date();
+  var hour = today.getHours();
+  var minute = today.getMinutes();
+  var second = today.getSeconds();
+
+  // console.log(hour,minute,second)
+  //if ((hour === 10) && (minute === 10) (second === 10)) {editCartHandler();}
   return (
     <AppStack.Navigator
       initialRouteName="AppStackWithVerifyScreen"
       screenOptions={{headerShown: false}}>
-        {userInfo.emailVerified === true ? (
-          <>
-        <AppStack.Screen name="AppStackWithVerifyScreen" component={AppStackWithVerifyScreen} />
+      {userInfo.emailVerified === true ? (
+        <>
+          <AppStack.Screen
+            name="AppStackWithVerifyScreen"
+            component={AppStackWithVerifyScreen}
+          />
         </>
-        ):( 
+      ) : (
         <AppStack.Screen name="OTPScreen" component={OTPScreen} />
-        )}
-      </AppStack.Navigator>
+      )}
+    </AppStack.Navigator>
   );
 };
 
 export default AppStackScreen;
-

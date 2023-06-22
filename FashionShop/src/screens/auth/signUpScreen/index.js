@@ -21,6 +21,7 @@ import {axiosPrivate} from '../../../apis/axios';
 import {initUser} from '../../../redux/actions/userActions';
 import {initCartLogIn} from '../../../redux/actions/cartActions';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import OKMessageBox from '../../../components/messageBox/OKMessageBox';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 const phoneRegExp =
@@ -69,6 +70,8 @@ const SignUpScreen = props => {
   const [lastName, setLastName] = useState('');
   const axiosPrivate = useAxiosPrivate();
   const [errorMessage, setErrorMessage] = useState('');
+  const [visible, setVisible] = useState(false);
+  const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -132,15 +135,23 @@ const SignUpScreen = props => {
       setLoading(false);
       props.navigation.navigate('AppStackScreen');
     } catch (error) {
-      setErrorMessage(error.message);
       setLoading(false);
+      setVisible(true);
+      setErrorMessage(error.response?.data.error.message);
+      setTitle('Error');
       console.log('🚀 ~ file: index.js:70 ~ handleSignup ~ error', error);
-      console.log(error.response.data);
+      console.log(error.response.data.message);
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      <OKMessageBox
+        visible={visible}
+        message={errorMessage}
+        clickCancel={() => setVisible(false)}
+        title={title}
+      />
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.viewIcon}

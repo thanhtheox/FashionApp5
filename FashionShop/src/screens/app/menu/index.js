@@ -17,7 +17,7 @@ import {
   IC_ForwardArrow,
   IC_Location,
   IC_Forward,
-  IC_Shipping,
+  IC_MyOrder,
 } from '../../../assets/icons';
 import FONT_FAMILY from '../../../constants/fonts';
 import scale from '../../../constants/responsive';
@@ -213,7 +213,7 @@ const Menu = props => {
         <TouchableOpacity
           style={styles.buttonView}
           onPress={() => props.navigation.navigate('OrdersScreen')}>
-          <IC_Shipping />
+          <IC_MyOrder />
           <Text style={styles.buttonText}>My Orders</Text>
         </TouchableOpacity>
         <TouchableOpacity

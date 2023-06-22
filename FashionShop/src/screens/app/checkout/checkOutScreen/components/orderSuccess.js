@@ -22,6 +22,8 @@ const OrderSuccess = props => {
   const {data} = props.route.params;
   const axiosPrivate = useAxiosPrivate();
   const [visible, setVisible] = useState(false);
+  const [title, setTitle] = useState('');
+  const [message, setMessage] = useState('');
   const [cancelSuccess, setCancelSuccess] = useState(false);
   // console.log('------------',JSON.stringify(data))
   const cancelHandler = async id => {
@@ -29,8 +31,13 @@ const OrderSuccess = props => {
       const response = await axiosPrivate.put(`/cancel-order/${id}`);
       console.log('cancelOrder', JSON.stringify(response.data));
       setCancelSuccess(true);
+      setTitle('CANCELED')
+      setMessage('Your order was canceled!')
     } catch (error) {
       console.log(error.response?.data);
+      setVisible(true)
+      setTitle('Error')
+      setMessage(err.response.data.error)
     }
   };
 
@@ -38,18 +45,19 @@ const OrderSuccess = props => {
     <SafeAreaView style={styles.container}>
       <OKMessageBox
         visible={cancelSuccess}
-        clickCancel={() => props.navigation.navigate('HomeScreen')}
-        title={'CANCELED'}
-        message={'Your order was canceled!'}
+        clickCancel={() => title === 'Error' ? setCancelSuccess(false):props.navigation.navigate('HomeScreen')}
+        title={title}
+        message={message}
       />
       <YesNoMessageBox
         visible={visible}
-        onPressYes={() => cancelHandler(data.orderId)}
-        onPressNo={() => props.navigation.navigate('HomeScreen')}
-        title={'DO YOU WANT TO CANCEL ORDER?'}
+        status={'new'}
+        clickYes={() => cancelHandler(data.orderId)}
+        clickNo={() => props.navigation.navigate('HomeScreen')}
+        title={'CANCEL CONFIRMATION?'}
         message={'Do you want to cancel your order?'}
       />
-      <ScrollView>
+      <View>
         <View style={styles.introTextBox}>
           <Text style={styles.introText}>ORDER RECEIVED</Text>
           <IC_Success style={styles.icon} />
@@ -102,9 +110,8 @@ const OrderSuccess = props => {
           <ScrollView
             style={{
               flexDirection: 'column',
-              height: scale(140),
-              marginBottom: scale(15),
-              borderBottomWidth: 1,
+              height: scale(200),
+              marginVertical: scale(33),
             }}>
             {data.productDetails.map(item => (
               <View key={item.detailId} style={{marginBottom: scale(10)}}>
@@ -126,7 +133,7 @@ const OrderSuccess = props => {
           onPress={() => setVisible(true)}>
           <Text style={styles.button}>CANCEL</Text>
         </TouchableOpacity>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };

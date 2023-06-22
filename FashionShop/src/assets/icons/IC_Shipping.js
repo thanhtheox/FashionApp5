@@ -1,32 +1,21 @@
-import * as React from "react"
-import Svg, { Path, Circle } from "react-native-svg"
-import { memo } from "react"
-
-const SvgComponent = (props) => (
+import * as React from 'react';
+import Svg, {Path} from 'react-native-svg';
+import {memo} from 'react';
+const SvgComponent = props => (
   <Svg
-    width={24}
-    height={24}
-    fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
+    width={30}
+    height={30}
+    fill="none"
+    {...props}>
     <Path
-      d="M13.565 6.871h4.487l4.435 4.383v6.73h-1.996M8.557 18.089h6.73"
       stroke="#000"
-    />
-    <Circle cx={17.948} cy={17.984} r={2.422} stroke="#000" />
-    <Path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M6.052 19.906a1.922 1.922 0 1 0 0-3.843 1.922 1.922 0 0 0 0 3.843Zm0 1a2.922 2.922 0 1 0 0-5.843 2.922 2.922 0 0 0 0 5.843Z"
-      fill="#000"
-    />
-    <Path
-      d="M1.498 18.493V3.501l12.003.022v14.461H8.452M1.2 17.984h2.504"
-      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M25.625 9.097 15 15m0 0L4.375 9.097M15 15v11.875m11.25-6.802V9.927c0-.428 0-.642-.063-.833a1.25 1.25 0 0 0-.268-.455c-.136-.148-.323-.252-.698-.46l-9.25-5.14c-.354-.196-.531-.295-.72-.333a1.25 1.25 0 0 0-.503 0c-.188.038-.365.137-.72.334l-9.25 5.139c-.374.208-.56.312-.697.46a1.25 1.25 0 0 0-.268.455c-.063.19-.063.405-.063.833v10.146c0 .429 0 .643.063.834.056.169.147.324.268.455.136.148.323.252.698.46l9.25 5.139c.354.197.531.295.72.334.165.034.337.034.503 0 .188-.039.365-.137.72-.334l9.25-5.14c.374-.207.56-.311.697-.46.12-.13.212-.285.268-.454.063-.191.063-.405.063-.834ZM20.625 11.875l-11.25-6.25"
     />
   </Svg>
-)
-
-const Memo = memo(SvgComponent)
-export default Memo
+);
+const Memo = memo(SvgComponent);
+export default Memo;

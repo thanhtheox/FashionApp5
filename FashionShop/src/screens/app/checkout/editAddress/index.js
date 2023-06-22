@@ -52,6 +52,8 @@ const EditAddressScreen = props => {
   const [wardOpen, setWardOpen] = useState(false);
   const [visibleChanged, setVisibleChanged] = useState(false);
   const [visibleNotChanged, setVisibleNotChanged] = useState(false);
+  const [title, setTitle] = useState('');
+  const [message, setMessage] = useState('');
   const axiosPrivate = useAxiosPrivate();
   const address = useSelector(state => state.address);
   const [addresses, setAddresses] = useState(address.addresses);
@@ -124,10 +126,13 @@ const EditAddressScreen = props => {
       );
       console.log('success', JSON.stringify(response.data));
       setVisibleChanged(true);
-      //setLoading(false);
+      setTitle('EDIT SUCCESSFULLY ADDRESS')
+      setMessage('You edited successfully address!')
     } catch (error) {
-      //setLoading(false);
       console.log('error', error);
+      setVisibleChanged(true)
+      setTitle('Error')
+      setMessage(err.response.data.error)
     }
   };
   const handleCityChange = async city => {
@@ -177,17 +182,18 @@ const EditAddressScreen = props => {
       <OKMessageBox
         visible={visibleChanged}
         clickCancel={() => {
-          props.navigation.navigate('CheckOutScreen');
+          title === 'Error' ? setVisibleChanged(false):props.navigation.navigate('CheckOutScreen');
         }}
-        title={'EDIT SUCCESSFULLY ADDRESS '}
-        message={'You edited successfully address!'}
+        title={title}
+        message={message}
       />
       <YesNoMessageBox
         visible={visibleNotChanged}
-        onPressYes={() => {
+        status={'new'}
+        clickYes={() => {
           props.navigation.navigate('CheckOutScreen');
         }}
-        onPressNo={() => setVisibleNotChanged(false)}
+        clickNo={() => setVisibleNotChanged(false)}
         title={'WANNA EXIT?'}
         message={'Do you want to exit without changing your address?'}
       />

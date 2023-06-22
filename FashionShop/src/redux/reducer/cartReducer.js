@@ -36,6 +36,16 @@ export const cartReducer = (state = CART_INITIAL_STATE, action) => {
             : x,
         ),
       };
+      case actionTypes.ORDER_ALL:
+        // console.log(action.payload)
+        return {
+          ...state,
+          cartItems: state.cartItems.map(x =>
+            x.isOrder === false
+            ? {...x, isOrder: true}
+            : x,
+          ),
+        };
     case actionTypes.REMOVE_FROM_CART:
       return {
         ...state,
