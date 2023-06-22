@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: color.TitleActive,
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Address,
         fontSize: 18,
     },
     textOrange: {

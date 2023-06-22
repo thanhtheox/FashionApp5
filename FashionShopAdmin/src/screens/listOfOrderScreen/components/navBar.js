@@ -7,7 +7,7 @@ import color from '../../../constants/color'
 import { IC_CompleteOrder, IC_InProcessOrder, IC_NewOrder, IC_ReturnOrCancel, IC_ShippingOrder } from '../../../assets/icons'
 
 const NavBar = (props) => {
-    const {chosen, setChosen} = props;
+    const {chosen, setChosen, setSubChosen} = props;
   return (
     <View style={styles.bottomTabs}>
         <TouchableOpacity style={chosen=="new"?styles.touchTabChosen:styles.touchTab} onPress={() => {setChosen("new")}}>
@@ -30,7 +30,7 @@ const NavBar = (props) => {
             <Text style={chosen=="complete"?styles.textTabChosen:styles.textTab}>Complete</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={chosen=="return"?styles.touchTabChosen:styles.touchTab} onPress={()=>{setChosen("return")}}>
+        <TouchableOpacity style={chosen=="return"?styles.touchTabChosen:styles.touchTab} onPress={()=>{setChosen("return"); setSubChosen('return')}}>
             <IC_ReturnOrCancel />
             <Text style={chosen=="return"?styles.textTabChosen:styles.textTab}>Return/Cancel</Text>
         </TouchableOpacity>

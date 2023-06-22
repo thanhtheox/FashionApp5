@@ -1,7 +1,9 @@
-import { StyleSheet, Text, View , SafeAreaView, TouchableOpacity} from 'react-native'
+import { StyleSheet, Text, View , SafeAreaView, TouchableOpacity, Dimensions} from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useIsFocused } from '@react-navigation/native';
+//lib
+import * as Progress from 'react-native-progress';
 //component
 import color from '../../constants/color'
 import FONT_FAMILY from '../../constants/fonts'
@@ -17,6 +19,7 @@ const ListOfOrderScreen = (props) => {
   const axiosPrivate = useAxiosPrivate();
   const isFocus = useIsFocused();
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -24,6 +27,7 @@ const ListOfOrderScreen = (props) => {
 
     const getOrders = async () => {
       try {
+        setLoading(true);
         const response = await axiosPrivate.get('/get-all-order', {
           signal: controller.signal,
         });
@@ -31,6 +35,8 @@ const ListOfOrderScreen = (props) => {
         isMounted && setOrders(response.data.orders);
       } catch (err) {
         console.log(err);
+      } finally {
+        setLoading(false);
       }
     };
     
@@ -44,9 +50,17 @@ const ListOfOrderScreen = (props) => {
 
   const [chosen, setChosen] = useState('new');
   const [subChosen, setSubChosen] = useState('return');
+  const windowWidth = Dimensions.get('window').width;
   return (
     <SafeAreaView style={styles.container}>
       <HeaderMin text={"List of orders"} onPress={()=>props.navigation.goBack()}/>
+      {loading && <Progress.Bar
+                indeterminate={true} 
+                width={windowWidth} 
+                borderRadius={0} 
+                color={color.Secondary} 
+                borderWidth={0} 
+                height={3}/>}
       {(chosen==='cancel' || chosen==='return')?(
           <View style={{flexDirection: 'row'}}>
             <UnderLine text={'Return'} name={'return'} onPress={() => {setSubChosen('return'), setChosen('return')}} chosen={subChosen}/>
@@ -60,7 +74,7 @@ const ListOfOrderScreen = (props) => {
           </TouchableOpacity>
         ))}
       </ScrollView>
-      <NavBar chosen={chosen} setChosen={setChosen}/>
+      <NavBar chosen={chosen} setChosen={setChosen} setSubChosen={setSubChosen}/>
     </SafeAreaView>
   )
 }

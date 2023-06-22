@@ -21,6 +21,7 @@ import axios from '../../apis/axios';
 import useAuth from '../../hooks/useAuth';
 import Message from '../../components/alearts.js/messageOnly';
 import { capitalizeFirstLetter } from '../../config/uppercaseFirstLetter';
+import useLogout from '../../hooks/useLogout'
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
@@ -78,9 +79,20 @@ const SignInScreen = props => {
       console.log('success', JSON.stringify(response.data));
 
       const accessToken = response?.data?.accessToken;
-      setAuth({email: mail, accessToken});
-      setLoading(false);
-      props.navigation.navigate('DashBoard');
+      console.log(response.data);
+      if (response.data.user.role === 'Admin')
+      {
+        setAuth({email: mail, accessToken});
+        setLoading(false);
+        props.navigation.navigate('DashBoard');
+      }
+      else {
+        await logout();
+        setTitle("Error");
+        setMessage("Only admin account can access this app");
+        setLoading(false);
+        setVisible(true);
+      }
     } catch (err) {
       console.log('err', err.response.data);
       setErrorMessage(err.message);
@@ -90,7 +102,7 @@ const SignInScreen = props => {
       setLoading(false);
     }
   };
-
+  const logout = useLogout();
   const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState('');
   const [title, setTitle] = useState('');
@@ -228,12 +240,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     justifyContent: 'flex-end',
     borderColor: color.GraySolid,
+    fontFamily: FONT_FAMILY.Regular,
 
   },
   inputText: {
     color: color.TitleActive,
     fontSize: 16,
     marginLeft: scale(5),
+    fontFamily: FONT_FAMILY.Regular,
   },
   buttonSignIn: {
     marginTop: scale(61),

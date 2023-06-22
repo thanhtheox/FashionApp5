@@ -5,6 +5,7 @@ import { IC_Edit,IC_Delete,IC_See } from '../../../assets/icons'
 import scale from '../../../constants/responsive'
 import FONT_FAMILY from '../../../constants/fonts'
 import color from '../../../constants/color'
+import { dollarType } from '../../../config/currency'
 
 const Item = (props) => {
 
@@ -21,7 +22,7 @@ const Item = (props) => {
                 <View style={styles.viewDescription}>
                     <Text style={styles.name} numberOfLines={1}>{props.name}</Text>
                     <Text style={styles.description} numberOfLines={1}>{props.description}</Text>
-                    <Text style={styles.price} numberOfLines={1}>{props.price}$</Text>
+                    <Text style={styles.price} numberOfLines={1}>{dollarType(props.price)}</Text>
                     <Text style={styles.sale} numberOfLines={1}>Sale: {props.sale}</Text>
 
                 </View>
