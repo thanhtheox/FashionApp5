@@ -62,7 +62,7 @@ const Custom_Footer = props => {
       {/* Body Text */}
       <View style={styles.bodyTextContainer}>
         <Text style={styles.bodyText}>
-          {'fashionshopapp5@gmail.com\n+60 825 876\n08:00 - 22:00 - Everyday'}
+          {'fashionshopapp5@gmail.com\n+84912345678\n08:00 - 22:00 - Everyday'}
         </Text>
       </View>
       {/* Line Bottom */}
@@ -88,11 +88,11 @@ const Custom_Footer = props => {
         </View>
       </>
       {/* Label */}
-      {/* <View style={styles.labelContainer}>
+      <View style={styles.labelContainer}>
         <Text style={styles.labelText}>
-          Copyright© OpenUI All Rights Reserved.
+          Copyright© FashionShop5 All Rights Reserved.
         </Text>
-      </View> */}
+      </View>
     </View>
   );
 };
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginTop: scale(20),
+    marginTop: scale(32),
   },
   aboutText: {
     fontFamily: FONT_FAMILY.Regular,

@@ -58,6 +58,8 @@ const AddNewAddressScreen = props => {
   const [wardList, setWardList] = useState([]);
   const [wardOpen, setWardOpen] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [title, setTitle] = useState('');
+  const [message, setMessage] = useState('');
   const axiosPrivate = useAxiosPrivate();
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
@@ -132,8 +134,13 @@ const AddNewAddressScreen = props => {
       dispatch(addAddress(response.data.address.addresses))
       console.log('success', JSON.stringify(response.data.address.addresses));
       setVisible(true)
+      setTitle('ADD SUCCESSFULLY ADDRESS')
+      setMessage('You added successfully address!')
     } catch (error) {
       console.log("error", error)
+      setVisible(true)
+      setTitle('Error')
+      setMessage(err.response.data.error)
   };
 }
 const handleCityChange = async(city) => {
@@ -169,14 +176,17 @@ const handleDistrictChange = async(district) => {
         })
   }
   catch (error) {
-    console.log("error", error)
+    console.log("error", error);
+    setVisible(true);
+    
 };
 };
     return (
         <SafeAreaView style = {styles.container}>
-          <OKMessageBox visible={visible} clickCancel={() => {props.navigation.navigate('CheckOutScreen')}} 
-          title={"ADD SUCCESSFULLY ADDRESS "} 
-          message={"You added successfully address!"}  />
+          <OKMessageBox visible={visible} 
+          clickCancel={() => {title === 'Error' ? setVisible(false):props.navigation.navigate('CheckOutScreen')}} 
+          title={title} 
+          message={message}  />
             <View style={styles.introTextBox}>
                 <Text style={styles.introText}>ADD SHIPPING ADDRESS</Text>
                 <Image source={LineBottom} style={{alignSelf: 'center'}}/>

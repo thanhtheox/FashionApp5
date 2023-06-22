@@ -53,9 +53,23 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>TenorSans-Regular.ttf</string>
 		<string>JosefinSans-Italic.ttf</string>
 		<string>JosefinSans-Regular.ttf</string>
+		<string>JosefinSans-Bold.ttf</string>
+		<string>JosefinSans-BoldItalic.ttf</string>
+		<string>JosefinSans-Light.ttf</string>
+		<string>JosefinSans-LightItalic.ttf</string>
+		<string>JosefinSans-SemiBold.ttf</string>
+		<string>JosefinSans-SemiBoldItalic.ttf</string>
+		<string>JosefinSans-Thin.ttf</string>
+		<string>JosefinSans-ThinItalic.ttf</string>
+		<string>Nunito-Bold.ttf</string>
+		<string>Nunito-Light.ttf</string>
+		<string>Nunito-Regular.ttf</string>
+		<string>Nunito-SemiBold.ttf</string>
+		<string>DFVN Skylar.otf</string>
+		<string>ValkyRegular.ttf</string>
+		<string>MTD Valky Bold.otf</string>
 	</array>
 </dict>
 </plist>

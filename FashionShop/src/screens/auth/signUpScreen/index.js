@@ -17,10 +17,11 @@ import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useDispatch} from 'react-redux';
 import useAuth from '../../../hooks/useAuth';
-import { axiosPrivate } from '../../../apis/axios';
-import { initUser } from '../../../redux/actions/userActions';
-import { initCartLogIn } from '../../../redux/actions/cartActions';
+import {axiosPrivate} from '../../../apis/axios';
+import {initUser} from '../../../redux/actions/userActions';
+import {initCartLogIn} from '../../../redux/actions/cartActions';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import OKMessageBox from '../../../components/messageBox/OKMessageBox';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 const phoneRegExp =
@@ -69,6 +70,8 @@ const SignUpScreen = props => {
   const [lastName, setLastName] = useState('');
   const axiosPrivate = useAxiosPrivate();
   const [errorMessage, setErrorMessage] = useState('');
+  const [visible, setVisible] = useState(false);
+  const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -111,11 +114,11 @@ const SignUpScreen = props => {
       );
       const accessToken = responseLogin?.data?.accessToken;
       dispatch(initUser(responseLogin.data.user));
-      const getUserInfoFirstTime = async (id) => {
+      const getUserInfoFirstTime = async id => {
         try {
-            const responseCart = await axiosPrivate.get(
-              `/get-cart-by-user-id/${id}`
-            );
+          const responseCart = await axiosPrivate.get(
+            `/get-cart-by-user-id/${id}`,
+          );
           dispatch(initCartLogIn(responseCart.data));
         } catch (err) {
           console.log('err', err);
@@ -132,15 +135,23 @@ const SignUpScreen = props => {
       setLoading(false);
       props.navigation.navigate('AppStackScreen');
     } catch (error) {
-      setErrorMessage(error.message);
       setLoading(false);
+      setVisible(true);
+      setErrorMessage(error.response?.data.error.message);
+      setTitle('Error');
       console.log('🚀 ~ file: index.js:70 ~ handleSignup ~ error', error);
-      console.log(error.response.data);
+      console.log(error.response.data.message);
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      <OKMessageBox
+        visible={visible}
+        message={errorMessage}
+        clickCancel={() => setVisible(false)}
+        title={title}
+      />
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.viewIcon}
@@ -349,13 +360,12 @@ const styles = StyleSheet.create({
   textTile: {
     color: color.White,
     fontSize: 36,
-    fontFamily: FONT_FAMILY.JoseFinSans,
-    fontWeight: 700,
+    fontFamily: FONT_FAMILY.BoldSecond,
   },
   textLabel: {
     color: color.White,
     fontSize: 18,
-    fontFamily: FONT_FAMILY.JoseFinSans,
+    fontFamily: FONT_FAMILY.Regular,
     fontWeight: 500,
   },
   body: {
@@ -374,16 +384,19 @@ const styles = StyleSheet.create({
     width: scale(295),
     height: scale(51),
     justifyContent: 'space-between',
+    fontFamily: FONT_FAMILY.Regular,
   },
   inputFirstName: {
     borderBottomWidth: 1,
     width: scale(107),
     height: scale(51),
+    fontFamily: FONT_FAMILY.Regular,
   },
   inputLastName: {
     borderBottomWidth: 1,
     width: scale(180),
     height: scale(51),
+    fontFamily: FONT_FAMILY.Regular,
   },
   inputMailBox: {
     marginTop: scale(10),
@@ -391,6 +404,7 @@ const styles = StyleSheet.create({
     height: scale(51),
     borderColor: color.GraySolid,
     borderBottomWidth: 1,
+    fontFamily: FONT_FAMILY.Regular,
   },
   inputPhoneNumber: {
     marginTop: scale(10),
@@ -398,6 +412,7 @@ const styles = StyleSheet.create({
     height: scale(51),
     borderColor: color.GraySolid,
     borderBottomWidth: 1,
+    fontFamily: FONT_FAMILY.Regular,
   },
   inputPassword: {
     marginTop: scale(10),
@@ -405,6 +420,7 @@ const styles = StyleSheet.create({
     height: scale(51),
     borderColor: color.GraySolid,
     borderBottomWidth: 1,
+    fontFamily: FONT_FAMILY.Regular,
   },
   inputPasswordConfirm: {
     marginTop: scale(10),
@@ -412,12 +428,14 @@ const styles = StyleSheet.create({
     height: scale(51),
     borderColor: color.GraySolid,
     borderBottomWidth: 1,
+    fontFamily: FONT_FAMILY.Regular,
   },
   inputText: {
     color: color.TitleActive,
     fontSize: 16,
     marginTop: scale(10),
     marginLeft: scale(5),
+    fontFamily: FONT_FAMILY.Regular,
   },
   buttonSignIn: {
     marginTop: scale(61),
@@ -431,12 +449,12 @@ const styles = StyleSheet.create({
     color: color.RedSolid,
     fontSize: 16,
     fontWeight: 400,
-    fontFamily: FONT_FAMILY.JoseFinSans,
+    fontFamily: FONT_FAMILY.BoldSecond,
   },
   textFailed: {
     alignSelf: 'flex-start',
-    fontFamily: FONT_FAMILY.JoseFinSans,
-    fontSize: scale(10),
+    fontFamily: FONT_FAMILY.Italic,
+    fontSize: scale(9),
     color: color.RedSolid,
     marginTop: scale(5),
   },

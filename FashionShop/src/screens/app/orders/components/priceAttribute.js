@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, Dimensions, TouchableOpacity,Image} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import React from 'react';
 import scale from '../../../../constants/responsive';
 import FONT_FAMILY from '../../../../constants/fonts';
@@ -8,19 +15,37 @@ const {width: screenWidth} = Dimensions.get('window');
 
 const PriceAttribute = props => {
   return (
-    <TouchableOpacity style={[props.style, styles.view1]} 
+    <TouchableOpacity
+      style={[props.style, styles.view1]}
       onPress={props.onPress}>
       <View style={styles.viewValue}>
-        <Text style={styles.styleTextNumber} >x{props.qty}</Text>
+        <Text style={styles.styleTextNumber}>x{props.qty}</Text>
       </View>
-      <View style={{width:scale(40),height:scale(50)}}>
-        <Image source={{uri: props.image}} style={{width:'100%',height:'100%'}} resizeMode='cover'/>
+      <View style={{width: scale(40), height: scale(50)}}>
+        <Image
+          source={{uri: props.image}}
+          style={{width: '100%', height: '100%'}}
+          resizeMode="cover"
+        />
       </View>
       <View style={styles.viewTextName}>
-        <Text style={styles.styleTextName} numberOfLines={1}>{props.name}</Text>
-        <View style={{flexDirection:'row'}}>
-          <View style={{backgroundColor:props.colorCode,width:scale(15),height:scale(15),borderRadius:360,marginRight:scale(10),borderWidth:1}}/>
-          <Text style={styles.styleSizeName} numberOfLines={1}>{props.sizeName}</Text>
+        <Text style={styles.styleTextName} numberOfLines={1}>
+          {props.name}
+        </Text>
+        <View style={{flexDirection: 'row'}}>
+          <View
+            style={{
+              backgroundColor: props.colorCode,
+              width: scale(15),
+              height: scale(15),
+              borderRadius: 360,
+              marginRight: scale(10),
+              borderWidth: 1,
+            }}
+          />
+          <Text style={styles.styleSizeName} numberOfLines={1}>
+            {props.sizeName}
+          </Text>
         </View>
       </View>
       <View style={styles.viewPrice}>
@@ -60,7 +85,7 @@ const styles = StyleSheet.create({
   },
   styleTextName: {
     color: color.TitleActive,
-    fontFamily: FONT_FAMILY.Bold,
+    fontFamily: FONT_FAMILY.Regular,
     fontSize: scale(13),
     textAlign: 'left',
     letterSpacing: -0.39,
@@ -76,7 +101,7 @@ const styles = StyleSheet.create({
     width: scale(120),
     height: scale(35),
     justifyContent: 'center',
-    marginLeft:scale(20),
+    marginLeft: scale(20),
   },
   styleTextPrice: {
     color: color.TitleActive,
