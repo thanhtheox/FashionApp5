@@ -12,7 +12,7 @@ const fontStyles = StyleSheet.create({
     color: '#202224',
   },
   subTitle16pxFont: {
-    fontFamily: FONT_FAMILY.Regular,
+    fontFamily: FONT_FAMILY.BoldSecond,
     fontSize: scale(16),
     lineHeight: scale(24),
     letterSpacing: scale(2),

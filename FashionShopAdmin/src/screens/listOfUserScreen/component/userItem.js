@@ -1,5 +1,6 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View ,Image} from 'react-native'
 import React from 'react'
+//component
 import { IMG_ModelOne } from '../../../assets/images'
 import scale from '../../../constants/responsive'
 import color from '../../../constants/color'
@@ -12,7 +13,7 @@ const UserItem = (props) => {
         <Text style={styles.number}>{props.number}</Text>
     </View>
     <View style={styles.viewImage}>
-        <Image source={{uri:props.source}} style={styles.image} resizeMode='stretch'></Image>
+        <Image source={{uri:props.source}} style={styles.image} resizeMode='cover'></Image>
     </View>
     <View style={styles.viewInfo}>
         <Text style={styles.textName} numberOfLines={1} >{props.name}</Text>
@@ -63,8 +64,7 @@ const styles = StyleSheet.create({
     textDate:{
         fontSize: 14,
         color: color.TitleActive,
-        fontWeight: '500',
-        fontFamily: FONT_FAMILY.Regular,
+        fontFamily: FONT_FAMILY.Bold,
         opacity: 0.5,
     },
 

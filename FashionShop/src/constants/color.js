@@ -14,9 +14,10 @@ const color = {
   AthensGray: '#E6E9EE',
   Silver: '#C4C4C4',
   Border: '#DEDEDE',
-  Alto:'#D6D6D6',
-  GraySolid:'#808080',
+  Alto: '#D6D6D6',
+  GraySolid: '#808080',
   RedSolid: '#ff0000',
+  Purple: '#936de4',
 };
 
 export default color;

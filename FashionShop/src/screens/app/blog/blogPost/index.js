@@ -104,6 +104,9 @@ import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
             {tags.map(item =>            
                 <Custom_Tag2
                 {...props}  
+                onPress={() => props.navigation.navigate('CategoryGridViewByIdScreen', {
+                  data: item,
+                  })}
                 key={item._id}
                 value={'#' + item.name}
                 />

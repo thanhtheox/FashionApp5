@@ -103,10 +103,8 @@ const OrderSuccess = props => {
             style={{
               flexDirection: 'column',
               height: scale(140),
-              width: scale(350),
               marginBottom: scale(15),
               borderBottomWidth: 1,
-              marginLeft: scale(-10),
             }}>
             {data.productDetails.map(item => (
               <View key={item.detailId} style={{marginBottom: scale(10)}}>
@@ -193,13 +191,13 @@ const styles = StyleSheet.create({
     color: color.TitleActive,
     fontSize: 18,
     fontWeight: '500',
-    fontFamily: FONT_FAMILY.Bold,
+    fontFamily: FONT_FAMILY.BoldSecond,
   },
   userText: {
     color: color.TitleActive,
     fontSize: 18,
     fontWeight: '400',
-    fontFamily: FONT_FAMILY.Regular,
+    fontFamily: FONT_FAMILY.RegularForAddress,
     marginTop: scale(5),
     marginLeft: scale(10),
   },

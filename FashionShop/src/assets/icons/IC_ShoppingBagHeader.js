@@ -34,7 +34,7 @@ const SvgComponent = (props) => (
         top: scale(-6),
         borderRadius: 360,
       }}>
-      <Text style={{fontSize: scale(10),justifyContent:'center', alignSelf: 'center',fontWeight:'600',
+      <Text style={{fontSize: scale(10),fontWeight:'600',textAlign:'center',
       color: color.OffWhite,fontFamily:FONT_FAMILY.Bold}}>{props.nOP}</Text>
     </View>
   </Svg>

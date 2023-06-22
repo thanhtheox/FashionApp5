@@ -13,33 +13,24 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
+import { useIsFocused } from '@react-navigation/native';
+
+//component
 import color from '../../constants/color';
 import scale from '../../constants/responsive';
 import FONT_FAMILY from '../../constants/fonts';
-import {
-  IMG_Collection,
-  IMG_ModelFour,
-  IMG_ModelOne,
-  IMG_ModelThree,
-  IMG_ModelTwo,
-} from '../../assets/images';
 import CollectionItem from './components/collectionItem';
 import {IC_Backward, IC_BackwardArrow} from '../../assets/icons';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import HeaderMax from '../../components/header/headerMax';
-// import { useIsFocused } from '@react-navigation/native'
 import MessageYN from '../../components/alearts.js/messageYN'
-import { useIsFocused } from '@react-navigation/native';
 
 
 const ListOfCollectionScreen = props => {
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState([]);
   const isFocused = useIsFocused();
-
-
-  // const isFocused = useIsFocused();
-
+  
   const [message, setMessage] = useState('');
   const [title, setTitle] = useState('');
   const [status, setStatus] = useState('new')

@@ -62,7 +62,7 @@ const HomeScreen = props => {
         console.log(err.response.data);
       }
     };
-    
+
     const getSuggestiveProduct = async number => {
       try {
         const response = await axiosPrivate.get(
